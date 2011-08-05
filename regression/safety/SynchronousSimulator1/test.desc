@@ -1,0 +1,7 @@
+SynchronousSimulator_satabs.c
+--iterations 20
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring

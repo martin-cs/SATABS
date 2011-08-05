@@ -1,0 +1,7 @@
+spec.c
+driver.c --iterations 10
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring

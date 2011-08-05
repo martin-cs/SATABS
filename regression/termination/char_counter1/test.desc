@@ -1,0 +1,7 @@
+main.c
+--termination
+^EXIT=30$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring

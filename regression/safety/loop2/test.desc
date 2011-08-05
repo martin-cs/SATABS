@@ -1,0 +1,7 @@
+main.c
+--iterations 40 --bounds-check
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring

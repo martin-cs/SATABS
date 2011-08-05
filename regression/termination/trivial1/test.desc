@@ -1,0 +1,7 @@
+main.c
+--termination
+^EXIT=30$
+^SIGNAL=0$
+NON-TERMINATING.$
+--
+^warning: ignoring

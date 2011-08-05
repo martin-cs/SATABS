@@ -1,0 +1,7 @@
+main.c
+--termination
+^EXIT=20$
+^SIGNAL=0$
+^VERIFICATION SUCCESSFUL$
+--
+^warning: ignoring
