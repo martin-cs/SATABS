@@ -1,7 +1,7 @@
 SRC = satabs.cpp cmdline_options.cpp cegar_loop.cpp \
       safety.cpp satabs_safety_checker.cpp check_redundancy.cpp \
       \
-      ../cbmc/xml_interface.cpp \
+      $(CBMC)/src/cbmc/xml_interface.cpp \
       \
       prepare/get_predicates.cpp \
       prepare/prepare.cpp \
@@ -58,19 +58,19 @@ SRC = satabs.cpp cmdline_options.cpp cegar_loop.cpp \
       simulator/path_slicer.cpp
 
 OBJ = $(SRC:.cpp=$(OBJEXT)) \
-      ../ansi-c/ansi-c$(LIBEXT) \
-      ../big-int/bigint$(OBJEXT) \
-      ../goto-symex/goto-symex$(LIBEXT) \
-      ../intrep/intrep$(LIBEXT) \
-      ../solvers/solvers$(LIBEXT) \
+      $(CBMC)/src/ansi-c/ansi-c$(LIBEXT) \
+      $(CBMC)/src/big-int/bigint$(OBJEXT) \
+      $(CBMC)/src/goto-symex/goto-symex$(LIBEXT) \
+      $(CBMC)/src/intrep/intrep$(LIBEXT) \
+      $(CBMC)/src/solvers/solvers$(LIBEXT) \
       ../smvlang/smvlang$(LIBEXT) \
       ../bplang/bplang$(LIBEXT) \
       ../promela/promela$(LIBEXT) \
       ../xmllang/xmllang$(LIBEXT) \
-      ../util/util$(LIBEXT) \
-      ../goto-programs/goto-programs$(LIBEXT) \
-      ../pointer-analysis/pointer-analysis$(LIBEXT) \
-      ../langapi/langapi$(LIBEXT)
+      $(CBMC)/src/util/util$(LIBEXT) \
+      $(CBMC)/goto-programs/goto-programs$(LIBEXT) \
+      $(CBMC)/pointer-analysis/pointer-analysis$(LIBEXT) \
+      $(CBMC)/langapi/langapi$(LIBEXT)
 
 LIBS =
 
@@ -87,7 +87,7 @@ CXXFLAGS += -DHAVE_QBF_CORE
 endif
 endif
 
-INCLUDES= -I .. -I ../util 
+INCLUDES= -I $(CBMC)/src -I $(CBMC)/src/util
 
 ifdef MODULE_PROVER
   CXXFLAGS += -DHAVE_PROVER
