@@ -68,9 +68,9 @@ OBJ = $(SRC:.cpp=$(OBJEXT)) \
       ../promela/promela$(LIBEXT) \
       ../xmllang/xmllang$(LIBEXT) \
       $(CBMC)/src/util/util$(LIBEXT) \
-      $(CBMC)/goto-programs/goto-programs$(LIBEXT) \
-      $(CBMC)/pointer-analysis/pointer-analysis$(LIBEXT) \
-      $(CBMC)/langapi/langapi$(LIBEXT)
+      $(CBMC)/src/goto-programs/goto-programs$(LIBEXT) \
+      $(CBMC)/src/pointer-analysis/pointer-analysis$(LIBEXT) \
+      $(CBMC)/src/langapi/langapi$(LIBEXT)
 
 LIBS =
 
