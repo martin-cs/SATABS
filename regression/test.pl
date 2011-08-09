@@ -78,8 +78,10 @@ sub test($$$$) {
     $level = 2;
   } elsif($level eq "FUTURE") {
     $level = 4;
+  } elsif($level eq "KNOWNBUG") {
+    $level = 8;
   } else {
-    die "Level must be one of CORE, THOROUGH, or FUTURE\n";
+    die "Level must be one of CORE, THOROUGH, FUTURE or KNOWNBUG\n";
   }
 
   my $failed = -1;
@@ -139,9 +141,10 @@ Usage: test.pl -c CMD [OPTIONS] [DIRECTORIES ...]
 
   -c CMD     run tests on CMD - required option
   -h         show this help and exit
-  -C         core: run all tests of level 1 (default if none of C/T/F are given)
+  -C         core: run all tests of level 1 (default if none of C/T/F/K are given)
   -T         thorough: run expensive tests (level 2)
   -F         future: run checks for future features (level 4)
+  -K         known: run tests associated with known bugs (level 8)
 EOF
   exit 1;
 }
@@ -149,13 +152,14 @@ EOF
 use Getopt::Std;
 $main::VERSION = 0;
 $Getopt::Std::STANDARD_HELP_VERSION = 1;
-our ($opt_c, $opt_h, $opt_C, $opt_T, $opt_F); # the variables for getopt
-getopts('c:hCTF') or usage;
+our ($opt_c, $opt_h, $opt_C, $opt_T, $opt_F, $opt_K); # the variables for getopt
+getopts('c:hCTFK') or usage;
 $opt_c or usage;
 $opt_h and usage;
 my $t_level = 0;
 $t_level += 2 if($opt_T);
 $t_level += 4 if($opt_F);
+$t_level += 8 if($opt_K);
 $t_level += 1 if($opt_C || 0 == $t_level);
 
 
