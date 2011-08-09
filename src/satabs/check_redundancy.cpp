@@ -8,9 +8,10 @@
 #include <map>
 #include <memory>
 
+#include <std_expr.h>
+
 #include <solvers/flattening/bv_pointers.h>
 #include <solvers/sat/satcheck.h>
-#include <util/std_expr.h>
 
 #include "check_redundancy.h"
 
@@ -27,9 +28,10 @@ Function: is_valid
  Purpose: decides (using SAT) whether expression e is valid
 
 \*******************************************************************/
+
 bool is_valid(const exprt& e, const namespacet& ns)
 {
-	return is_unsatisfiable(not_exprt(e), ns);
+  return is_unsatisfiable(not_exprt(e), ns);
 }
 
 /*******************************************************************\
@@ -43,25 +45,26 @@ Function: is_unsatisfiable
  Purpose: decides (using SAT) whether expression e is unsatisfiable
 
 \*******************************************************************/
+
 bool is_unsatisfiable(const exprt& e, const namespacet& ns)
 {
-	if(NULL == is_unsatisfiable_cache.get())
-	{
-		is_unsatisfiable_cache = std::auto_ptr<std::map<exprt, bool> >(new std::map<exprt, bool>);
-	}
+  if(NULL == is_unsatisfiable_cache.get())
+  {
+    is_unsatisfiable_cache = std::auto_ptr<std::map<exprt, bool> >(new std::map<exprt, bool>);
+  }
 
-	std::map<exprt, bool>::const_iterator it = is_unsatisfiable_cache->find(e);
-	if(is_unsatisfiable_cache->end() != it)
-	{
-		return it->second;
-	}
+  std::map<exprt, bool>::const_iterator it = is_unsatisfiable_cache->find(e);
+  if(is_unsatisfiable_cache->end() != it)
+  {
+    return it->second;
+  }
 
-	satcheckt satcheck;
-	bv_pointerst solver(ns, satcheck);
-	solver.set_to_true(e);
+  satcheckt satcheck;
+  bv_pointerst solver(ns, satcheck);
+  solver.set_to_true(e);
 
-	switch(solver.dec_solve())
-	{
+  switch(solver.dec_solve())
+  {
     case decision_proceduret::D_UNSATISFIABLE:
       (*is_unsatisfiable_cache)[e] = true;
       return true;
@@ -89,17 +92,16 @@ Function: is_redundant
           if it is either valid, or unsatisfiable
 
 \*******************************************************************/
+
 bool is_redundant(const exprt& predicate, const namespacet& ns)
 {
-	return is_valid(predicate, ns) || is_unsatisfiable(predicate, ns);
+  return is_valid(predicate, ns) || is_unsatisfiable(predicate, ns);
 }
-
-
 
 void delete_unsatisfiable_cache()
 {
-	if(NULL != is_unsatisfiable_cache.get())
-	{
-		is_unsatisfiable_cache = std::auto_ptr<std::map<exprt, bool> >(NULL);
-	}
+  if(NULL != is_unsatisfiable_cache.get())
+  {
+    is_unsatisfiable_cache = std::auto_ptr<std::map<exprt, bool> >(NULL);
+  }
 }
