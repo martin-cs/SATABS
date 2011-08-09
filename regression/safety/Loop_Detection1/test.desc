@@ -1,4 +1,4 @@
-CORE
+FUTURE
 main.c
 -I ../../../libs/ansi-c --iterations 5 --loop-detection --modelchecker boppo
 ^EXIT=10$
