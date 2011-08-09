@@ -549,11 +549,15 @@ bool transition_refinert::check_guarded_transition(
   
   satcheck.set_assumptions(assumptions);
 
+  /*
+   * optimization disabled as minisat with simplifier does not support
+   * incremental SAT solving
   if(!is_satisfiable(solver))
   {
     print(9, "Guarded transition spurious due to invalid abstract state");
     return false; // this has to be fixed in the respective assignment
   }
+  */
 
   // now add the guard
   solver.set_to_true(guard);
