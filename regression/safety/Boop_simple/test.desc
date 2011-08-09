@@ -1,5 +1,6 @@
+CORE
 main.c
---iterations 5
+-I ../../../libs/ansi-c --iterations 5
 ^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$

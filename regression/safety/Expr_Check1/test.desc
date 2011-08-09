@@ -1,5 +1,6 @@
+CORE
 main.c
---iterations 4 --div-by-zero-check
+-I ../../../libs/ansi-c --iterations 4 --div-by-zero-check
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$

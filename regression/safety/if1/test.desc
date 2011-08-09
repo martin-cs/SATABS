@@ -1,5 +1,6 @@
+CORE
 main.c
---no-path-slicing
+-I ../../../libs/ansi-c --no-path-slicing
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$

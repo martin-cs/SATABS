@@ -1,5 +1,6 @@
+CORE
 main.c
---iterations 5 --loop-detection --modelchecker boppo
+-I ../../../libs/ansi-c --iterations 5 --loop-detection --modelchecker boppo
 ^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$

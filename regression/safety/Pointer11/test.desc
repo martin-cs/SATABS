@@ -1,5 +1,6 @@
+CORE
 main.c
---pointer-check
+-I ../../../libs/ansi-c --pointer-check
 ^SIGNAL=0$
 ^Counterexample:$
 ^VERIFICATION FAILED$

@@ -1,3 +1,4 @@
+CORE
 main.c
 --termination
 ^EXIT=30$

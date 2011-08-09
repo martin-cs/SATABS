@@ -1,10 +1,10 @@
 default: tests.log
 
 test:
-	@./test.pl
+	@../test.pl -c satabs
 
-tests.log: test.pl ../cbmc
-	@./test.pl
+tests.log: ../test.pl
+	@../test.pl -c satabs
 
 show:
 	@for dir in *; do \

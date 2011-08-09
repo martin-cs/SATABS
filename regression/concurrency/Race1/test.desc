@@ -1,5 +1,6 @@
+CORE
 main.c
---iterations 3 --data-race-check
+-I ../../../libs/ansi-c --iterations 3 --data-race-check
 ^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$

@@ -1,5 +1,6 @@
+CORE
 main.c
---bounds-check
+-I ../../../libs/ansi-c --bounds-check
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$

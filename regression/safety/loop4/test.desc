@@ -1,5 +1,6 @@
+CORE
 main.c
---iterations 20 --claim my_sprintf.4 --bounds-check --pointer-check
+-I ../../../libs/ansi-c --iterations 20 --claim my_sprintf.4 --bounds-check --pointer-check
 ^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$
