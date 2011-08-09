@@ -107,7 +107,8 @@ void simulator_symext::build_equation_prefix(
   bool constant_propagation)
 {
   contextt new_context;
-  goto_symext symex_simulator(concrete_model.ns, new_context, prefix.equation);
+  namespacet new_ns(concrete_model.ns.get_context(), new_context);
+  goto_symext symex_simulator(new_ns, new_context, prefix.equation);
   symex_simulator.constant_propagation=constant_propagation;
   symex_simulator.options.set_option("assertions", true);
   symex_simulator.options.set_option("all-assertions", true);

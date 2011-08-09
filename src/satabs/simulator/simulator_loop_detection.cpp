@@ -571,7 +571,8 @@ void simulator_loop_detectiont::build_parameterized_equation(
   prefixt::step_mapt &step_map)
 {
   contextt new_context;
-  goto_symext symex_simulator(concrete_model.ns, new_context, equation);
+  namespacet new_ns(concrete_model.ns.get_context(), new_context);
+  goto_symext symex_simulator(new_ns, new_context, equation);
   loop_stackt loop_stack;
 
   // turn off constant propagation -- it's not sound here
