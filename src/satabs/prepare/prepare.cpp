@@ -340,7 +340,7 @@ int preparet::get_async_modules()
 
       // add pointer checks
       pointer_checks(
-        goto_functions, ns, options, value_set_analysis);
+        goto_functions, context, options, value_set_analysis);
     }
 
     if(cmdline.isset("data-race-check"))
