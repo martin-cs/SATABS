@@ -217,10 +217,10 @@ void cmdline_optionst::help()
 {
   std::cout <<
     "\n"
-    "* *          SATABS " SATABS_VERSION " - Copyright (C) 2003-2006           * *\n"
+    "* *          SATABS " SATABS_VERSION " - Copyright (C) 2003-2011           * *\n"
     "* *              Daniel Kroening, Edmund Clarke             * *\n"
-    "* *         Computer Systems Institute, ETH Zurich          * *\n"
-    "* *                 kroening@kroening.com                   * *\n"
+    "* *                  Oxford University, CMU                 * *\n"
+    "* *                  kroening@kroening.com                  * *\n"
     "* *        Protected in part by U.S. patent 7,418,680       * *\n"
     "\n"
     "Usage:                       Purpose:\n"
