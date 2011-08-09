@@ -1,0 +1,8 @@
+CORE
+gigaset.all.i
+-I ../../../libs/ansi-c --iterations 20 --error-label LDV_ERROR
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring
