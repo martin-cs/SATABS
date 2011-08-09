@@ -8,11 +8,11 @@
  *      Author: Alastair Donaldson
  */
 
-#ifndef CHECK_REDUNDANCY_H_
-#define CHECK_REDUNDANCY_H_
+#ifndef CPROVER_CHECK_REDUNDANCY_H_
+#define CPROVER_CHECK_REDUNDANCY_H_
 
-#include <util/expr.h>
-#include <util/namespace.h>
+#include <expr.h>
+#include <namespace.h>
 
 bool is_valid(const exprt& e, const namespacet& ns);
 
@@ -22,4 +22,4 @@ bool is_redundant(const exprt& predicate, const namespacet& ns);
 
 void delete_unsatisfiable_cache();
 
-#endif /* CHECK_REDUNDANCY_H_ */
+#endif /* CPROVER_CHECK_REDUNDANCY_H_ */
