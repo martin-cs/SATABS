@@ -1,6 +1,6 @@
 CORE
 main.c
--I ../../../libs/ansi-c --iterations 4 --bounds-check
+--iterations 4 --bounds-check
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$

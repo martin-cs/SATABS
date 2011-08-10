@@ -1,6 +1,6 @@
 KNOWNBUG
 main.c
--I ../../../libs/ansi-c --iterations 3
+--iterations 3
 ^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$

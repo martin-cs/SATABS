@@ -1,6 +1,6 @@
 KNOWNBUG
 main.c
--I ../../../libs/ansi-c --iterations 4 --pointer-check
+--iterations 4 --pointer-check
 ^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$

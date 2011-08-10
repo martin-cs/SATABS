@@ -1,6 +1,6 @@
 CORE
 main.c
--I ../../../libs/ansi-c --iterations 4 --predicates main.predicates
+--iterations 4 --predicates main.predicates
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$

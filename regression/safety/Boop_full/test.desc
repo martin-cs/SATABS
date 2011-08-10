@@ -1,6 +1,6 @@
 CORE
 spec.c
--I ../../../libs/ansi-c driver.c --iterations 10
+driver.c --iterations 10
 ^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$
