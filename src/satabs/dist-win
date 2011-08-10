@@ -21,7 +21,7 @@ zip -9 satabs-${VERSION_FILE}-win.zip satabs.exe \
   goto-instrument.exe goto-cc.exe LICENSE
 
 echo Copying.
-scp satabs-${VERSION_FILE}-win.zip kroening@dkr0.inf.ethz.ch:/home/www/cprover.org/satabs/download/
+scp satabs-${VERSION_FILE}-win.zip kroening@dkr-srv.comlab.ox.ac.uk:/srv/www/cprover.org/satabs/download/
 
 cd /tmp
 rm -R /tmp/satabs-dist
