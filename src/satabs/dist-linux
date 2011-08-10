@@ -21,7 +21,7 @@ tar cfz satabs-${VERSION_FILE}-linux-${BITS}.tgz satabs goto-cc \
   goto-instrument LICENSE
 
 echo Copying.
-scp satabs-${VERSION_FILE}-linux-${BITS}.tgz kroening@dkr-srv.comlab.ox.ac.uk:/home/www/cprover.org/satabs/download/
+scp satabs-${VERSION_FILE}-linux-${BITS}.tgz kroening@dkr-srv.comlab.ox.ac.uk:/srv/www/cprover.org/satabs/download/
 
 cd /tmp
 rm -R /tmp/satabs-dist
