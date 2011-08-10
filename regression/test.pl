@@ -41,7 +41,7 @@ sub load($) {
   my ($fname) = @_;
 
   open FILE, "<$fname";
-  my @data = <FILE>;
+  my @data = grep { !/^\/\// } <FILE>;
   close FILE;
 
   chomp @data;
@@ -92,8 +92,9 @@ sub test($$$$) {
       print LOG "Execution [OK]\n";
       my $included = 1;
       foreach my $result (@results) {
+        last if($included == -1);
         if($result eq "--") {
-          $included = !$included;
+          $included--;
         } else {
           my $r;
           system "grep '$result' '$output' >/dev/null";
