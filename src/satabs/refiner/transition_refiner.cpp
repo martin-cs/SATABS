@@ -511,7 +511,11 @@ bool transition_refinert::check_guarded_transition(
   std::cout << "transition_refinert::check_guarded_transition 2" << std::endl;
   #endif
 
+  #ifdef HAVE_MINISAT2
+  satcheck_minisat_no_simplifiert satcheck;
+  #else
   satcheckt satcheck;
+  #endif
   bv_pointerst solver(concrete_model.ns, satcheck);
 
   #ifdef DEBUG
@@ -549,15 +553,11 @@ bool transition_refinert::check_guarded_transition(
   
   satcheck.set_assumptions(assumptions);
 
-  /*
-   * optimization disabled as minisat with simplifier does not support
-   * incremental SAT solving
   if(!is_satisfiable(solver))
   {
     print(9, "Guarded transition spurious due to invalid abstract state");
     return false; // this has to be fixed in the respective assignment
   }
-  */
 
   // now add the guard
   solver.set_to_true(guard);
