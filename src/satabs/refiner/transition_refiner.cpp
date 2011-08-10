@@ -511,7 +511,7 @@ bool transition_refinert::check_guarded_transition(
   std::cout << "transition_refinert::check_guarded_transition 2" << std::endl;
   #endif
 
-  #ifdef HAVE_MINISAT2
+  #ifdef SATCHECK_MINISAT2
   satcheck_minisat_no_simplifiert satcheck;
   #else
   satcheckt satcheck;
