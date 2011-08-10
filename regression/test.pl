@@ -146,6 +146,28 @@ Usage: test.pl -c CMD [OPTIONS] [DIRECTORIES ...]
   -T         thorough: run expensive tests (level 2)
   -F         future: run checks for future features (level 4)
   -K         known: run tests associated with known bugs (level 8)
+
+
+test.pl expects a test.desc file in each subdirectory. The file test.desc
+follows the format specified below. Any line starting with // will be ignored.
+
+<level>
+<main source>
+<options>
+<required patterns>
+--
+<disallowed patterns>
+--
+<comment text>
+
+where
+  <level>                is one of CORE, THOROUGH, FUTURE or KNOWNBUG
+  <main source>          is a file with extension .c/.i/.cpp 
+  <options>              additional options to be passed to CMD
+  <required patterns>    one or more lines of regualar expressions that must occur in the output
+  <disallowed patterns>  one or more lines of expressions that must not occur in output
+  <comment text>         free form text
+
 EOF
   exit 1;
 }
