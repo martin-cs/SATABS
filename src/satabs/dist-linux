@@ -4,6 +4,7 @@ strip satabs
 
 VERSION=`./satabs --version`
 VERSION_FILE=`echo $VERSION | sed "y/./-/"`
+BITS=`getconf LONG_BIT`
 
 echo $VERSION_FILE
 
@@ -16,11 +17,11 @@ cp ../goto-cc/goto-cc /tmp/satabs-dist/
 cp ../goto-instrument/goto-instrument /tmp/satabs-dist/
 cp ../../LICENSE /tmp/satabs-dist/
 cd /tmp/satabs-dist
-tar cfz satabs-${VERSION_FILE}-linux.tgz satabs goto-cc \
+tar cfz satabs-${VERSION_FILE}-linux-${BITS}.tgz satabs goto-cc \
   goto-instrument LICENSE
 
 echo Copying.
-scp satabs-${VERSION_FILE}-linux.tgz kroening@dkr0.inf.ethz.ch:/home/www/cprover.org/satabs/download/
+scp satabs-${VERSION_FILE}-linux-${BITS}.tgz kroening@dkr0.inf.ethz.ch:/home/www/cprover.org/satabs/download/
 
 cd /tmp
 rm -R /tmp/satabs-dist
