@@ -1,0 +1,10 @@
+KNOWNBUG
+main.c
+--iterations 3
+^EXIT=0$
+^SIGNAL=0$
+^VERIFICATION SUCCESSFUL$
+--
+^warning: ignoring
+--
+Test case provided by Alex, bug#63
