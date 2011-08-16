@@ -146,13 +146,13 @@ void satabs_inlinet::parameter_assignments(
 
       if(add_parameter_predicates)
       {
-    	  goto_programt::targett t = dest.add_instruction(OTHER);
-		  t->guard = equality_exprt(symbol_exprt(identifier, arg_type), actual);
-		  t->location = location;
-		  t->function=location.get_function();
-		  t->location.set("user-provided", true);
-		  t->code = ID_user_specified_predicate;
-		  t->code.set_statement(ID_user_specified_predicate);
+        goto_programt::targett t = dest.add_instruction(OTHER);
+        t->guard = equal_exprt(symbol_exprt(identifier, arg_type), actual);
+        t->location = location;
+        t->function=location.get_function();
+        t->location.set("user-provided", true);
+        t->code = ID_user_specified_predicate;
+        t->code.set_statement(ID_user_specified_predicate);
       }
 
     }
@@ -215,12 +215,12 @@ void satabs_inlinet::satabs_replace_return(
         if(add_return_predicates && !(code_assign.rhs() == nondet_exprt(code_assign.rhs().type())))
         {
       	  goto_programt::targett t = dest.add_instruction(OTHER);
-  		  t->guard = equality_exprt(code_assign.lhs(), code_assign.rhs());
-  		  t->location = it->location;
-  		  t->function = it->location.get_function();
-  		  t->location.set("user-provided", true);
-  		  t->code = ID_user_specified_predicate;
-  		  t->code.set_statement(ID_user_specified_predicate);
+          t->guard = equal_exprt(code_assign.lhs(), code_assign.rhs());
+          t->location = it->location;
+          t->function = it->location.get_function();
+          t->location.set("user-provided", true);
+          t->code = ID_user_specified_predicate;
+          t->code.set_statement(ID_user_specified_predicate);
         }
 
         assignment->code=code_assign;

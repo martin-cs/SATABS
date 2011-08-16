@@ -275,7 +275,7 @@ void simulator_loop_detectiont::build_loop_recurrence(
       instructions[s.source.pc] = instruction;
       if(has_recurrence)
       {
-        exprt equality=equality_exprt(s.lhs, solution[s.lhs]);
+        exprt equality=equal_exprt(s.lhs, solution[s.lhs]);
         if(!s.lhs.get_bool("induction_symbol"))
         {
           closed_forms[s.source.pc]=equality;

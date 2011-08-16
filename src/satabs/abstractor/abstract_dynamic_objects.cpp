@@ -101,7 +101,7 @@ exprt abstract_dynamic_objectst::build_case_split(const exprt &pointer)
     }
     else
     {
-      equality_exprt ptr_equality;
+      equal_exprt ptr_equality;
       ptr_equality.lhs()=pointer;
       ptr_equality.rhs()=*it;
     
