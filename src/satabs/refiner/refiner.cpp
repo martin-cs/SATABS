@@ -8,16 +8,15 @@ Date: June 2003
  
 \*******************************************************************/
 
-#include <satabs/check_redundancy.h>
-
 #include "refiner.h"
 #include "../abstractor/discover_predicates.h"
+#include "../abstractor/check_redundancy.h"
 
 static bool is_pointer_predicate(const exprt& p)
 {
-	return p.id()==ID_equal && (p.op0().id()==ID_address_of || p.op1().id()==ID_address_of);
+  return p.id()==ID_equal &&
+         (p.op0().id()==ID_address_of || p.op1().id()==ID_address_of);
 }
-
 
 /*******************************************************************\
 

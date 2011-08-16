@@ -10,8 +10,8 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <i2string.h>
 #include <expr_util.h>
-#include <satabs/check_redundancy.h>
 
+#include "check_redundancy.h"
 #include "abstract_expression.h"
 #include "abstractor.h"
 #include "canonicalize.h"

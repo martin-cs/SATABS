@@ -14,8 +14,7 @@ Date: June 2003
 #include "initial_abstraction.h"
 #include "discover_predicates.h"
 #include "canonicalize.h"
-
-#include <satabs/check_redundancy.h>
+#include "check_redundancy.h"
 
 /*******************************************************************\
 

@@ -1,5 +1,5 @@
 SRC = satabs.cpp cmdline_options.cpp cegar_loop.cpp \
-      safety.cpp satabs_safety_checker.cpp check_redundancy.cpp \
+      safety.cpp satabs_safety_checker.cpp \
       \
       ../cbmc/xml_interface.cpp \
       \
@@ -30,6 +30,7 @@ SRC = satabs.cpp cmdline_options.cpp cegar_loop.cpp \
       abstractor/abstractor_wp_cartesian.cpp \
       abstractor/abstractor_satqe.cpp \
       abstractor/abstractor_prover.cpp \
+      abstractor/check_redundancy.cpp \
       abstractor/discover_predicates.cpp \
       abstractor/canonicalize.cpp \
       abstractor/abstract_expression.cpp \
