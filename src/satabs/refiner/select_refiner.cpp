@@ -12,6 +12,7 @@ Date: September 2005
 #include "refiner_wp.h"
 #include "refiner_lifter.h"
 #include "no_refiner.h"
+#include "refiner_wp_only.h"
 
 #ifdef HAVE_IPP
 #include "refiner_ipp.h"
@@ -43,11 +44,19 @@ refinert *select_refiner(
   bool prefer_non_pointer_predicates = cmdline.isset("prefer-non-pointer-predicates");
 
   std::string name=
-    cmdline.isset("refiner")?cmdline.getval("refiner"):"wp";
+    cmdline.isset("refiner")?cmdline.getval("refiner"):(cmdline.isset("concurrency")?"wp_only":"wp");
     
+  if(cmdline.isset("concurrency"))
+  {
+    // Right now we do not support transition refinement + concurrency
+    assert(name == "wp_only");
+  }
+
   bool prefix_first=cmdline.isset("prefix-first");
 
-  if(name=="wp")
+  if(name=="wp_only")
+    return new refiner_wp_onlyt(args, prefix_first, max_predicates_to_add, prefer_non_pointer_predicates);
+  else if(name=="wp")
     return new refiner_wpt(args, prefix_first, max_predicates_to_add, prefer_non_pointer_predicates);
   else if(name=="ipp")
   {
