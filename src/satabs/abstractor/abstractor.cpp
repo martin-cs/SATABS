@@ -16,7 +16,7 @@ Author: Daniel Kroening
 
 #include <langapi/language_util.h>
 
-#include <satabs/check_redundancy.h>
+#include "check_redundancy.h"
 
 #include <util/std_expr.h>
 
