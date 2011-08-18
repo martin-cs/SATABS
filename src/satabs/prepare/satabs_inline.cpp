@@ -151,8 +151,7 @@ void satabs_inlinet::parameter_assignments(
         t->location = location;
         t->function=location.get_function();
         t->location.set("user-provided", true);
-        t->code = ID_user_specified_predicate;
-        t->code.set_statement(ID_user_specified_predicate);
+        t->code=codet(ID_user_specified_predicate);
       }
 
     }
@@ -219,8 +218,7 @@ void satabs_inlinet::satabs_replace_return(
           t->location = it->location;
           t->function = it->location.get_function();
           t->location.set("user-provided", true);
-          t->code = ID_user_specified_predicate;
-          t->code.set_statement(ID_user_specified_predicate);
+          t->code=codet(ID_user_specified_predicate);
         }
 
         assignment->code=code_assign;
