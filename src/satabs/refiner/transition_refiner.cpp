@@ -305,10 +305,10 @@ bool transition_refinert::check_assignment_transition(
   std::cout << "transition_refinert::check_transition_async 3" << std::endl;
   #endif
 
+  transition_cachet::entryt transition_cache_entry;
   if(passive_id == abstract_state_from.thread_nr)
   {
 	  // check cache if this is a local check
-	  transition_cachet::entryt transition_cache_entry;
 
 	  transition_cache_entry.build(
 		abstract_state_from,
