@@ -305,17 +305,20 @@ bool transition_refinert::check_assignment_transition(
   std::cout << "transition_refinert::check_transition_async 3" << std::endl;
   #endif
 
-  // check cache
-  transition_cachet::entryt transition_cache_entry;
-
-  transition_cache_entry.build(
-    abstract_state_from,
-    abstract_state_to);
-  
-  if(transition_cache.in_cache(transition_cache_entry))
+  if(passive_id == abstract_state_from.thread_nr)
   {
-    print(9, "Transition is in cache");
-    return false;
+	  // check cache if this is a local check
+	  transition_cachet::entryt transition_cache_entry;
+
+	  transition_cache_entry.build(
+		abstract_state_from,
+		abstract_state_to);
+
+	  if(transition_cache.in_cache(transition_cache_entry))
+	  {
+		print(9, "Transition is in cache");
+		return false;
+	  }
   }
 
   #ifdef DEBUG
@@ -425,7 +428,10 @@ bool transition_refinert::check_assignment_transition(
   // solve it
   if(is_satisfiable(solver))
   {
-    transition_cache.insert(transition_cache_entry);
+	if(passive_id == abstract_state_from.thread_nr)
+	{
+		transition_cache.insert(transition_cache_entry);
+	}
     print(9, "Transition is OK");
     #ifdef DEBUG
     std::cout << "********\n";
