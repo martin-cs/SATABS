@@ -14,6 +14,7 @@ Date: June 2003
 #include "initial_abstraction.h"
 #include "discover_predicates.h"
 #include "canonicalize.h"
+#include "concurrency_aware_abstract_transition_relation.h"
 #include "check_redundancy.h"
 
 /*******************************************************************\
@@ -231,7 +232,7 @@ void initial_abstractiont::build_control_flow(
     // decide which sort of transition relation to choose
     if(concurrency_aware)
     {
-    	assert(0);
+    	new_abstract_instruction->code.set_transition_relation(std::auto_ptr<abstract_transition_relationt>(new concurrency_aware_abstract_transition_relationt()));
     } else {
     	new_abstract_instruction->code.set_transition_relation(std::auto_ptr<abstract_transition_relationt>(new abstract_transition_relationt()));
     }

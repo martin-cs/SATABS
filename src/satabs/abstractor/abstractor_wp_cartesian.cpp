@@ -14,6 +14,7 @@ Author: Alastair Donaldson
 #include <solvers/sat/satcheck.h>
 #include <util/arith_tools.h>
 
+#include "check_redundancy.h"
 #include "abstractor_wp_cartesian.h"
 #include "locations_of_expressions.h"
 
@@ -452,6 +453,16 @@ void abstractor_wp_cartesiant::abstract_assume_guard(
 	else if(expr.is_constant())
 	{
 		return; // leave it as is
+	}
+
+	if(is_valid(expr, ns)) {
+		expr.make_true();
+		return;
+	}
+
+	if(is_unsatisfiable(expr, ns)) {
+		expr.make_false();
+		return;
 	}
 
 	// Do cube enumeration

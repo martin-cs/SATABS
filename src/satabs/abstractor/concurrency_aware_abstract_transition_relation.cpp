@@ -7,11 +7,6 @@
 
 #include "concurrency_aware_abstract_transition_relation.h"
 
-concurrency_aware_abstract_transition_relationt::concurrency_aware_abstract_transition_relationt() {
-	// TODO Auto-generated constructor stub
+concurrency_aware_abstract_transition_relationt::concurrency_aware_abstract_transition_relationt() { }
 
-}
-
-concurrency_aware_abstract_transition_relationt::~concurrency_aware_abstract_transition_relationt() {
-	// TODO Auto-generated destructor stub
-}
+concurrency_aware_abstract_transition_relationt::~concurrency_aware_abstract_transition_relationt() { }

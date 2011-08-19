@@ -25,6 +25,9 @@ public:
 class abstract_transition_relationt
 {
 public:
+
+  virtual ~abstract_transition_relationt() { }
+
   // predicate localization
   std::set<unsigned> from_predicates, to_predicates;
   

@@ -31,7 +31,7 @@ modelcheckert *select_modelchecker(
   const loop_componentt::argst &args)
 {
   std::string name=
-    cmdline.isset("modelchecker")?cmdline.getval("modelchecker"):"cadence-smv";
+    cmdline.isset("modelchecker")?cmdline.getval("modelchecker"):(cmdline.isset("concurrency")?"boom":"cadence-smv");
 
   unsigned max_threads=0;
   if(cmdline.isset("max-threads"))

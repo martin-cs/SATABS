@@ -47,6 +47,12 @@ public:
     abstract_transition_relationt &
     abstract_transition_relation)=0;
 
+  virtual void abstract_assume_guard(
+    const predicatest &predicates,
+    exprt &expr,
+    const namespacet &ns,
+    goto_programt::const_targett program_location);
+
   virtual exprt get_value(
     unsigned p_nr,
     const predicatest &predicates,
@@ -64,23 +70,10 @@ protected:
     const goto_programt &goto_program,
     abstract_programt &abstract_program);
 
-  virtual void abstract_assume_guard(
-    const predicatest &predicates,
-    exprt &expr,
-    const namespacet &ns,
-    goto_programt::const_targett program_location);
-
   // remember the old predicates
   predicatest old_predicates;
   bool have_new_predicates;
   
 };
-
-bool is_global(const symbolt& symbol);
-
-bool is_thread_local(const symbolt& symbol);
-
-bool is_procedure_local(const symbolt& symbol);
-
 
 #endif

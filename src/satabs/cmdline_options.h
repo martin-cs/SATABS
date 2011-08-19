@@ -45,7 +45,7 @@ public:
     "(data-race-check)(error-label):(prefix-first)(no-arch)"
     "(binary):(no-path-slicing)(version)(shortest-prefix)"
     "(termination)(ranksynthesis):(no-loop-slicing)"
-    "(save-bps)(max-threads)(max-new-predicates):(prefer-non-pointer-predicates)"
+    "(save-bps)(max-threads):(max-new-predicates):(prefer-non-pointer-predicates)"
     "(max-cube-length):(concurrency)(nthreads):",
     argc, argv),
     xml_interfacet(cmdline)

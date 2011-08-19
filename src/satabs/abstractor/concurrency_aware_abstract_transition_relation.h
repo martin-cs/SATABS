@@ -10,7 +10,7 @@
 
 #include "abstract_transition_relation.h"
 
-class concurrency_aware_abstract_transition_relationt : abstract_transition_relationt {
+class concurrency_aware_abstract_transition_relationt : public abstract_transition_relationt {
 public:
 
 	std::set<unsigned> from_passive_predicates, to_passive_predicates;

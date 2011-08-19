@@ -437,12 +437,13 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
 
     for(unsigned i=0;
         i<abstract_model.variables.size();
-        i++)
-      if(abstract_model.variables[i].is_procedure_local())
-      {
-        max_len=std::max(max_len, variable_names[i].size());
-        has_procedure_local_variables=true;
-      }
+        i++) {
+        if(abstract_model.variables[i].is_procedure_local() || abstract_model.variables[i].is_mixed())
+        {
+          max_len=std::max(max_len, variable_names[i].size());
+          has_procedure_local_variables=true;
+        }
+    }
 
     if(has_procedure_local_variables)
     {
@@ -467,10 +468,10 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
 			{
 				if(abstract_model.variables[i].is_procedure_local())
 				{
-					out << "LOCAL";
+					out << "LOCAL --";
 				} else {
 					assert(abstract_model.variables[i].is_mixed());
-					out << "MIXED";
+					out << "MIXED --";
 				}
 				out << " ";
 			}
@@ -665,12 +666,16 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
       if(concurrency_aware)
       {
     	  for(unsigned i=0; i<passive_variable_names.size(); i++)
-    		  if(((concurrency_aware_abstract_transition_relationt&)(it->code.get_transition_relation())).passive_values.count(i)!=0)
-    		  {
-    			  assert(!first);
-    			  out << ",";
-    			  out << passive_variable_names[i];
-    		  }
+	  {
+		concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
+		assert(NULL != trans_rel);
+    		if(trans_rel->passive_values.count(i)!=0)
+    		{
+    			assert(!first);
+    			out << ",";
+    			out << passive_variable_names[i];
+    		}
+	  }
       }
 
       if(first) // none changed?
@@ -707,16 +712,16 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
 
         if(concurrency_aware)
         {
-        	concurrency_aware_abstract_transition_relationt& transition_rel =
-        			(concurrency_aware_abstract_transition_relationt&) it->code.get_transition_relation();
+        	concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
+		assert(NULL != trans_rel);
 
-			for(unsigned i=0; i<passive_variable_names.size(); i++)
+		for(unsigned i=0; i<passive_variable_names.size(); i++)
+		{
+			abstract_transition_relationt::valuest::const_iterator
+				v_it=trans_rel->passive_values.find(i);
+
+			if(v_it!=trans_rel->passive_values.end())
 			{
-			  abstract_transition_relationt::valuest::const_iterator
-				v_it=transition_rel.passive_values.find(i);
-
-			  if(v_it!=transition_rel.passive_values.end())
-			  {
 				const exprt &value=v_it->second;
 
 				assert(!first);
@@ -896,8 +901,8 @@ bool modelchecker_boolean_programt::check(
       break;
       
     case BOOM:
-      status(std::string("Running B-BOOM"));
-      command="bboom  -t";
+      status(std::string("Running BOOM"));
+      command="boom  -t";
       if(max_threads!=0)
         command+=" --threadbound "+i2string(max_threads);
       break;
@@ -918,6 +923,8 @@ bool modelchecker_boolean_programt::check(
 
     command+=" "+temp_boolean_program+" >"+temp_boolean_program_out1+
              " 2>"+temp_boolean_program_out2;
+
+    status(command);
 
     system(command.c_str());
   }

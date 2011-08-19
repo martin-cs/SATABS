@@ -178,7 +178,7 @@ void abstract_expression(
 
 /*******************************************************************\
 
-Function: strongly_abstract_expression
+Function: abstract_assume_guard
 
   Inputs:
 

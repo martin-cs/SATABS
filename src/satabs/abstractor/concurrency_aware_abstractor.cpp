@@ -26,8 +26,8 @@ void concurrency_aware_abstractort::pred_abstract_block(
 			abstract_transition_relationt &
 			abstract_transition_relation)
 {
-	concurrency_aware_abstract_transition_relationt& concurrency_aware_abstract_transition_relation =
-			(concurrency_aware_abstract_transition_relationt&) abstract_transition_relation;
+	concurrency_aware_abstract_transition_relationt* concurrency_aware_abstract_transition_relation = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&abstract_transition_relation);
+	assert(NULL != concurrency_aware_abstract_transition_relation);
 
 	// Do standard PA on the assignment
 	this->specific_abstractor->pred_abstract_block(target, predicates, abstract_transition_relation);
@@ -71,7 +71,7 @@ void concurrency_aware_abstractort::pred_abstract_block(
 	  {
 	    if(passive_predicates_wp[i]==passive_predicates[i])
 	    {
-	      concurrency_aware_abstract_transition_relation.passive_values.erase(i);
+	      concurrency_aware_abstract_transition_relation->passive_values.erase(i);
 	      #ifdef DEBUG
 	      std::cout << "UNCHANGED: P" << i << "$ ~ (" << from_expr(concrete_model.ns, "", passive_predicates[i]) << ")" << std::endl << std::endl;
 	      #endif
@@ -102,15 +102,24 @@ void concurrency_aware_abstractort::pred_abstract_block(
 	          std::cout << std::endl << std::endl;
 	#endif
 
-	          concurrency_aware_abstract_transition_relation.passive_values[i]=new_value;
+	          concurrency_aware_abstract_transition_relation->passive_values[i]=new_value;
 
 	          // if it changes, it's output
-	          concurrency_aware_abstract_transition_relation.to_passive_predicates.insert(i);
+	          concurrency_aware_abstract_transition_relation->to_passive_predicates.insert(i);
 
 	      }
 	    }
 	  }
 
+}
+
+void concurrency_aware_abstractort::abstract_assume_guard(
+              const predicatest &predicates,
+              exprt &expr,
+              const namespacet &ns,
+              goto_programt::const_targett program_location)
+{
+	this->specific_abstractor->abstract_assume_guard(predicates, expr, ns, program_location);
 }
 
 

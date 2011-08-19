@@ -43,6 +43,12 @@ protected:
 			abstract_transition_relationt &
 			abstract_transition_relation);
 
+        virtual void abstract_assume_guard(
+                        const predicatest &predicates,
+                        exprt &expr,
+                        const namespacet &ns,
+                        goto_programt::const_targett program_location);
+
 	exprt make_passive(exprt phi);
 
 	exprt make_passive_rec(exprt phi);
