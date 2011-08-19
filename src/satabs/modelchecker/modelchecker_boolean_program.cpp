@@ -126,6 +126,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
   }
 }
 
+
 /*******************************************************************\
 
 Function: modelchecker_boolean_programt::read_counterexample_boppo_boom
@@ -153,10 +154,11 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
     if(std::string(line, 0, 6)=="TRACE ")
     {
       abstract_statet abstract_state;
-      
-      // initialization
-      abstract_state.predicate_values.resize(
-        abstract_model.variables.size(), false);
+
+      std::map<unsigned, unsigned> number_of_times_predicate_has_been_seen;
+      abstract_stept::predicate_valuest shared_predicate_values;
+
+      shared_predicate_values.resize(abstract_model.variables.size(), false);
 
       // for gotos
       abstract_state.branch_taken=true;
@@ -175,6 +177,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
       {
         std::string variable=a_it->first;
         const std::string &value=a_it->second;
+
         
         // strip function name from variable name
         {
@@ -188,11 +191,20 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
         else if(variable[0]=='b') // checked for emptyness above
         {
           unsigned nr=atoi(variable.c_str()+1);
-          if(nr>=abstract_state.predicate_values.size())
+          if(nr>=abstract_model.variables.size())
             throw "invalid variable in abstract counterexample: "+
               variable;
 
-          abstract_state.predicate_values[nr]=atoi(value.c_str());
+          if(abstract_model.variables[nr].is_shared_global()) {
+        	  shared_predicate_values[nr] = atoi(value.c_str());
+          } else {
+        	  std::map<unsigned, unsigned>::iterator it = number_of_times_predicate_has_been_seen.insert(std::make_pair(nr, 0)).first;
+        	  abstract_stept::thread_to_predicate_valuest::iterator it2 =
+        			  abstract_state.thread_states.insert(
+        					  std::make_pair(it->second, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
+        	  it2->second[nr] = atoi(value.c_str());
+        	  it->second++;
+          }
         }
         else if(std::string(variable, 0, 3)=="t")
         {
@@ -203,6 +215,18 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
         else
           throw "unknown variable in abstract counterexample: `"+
                 variable+"'";
+      }
+
+      // Plug the shared state into every thread state
+      for(abstract_stept::thread_to_predicate_valuest::iterator it = abstract_state.thread_states.begin(); it != abstract_state.thread_states.end(); it++)
+      {
+    	  for(unsigned i = 0; i < shared_predicate_values.size(); i++)
+    	  {
+    		  if(abstract_model.variables[i].is_shared_global())
+    		  {
+    			  it->second[i] = shared_predicate_values[i];
+    		  }
+    	  }
       }
 
       for(std::list<std::string>::const_iterator

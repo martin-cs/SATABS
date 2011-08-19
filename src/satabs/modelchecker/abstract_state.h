@@ -50,7 +50,11 @@ public:
   
   // the values visible to the thread
   typedef std::vector<bool> predicate_valuest;
-  predicate_valuest predicate_values;
+
+  typedef std::map<unsigned, predicate_valuest> thread_to_predicate_valuest;
+  // maps thread i to the state of all the predicates it can see
+  // note that shared predicates are *duplicated* between thread states
+  thread_to_predicate_valuest thread_states;
 
   // for goto
   bool branch_taken;

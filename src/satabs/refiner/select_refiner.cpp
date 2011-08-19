@@ -44,14 +44,8 @@ refinert *select_refiner(
   bool prefer_non_pointer_predicates = cmdline.isset("prefer-non-pointer-predicates");
 
   std::string name=
-    cmdline.isset("refiner")?cmdline.getval("refiner"):(cmdline.isset("concurrency")?"wp_only":"wp");
+    cmdline.isset("refiner")?cmdline.getval("refiner"):"wp";
     
-  if(cmdline.isset("concurrency"))
-  {
-    // Right now we do not support transition refinement + concurrency
-    assert(name == "wp_only");
-  }
-
   bool prefix_first=cmdline.isset("prefix-first");
 
   if(name=="wp_only")

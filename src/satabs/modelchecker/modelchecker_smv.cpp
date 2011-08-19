@@ -277,8 +277,6 @@ void modelchecker_smvt::read_counterexample(
     it++;
 
   abstract_statet abstract_state;
-  abstract_state.predicate_values.resize(
-    abstract_model.variables.size());
 
   bool data_set=false;
 
@@ -361,11 +359,14 @@ void modelchecker_smvt::read_counterexample(
       else if(has_prefix(variable, "b"))
       {
         unsigned nr=atoi(variable.c_str()+1);
-        if(nr>=abstract_state.predicate_values.size())
+        if(nr>=abstract_model.variables.size())
           throw "invalid variable in abstract counterexample: "+
             variable;
 
-        abstract_state.predicate_values[nr]=atoi(value.c_str());
+        abstract_stept::thread_to_predicate_valuest::iterator it2 =
+  			  abstract_state.thread_states.insert(
+  					  std::make_pair(thread_nr, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
+        it2->second[nr] = atoi(value.c_str());
         data_set=true;
       }
       else if(has_prefix(variable, "guard"))
@@ -425,6 +426,7 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
   const threadst &threads,
   abstract_counterexamplet &counterexample)
 {
+
   while(it!=file.end() && *it!="{")
     it++;
 
@@ -453,8 +455,6 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
       throw "expected state in counterexample, but got "+*it;
       
     abstract_statet abstract_state;
-    abstract_state.predicate_values.resize(
-      abstract_model.variables.size());
 
     it++;
     if(it==file.end())
@@ -525,11 +525,15 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
         else if(has_prefix(variable, "b"))
         {
           unsigned nr=atoi(variable.c_str()+1);
-          if(nr>=abstract_state.predicate_values.size())
+          if(nr>=abstract_model.variables.size())
             throw "invalid variable in abstract counterexample: "+
               variable;
 
-          abstract_state.predicate_values[nr]=atoi(value.c_str());
+          abstract_stept::thread_to_predicate_valuest::iterator it2 =
+    			  abstract_state.thread_states.insert(
+    					  std::make_pair(thread_nr, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
+          it2->second[nr] = atoi(value.c_str());
+
         }
         else if(has_prefix(variable, "guard"))
         {

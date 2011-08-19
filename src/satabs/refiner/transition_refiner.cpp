@@ -115,6 +115,7 @@ bool transition_refinert::check_transitions(
   abstract_modelt &abstract_model,
   const fail_infot &fail_info)
 {
+
   status("Checking transitions");
 
   bool error=true;
@@ -189,6 +190,7 @@ bool transition_refinert::check_transition(
   const abstract_stept &abstract_state_to,
   bool &first_check)
 {
+
   // get the concrete basic block
   const goto_programt::instructiont &c_instruction=
     *abstract_state_from.pc->code.concrete_pc;
@@ -220,9 +222,33 @@ bool transition_refinert::check_transition(
              abstract_state_from,
              abstract_state_to);
 
-  return check_assignment_transition(predicates,
-           abstract_state_from,
-           abstract_state_to);
+  // Check the active thread fist
+  if(check_assignment_transition(predicates,
+          abstract_state_from,
+          abstract_state_to, abstract_state_from.thread_nr))
+  {
+	  return true;
+  }
+
+  // For each passive thread, check that active transition is OK in context of
+  // passive thread's state, and passive transition (if there is one because of
+  // a broadcast) is also OK
+  for(unsigned int passive_id = 0; passive_id < abstract_state_from.thread_states.size(); passive_id++)
+  {
+	  if(passive_id == abstract_state_from.thread_nr)
+	  {
+		  continue;
+	  }
+	  if(check_assignment_transition(predicates,
+          abstract_state_from,
+          abstract_state_to, passive_id))
+	  {
+		  return true;
+	  }
+  }
+
+  return false;
+
 }
 
 /*******************************************************************\
@@ -240,11 +266,18 @@ Function: transition_refinert::check_assignment_transitions
 bool transition_refinert::check_assignment_transition(
   const predicatest &predicates,
   const abstract_stept &abstract_state_from,
-  const abstract_stept &abstract_state_to)
+  const abstract_stept &abstract_state_to,
+  unsigned passive_id)
 {
   #ifdef DEBUG
   std::cout << "transition_refinert::check_transition_async 1" << std::endl;
   #endif
+
+  if(passive_id != abstract_state_from.thread_nr)
+  {
+	  // Refinement for passive threads not implemented yet
+	  return false;
+  }
 
   // if all the predicates have fixed values, it can't be wrong
   // unless where we come from an inconsistent state.
@@ -326,6 +359,14 @@ bool transition_refinert::check_assignment_transition(
     
   bvt assumptions;
 
+  abstract_stept::thread_to_predicate_valuest::const_iterator from_predicates_for_active_thread = abstract_state_from.thread_states.find(abstract_state_from.thread_nr);
+  assert(abstract_state_from.thread_states.end() != from_predicates_for_active_thread);
+
+  // Note that we take "thread_nr" from "abstract_state_from", not from "abstract_state_to", as the "from" state determines which thread is executing
+  abstract_stept::thread_to_predicate_valuest::const_iterator to_predicates_for_active_thread = abstract_state_to.thread_states.find(abstract_state_from.thread_nr);
+  assert(abstract_state_to.thread_states.end() != to_predicates_for_active_thread);
+
+
   for(std::set<unsigned>::const_iterator
       it=from_predicates.begin();
       it!=from_predicates.end(); it++)
@@ -335,15 +376,18 @@ bool transition_refinert::check_assignment_transition(
     literalt li=make_pos(concrete_model.ns, solver, predicates[i]);
     predicate_variables_from[i]=li;
     
-    assert(abstract_state_from.predicate_values.size()==predicates.size());
+    for(abstract_stept::thread_to_predicate_valuest::const_iterator it2 = abstract_state_from.thread_states.begin(); it2 != abstract_state_from.thread_states.end(); it2++)
+    {
+    	assert(it2->second.size()==predicates.size());
+    }
     
     assumptions.push_back(li.cond_negation(
-      !abstract_state_from.predicate_values[i]));
+      !from_predicates_for_active_thread->second[i]));
     
     #ifdef DEBUG
     std::cout
       << "F: P" << i << ": "
-      << (abstract_state_from.predicate_values[i]?"":"!") << "(" 
+      << (from_predicates_for_active_thread->second[i]?"":"!") << "("
       << from_expr(concrete_model.ns, "", predicates[i]) << ")" << std::endl;
     #endif
   }
@@ -357,14 +401,17 @@ bool transition_refinert::check_assignment_transition(
     literalt lo=make_pos(concrete_model.ns, solver, predicates_wp[i]);
     predicate_variables_to[i]=lo;
 
-    assert(abstract_state_to.predicate_values.size()==predicates.size());
+    for(abstract_stept::thread_to_predicate_valuest::const_iterator it2 = abstract_state_to.thread_states.begin(); it2 != abstract_state_to.thread_states.end(); it2++)
+    {
+    	assert(it2->second.size()==predicates.size());
+    }
 
     assumptions.push_back(lo.cond_negation(
-      !abstract_state_to.predicate_values[i]));
+      !to_predicates_for_active_thread->second[i]));
     
     #ifdef DEBUG
     std::cout 
-      << "T: P" << i << ": " << (abstract_state_to.predicate_values[i]?"":"!") << "("
+      << "T: P" << i << ": " << (to_predicates_for_active_thread->second[i]?"":"!") << "("
       << from_expr(concrete_model.ns, "", predicates[i]) << ")" << std::endl;
     #endif
   }
@@ -408,7 +455,7 @@ bool transition_refinert::check_assignment_transition(
       exprt &e=constraint.operands().back();
       e=exprt("predicate_symbol", typet("bool"));
       e.set("identifier", i);
-      if(abstract_state_from.predicate_values[i]) e.make_not();
+      if(from_predicates_for_active_thread->second[i]) e.make_not();
       #if 0
       std::cout << "C: " << from_expr(ns, "", e) << std::endl;
       #endif
@@ -427,7 +474,7 @@ bool transition_refinert::check_assignment_transition(
       exprt &e=constraint.operands().back();
       e=exprt("predicate_next_symbol", typet("bool"));
       e.set("identifier", i);
-      if(abstract_state_to.predicate_values[i]) e.make_not();
+      if(to_predicates_for_active_thread->second[i]) e.make_not();
       #if 0
       std::cout << "C: " << from_expr(ns, "", e) << std::endl;
       #endif
@@ -530,6 +577,9 @@ bool transition_refinert::check_guarded_transition(
   
   bvt assumptions;
 
+  abstract_stept::thread_to_predicate_valuest::const_iterator from_predicates_for_active_thread = abstract_state_from.thread_states.find(abstract_state_from.thread_nr);
+  assert(abstract_state_from.thread_states.end() != from_predicates_for_active_thread);
+
   for(std::set<unsigned>::const_iterator
       it=from_predicates.begin();
       it!=from_predicates.end(); it++)
@@ -539,14 +589,17 @@ bool transition_refinert::check_guarded_transition(
     literalt li=make_pos(concrete_model.ns, solver, predicates[i]);
     predicate_variables_from[i]=li;
     
-    assert(abstract_state_from.predicate_values.size()==predicates.size());
+    for(abstract_stept::thread_to_predicate_valuest::const_iterator it2 = abstract_state_from.thread_states.begin(); it2 != abstract_state_from.thread_states.end(); it2++)
+    {
+    	assert(it2->second.size()==predicates.size());
+    }
 
     assumptions.push_back(li.cond_negation(
-      !abstract_state_from.predicate_values[i]));
+      !from_predicates_for_active_thread->second[i]));
     
     #ifdef DEBUG
     std::cout
-      << "F: P" << i << ": " << (abstract_state_from.predicate_values[i]?"":"!") << "(" 
+      << "F: P" << i << ": " << (from_predicates_for_active_thread->second[i]?"":"!") << "("
       << from_expr(concrete_model.ns, "", predicates[i]) << ")" << std::endl;
     #endif
   }
@@ -595,7 +648,7 @@ bool transition_refinert::check_guarded_transition(
       exprt &e=condition.operands().back();
       e=exprt("predicate_symbol", bool_typet());
       e.set(ID_identifier, i);
-      if(!abstract_state_from.predicate_values[i]) e.make_not();
+      if(!from_predicates_for_active_thread->second[i]) e.make_not();
       #if 0
       std::cout << "C: " << from_expr(concrete_model.ns, "", e) << std::endl;
       #endif

@@ -63,12 +63,19 @@ void abstract_stept::output(std::ostream &out) const
     else
       out << "// no PC" << std::endl;
 
-    if(pc->is_goto())
+    if(has_pc && pc->is_goto())
       out << "branch_taken=" << branch_taken;
 
-    for(unsigned i=0; i<predicate_values.size(); i++)
+    out << std::endl;
+    for(thread_to_predicate_valuest::const_iterator it = thread_states.begin(); it != thread_states.end(); it++)
     {
-      out << " b" << i << "=" << predicate_values[i];
+  	  out << "  thread " << it->first << ": (";
+  	  for(unsigned i = 0; i < it->second.size(); i++)
+  	  {
+  		  out << "b" << i << " = " << it->second[i];
+  		  if(i < it->second.size() - 1) out << " ";
+  	  }
+  	  out << ")" << std::endl;
     }
     
     out << std::endl;

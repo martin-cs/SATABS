@@ -32,6 +32,9 @@ void transition_cachet::entryt::build(
 
   // from
 
+  abstract_stept::thread_to_predicate_valuest::const_iterator from_predicates_for_active_thread = abstract_state_from.thread_states.find(abstract_state_from.thread_nr);
+  assert(abstract_state_from.thread_states.end() != from_predicates_for_active_thread);
+
   const std::set<unsigned> &from_predicates=
     abstract_state_from.pc->code.get_transition_relation().from_predicates;
 
@@ -39,9 +42,13 @@ void transition_cachet::entryt::build(
       it=from_predicates.begin();
       it!=from_predicates.end();
       it++)
-    from[*it]=abstract_state_from.predicate_values[*it];
+    from[*it]=from_predicates_for_active_thread->second[*it];
 
   // to
+
+  // Note that we take "thread_nr" from "abstract_state_from", not from "abstract_state_to", as the "from" state determines which thread is executing
+  abstract_stept::thread_to_predicate_valuest::const_iterator to_predicates_for_active_thread = abstract_state_to.thread_states.find(abstract_state_from.thread_nr);
+  assert(abstract_state_to.thread_states.end() != to_predicates_for_active_thread);
 
   const std::set<unsigned> &to_predicates=
     abstract_state_from.pc->code.get_transition_relation().to_predicates;
@@ -50,5 +57,5 @@ void transition_cachet::entryt::build(
       it=to_predicates.begin();
       it!=to_predicates.end();
       it++)
-    to[*it]=abstract_state_to.predicate_values[*it];
+    to[*it]=to_predicates_for_active_thread->second[*it];
 }

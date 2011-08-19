@@ -57,7 +57,8 @@ protected:
   virtual bool check_assignment_transition(
     const predicatest &preficates,
     const abstract_stept &abstract_state_from,
-    const abstract_stept &abstract_state_to);
+    const abstract_stept &abstract_state_to,
+    unsigned passive_id);
 
   virtual bool check_guarded_transition(
     const predicatest &preficates,
