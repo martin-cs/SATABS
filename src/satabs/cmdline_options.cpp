@@ -57,7 +57,8 @@ int cmdline_optionst::doit()
   options.set_option("assertions", !cmdline.isset("no-assertions"));
   options.set_option("assumptions", !cmdline.isset("no-assumptions"));
   options.set_option("simplify", !cmdline.isset("no-simplify"));
-  options.set_option("overflow-check", cmdline.isset("overflow-check"));
+  options.set_option("signed-overflow-check", cmdline.isset("signed-overflow-check"));
+  options.set_option("unsigned-overflow-check", cmdline.isset("unsigned-overflow-check"));
 
   if(cmdline.isset("error-label"))
     options.set_option("error-label", cmdline.getval("error-label"));
