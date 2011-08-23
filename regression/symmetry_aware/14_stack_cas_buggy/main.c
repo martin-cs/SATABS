@@ -1,7 +1,7 @@
 //original file: EBStack.java
 //amino-cbbs\trunk\amino\java\src\main\java\org\amino\ds\lockfree
 //push only
-#include "basics.h"
+#include "../basics.h"
 
 #define WORDT_NULL 0
 typedef int WORDT;
