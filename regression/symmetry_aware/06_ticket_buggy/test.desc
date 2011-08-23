@@ -1,7 +1,7 @@
 KNOWNBUG
 main.c
 -DSATABS --full-inlining --concurrency --max-threads 3 --abstractor cartesian --iterations 10
-^EXIT=1$
+^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$
 --
