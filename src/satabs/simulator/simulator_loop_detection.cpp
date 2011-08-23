@@ -298,10 +298,11 @@ void simulator_loop_detectiont::build_loop_recurrence(
   
   // assign parameter, so we can grab it from a counterexample
   exprt tmp(parameter_expr);
+
   equation.assignment(
     guardt(),
-    parameter_expr,
-    parameter_expr,
+    to_symbol_expr(parameter_expr),
+    to_symbol_expr(parameter_expr),
     tmp,
     loop_begin.state.source,
     symex_targett::STATE);
@@ -722,7 +723,7 @@ void simulator_loop_detectiont::unwind_counterexample(
         s_it!=phase_I_counterexample.goto_trace.steps.end();
         s_it++)
     {
-      if(s_it->original_lhs==l_it->parameter)
+      if(s_it->lhs_object==l_it->parameter)
       {
         assert(!to_integer(s_it->value, l_it->parameter_value));
         found=true;
