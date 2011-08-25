@@ -82,8 +82,8 @@ bool simulator_loop_detectiont::check_phase_I_equation(
   {
     if(c_it->is_assignment())
     {
-      const exprt &rhs = c_it->rhs;
-      recurrence_solver::referenced_parameters (state, rhs, symbols);
+      const exprt &rhs=c_it->ssa_rhs;
+      recurrence_solver::referenced_parameters(state, rhs, symbols);
       continue;
     }
 
@@ -196,14 +196,14 @@ void simulator_loop_detectiont::build_loop_recurrence(
     
     if(s.is_assignment())
     {
-      const exprt &lhs=s.lhs;
-      const exprt &rhs=s.rhs;
+      const exprt &lhs=s.ssa_lhs;
+      const exprt &rhs=s.ssa_rhs;
  
       // compute start/end values
-      start_values.insert(rename(loop_begin.state, s.original_lhs));
-      end_values.insert(rename(end_state, s.original_lhs));
+      start_values.insert(rename(loop_begin.state, s.original_lhs_object));
+      end_values.insert(rename(end_state, s.original_lhs_object));
 
-      if (!s.original_lhs.get_bool("induction_symbol"))
+      if (!s.original_lhs_object.get_bool("induction_symbol"))
         {
           problem[lhs]=rhs;      
           #if 0
@@ -246,37 +246,37 @@ void simulator_loop_detectiont::build_loop_recurrence(
     
     if(s.is_assignment())
     {
-      if (solution[s.lhs].id()!="nondet_symbol" && 
-          solution[s.lhs] != s.rhs &&
-          !s.lhs.get_bool("induction_symbol"))
+      if (solution[s.ssa_lhs].id()!="nondet_symbol" && 
+          solution[s.ssa_lhs] != s.ssa_rhs &&
+          !s.ssa_lhs.get_bool("induction_symbol"))
         has_recurrence = true;
 
       #ifdef DEBUG
-      std::cout << "ASSIGNMENT BEFORE: " << from_expr(ns, "", s.lhs) << " := "
+      std::cout << "ASSIGNMENT BEFORE: " << from_expr(ns, "", s.ssa_lhs) << " := "
                 << from_expr(ns, "", s.rhs) << std::endl;
       #endif
 
-      if (!s.original_lhs.get_bool("induction_symbol"))
-        s.rhs=solution[s.lhs];
+      if(!s.original_lhs_object.get_bool("induction_symbol"))
+        s.ssa_rhs=solution[s.ssa_lhs];
 
       #ifdef DEBUG
-      std::cout << "ASSIGNMENT AFTER: " << from_expr(ns, "", s.lhs) << " := "
+      std::cout << "ASSIGNMENT AFTER: " << from_expr(ns, "", s.ssa_lhs) << " := "
                 << from_expr(ns, "", s.rhs) << std::endl;
       #endif
 
       // fix cond
       assert(s.cond_expr.id()=="=" && s.cond_expr.operands().size()==2);
-      s.cond_expr.op1()=s.rhs;
+      s.cond_expr.op1()=s.ssa_rhs;
 
       // remember the recurrence instruction and the
       // closed form for WP computation
-      code_assignt instruction(s.lhs, solution[s.lhs]);
+      code_assignt instruction(s.ssa_lhs, solution[s.ssa_lhs]);
       end_state.get_original_name(instruction);
       instructions[s.source.pc] = instruction;
       if(has_recurrence)
       {
-        exprt equality=equal_exprt(s.lhs, solution[s.lhs]);
-        if(!s.lhs.get_bool("induction_symbol"))
+        exprt equality=equal_exprt(s.ssa_lhs, solution[s.ssa_lhs]);
+        if(!s.ssa_lhs.get_bool("induction_symbol"))
         {
           closed_forms[s.source.pc]=equality;
         }

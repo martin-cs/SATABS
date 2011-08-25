@@ -653,10 +653,10 @@ void recurrence_solver::cleanup_recurrence_predicates(
         {
           symex_target_equationt::SSA_stept &s=*s_it;
           
-          if (modified.find (s.original_lhs) != modified.end())
-            {
-              replace_expr (s.lhs, s.rhs, predicate);
-            }
+          if(modified.find (s.original_lhs_object) != modified.end())
+          {
+            replace_expr (s.ssa_lhs, s.ssa_rhs, predicate);
+          }
         }
   
       simplify(predicate, ns);
