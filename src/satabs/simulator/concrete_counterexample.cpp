@@ -48,18 +48,8 @@ void show_counterexample(
   const concrete_counterexamplet &counterexample)
 {
   namespacet ns(context);
-  pretty_namest pretty_names;
-
-  {
-    pretty_namest::symbolst pretty_symbols;
-
-    forall_symbols(it, context.symbols)
-      pretty_symbols.insert(it->first);
-
-    pretty_names.get_pretty_names(pretty_symbols, ns);
-  }
   
-  show_goto_trace(out, context, pretty_names, counterexample.goto_trace);
+  show_goto_trace(out, context, counterexample.goto_trace);
 
   #if 0
   unsigned cycle=0;

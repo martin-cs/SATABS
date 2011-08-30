@@ -167,9 +167,8 @@ int cmdline_optionst::doit()
       else
       {
         message.result("Counterexample:");
-        pretty_namest pretty_names;
         show_goto_trace(std::cout, concrete_model.ns,
-                        pretty_names, satabs_safety_checker.error_trace);
+                        satabs_safety_checker.error_trace);
         message.result("VERIFICATION FAILED");
       }
 
