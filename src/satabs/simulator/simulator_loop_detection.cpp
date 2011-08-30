@@ -306,6 +306,7 @@ void simulator_loop_detectiont::build_loop_recurrence(
     to_symbol_expr(parameter_expr),
     to_symbol_expr(parameter_expr),
     to_symbol_expr(parameter_expr),
+    to_symbol_expr(parameter_expr),
     tmp,
     loop_begin.state.source,
     symex_targett::STATE);
