@@ -325,6 +325,7 @@ bool simulator_symext::check_prefix_equation(
         build_goto_trace(
           prefix.equation,
           satcheck,
+          concrete_model.ns,
           concrete_counterexample.goto_trace);
 
         return false;
@@ -401,6 +402,7 @@ bool simulator_symext::check_full_trace(
     build_goto_trace(
       prefix.equation,
       satcheck,
+      concrete_model.ns,
       concrete_counterexample.goto_trace);
 
     return false;

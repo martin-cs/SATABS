@@ -111,7 +111,9 @@ bool simulator_loop_detectiont::check_phase_I_equation(
       
       build_goto_trace(
         equation,
-        satcheck, phase_I_counterexample.goto_trace);
+        satcheck,
+        concrete_model.ns,
+        phase_I_counterexample.goto_trace);
       
       return false;
     }
