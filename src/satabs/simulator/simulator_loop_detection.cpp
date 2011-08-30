@@ -728,7 +728,7 @@ void simulator_loop_detectiont::unwind_counterexample(
     {
       if(s_it->lhs_object==l_it->parameter)
       {
-        assert(!to_integer(s_it->value, l_it->parameter_value));
+        assert(!to_integer(s_it->lhs_object_value, l_it->parameter_value));
         found=true;
         break;
       }
