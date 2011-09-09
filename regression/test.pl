@@ -131,9 +131,16 @@ sub dirs() {
   return @list;
 }
 
-sub usage() {
-  print << "EOF";
-test.pl -- run a series of regression tests
+sub main::VERSION_MESSAGE($$$$) {
+  my ($fh, $getopt, $vers, $opts) = @_;
+  print {$fh} << "EOF";
+test.pl version $vers -- run a series of regression tests
+EOF
+}
+
+sub main::HELP_MESSAGE($$$$) {
+  my ($fh, $getopt, $vers, $opts) = @_;
+  print {$fh} << "EOF";
 
 Usage: test.pl -c CMD [OPTIONS] [DIRECTORIES ...]
   where OPTIONS are one or more options as listed below; one or more directories
@@ -142,10 +149,10 @@ Usage: test.pl -c CMD [OPTIONS] [DIRECTORIES ...]
 
   -c CMD     run tests on CMD - required option
   -h         show this help and exit
-  -C         core: run all tests of level 1 (default if none of C/T/F/K are given)
-  -T         thorough: run expensive tests (level 2)
-  -F         future: run checks for future features (level 4)
-  -K         known: run tests associated with known bugs (level 8)
+  -C         core: run all essential tests (default if none of C/T/F/K are given)
+  -T         thorough: run expensive tests
+  -F         future: run checks for future features
+  -K         known: run tests associated with known bugs
 
 
 test.pl expects a test.desc file in each subdirectory. The file test.desc
@@ -173,12 +180,12 @@ EOF
 }
 
 use Getopt::Std;
-$main::VERSION = 0;
+$main::VERSION = 0.1;
 $Getopt::Std::STANDARD_HELP_VERSION = 1;
 our ($opt_c, $opt_h, $opt_C, $opt_T, $opt_F, $opt_K); # the variables for getopt
-getopts('c:hCTFK') or usage;
-$opt_c or usage;
-$opt_h and usage;
+getopts('c:hCTFK') or &main::HELP_MESSAGE(\*STDOUT, "", $main::VERSION, "");
+$opt_c or &main::HELP_MESSAGE(\*STDOUT, "", $main::VERSION, "");
+$opt_h and &main::HELP_MESSAGE(\*STDOUT, "", $main::VERSION, "");
 my $t_level = 0;
 $t_level += 2 if($opt_T);
 $t_level += 4 if($opt_F);
