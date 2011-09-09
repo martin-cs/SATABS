@@ -1,0 +1,7 @@
+CORE
+main.c
+--full-inlining --concurrency --abstractor cartesian --max-threads 1
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
