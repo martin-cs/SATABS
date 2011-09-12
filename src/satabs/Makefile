@@ -62,7 +62,6 @@ OBJ = $(SRC:.cpp=$(OBJEXT)) \
       ../ansi-c/ansi-c$(LIBEXT) \
       ../big-int/bigint$(OBJEXT) \
       ../goto-symex/goto-symex$(LIBEXT) \
-      ../intrep/intrep$(LIBEXT) \
       ../solvers/solvers$(LIBEXT) \
       ../smvlang/smvlang$(LIBEXT) \
       ../bplang/bplang$(LIBEXT) \
@@ -90,41 +89,32 @@ endif
 
 INCLUDES= -I .. -I ../util
 
-ifdef MODULE_PROVER
+ifneq ($(wildcard ../prover/Makefile),)
   CXXFLAGS += -DHAVE_PROVER
   OBJ += ../prover/prover$(LIBEXT)
   SRC += abstractor/predicate_image_prover.cpp
 endif
 
-ifdef MODULE_IPP
+ifneq ($(wildcard ../ipp/Makefile),)
   CXXFLAGS += -DHAVE_IPP
   OBJ += ../ipp/ipp$(LIBEXT)
   SRC += refiner/refiner_ipp.cpp simulator/simulator_ipp.cpp
 endif
 
-ifdef MODULE_SATQE
+ifneq ($(wildcard ../satqe/Makefile),)
   CXXFLAGS += -DHAVE_SATQE
   SRC += abstractor/predicate_image_satqe.cpp
   OBJ += ../satqe/satqe.a
 endif
 
-ifdef MODULE_CPP
+ifneq ($(wildcard ../cpp/Makefile),)
   OBJ += ../cpp/cpp$(LIBEXT)
   CXXFLAGS += -DHAVE_CPP
 endif
 
-ifdef MODULE_SPECC
+ifneq ($(wildcard ../specc/Makefile),)
   OBJ += ../specc/specc$(LIBEXT)
   CXXFLAGS += -DHAVE_SPECC
-endif
-
-ifdef MODULE_PHP
-  OBJ += ../php/php$(LIBEXT)
-  CXXFLAGS += -DHAVE_PHP
-endif
-
-ifdef MODULE_QBF_CORE
-  CXXFLAGS += -DQBF_CORE
 endif
 
 ###############################################################################
