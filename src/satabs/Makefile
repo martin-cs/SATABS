@@ -89,23 +89,23 @@ endif
 
 INCLUDES= -I .. -I ../util
 
-ifneq ($(wildcard ../prover/Makefile),)
-  CXXFLAGS += -DHAVE_PROVER
-  OBJ += ../prover/prover$(LIBEXT)
-  SRC += abstractor/predicate_image_prover.cpp
-endif
+#ifneq ($(wildcard ../prover/Makefile),)
+#  CXXFLAGS += -DHAVE_PROVER
+#  OBJ += ../prover/prover$(LIBEXT)
+#  SRC += abstractor/predicate_image_prover.cpp
+#endif
 
-ifneq ($(wildcard ../ipp/Makefile),)
-  CXXFLAGS += -DHAVE_IPP
-  OBJ += ../ipp/ipp$(LIBEXT)
-  SRC += refiner/refiner_ipp.cpp simulator/simulator_ipp.cpp
-endif
+#ifneq ($(wildcard ../ipp/Makefile),)
+#  CXXFLAGS += -DHAVE_IPP
+#  OBJ += ../ipp/ipp$(LIBEXT)
+#  SRC += refiner/refiner_ipp.cpp simulator/simulator_ipp.cpp
+#endif
 
-ifneq ($(wildcard ../satqe/Makefile),)
-  CXXFLAGS += -DHAVE_SATQE
-  SRC += abstractor/predicate_image_satqe.cpp
-  OBJ += ../satqe/satqe.a
-endif
+#ifneq ($(wildcard ../satqe/Makefile),)
+#  CXXFLAGS += -DHAVE_SATQE
+#  SRC += abstractor/predicate_image_satqe.cpp
+#  OBJ += ../satqe/satqe.a
+#endif
 
 ifneq ($(wildcard ../cpp/Makefile),)
   OBJ += ../cpp/cpp$(LIBEXT)
