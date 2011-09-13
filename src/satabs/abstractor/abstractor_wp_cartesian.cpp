@@ -298,9 +298,7 @@ std::set<abstractor_wp_cartesiant::cubet> abstractor_wp_cartesiant::compute_larg
 
 		for(unsigned int i = 0; i < predicates.size(); i++)
 		{
-			if(!(predicate_locations_intersects_cube_locations(predicates[i], current_cube, program_location)
-					||
-					locations_intersect(phi, predicates[i], program_location, pointer_info, concrete_model.ns)))
+			if(!(predicate_locations_intersects_cube_locations(predicates[i], current_cube, program_location)))
 			{
 				// No point extending the cube with a predicate that shares locations - it will not
 				// tell us anything stronger (unless it makes the cube unsatisfiable)
