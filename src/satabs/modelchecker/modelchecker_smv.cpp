@@ -328,11 +328,13 @@ void modelchecker_smvt::read_counterexample(
       std::string variable=original_variable;
 
       unsigned thread_nr=0;
+      bool thread_local=false;
 
       if(variable.empty())
         throw "failed to get variable name";
       else if(variable[0]=='t') // checked for emptyness above
       {
+        thread_local=true;
         thread_nr=atoi(variable.c_str()+1);
 
         std::string::size_type q=original_variable.find('.');
@@ -363,10 +365,18 @@ void modelchecker_smvt::read_counterexample(
           throw "invalid variable in abstract counterexample: "+
             variable;
 
-        abstract_stept::thread_to_predicate_valuest::iterator it2 =
-  			  abstract_state.thread_states.insert(
-  					  std::make_pair(thread_nr, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
-        it2->second[nr] = atoi(value.c_str());
+        for(unsigned tc=0; tc < threads.size(); ++tc)
+        {
+          if(thread_local &&
+              !abstract_model.variables[nr].is_shared_global() &&
+              tc!=thread_nr)
+            continue;
+
+          abstract_stept::thread_to_predicate_valuest::iterator it2 =
+            abstract_state.thread_states.insert(
+                std::make_pair(tc, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
+          it2->second[nr] = atoi(value.c_str());
+        }
         data_set=true;
       }
       else if(has_prefix(variable, "guard"))
@@ -497,11 +507,13 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
           variable.erase(0, 1);
 
         unsigned thread_nr=0;
+        bool thread_local=false;
 
         if(variable.empty())
           throw "failed to get variable name";
         else if(variable[0]=='t') // checked for emptyness above
         {
+          thread_local=true;
           thread_nr=atoi(variable.c_str()+1);
 
           std::string::size_type q=original_variable.find('.');
@@ -529,11 +541,18 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
             throw "invalid variable in abstract counterexample: "+
               variable;
 
-          abstract_stept::thread_to_predicate_valuest::iterator it2 =
-    			  abstract_state.thread_states.insert(
-    					  std::make_pair(thread_nr, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
-          it2->second[nr] = atoi(value.c_str());
+          for(unsigned tc=0; tc < threads.size(); ++tc)
+          {
+            if(thread_local &&
+                !abstract_model.variables[nr].is_shared_global() &&
+                tc!=thread_nr)
+              continue;
 
+            abstract_stept::thread_to_predicate_valuest::iterator it2 =
+              abstract_state.thread_states.insert(
+                  std::make_pair(tc, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
+            it2->second[nr] = atoi(value.c_str());
+          }
         }
         else if(has_prefix(variable, "guard"))
         {

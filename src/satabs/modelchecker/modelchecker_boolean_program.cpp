@@ -144,6 +144,8 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
   abstract_modelt &abstract_model,
   abstract_counterexamplet &counterexample)
 {
+  unsigned thread_count=1;
+
   for(std::list<std::string>::const_iterator
       it=file.begin();
       it!=file.end();
@@ -169,6 +171,23 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
       // parse      
       read_counterexample_boppo_boom(
         std::string(line, 6, std::string::npos), assignments, labels);
+      
+      for(std::list<std::string>::const_iterator
+          l_it=labels.begin();
+          l_it!=labels.end();
+          l_it++)
+      {
+        if(std::string(*l_it, 0, 2)=="PC")
+        {
+          unsigned PC=atoi(l_it->c_str()+2);
+          assert(PC<PC_map.size());
+          abstract_state.pc=PC_map[PC];
+          abstract_state.label_nr=PC;
+          abstract_state.has_pc=true;
+        }
+      }
+
+      if(!abstract_state.has_pc) continue;
       
       for(std::list<std::pair<std::string, std::string> >::const_iterator
           a_it=assignments.begin();
@@ -217,35 +236,32 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
                 variable+"'";
       }
 
+      assert(abstract_state.thread_states.empty() ||
+          abstract_state.thread_states.size() == thread_count ||
+          abstract_state.thread_states.size() == max_threads);
+
       // Plug the shared state into every thread state
-      for(abstract_stept::thread_to_predicate_valuest::iterator it = abstract_state.thread_states.begin(); it != abstract_state.thread_states.end(); it++)
+      for(unsigned tc=0; tc < thread_count &&
+          (max_threads == 0 || tc < max_threads); ++tc)
       {
+        abstract_stept::thread_to_predicate_valuest::iterator it2 =
+          abstract_state.thread_states.insert(
+              std::make_pair(tc, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
     	  for(unsigned i = 0; i < shared_predicate_values.size(); i++)
     	  {
     		  if(abstract_model.variables[i].is_shared_global())
     		  {
-    			  it->second[i] = shared_predicate_values[i];
+    			  it2->second[i] = shared_predicate_values[i];
     		  }
     	  }
       }
 
-      for(std::list<std::string>::const_iterator
-          l_it=labels.begin();
-          l_it!=labels.end();
-          l_it++)
-      {
-        if(std::string(*l_it, 0, 2)=="PC")
-        {
-          unsigned PC=atoi(l_it->c_str()+2);
-          assert(PC<PC_map.size());
-          abstract_state.pc=PC_map[PC];
-          abstract_state.label_nr=PC;
-          abstract_state.has_pc=true;
-        }
-      }
-      
-      if(abstract_state.has_pc)
-        counterexample.steps.push_back(abstract_state);
+      assert(abstract_state.thread_states.size() == thread_count ||
+          abstract_state.thread_states.size() == max_threads);
+
+      if(abstract_state.pc->is_start_thread()) ++thread_count;
+
+      counterexample.steps.push_back(abstract_state);
     }
     else if(line=="LOOP [")
     {
