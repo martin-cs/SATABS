@@ -30,11 +30,15 @@ WORDT_Ptr index_malloc(){
 
 	__CPROVER_atomic_begin();
 	if(next_alloc_idx+2-1 > MEMSIZE){
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(next_alloc_idx+2-1 > MEMSIZE);
+#endif
 		__CPROVER_atomic_end();
 		curr_alloc_idx = WORDT_NULL;
 	}else{
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(!(next_alloc_idx+2-1 > MEMSIZE));
+#endif
 		curr_alloc_idx = next_alloc_idx;
 		next_alloc_idx += 2;
 		__CPROVER_atomic_end();
@@ -56,10 +60,14 @@ int push(E d) {
 
 	newTop = index_malloc();
 	if(newTop == WORDT_NULL){
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(newTop == WORDT_NULL);
+#endif
 		return 0;
 	}else{
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(!(newTop == WORDT_NULL));
+#endif
 		INDIR(newTop,0) = d;
 		while (1) {
 			oldTop = s.top;
@@ -67,12 +75,16 @@ int push(E d) {
 			//inlining of cas
 			__CPROVER_atomic_begin();
 			if (s.top == oldTop) {
+#ifdef USE_BRANCHING_ASSUMES
 				__CPROVER_assume(s.top == oldTop);
+#endif
 				s.top = newTop; 
 				__CPROVER_atomic_end();
 				return 1;
 			}else{
+#ifdef USE_BRANCHING_ASSUMES
 				__CPROVER_assume(!(s.top == oldTop));
+#endif
 				__CPROVER_atomic_end();
 			}
 		}

@@ -14,10 +14,14 @@ void findMax(int offset){
 		__CPROVER_atomic_begin();
 		{
 			if(e > max) {
+#ifdef USE_BRANCHING_ASSUMES
 				__CPROVER_assume(e > max);
+#endif
 				max = e;
 			}else{
+#ifdef USE_BRANCHING_ASSUMES
 				__CPROVER_assume(!(e > max));
+#endif
 			}
 		}
 		__CPROVER_atomic_end();

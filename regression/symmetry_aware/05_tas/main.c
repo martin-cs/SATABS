@@ -23,13 +23,17 @@ void acquire_lock(){
 	delay = 1;
 	cond = TestAndSet();
 	while(cond == locked){
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(cond == locked);
+#endif
 		pause(delay);
 		if(delay*2 > delay) 
 			delay *= 2;
 		cond = TestAndSet();		
 	}
+#ifdef USE_BRANCHING_ASSUMES
 	__CPROVER_assume(!(cond == locked));
+#endif
 	assert(cond != lock);
 }
 

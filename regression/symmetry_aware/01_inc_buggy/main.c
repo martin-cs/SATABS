@@ -1,8 +1,6 @@
 //http://www.ibm.com/developerworks/java/library/j-jtp04186/index.html
 //A counter using locks
 
-#include "../basics.h"
-
 volatile unsigned value;
 
 unsigned NonblockingCounter__increment() {
@@ -13,22 +11,30 @@ unsigned NonblockingCounter__increment() {
 #endif
 
 	if(value == 0u-1) {
-		assume(value == 0u-1);
+#ifdef USE_BRANCHING_ASSUMES
+		__CPROVER_assume(value == 0u-1);
+#endif
 
 		return 0;
 	}else{
-		assume(!(value == 0u-1));
+#ifdef USE_BRANCHING_ASSUMES
+		__CPROVER_assume(!(value == 0u-1));
+#endif
 
 		v = value;
 		if(v == value){
-      assume(v == value);
+#ifdef USE_BRANCHING_ASSUMES
+      __CPROVER_assume(v == value);
+#endif
       value = v + 1;
     }else{
-      assume(!(v == value));
+#ifdef USE_BRANCHING_ASSUMES
+      __CPROVER_assume(!(v == value));
+#endif
       value = 0;
     }
 
-		unsafe_assert(value > v); 
+		__CPROVER_assert(value > v,"error"); 
 
 		return v + 1;
 	}

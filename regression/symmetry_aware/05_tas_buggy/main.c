@@ -39,13 +39,17 @@ void acquire_lock(){
 	delay = 1;
 	cond = TestAndSet();
 	while(cond == locked){
+#ifdef USE_BRANCHING_ASSUMES
 		assume(cond == locked);
+#endif
 		pause(delay);
 		if(delay*2 > delay) 
 			delay *= 2;
 		cond = TestAndSet();		
 	}
+#ifdef USE_BRANCHING_ASSUMES
 	assume(!(cond == locked));
+#endif
 	unsafe_assert(cond != lock);
 	assume(cond != lock);
 }

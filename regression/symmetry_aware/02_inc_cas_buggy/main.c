@@ -1,8 +1,6 @@
 //http://www.ibm.com/developerworks/java/library/j-jtp04186/index.html
 //Listing 2. A nonblocking counter using CAS
 
-#include "../basics.h"
-
 volatile unsigned value;
 
 unsigned NonblockingCounter__increment() {
@@ -12,29 +10,39 @@ unsigned NonblockingCounter__increment() {
 		v = value;
 
 		if(v != value) {
-			assume(v != value);
+#ifdef USE_BRANCHING_ASSUMES
+			__CPROVER_assume(v != value);
+#endif
 			return 0; 
 		}else{
-			assume(!(v != value));
+#ifdef USE_BRANCHING_ASSUMES
+			__CPROVER_assume(!(v != value));
+#endif
 		}
 
 		vn = v + 1;
 
 		__CPROVER_atomic_begin();
 		if (value == v) {
-			assume(value == v);
+#ifdef USE_BRANCHING_ASSUMES
+			__CPROVER_assume(value == v);
+#endif
 			value = vn; 
 			__CPROVER_atomic_end();
 			casret = 1; 
 		} else {
-			assume(!(value == v));
+#ifdef USE_BRANCHING_ASSUMES
+			__CPROVER_assume(!(value == v));
+#endif
 			__CPROVER_atomic_end();
 			casret = 0; 
 		}
 	}
 	while (casret==0);
-	assume(!(casret==0));
-	safe_assert(value > v);
+#ifdef USE_BRANCHING_ASSUMES
+	__CPROVER_assume(!(casret==0));
+#endif
+	__CPROVER_assert(value > v,"error"); //safe
 
 	return vn;
 }
@@ -42,7 +50,7 @@ unsigned NonblockingCounter__increment() {
 void caller(){
 	int i;
 	i = NonblockingCounter__increment();
-	unsafe_assert(i != 0);
+	__CPROVER_assert(i != 0,"error"); //unsafe
 }
 
 int main(){

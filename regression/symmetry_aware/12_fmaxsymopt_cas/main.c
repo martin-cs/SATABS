@@ -5,17 +5,23 @@ volatile int max = 0x80000000;
 int storage[WORKPERTHREAD*THREADSMAX];
 
 int cas_max(int e, int u){
+#ifdef HPRED
 	__CPROVER_parameter_predicates();
+#endif
 	int ret = -1;
 
 	__CPROVER_atomic_begin();
 	if (max == e) {
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(max == e);
+#endif
 		max = u; 
 		__CPROVER_atomic_end();
 		ret = 1;
 	} else {
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(!(max == e));
+#endif
 		__CPROVER_atomic_end();
 		ret = 0; 
 	}
@@ -34,10 +40,14 @@ void findMax(int offset){
 		e = storage[i];
 
 		if(e > my_max) {
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(e > my_max);
+#endif
 			my_max = e;
 		}else{
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(!(e > my_max));
+#endif
 		}
 		assert(e <= my_max);
 	}
@@ -45,16 +55,24 @@ void findMax(int offset){
 	while(1){
 		c = max;
 		if(my_max > c){
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(my_max > c);
+#endif
 			cret = cas_max(c, my_max);
 			if(cret){
+#ifdef USE_BRANCHING_ASSUMES
 				__CPROVER_assume(cret);
+#endif
 				break;
 			}else{
+#ifdef USE_BRANCHING_ASSUMES
 				__CPROVER_assume(!(cret));
+#endif
 			}
 		}else{
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(!(my_max > c));
+#endif
 			break;
 		}
 	}

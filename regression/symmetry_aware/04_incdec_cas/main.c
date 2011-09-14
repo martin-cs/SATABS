@@ -13,23 +13,31 @@ unsigned NonblockingCounter__increment__01() {
 		inc__v = value;
 
 		if(inc__v == 0u-1) {
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(inc__v == 0u-1);
+#endif
 			return 0; /*increment failed, return min*/
 		}else{
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(!(inc__v == 0u-1));
+#endif
 		}
 
 		inc__vn = inc__v + 1;
 
 		__CPROVER_atomic_begin();
 		if (value == inc__v) {
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(value == inc__v);
+#endif
 			value = inc__vn;
 			inc_flag = 1; /*set flag*/
 			__CPROVER_atomic_end();
 			inc__casret = 1; 
 		} else {
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(!(value == inc__v));
+#endif
 			__CPROVER_atomic_end();
 			inc__casret = 0; 
 		}
@@ -49,29 +57,39 @@ unsigned NonblockingCounter__decrement__01() {
 		dec__v = value;
 
 		if(dec__v == 0) {
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(dec__v == 0);
+#endif
 			return 0u-1; /*decrement failed, return max*/
 		}else{
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(!(dec__v == 0));
+#endif
 		}
 
 		dec__vn = dec__v - 1;
 
 		__CPROVER_atomic_begin();
 		if (value == dec__v) {
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(value == dec__v);
+#endif
 			value = dec__vn; 
 			dec_flag = 1; /*set flag*/
 			__CPROVER_atomic_end();
 			dec__casret = 1; 
 		} else {
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(!(value == dec__v));
+#endif
 			__CPROVER_atomic_end();
 			dec__casret = 0; 
 		}
 	}
 	while (dec__casret==0);
+#ifdef USE_BRANCHING_ASSUMES
 	__CPROVER_assume(!(dec__casret==0));
+#endif
 
 	assert(inc_flag || value < dec__v);
 	return dec__vn;

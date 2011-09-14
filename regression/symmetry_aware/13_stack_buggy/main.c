@@ -1,8 +1,6 @@
 //original file: EBStack.java
 //amino-cbbs\trunk\amino\java\src\main\java\org\amino\ds\lockfree
 //push only
-#include "../basics.h"
-
 #define WORDT_NULL 0
 typedef int WORDT;
 typedef int SIZET;
@@ -15,11 +13,7 @@ struct Node {
 	volatile WORDT_Ptr next;
 };
 
-#if (TPRED >= 1)
-#define APRED 1
-#endif
-#define MAXNODES 3
-#define MEMSIZE (2*MAXNODES+1) //0 for "NULL"
+#define MEMSIZE (2*32+1) //0 for "NULL"
 WORDT memory[MEMSIZE];
 #define INDIR(cell,idx) memory[cell+idx]
 
@@ -34,20 +28,21 @@ struct EBStack s;
 WORDT_Ptr index_malloc(){
 	SIZET curr_alloc_idx = -1;
 
-#if (APRED >= 1)
-	__CPROVER_predicate(curr_alloc_idx == 0);
-#endif
 
-	atomic_begin();
+	__CPROVER_atomic_begin();
 	if(next_alloc_idx+2-1 > MEMSIZE){
-		assume(next_alloc_idx+2-1 > MEMSIZE);
-		atomic_end();
+#ifdef USE_BRANCHING_ASSUMES
+		__CPROVER_assume(next_alloc_idx+2-1 > MEMSIZE);
+#endif
+		__CPROVER_atomic_end();
 		curr_alloc_idx = WORDT_NULL;
 	}else{
-		assume(!(next_alloc_idx+2-1 > MEMSIZE));
+#ifdef USE_BRANCHING_ASSUMES
+		__CPROVER_assume(!(next_alloc_idx+2-1 > MEMSIZE));
+#endif
 		curr_alloc_idx = next_alloc_idx;
 		next_alloc_idx += 2;
-		atomic_end();
+		__CPROVER_atomic_end();
 	}
 
 	return curr_alloc_idx;
@@ -64,24 +59,23 @@ int isEmpty() {
 int push(E d) {
 	WORDT_Ptr oldTop = -1, newTop = -1;
 
-#if (APRED >= 1)
-	__CPROVER_predicate(s.top == 0);
-	__CPROVER_predicate(newTop == 0);
-#endif
-
 	newTop = index_malloc();
 	if(newTop == WORDT_NULL){
-		assume(newTop == WORDT_NULL);
+#ifdef USE_BRANCHING_ASSUMES
+		__CPROVER_assume(newTop == WORDT_NULL);
+#endif
 		return 0;
 	}else{
-		assume(!(newTop == WORDT_NULL));
+#ifdef USE_BRANCHING_ASSUMES
+		__CPROVER_assume(!(newTop == WORDT_NULL));
+#endif
 		INDIR(newTop,0) = d;
 
-		//atomic_begin();
+		//__CPROVER_atomic_begin();
 		oldTop = s.top;
 		INDIR(newTop,1) = oldTop;
 		s.top = newTop; 
-		//atomic_end();
+		//__CPROVER_atomic_end();
 		return 1;
 	}
 }
@@ -96,7 +90,7 @@ void thread_main(){
 	while(1){
 		r = push(arg);
 		//assert(!r || !isEmpty());
-		unsafe_assert(!isEmpty());
+		assert(!isEmpty());
 	}
 }
 

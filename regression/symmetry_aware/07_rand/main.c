@@ -3,12 +3,16 @@
 
 int calculateNext(int s2){ 
 	int calculateNext_return;
+#ifdef HPRED
 	__CPROVER_parameter_predicates();
+#endif
 
 	do{
 		calculateNext_return = rand();
 	}while(calculateNext_return == s2 || calculateNext_return == 0);
+#ifdef USE_BRANCHING_ASSUMES
 	__CPROVER_assume(!(calculateNext_return == s2 || calculateNext_return == 0));
+#endif
 
 	return calculateNext_return;
 }
@@ -18,7 +22,9 @@ volatile int seed;
 int PseudoRandomUsingAtomic_nextInt(int n) {
 	int read, nexts, nextInt_return;
 
+#ifdef HPRED
 	__CPROVER_predicate(n==10);
+#endif
 	__CPROVER_atomic_begin();
 	read = seed;
 	nexts = calculateNext(read);

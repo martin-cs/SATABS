@@ -13,10 +13,14 @@ void findMax(int offset){
 		e = storage[i];
 
 		if(e > my_max) {
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(e > my_max);
+#endif
 			my_max = e;
 		}else{
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(!(e > my_max));
+#endif
 		}
 		assert(e <= my_max);
 	}
@@ -24,10 +28,14 @@ void findMax(int offset){
 	__CPROVER_atomic_begin();
 	{
 		if(my_max > max) {
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(my_max > max);
+#endif
 			max = my_max;
 		}else{
+#ifdef USE_BRANCHING_ASSUMES
 			__CPROVER_assume(!(my_max > max));
+#endif
 		}
 	}
 	__CPROVER_atomic_end();

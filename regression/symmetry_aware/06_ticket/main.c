@@ -14,14 +14,20 @@ struct lock_t{
 unsigned fetch_and_increment__next_ticket(){
 	unsigned value;
 
+#ifdef HPRED
 	__CPROVER_return_predicates();
+#endif
 	__CPROVER_atomic_begin();
 	if(NEXT(lock.next_ticket) == lock.now_serving){ 
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(NEXT(lock.next_ticket) == lock.now_serving);
+#endif
 		__CPROVER_atomic_end();
 		value = FAILED;
 	}else{
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(!(NEXT(lock.next_ticket) == lock.now_serving));
+#endif
 		value = lock.next_ticket;
 		//lock.next_ticket++; 
 		lock.next_ticket = NEXT(lock.next_ticket);
@@ -38,19 +44,27 @@ void acquire_lock(){
 	//returns old value; arithmetic overflow is harmless (Alex: it is not if we have 2^64 threads)
 
 	if(my_ticket == FAILED){
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(my_ticket == FAILED);
+#endif
 		__CPROVER_assume(0);
 	}else{
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(!(my_ticket == FAILED));
+#endif
 		while(1){
 			pause(my_ticket - lock.now_serving);
 			// consume this many units of time
 			// on most machines, subtraction works correctly despite overflow
 			if(lock.now_serving == my_ticket){
+#ifdef USE_BRANCHING_ASSUMES
 				__CPROVER_assume(lock.now_serving == my_ticket);
+#endif
 				break;
 			}else{
+#ifdef USE_BRANCHING_ASSUMES
 				__CPROVER_assume(!(lock.now_serving == my_ticket));
+#endif
 			}
 		}
 	}
@@ -72,6 +86,7 @@ void TicketLock__main(){
 }
 
 int main(){
+#ifdef HPRED
 	__CPROVER_predicate(lock.next_ticket == 0);
 	__CPROVER_predicate(lock.next_ticket == 1);
 	__CPROVER_predicate(lock.next_ticket == 2);
@@ -80,6 +95,7 @@ int main(){
 	__CPROVER_predicate(lock.now_serving == 1);
 	__CPROVER_predicate(lock.now_serving == 2);
 	__CPROVER_predicate(lock.now_serving == 3);
+#endif
 
 	while(1) { __CPROVER_ASYNC_01: TicketLock__main(); }
 }

@@ -7,12 +7,16 @@ unsigned NonblockingCounter__increment() {
 
 	__CPROVER_atomic_begin();
 	if(value == 0u-1) {
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(value == 0u-1);
+#endif
 		__CPROVER_atomic_end();
 
 		return 0;
 	}else{
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(!(value == 0u-1));
+#endif
 
 		v = value;
 		value = v + 1;

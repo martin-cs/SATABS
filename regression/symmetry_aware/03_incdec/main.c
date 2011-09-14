@@ -11,12 +11,16 @@ unsigned NonblockingCounter__increment__01() {
 
 	__CPROVER_atomic_begin();
 	if(value == 0u-1) {
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(value == 0u-1);
+#endif
 		__CPROVER_atomic_end();
 
 		return 0;
 	}else{
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(!(value == 0u-1));
+#endif
 
 		inc_v = value;
 		value = inc_v + 1;
@@ -34,12 +38,16 @@ unsigned NonblockingCounter__decrement__01() {
 
 	__CPROVER_atomic_begin();
 	if(value == 0) {
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(value == 0);
+#endif
 		__CPROVER_atomic_end();
 
 		return 0u-1; /*decrement failed, return max*/
 	}else{
+#ifdef USE_BRANCHING_ASSUMES
 		__CPROVER_assume(!(value == 0));
+#endif
 
 		dec_v = value;
 		value = dec_v - 1;
