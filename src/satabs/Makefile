@@ -120,7 +120,7 @@ endif
 ###############################################################################
 
 satabs$(EXEEXT): $(OBJ)
-	$(CXX) $(LINKFLAGS) -o $@ $(OBJ) $(LIBS) 
+	$(LINKBIN)
 
 clean:
-	rm -f $(SRC:.cpp=$(OBJEXT)) satabs$(EXEEXT)
+	$(RM) $(SRC:.cpp=.d) $(SRC:.cpp=$(OBJEXT)) satabs$(EXEEXT)
