@@ -58,8 +58,7 @@ SRC = satabs.cpp cmdline_options.cpp \
       simulator/recurrence_solver.cpp \
       simulator/path_slicer.cpp
 
-OBJ = $(SRC:.cpp=$(OBJEXT)) \
-      ../ansi-c/ansi-c$(LIBEXT) \
+OBJ += ../ansi-c/ansi-c$(LIBEXT) \
       ../big-int/bigint$(OBJEXT) \
       ../goto-symex/goto-symex$(LIBEXT) \
       ../solvers/solvers$(LIBEXT) \
@@ -77,44 +76,46 @@ LIBS =
 include ../config.inc
 include ../common
 
+CLEANFILES = satabs$(EXEEXT)
+
 all: satabs$(EXEEXT)
 
 ifneq ($(SQUOLEM2),)
-CXXFLAGS += -DHAVE_QBF_CORE
+CP_CXXFLAGS += -DHAVE_QBF_CORE
 else
 ifneq ($(CUDD),)
-CXXFLAGS += -DHAVE_QBF_CORE
+CP_CXXFLAGS += -DHAVE_QBF_CORE
 endif
 endif
 
 INCLUDES= -I .. -I ../util
 
 #ifneq ($(wildcard ../prover/Makefile),)
-#  CXXFLAGS += -DHAVE_PROVER
+#  CP_CXXFLAGS += -DHAVE_PROVER
 #  OBJ += ../prover/prover$(LIBEXT)
 #  SRC += abstractor/predicate_image_prover.cpp
 #endif
 
 #ifneq ($(wildcard ../ipp/Makefile),)
-#  CXXFLAGS += -DHAVE_IPP
+#  CP_CXXFLAGS += -DHAVE_IPP
 #  OBJ += ../ipp/ipp$(LIBEXT)
 #  SRC += refiner/refiner_ipp.cpp simulator/simulator_ipp.cpp
 #endif
 
 #ifneq ($(wildcard ../satqe/Makefile),)
-#  CXXFLAGS += -DHAVE_SATQE
+#  CP_CXXFLAGS += -DHAVE_SATQE
 #  SRC += abstractor/predicate_image_satqe.cpp
-#  OBJ += ../satqe/satqe.a
+#  OBJ += ../satqe/satqe$(LIBEXT)
 #endif
 
 ifneq ($(wildcard ../cpp/Makefile),)
   OBJ += ../cpp/cpp$(LIBEXT)
-  CXXFLAGS += -DHAVE_CPP
+  CP_CXXFLAGS += -DHAVE_CPP
 endif
 
 ifneq ($(wildcard ../specc/Makefile),)
   OBJ += ../specc/specc$(LIBEXT)
-  CXXFLAGS += -DHAVE_SPECC
+  CP_CXXFLAGS += -DHAVE_SPECC
 endif
 
 ###############################################################################
@@ -122,5 +123,3 @@ endif
 satabs$(EXEEXT): $(OBJ)
 	$(LINKBIN)
 
-clean:
-	$(RM) $(SRC:.cpp=.d) $(SRC:.cpp=$(OBJEXT)) satabs$(EXEEXT)
