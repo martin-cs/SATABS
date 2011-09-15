@@ -1,5 +1,5 @@
-SRC = satabs.cpp cmdline_options.cpp cegar_loop.cpp \
-      safety.cpp satabs_safety_checker.cpp \
+SRC = satabs.cpp cmdline_options.cpp \
+      satabs_safety_checker.cpp \
       \
       ../cbmc/xml_interface.cpp \
       \

@@ -20,7 +20,6 @@ Date: June 2003
 
 #include "cmdline_options.h"
 #include "satabs_safety_checker.h"
-#include "safety.h"
 #include "version.h"
 
 #include "modelchecker/select_modelchecker.h"
