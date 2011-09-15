@@ -969,8 +969,6 @@ bool modelchecker_boolean_programt::check(
     system(command.c_str());
   }
 
-  bool result;
-
   {
     std::ifstream out1(temp_boolean_program_out1.c_str()),
                   out2(temp_boolean_program_out2.c_str());
@@ -979,16 +977,15 @@ bool modelchecker_boolean_programt::check(
     {
     case BOPPO:
     case BOOM:
-      result=read_result_boppo_boom(
+      return read_result_boppo_boom(
         out1, out2, abstract_model, counterexample);
       break;
     
     default:
       assert(false);
+      return false;
     }
   }
-  
-  return result;
 }
 
 /*******************************************************************\
