@@ -983,9 +983,10 @@ bool modelchecker_boolean_programt::check(
     
     default:
       assert(false);
-      return false;
     }
   }
+
+  return false;
 }
 
 /*******************************************************************\
