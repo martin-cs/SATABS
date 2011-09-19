@@ -1,4 +1,5 @@
 #ifdef SATABS
+#define assume(e) __CPROVER_assume(e)
 #define assert(e) __CPROVER_assert(e,"error")
 #endif
 
@@ -10,6 +11,11 @@ void thr1() {
   int tmp;
   choosing1 = 1;
   tmp = number2 + 1;
+
+#ifdef SATABS
+  assume(tmp < 1); //alex: the properties only holds for natural integers
+#endif
+
   number1 = tmp;
   choosing1 = 0;
   while (choosing2 >= 1) {};
@@ -27,6 +33,11 @@ void thr2() {
   int tmp;
   choosing2 = 1;
   tmp = number1 + 1;
+
+#ifdef SATABS
+  assume(tmp < 1); //alex: the properties only holds for natural integers
+#endif
+
   number2 = tmp;
   choosing2 = 0;
   while (choosing1 >= 1) {};
