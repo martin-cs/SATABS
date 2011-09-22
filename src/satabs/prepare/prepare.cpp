@@ -24,7 +24,6 @@ Date: June 2003
 #include <goto-programs/slicer.h>
 #include <goto-programs/goto_convert_functions.h>
 #include <goto-programs/goto_function_pointers.h>
-#include <goto-programs/add_race_assertions.h>
 #include <goto-programs/read_goto_binary.h>
 #include <goto-programs/string_instrumentation.h>
 #include <goto-programs/string_abstraction.h>
@@ -341,19 +340,6 @@ int preparet::get_async_modules()
       // add pointer checks
       pointer_checks(
         goto_functions, context, options, value_set_analysis);
-    }
-
-    if(cmdline.isset("data-race-check"))
-    {
-      status("Adding Data Race Checks");
-
-      add_race_assertions(
-        value_set_analysis,
-        context,
-        goto_functions);
-
-      value_set_analysis.
-        update(goto_functions);
     }
   }
   
