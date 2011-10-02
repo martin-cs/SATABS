@@ -21,7 +21,7 @@ Date: June 2003
 #include <goto-programs/set_claims.h>
 #include <goto-programs/goto_check.h>
 #include "satabs_inline.h"
-#include <goto-programs/slicer.h>
+#include <goto-programs/reachability_slicer.h>
 #include <goto-programs/goto_convert_functions.h>
 #include <goto-programs/goto_function_pointers.h>
 #include <goto-programs/read_goto_binary.h>
@@ -376,9 +376,9 @@ int preparet::get_async_modules()
       goto_functions,
       cmdline.get_values("claim"));
       
-  // slice
+  // reachability slice?
   if(!cmdline.isset("no-slicing"))
-    slicer(goto_functions);
+    reachability_slicer(goto_functions);
 
   // show it?
 
