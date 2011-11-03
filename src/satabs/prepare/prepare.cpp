@@ -249,7 +249,7 @@ int preparet::get_async_modules()
       context, get_message_handler(), goto_functions);
 
   status("Removing function pointers");
-  remove_function_pointers(ns, goto_functions);
+  remove_function_pointers(ns, goto_functions, cmdline.isset("pointer-check"));
 
   status("Removing unused functions");
   remove_unused_functions(
