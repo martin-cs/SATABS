@@ -20,10 +20,9 @@ Date: June 2003
 #include <goto-programs/show_claims.h>
 #include <goto-programs/set_claims.h>
 #include <goto-programs/goto_check.h>
-#include "satabs_inline.h"
 #include <goto-programs/reachability_slicer.h>
 #include <goto-programs/goto_convert_functions.h>
-#include <goto-programs/goto_function_pointers.h>
+#include <goto-programs/remove_function_pointers.h>
 #include <goto-programs/read_goto_binary.h>
 #include <goto-programs/string_instrumentation.h>
 #include <goto-programs/string_abstraction.h>
@@ -45,6 +44,8 @@ Date: June 2003
 #include "prepare.h"
 #include "prepare_functions.h"
 #include "get_predicates.h"
+
+#include "satabs_inline.h"
 
 #define MAX_BLOCK_SIZE 1
 
