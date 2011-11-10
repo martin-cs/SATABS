@@ -338,7 +338,7 @@ bool transition_refinert::check_assignment_transition(
   // create SAT solver object
   satcheckt satcheck;
   bv_pointerst solver(concrete_model.ns, satcheck);
-  solver.unbounded_array=boolbvt::U_ALL;
+  solver.unbounded_array=boolbvt::U_NONE;
   
   // convert constraints
   for(std::list<exprt>::const_iterator
@@ -570,6 +570,7 @@ bool transition_refinert::check_guarded_transition(
   satcheckt satcheck;
   #endif
   bv_pointerst solver(concrete_model.ns, satcheck);
+  solver.unbounded_array=boolbvt::U_NONE;
 
   #ifdef DEBUG
   std::cout << "transition_refinert::check_guarded_transition 3" << std::endl;
