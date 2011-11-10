@@ -27,7 +27,11 @@ public:
 
   cmdline_optionst(int argc, const char **argv):
     parseoptions_baset("(v):(gui)(show-loops)"
-    "(16)(32)(64)(LP64)(ILP64)(LLP64)(ILP32)(LP32)" \
+    "(floatbv)(fixedbv)"
+    "(16)(32)(64)(LP64)(ILP64)(LLP64)(ILP32)(LP32)"
+    "(i386-linux)(i386-macos)(i386-win32)(win32)(winx64)"
+    "(ppc-macos)(unsigned-char)"
+    "(round-to-nearest)(round-to-plus-inf)(round-to-minus-inf)(round-to-zero)"
     "(show-final-program)(show-basic-blocks)(modelchecker):"
     "(show-dereferenced-program)(string-abstraction)"
     "(string-abstraction)(full-inlining)"
