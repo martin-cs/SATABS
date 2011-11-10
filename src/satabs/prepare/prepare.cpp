@@ -136,14 +136,6 @@ int preparet::doit()
       if(return_value_get_async_modules>=0)
         return return_value_get_async_modules;
     }
-      
-    // we no longer need any parse trees or language files
-    clear_parse();
-     
-    // finally add the library
-    status("Adding CPROVER library");      
-    link_to_library(
-      context, goto_functions, options, get_message_handler());
 
     if(cmdline.isset("show-claims"))
     {
@@ -230,6 +222,14 @@ int preparet::get_async_modules()
       goto_functions,
       get_message_handler());
   }
+    
+  // we no longer need any parse trees or language files
+  clear_parse();
+   
+  // finally add the library
+  status("Adding CPROVER library");      
+  link_to_library(
+    context, goto_functions, options, get_message_handler());
     
   if(cmdline.isset("show-goto-functions"))
   {
