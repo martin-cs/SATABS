@@ -1,6 +1,6 @@
 CORE
 main.c
--DSATABS --full-inlining --error-label ERROR
+--full-inlining --error-label ERROR
 ^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$

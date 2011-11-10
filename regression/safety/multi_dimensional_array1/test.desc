@@ -1,6 +1,6 @@
-KNOWNBUG
+CORE
 main.c
---iterations 3
+--iterations 10
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$

@@ -6,3 +6,6 @@ main.c
 ^VERIFICATION FAILED$
 --
 ^warning: ignoring
+--
+https://bugs.cs.ox.ac.uk/cprover/show_bug.cgi?id=116
+Use -DFIX to get the correct result.

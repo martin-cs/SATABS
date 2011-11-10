@@ -6,7 +6,7 @@
 
 char *state="I00";
 
-void my_thread()
+void * my_thread(void *)
 {
   // set state to NULL
   state=NULL;
@@ -20,6 +20,7 @@ int main (int argc, char **argv)
   sleep(1);
 
   // Possible null pointer and segmentation fault
+  assert(state != NULL);
   if(state[0]=='A')
     exit(1);
 

@@ -1,6 +1,6 @@
 CORE
 main.c
--DSATABS --full-inlining --concurrency --max-threads 2 --error-label ERROR
+--full-inlining --concurrency --max-threads 2 --error-label ERROR
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$

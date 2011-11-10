@@ -1,6 +1,6 @@
 KNOWNBUG
 main.c
---pointer-check
+--iterations 100 --pointer-check
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$

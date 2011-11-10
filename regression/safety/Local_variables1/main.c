@@ -1,6 +1,10 @@
 void f(_Bool flag)
 {
   int local;
+#ifdef FIX
+  int x;
+  local=x;
+#endif
   
   if(flag)
     assert(local==123); // this should fail
