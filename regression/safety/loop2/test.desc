@@ -1,4 +1,4 @@
-KNOWNBUG
+CORE
 main.c
 --iterations 40 --bounds-check
 ^EXIT=10$
