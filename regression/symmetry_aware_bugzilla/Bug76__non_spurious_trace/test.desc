@@ -1,0 +1,10 @@
+CORE
+main.c
+--modelchecker boom --concurrency --full-inlining --abstractor cartesian --max-cube-length 3 --max-threads 5
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring
+--
+https://bugs.cs.ox.ac.uk/cprover/show_bug.cgi?id=76

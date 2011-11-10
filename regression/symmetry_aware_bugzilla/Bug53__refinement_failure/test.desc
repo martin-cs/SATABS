@@ -1,0 +1,10 @@
+CORE
+TAS_backoff.c
+basics.c --full-inlining --concurrency -DSATABS --max-cube-length 5 --modelchecker boom -DSIMPL
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring
+--
+https://bugs.comlab.ox.ac.uk/cprover/show_bug.cgi?id=53

@@ -1,0 +1,10 @@
+KNOWNBUG
+TickeLock.c
+basics.c --iterations 10 -DSATABS --max-cube-length 2 --modelchecker boom --full-inlining --max-threads 2
+^EXIT=0$
+^SIGNAL=0$
+^VERIFICATION SUCCESSFUL$
+--
+^warning: ignoring
+--
+https://bugs.cs.ox.ac.uk/cprover/show_bug.cgi?id=56
