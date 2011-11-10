@@ -145,6 +145,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
   abstract_counterexamplet &counterexample)
 {
   unsigned thread_count=1;
+  unsigned threadbound=max_threads;
 
   for(std::list<std::string>::const_iterator
       it=file.begin();
@@ -153,7 +154,13 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
   {
     const std::string &line=*it;
   
-    if(std::string(line, 0, 6)=="TRACE ")
+    if(std::string(line, 0, 12)=="threadbound=")
+    {
+      std::cerr << "THREAD LIMIT line: " << line << std::endl;
+      threadbound=atoi(line.c_str()+12);
+      std::cerr << "THREAD LIMIT found: " << threadbound << std::endl;
+    }
+    else if(std::string(line, 0, 6)=="TRACE ")
     {
       abstract_statet abstract_state;
 
@@ -238,11 +245,10 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
 
       assert(abstract_state.thread_states.empty() ||
           abstract_state.thread_states.size() == thread_count ||
-          abstract_state.thread_states.size() == max_threads);
+          abstract_state.thread_states.size() == threadbound);
 
       // Plug the shared state into every thread state
-      for(unsigned tc=0; tc < thread_count &&
-          (max_threads == 0 || tc < max_threads); ++tc)
+      for(unsigned tc=0; tc < thread_count && tc < threadbound; ++tc)
       {
         abstract_stept::thread_to_predicate_valuest::iterator it2 =
           abstract_state.thread_states.insert(
@@ -257,7 +263,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
       }
 
       assert(abstract_state.thread_states.size() == thread_count ||
-          abstract_state.thread_states.size() == max_threads);
+          abstract_state.thread_states.size() == threadbound);
 
       if(abstract_state.pc->is_start_thread()) ++thread_count;
 

@@ -33,7 +33,7 @@ modelcheckert *select_modelchecker(
   std::string name=
     cmdline.isset("modelchecker")?cmdline.getval("modelchecker"):(cmdline.isset("concurrency")?"boom":"cadence-smv");
 
-  unsigned max_threads=0;
+  unsigned max_threads=2; // boom's default thread bound
   if(cmdline.isset("max-threads"))
     max_threads=atoi(cmdline.getval("max-threads"));
     
