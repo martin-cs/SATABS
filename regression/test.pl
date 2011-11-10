@@ -48,9 +48,10 @@ sub load($) {
   return @data;
 }
 
-sub test($$$$) {
-  my ($name, $test, $t_level, $cmd) = @_;
+sub test($$$$$) {
+  my ($name, $test, $t_level, $cmd, $ign) = @_;
   my ($level, $input, $options, @results) = load($test);
+  $options =~ s/$ign//g if(defined($ign));
 
   my $output = $input;
   $output =~ s/\.c$/.out/;
@@ -148,6 +149,7 @@ Usage: test.pl -c CMD [OPTIONS] [DIRECTORIES ...]
   the current location will be used.
 
   -c CMD     run tests on CMD - required option
+  -i <regex> options in test.desc matching the specified perl regex are ignored
   -h         show this help and exit
   -C         core: run all essential tests (default if none of C/T/F/K are given)
   -T         thorough: run expensive tests
@@ -182,8 +184,8 @@ EOF
 use Getopt::Std;
 $main::VERSION = 0.1;
 $Getopt::Std::STANDARD_HELP_VERSION = 1;
-our ($opt_c, $opt_h, $opt_C, $opt_T, $opt_F, $opt_K); # the variables for getopt
-getopts('c:hCTFK') or &main::HELP_MESSAGE(\*STDOUT, "", $main::VERSION, "");
+our ($opt_c, $opt_i, $opt_h, $opt_C, $opt_T, $opt_F, $opt_K); # the variables for getopt
+getopts('c:i:hCTFK') or &main::HELP_MESSAGE(\*STDOUT, "", $main::VERSION, "");
 $opt_c or &main::HELP_MESSAGE(\*STDOUT, "", $main::VERSION, "");
 $opt_h and &main::HELP_MESSAGE(\*STDOUT, "", $main::VERSION, "");
 my $t_level = 0;
@@ -208,7 +210,7 @@ foreach my $test (@tests) {
   print "  Running $test";
 
   chdir $test;
-  my $failed_skipped = test($test, "test.desc", $t_level, $opt_c);
+  my $failed_skipped = test($test, "test.desc", $t_level, $opt_c, $opt_i);
   chdir "..";
 
   if($failed_skipped < 0) {
