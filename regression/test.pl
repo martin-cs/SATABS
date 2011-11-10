@@ -124,7 +124,7 @@ sub dirs() {
   my @list;
 
   opendir CWD, ".";
-  @list = grep { !/^\./ && -d "$_" && !/CVS/ } readdir CWD;
+  @list = grep { !/^\./ && -d "$_" && !/CVS/ && -s "$_/test.desc" } readdir CWD;
   closedir CWD;
 
   @list = sort @list;
