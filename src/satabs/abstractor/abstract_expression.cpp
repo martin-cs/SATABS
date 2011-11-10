@@ -10,6 +10,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <i2string.h>
 #include <expr_util.h>
+#include <simplify_expr.h>
 
 #include "check_redundancy.h"
 #include "abstract_expression.h"
@@ -86,6 +87,8 @@ void abstract_expression(
 {
   if(expr.type().id()!=ID_bool)
     throw "abstract_expression expects expression of type Boolean";
+
+  simplify(expr, ns);
 
   if(is_valid(expr, ns))
   {
