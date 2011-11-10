@@ -270,7 +270,7 @@ void cmdline_optionst::help()
     "                              are not pointer equality tests\n"
     " --max-cube-length #          for cartesian abstraction, set maximum length\n"
     "                              of cube to be considered (default: 3)\n"
-    " --iterations #               set maximum number of refinement iterations\n"
+    " --iterations #               set maximum number of refinement iterations (default: 100)\n"
     " --predicates file            read predicates from file\n"
     " --no-path-slicing            disable path slicer\n"
     " --save-bps                   save a Boolean program for each iteration\n"

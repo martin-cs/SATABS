@@ -42,7 +42,7 @@ public:
     if(cmdline.isset("iterations"))
       return atoi(cmdline.getval("iterations"));
 
-    return 50; // default iterations
+    return 100; // default iterations
   }
   
 private:
