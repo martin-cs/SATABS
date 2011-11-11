@@ -217,7 +217,8 @@ bool transition_refinert::check_transition(
   if(!c_instruction.is_other() &&
      !c_instruction.is_function_call() &&
      !c_instruction.is_return() &&
-     !c_instruction.is_assign())
+     !c_instruction.is_assign() &&
+     !c_instruction.is_decl())
     return check_guarded_transition(predicates,
              abstract_state_from,
              abstract_state_to);

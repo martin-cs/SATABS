@@ -9,6 +9,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <assert.h>
 
 #include <simplify_expr.h>
+#include <std_expr.h>
 
 #include <goto-programs/wp.h>
 #include <langapi/language_util.h>
@@ -208,6 +209,11 @@ void build_equation(
   #endif
   
   codet code=target->code;
+  if(code.get_statement() ==ID_decl)
+  {
+    const code_declt &decl=to_code_decl(code);
+    code=code_assignt(decl.symbol(), nondet_exprt(decl.symbol().type()));
+  }
   if(code.get_statement() == ID_assign)
     approximate_nondet(to_code_assign(code).rhs());
   for(unsigned i=0; i<predicates.size(); i++)

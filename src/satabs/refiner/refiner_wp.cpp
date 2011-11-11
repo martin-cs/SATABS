@@ -216,9 +216,10 @@ bool refiner_wpt::refine_prefix(
     	/* Ignore if user-specified predicate, otherwise treat like assign */
     	if(it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_predicate || it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_parameter_predicates || it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_return_predicates)
     		break;
+      case DECL:
       case ASSIGN:
         #ifdef DEBUG
-        std::cout << "OTHER/ASSIGN\n";
+        std::cout << "OTHER/ASSIGN/DECL\n";
         #endif
 
         {
