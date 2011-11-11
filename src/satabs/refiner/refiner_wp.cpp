@@ -228,6 +228,8 @@ bool refiner_wpt::refine_prefix(
 #endif
           
           // compute weakest precondition
+          if(tmp_code.get_statement()==ID_assign)
+            approximate_nondet(to_code_assign(tmp_code).rhs());
           exprt predicate_wp=wp(tmp_code, predicate, concrete_model.ns);
       
           simplify(predicate_wp, concrete_model.ns);

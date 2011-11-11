@@ -207,9 +207,12 @@ void build_equation(
   }
   #endif
   
+  codet code=target->code;
+  if(code.get_statement() == ID_assign)
+    approximate_nondet(to_code_assign(code).rhs());
   for(unsigned i=0; i<predicates.size(); i++)
   {
-    predicates_wp[i]=wp(target->code, predicates[i], ns);
+    predicates_wp[i]=wp(code, predicates[i], ns);
 
     #if 0
     precondition(
