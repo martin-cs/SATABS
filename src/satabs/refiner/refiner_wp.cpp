@@ -21,6 +21,9 @@ Date: June 2003
 #include <goto-symex/basic_symex.h>
 
 #include <simplify_expr.h>
+#include <solvers/sat/satcheck.h>
+#include <solvers/flattening/bv_pointers.h>
+#include "../abstractor/predabs_aux.h"
 
 #include "refiner_wp.h"
 
@@ -185,6 +188,8 @@ bool refiner_wpt::refine_prefix(
       // skip irrelevant instructions
       if(!it->relevant) continue;
 
+      exprt pred_bak=predicate;
+
       // compute weakest precondition
       switch(it->pc->type)
       {
@@ -244,6 +249,56 @@ bool refiner_wpt::refine_prefix(
       default:
         // ignore
         break;
+      }
+
+#ifdef DEBUG
+          std::cout << "B P to-check:  " << from_expr(concrete_model.ns, "", predicate) << std::endl;
+#endif
+          
+      if(pred_bak != predicate)
+      {
+        satcheckt satcheck;
+        bv_pointerst solver(concrete_model.ns, satcheck);
+        solver.unbounded_array=boolbvt::U_NONE;
+        literalt li=make_pos(concrete_model.ns, solver, predicate);
+        satcheck.set_assumptions(bvt(1, li));
+        propt::resultt result=satcheck.prop_solve();
+        assert(propt::P_SATISFIABLE==result || propt::P_UNSATISFIABLE==result);
+        if(propt::P_UNSATISFIABLE==result)
+          predicate.make_false();
+        else
+        {
+          satcheck.set_assumptions(bvt(1, li.negation()));
+          propt::resultt result=satcheck.prop_solve();
+          assert(propt::P_SATISFIABLE==result || propt::P_UNSATISFIABLE==result);
+          if(propt::P_UNSATISFIABLE==result)
+          {
+            predicate.make_true();
+            if(it->pc->type==ASSIGN)
+            {
+              const codet &code=concrete_pc->code;
+              if(code.get_statement()==ID_assign)
+              {
+                equal_exprt pred_new(to_code_assign(code).lhs(),
+                    to_code_assign(code).rhs());
+#ifdef DEBUG
+                std::cout << "Adding new predicate as we arrived at TRUE: "
+                  << from_expr(concrete_model.ns, "", pred_new) << std::endl;
+#endif
+                add_predicates(abstract_pc, predicates, pred_new, found_new, FROM);
+              }
+            }
+            else if(it->pc->type==ASSUME || it->pc->type==GOTO)
+            {
+              exprt pred_new=concrete_pc->guard;
+#ifdef DEBUG
+              std::cout << "Adding new predicate as we arrived at TRUE: "
+                << from_expr(concrete_model.ns, "", pred_new) << std::endl;
+#endif
+              add_predicates(abstract_pc, predicates, pred_new, found_new, FROM);
+            }
+          }
+        }
       }
       
       #ifdef DEBUG
