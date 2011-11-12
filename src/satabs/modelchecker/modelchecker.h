@@ -19,10 +19,10 @@ Date: June 2003
 class modelcheckert:public loop_componentt
 {
 public:
-  modelcheckert(const loop_componentt::argst &args, const bool concurrency_aware):
-    loop_componentt(args), concurrency_aware(concurrency_aware)
-    {
-    }
+  modelcheckert(const loop_componentt::argst &args, const bool _concurrency_aware):
+    loop_componentt(args), concurrency_aware(_concurrency_aware)
+  {
+  }
 
   // A return value of TRUE means the program is correct,
   // if FALSE is returned, counterexample will contain the counterexample
@@ -56,6 +56,10 @@ protected:
   void get_nondet_symbols(const abstract_modelt &abstract_model);
   void get_nondet_symbols(const exprt &expr);
   
+  // turn expression into string
+  virtual std::string expr_string(const exprt &expr);
+  
+  // auxiliary class to obtain inlined version of boolean program
   class inlinedt
   {
   public:
