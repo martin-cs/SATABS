@@ -132,7 +132,7 @@ protected:
 
   typedef std::vector<ce_stept> ce_stepst;
     
-  void instantiate_expression(exprt &expr);
+  virtual std::string expr_string(const exprt &expr);
     
   // this maps PCs (numbers) to program locations
   typedef std::vector<abstract_programt::targett> PC_mapt;

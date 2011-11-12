@@ -158,10 +158,10 @@ private:
     thread_infost &thread_infos,
     abstract_stept &abstract_state);
     
-  void instantiate_expression(exprt &expr);
-  std::string instantiate(const exprt &expr);
   exprt convert_schoose_expression(const exprt &expr, const exprt &guard);
   bool threaded;
+  
+  virtual std::string expr_string(const exprt &expr);
   
   // we need the program inlined
   inlinedt inlined;

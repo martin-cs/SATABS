@@ -62,9 +62,6 @@ OBJ += ../ansi-c/ansi-c$(LIBEXT) \
       ../big-int/bigint$(OBJEXT) \
       ../goto-symex/goto-symex$(LIBEXT) \
       ../solvers/solvers$(LIBEXT) \
-      ../smvlang/smvlang$(LIBEXT) \
-      ../bplang/bplang$(LIBEXT) \
-      ../promela/promela$(LIBEXT) \
       ../xmllang/xmllang$(LIBEXT) \
       ../util/util$(LIBEXT) \
       ../goto-programs/goto-programs$(LIBEXT) \

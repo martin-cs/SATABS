@@ -21,7 +21,7 @@ Author: Daniel Kroening
 #include <str_getline.h>
 #include <i2string.h>
 #include <prefix.h>
-#include <smvlang/expr2smv.h>
+#include <std_expr.h>
 
 #include "modelchecker_smv.h"
 
@@ -973,7 +973,7 @@ void modelchecker_smvt::build_smv_file_guards(
       out << "DEFINE guard" << PC << ":=";
       
       if(instruction.code.get_transition_relation().constraints.empty())
-        out << instantiate(instruction.guard) << ";" << std::endl;
+        out << expr_string(instruction.guard) << ";" << std::endl;
       else
       {
         if(instruction.is_goto())
@@ -982,20 +982,20 @@ void modelchecker_smvt::build_smv_file_guards(
             instruction.code.get_transition_relation().constraints.front();
           exprt target=
             convert_schoose_expression(schoose, instruction.guard);
-          out << instantiate(target) << ";" << std::endl;
+          out << expr_string(target) << ";" << std::endl;
         }
         else
         {
           assert(instruction.is_assume());
 
-          out << "(" << instantiate(instruction.guard) << ")";
+          out << "(" << expr_string(instruction.guard) << ")";
 
           for(abstract_transition_relationt::constraintst::const_iterator
             e_it=instruction.code.get_transition_relation().constraints.begin();
             e_it!=instruction.code.get_transition_relation().constraints.end();
             e_it++)
           {
-            out << " & (" << instantiate(*e_it) << ')';
+            out << " & (" << expr_string(*e_it) << ')';
           }
 
           out << ";" << std::endl;
@@ -1307,7 +1307,7 @@ void modelchecker_smvt::build_smv_file_model(
             if(value.id()=="unchanged")
               out << variable_names[i];
             else
-              out << "(" << instantiate(value) << ")";
+              out << "(" << expr_string(value) << ")";
 
             cnt++;
           }
@@ -1330,7 +1330,7 @@ void modelchecker_smvt::build_smv_file_model(
           if(e_it!=instruction.code.get_transition_relation().constraints.begin())
             out << "              & ";
 
-          out << '(' << instantiate(*e_it) << ')' << std::endl;
+          out << '(' << expr_string(*e_it) << ')' << std::endl;
         }
       }
       break;
@@ -1483,53 +1483,27 @@ void modelchecker_smvt::build_smv_file_sync(
 
 /*******************************************************************\
 
-Function: modelchecker_smvt::instantiate
+Function: modelchecker_smvt::expr_string
 
   Inputs:
 
  Outputs:
 
- Purpose:
+ Purpose: transform expression into SMV syntax
 
 \*******************************************************************/
 
-std::string modelchecker_smvt::instantiate(const exprt &expr)
+std::string modelchecker_smvt::expr_string(const exprt &expr)
 {
-  exprt tmp(expr);
-  instantiate_expression(tmp);
-  std::string tmp_string;
-  expr2smv(tmp, tmp_string);
-  return tmp_string;
-}
-
-/*******************************************************************\
-
-Function: modelchecker_smvt::instantiate_expression
-
-  Inputs:
-
- Outputs:
-
- Purpose:
-
-\*******************************************************************/
-
-void modelchecker_smvt::instantiate_expression(exprt &expr)
-{
-  Forall_operands(it, expr)
-    instantiate_expression(*it);
-
   if(expr.id()==ID_predicate_symbol)
   {
     unsigned p=atoi(expr.get(ID_identifier).c_str());
-    expr.id(ID_symbol);
-    expr.set(ID_identifier, variable_names[p]);
+    return variable_names[p];
   }
   else if(expr.id()==ID_predicate_next_symbol)
   {
     unsigned p=atoi(expr.get(ID_identifier).c_str());
-    expr.id(ID_next_symbol);
-    expr.set(ID_identifier, variable_names[p]);
+    return "next("+variable_names[p]+")";
   }
   else if(expr.id()==ID_nondet_symbol)
   {
@@ -1540,10 +1514,86 @@ void modelchecker_smvt::instantiate_expression(exprt &expr)
     if(it==nondet_symbols.end())
       throw "failed to find nondet_symbol";
 
-    typet type=expr.type();
-    expr=exprt(ID_symbol, type);
-    expr.set(ID_identifier, it->second);
+    return it->second;
   }
+  else if(expr.id()==ID_equal ||
+          expr.id()==ID_and ||
+          expr.id()==ID_or ||
+          expr.id()==ID_implies) // binary
+  {
+    bool first=true;
+    std::string symbol;
+    
+    if(expr.id()==ID_equal)
+      symbol="<->"; // boolean!
+    else if(expr.id()==ID_and)
+      symbol="&";
+    else if(expr.id()==ID_or)
+      symbol="|";
+    else if(expr.id()==ID_implies)
+      symbol="->";
+      
+    std::string dest;
+
+    forall_operands(it, expr)
+    {
+      if(first)
+        first=false;
+      else
+      {
+        dest+=' ';
+        dest+=symbol;
+        dest+=' ';
+      }
+      
+      bool use_paren=
+        (expr.id()!=ID_and || expr.id()!=ID_or || expr.id()!=it->id()) &&
+        it->id()!=ID_symbol &&
+        it->id()!=ID_next_symbol &&
+        it->id()!=ID_predicate_symbol &&
+        it->id()!=ID_predicate_next_symbol;
+
+      if(use_paren) dest+='(';
+      dest+=expr_string(*it);
+      if(use_paren) dest+=')';
+    }
+    
+    return dest;
+  }
+  else if(expr.id()==ID_not)
+  {
+    std::string dest="!";
+
+    bool use_paren=
+      expr.op0().id()!=ID_symbol &&
+      expr.op0().id()!=ID_next_symbol &&
+      expr.op0().id()!=ID_predicate_symbol &&
+      expr.op0().id()!=ID_predicate_next_symbol;
+
+    if(use_paren) dest+='(';
+    dest+=expr_string(expr.op0());
+    if(use_paren) dest+=')';
+    
+    return dest;
+  }
+  else if(expr.id()==ID_symbol)
+  {
+    return id2string(to_symbol_expr(expr).get_identifier());
+  }
+  else if(expr.id()==ID_next_symbol)
+  {
+    return "next("+expr.get_string(ID_identifier)+")";
+  }
+  else if(expr.id()==ID_constant)
+  {
+    if(expr.is_true())
+      return "1";
+    else if(expr.is_false())
+      return "0";
+  }
+  
+  // results in parse error in SMV
+  return "??"+expr.id_string()+"??";
 }
 
 /*******************************************************************\
@@ -1568,10 +1618,9 @@ exprt modelchecker_smvt::convert_schoose_expression(
   if(it==nondet_symbols.end())
     throw "failed to find nondet_symbol";
   
-  exprt nondet("symbol", typet("bool"));
-  nondet.set("identifier", it->second);
+  symbol_exprt nondet(it->second, bool_typet());
   
-  exprt conj("and", typet("bool"));
+  exprt conj(ID_and, bool_typet());
   conj.move_to_operands(nondet);
   conj.copy_to_operands(expr.op1());
   conj.op1().make_not();
@@ -1579,7 +1628,7 @@ exprt modelchecker_smvt::convert_schoose_expression(
   //exprt disj("or", typet("bool"));
   //disj.copy_to_operands(expr.op0(), guard);
 
-  exprt target("or", typet("bool"));
+  exprt target(ID_or, bool_typet());
 
   target.move_to_operands(conj);
   target.copy_to_operands(expr.op0());

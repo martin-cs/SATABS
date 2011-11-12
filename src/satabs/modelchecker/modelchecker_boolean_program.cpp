@@ -21,8 +21,6 @@ Author: Daniel Kroening
 #include <substitute.h>
 #include <std_expr.h>
 
-#include <bplang/expr2bp.h>
-
 #include <satabs/abstractor/concurrency_aware_abstract_transition_relation.h>
 
 #include "modelchecker_boolean_program.h"
@@ -603,19 +601,17 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
       if(!it->guard.is_true())
       {
         out << "if ";
-        exprt tmp(it->guard);
-        instantiate_expression(tmp);
+
         if(!it->code.get_transition_relation().constraints.size())
-          out << expr2bp(tmp);
+          out << expr_string(it->guard);
         else
         {
           exprt &choose=
             it->code.get_transition_relation().constraints.front();
-          exprt tmp0(choose.op0()); instantiate_expression(tmp0);
-          exprt tmp1(choose.op1()); instantiate_expression(tmp1);
 
-          out << "(schoose[" << expr2bp(tmp0); // << " & " << expr2bp(tmp);
-          out << "," << expr2bp(tmp1) <<  "])";
+          out << "(schoose[" << expr_string(choose.op0());
+          // << " & " << expr_string(it->guard);
+          out << "," << expr_string(choose.op1()) <<  "])";
         }
         out << " then ";
       }
@@ -657,9 +653,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     }
     else if(it->is_assume())
     {
-      exprt tmp(it->guard);
-      instantiate_expression(tmp);
-      out << "assume(" << expr2bp(tmp);
+      out << "assume(" << expr_string(it->guard);
 
       const std::list<exprt> &constraints=
         it->code.get_transition_relation().constraints;
@@ -669,20 +663,13 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
             it=constraints.begin();
             it!=constraints.end();
             it++)
-        {
-          exprt tmp(*it);
-          instantiate_expression(tmp);
-          out << " & " << '(' << expr2bp(tmp) << ')';
-        }
+          out << " & " << '(' << expr_string(*it) << ')';
       }
       out << ");";
     }
     else if(it->is_assert())
     {
-      std::string code;
-      exprt tmp(it->guard);
-      instantiate_expression(tmp);
-      out << "assert(" << expr2bp(tmp) << ");";
+      out << "assert(" << expr_string(it->guard) << ");";
     }
     else if(it->is_dead())
     {
@@ -748,41 +735,33 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
             if(value.is_nil())
               out << "*";
             else
-            {
-              exprt tmp(value);
-              instantiate_expression(tmp);
-              out << expr2bp(tmp);
-            }
+              out << expr_string(value);
           }
         }
 
         if(concurrency_aware)
         {
-        	concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
-		assert(NULL != trans_rel);
+          concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
+          assert(NULL != trans_rel);
 
-		for(unsigned i=0; i<passive_variable_names.size(); i++)
-		{
-			abstract_transition_relationt::valuest::const_iterator
-				v_it=trans_rel->passive_values.find(i);
+          for(unsigned i=0; i<passive_variable_names.size(); i++)
+          {
+            abstract_transition_relationt::valuest::const_iterator
+                    v_it=trans_rel->passive_values.find(i);
 
-			if(v_it!=trans_rel->passive_values.end())
-			{
-				const exprt &value=v_it->second;
+            if(v_it!=trans_rel->passive_values.end())
+            {
+              const exprt &value=v_it->second;
 
-				assert(!first);
-				out << ",";
+              assert(!first);
+              out << ",";
 
-				if(value.is_nil())
-				  out << "*";
-				else
-				{
-				  exprt tmp(value);
-				  instantiate_expression(tmp);
-				  out << expr2bp(tmp);
-				}
-			  }
-			}
+              if(value.is_nil())
+                out << "*";
+              else
+                out << expr_string(value);
+            }
+          }
         }
         
         // constraints
@@ -799,12 +778,9 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
               it!=constraints.end();
               it++)
           {
-            exprt tmp(*it);
-            instantiate_expression(tmp);
-            
             if(it!=constraints.begin()) out << " &";
             out << std::endl << "    "
-                << '(' << expr2bp(tmp) << ')';
+                << '(' << expr_string(*it) << ')';
           }
         }
           
@@ -860,7 +836,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
 
 /*******************************************************************\
 
-Function: modelchecker_boolean_programt::instantiate_expression
+Function: modelchecker_boolean_programt::expr_string
 
   Inputs:
 
@@ -870,39 +846,122 @@ Function: modelchecker_boolean_programt::instantiate_expression
 
 \*******************************************************************/
 
-void modelchecker_boolean_programt::instantiate_expression(exprt &expr)
+std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
 {
-  Forall_operands(it, expr)
-    instantiate_expression(*it);
-
   if(expr.id()==ID_predicate_symbol)
   {
     unsigned p=atoi(expr.get(ID_identifier).c_str());
-    expr.id(ID_symbol);
-    if(p >= variable_names.size())
+
+    if(p>=variable_names.size())
     {
-    	assert(concurrency_aware);
-    	expr.set(ID_identifier, passive_variable_names[p - variable_names.size()]);
-    } else {
-    	expr.set(ID_identifier, variable_names[p]);
+      assert(concurrency_aware);
+      return passive_variable_names[p - variable_names.size()];
     }
+    else
+      return variable_names[p];
   }
   else if(expr.id()==ID_predicate_next_symbol)
   {
     unsigned p=atoi(expr.get(ID_identifier).c_str());
-    expr.id(ID_next_symbol);
-    if(p >= variable_names.size())
+
+    if(p>=variable_names.size())
     {
-    	assert(concurrency_aware);
-    	expr.set(ID_identifier, passive_variable_names[p - variable_names.size()]);
-    } else {
-    	expr.set(ID_identifier, variable_names[p]);
+      assert(concurrency_aware);
+      return "'"+passive_variable_names[p - variable_names.size()];
     }
+    else
+      return "'"+variable_names[p];
   }
   else if(expr.id()==ID_nondet_symbol)
   {
-    expr=exprt(ID_nondet_bool);
+    return "*";
   }
+  else if(expr.id()==ID_implies)
+  {
+    return "!("+expr_string(expr.op0())+") | ("
+               +expr_string(expr.op1())+")";
+  }
+  else if(expr.id()=="bool-vector")
+  {
+    std::string dest;
+
+    forall_operands(it, expr)
+    {
+      if(it!=expr.operands().begin()) dest+=", ";
+      dest+=expr_string(*it);
+    }
+
+    return dest;
+  }
+  else if(expr.id()==ID_constant)
+  {
+    if(expr.is_true())
+      return "1";
+    else if(expr.is_false())
+      return "0";
+  }
+  else if(expr.id()==ID_equal ||
+          expr.id()==ID_and ||
+          expr.id()==ID_or) // binary
+  {
+    bool first=true;
+    std::string symbol;
+    
+    if(expr.id()==ID_equal)
+      symbol="="; // boolean!
+    else if(expr.id()==ID_and)
+      symbol="&";
+    else if(expr.id()==ID_or)
+      symbol="|";
+      
+    std::string dest;
+
+    forall_operands(it, expr)
+    {
+      if(first)
+        first=false;
+      else
+      {
+        dest+=' ';
+        dest+=symbol;
+        dest+=' ';
+      }
+      
+      bool use_paren=
+        (expr.id()!=ID_and || expr.id()!=ID_or || expr.id()!=it->id()) &&
+        it->id()!=ID_symbol &&
+        it->id()!=ID_next_symbol &&
+        it->id()!=ID_predicate_symbol &&
+        it->id()!=ID_predicate_next_symbol;
+
+      if(use_paren) dest+='(';
+      dest+=expr_string(*it);
+      if(use_paren) dest+=')';
+    }
+    
+    return dest;
+  }
+  else if(expr.id()==ID_not)
+  {
+    std::string dest="!";
+
+    bool use_paren=
+      expr.op0().id()!=ID_symbol &&
+      expr.op0().id()!=ID_next_symbol &&
+      expr.op0().id()!=ID_predicate_symbol &&
+      expr.op0().id()!=ID_predicate_next_symbol;
+
+    if(use_paren) dest+='(';
+    dest+=expr_string(expr.op0());
+    if(use_paren) dest+=')';
+    
+    return dest;
+  }
+  else if(expr.id()=="bp_unused")
+    return "_";
+
+  // no Boolean Program language expression for internal representation 
+  return "??"+expr.id_string()+"??";
 }
 
 /*******************************************************************\

@@ -57,7 +57,7 @@ protected:
   void get_nondet_symbols(const exprt &expr);
   
   // turn expression into string
-  virtual std::string expr_string(const exprt &expr);
+  virtual std::string expr_string(const exprt &expr)=0;
   
   // auxiliary class to obtain inlined version of boolean program
   class inlinedt
