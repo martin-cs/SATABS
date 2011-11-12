@@ -18,14 +18,16 @@ Author: Daniel Kroening
 class modelchecker_spint:public modelcheckert
 {
 public:
-  modelchecker_spint(const loop_componentt::argst &args, const bool concurrency_aware):
+  modelchecker_spint(
+    const loop_componentt::argst &args,
+    const bool concurrency_aware):
     modelcheckert(args, concurrency_aware),
     inlined(args.message_handler)
   {
-  	if(concurrency_aware)
-  	{
-  		throw "CAV'11 concurrency not yet supported for SPIN";
-  	}
+    if(concurrency_aware)
+    {
+      throw "CAV'11 concurrency not yet supported for SPIN";
+    }
   }
 
   // A return value of TRUE means the program is correct,
@@ -79,6 +81,8 @@ private:
     abstract_counterexamplet &counterexample);
 
   void instantiate_expression(exprt &expr);
+  
+  virtual std::string expr_string(const exprt &expr);
   
   // we need the program inlined
   inlinedt inlined;

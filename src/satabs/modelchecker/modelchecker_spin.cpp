@@ -17,10 +17,29 @@ Author: Daniel Kroening
 #include <algorithm>
 
 #include <str_getline.h>
-#include <promela/expr2promela.h>
 #include <i2string.h>
 
+#include <ansi-c/expr2c.h>
+
 #include "modelchecker_spin.h"
+
+/*******************************************************************\
+
+Function: modelchecker_spint::expr_string
+
+  Inputs:
+
+ Outputs:
+
+ Purpose:
+
+\*******************************************************************/
+
+std::string modelchecker_spint::expr_string(const exprt &src)
+{
+  // we just do C expressions now
+  return expr2c(src, concrete_model.ns);
+}
 
 /*******************************************************************\
 
@@ -398,9 +417,9 @@ void modelchecker_spint::build_promela_file_control(
     std::string guard_string;
 
     {
-      exprt tmp(instruction.original->guard);
+      exprt tmp=instruction.original->guard;
       instantiate_expression(tmp);
-      guard_string=expr2promela(tmp, concrete_model.ns);
+      guard_string=expr_string(tmp);
     }
 
     out << "  l" << PC << ": ";
