@@ -8,7 +8,7 @@ Date: January 2004
 
 \*******************************************************************/
 
-#include <bplang/expr2bp.h>
+#include <ansi-c/expr2c.h>
 
 #include "abstract_program.h"
 
@@ -139,7 +139,7 @@ std::ostream& abstract_programt::output_instruction(
         if(e_it!=it->code.get_transition_relation().constraints.begin())
           out << "             ";
 
-        out << expr2bp(constraint) << std::endl;
+        out << expr2c(constraint, ns) << std::endl;
       }
       
       out << std::endl;
