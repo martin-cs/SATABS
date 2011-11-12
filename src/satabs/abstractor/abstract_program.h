@@ -33,34 +33,42 @@ public:
   // needs to be re-abstracted
   bool re_abstract;
 
-  abstract_codet():transition_relation(std::auto_ptr<abstract_transition_relationt>(NULL)), re_abstract(false)
+  abstract_codet():
+    transition_relation(std::auto_ptr<abstract_transition_relationt>(NULL)),
+    re_abstract(false)
   {
   }
 
-  abstract_codet(const abstract_codet& other) :
-	  transition_relation(other.transition_relation.get() == NULL ? std::auto_ptr<abstract_transition_relationt>(NULL) : std::auto_ptr<abstract_transition_relationt>(new abstract_transition_relationt(*(other.transition_relation)))),
-	  concrete_pc(other.concrete_pc),
-	  re_abstract(other.re_abstract)
+  abstract_codet(const abstract_codet &other):
+    transition_relation(
+      other.transition_relation.get() == NULL ? 
+        std::auto_ptr<abstract_transition_relationt>(NULL) : 
+        std::auto_ptr<abstract_transition_relationt>(new abstract_transition_relationt(*(other.transition_relation)))),
+    concrete_pc(other.concrete_pc),
+    re_abstract(other.re_abstract)
   {
 
   }
 
-  abstract_codet& operator = (const abstract_codet& other)
+  abstract_codet & operator = (const abstract_codet &other)
   {
-	  transition_relation = other.transition_relation.get() == NULL ? std::auto_ptr<abstract_transition_relationt>(NULL) : std::auto_ptr<abstract_transition_relationt>(new abstract_transition_relationt(*(other.transition_relation)));
-	  concrete_pc = other.concrete_pc;
-	  re_abstract = other.re_abstract;
-	  return *this;
+    transition_relation=
+      other.transition_relation.get() == NULL ? 
+        std::auto_ptr<abstract_transition_relationt>(NULL) : 
+        std::auto_ptr<abstract_transition_relationt>(new abstract_transition_relationt(*(other.transition_relation)));
+    concrete_pc = other.concrete_pc;
+    re_abstract = other.re_abstract;
+    return *this;
   }
 
   abstract_transition_relationt& get_transition_relation() const
   {
-	  return *transition_relation;
+    return *transition_relation;
   }
 
   void set_transition_relation(std::auto_ptr<abstract_transition_relationt> transition_relation)
   {
-	  this->transition_relation = transition_relation;
+    this->transition_relation = transition_relation;
   }
 
 };
