@@ -21,7 +21,7 @@ Author: Daniel Kroening
 #include <substitute.h>
 #include <std_expr.h>
 
-#include <satabs/abstractor/concurrency_aware_abstract_transition_relation.h>
+#include "../abstractor/concurrency_aware_abstract_transition_relation.h"
 
 #include "modelchecker_boolean_program.h"
 
