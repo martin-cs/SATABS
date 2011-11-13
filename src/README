@@ -1,0 +1,16 @@
+1. Download the CBMC source code as follows:
+
+   svn co http://www.cprover.org/svn/cbmc/releases/cbmc-4.0
+
+2. Make sure that compiles, according to the instructions that come
+   with it.
+
+3. Now open the file config.inc in the Satabs source directory
+   and adjust the variable CBMC to point to the location of the CBMC
+   directory created by step 1.
+
+4. Now do
+
+   cd satabs
+   make
+
