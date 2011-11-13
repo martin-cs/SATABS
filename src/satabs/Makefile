@@ -1,7 +1,7 @@
 SRC = satabs.cpp cmdline_options.cpp \
       satabs_safety_checker.cpp \
       \
-      ../cbmc/xml_interface.cpp \
+      $(CBMC)/src/cbmc/xml_interface.cpp \
       \
       prepare/get_predicates.cpp \
       prepare/prepare.cpp \
@@ -58,20 +58,19 @@ SRC = satabs.cpp cmdline_options.cpp \
       simulator/recurrence_solver.cpp \
       simulator/path_slicer.cpp
 
-OBJ += ../ansi-c/ansi-c$(LIBEXT) \
-      ../big-int/bigint$(OBJEXT) \
-      ../goto-symex/goto-symex$(LIBEXT) \
-      ../solvers/solvers$(LIBEXT) \
-      ../xmllang/xmllang$(LIBEXT) \
-      ../util/util$(LIBEXT) \
-      ../goto-programs/goto-programs$(LIBEXT) \
-      ../pointer-analysis/pointer-analysis$(LIBEXT) \
-      ../langapi/langapi$(LIBEXT)
+OBJ += $(CBMC)/src/ansi-c/ansi-c$(LIBEXT) \
+      $(CBMC)/src/big-int/bigint$(OBJEXT) \
+      $(CBMC)/src/goto-symex/goto-symex$(LIBEXT) \
+      $(CBMC)/src/solvers/solvers$(LIBEXT) \
+      $(CBMC)/src/xmllang/xmllang$(LIBEXT) \
+      $(CBMC)/src/util/util$(LIBEXT) \
+      $(CBMC)/src/goto-programs/goto-programs$(LIBEXT) \
+      $(CBMC)/src/pointer-analysis/pointer-analysis$(LIBEXT) \
+      $(CBMC)/src/langapi/langapi$(LIBEXT)
 
 LIBS =
 
 include ../config.inc
-include ../common
 
 CLEANFILES = satabs$(EXEEXT)
 
@@ -85,7 +84,7 @@ CP_CXXFLAGS += -DHAVE_QBF_CORE
 endif
 endif
 
-INCLUDES= -I .. -I ../util
+INCLUDES= -I $(CBMC)/src -I $(CBMC)/src/util
 
 #ifneq ($(wildcard ../prover/Makefile),)
 #  CP_CXXFLAGS += -DHAVE_PROVER
@@ -105,13 +104,13 @@ INCLUDES= -I .. -I ../util
 #  OBJ += ../satqe/satqe$(LIBEXT)
 #endif
 
-ifneq ($(wildcard ../cpp/Makefile),)
-  OBJ += ../cpp/cpp$(LIBEXT)
+ifneq ($(wildcard $(CBMC)/src/cpp/Makefile),)
+  OBJ += $(CBMC)/src/cpp/cpp$(LIBEXT)
   CP_CXXFLAGS += -DHAVE_CPP
 endif
 
-ifneq ($(wildcard ../specc/Makefile),)
-  OBJ += ../specc/specc$(LIBEXT)
+ifneq ($(wildcard $(CBMC)/src/specc/Makefile),)
+  OBJ += $(CBMC)/src/specc/specc$(LIBEXT)
   CP_CXXFLAGS += -DHAVE_SPECC
 endif
 
