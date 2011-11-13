@@ -690,7 +690,7 @@ void modelchecker_smvt::build_smv_file(
             out << " t" << thread_nr << ".PC=" << PC << ": FALSE;";
         }
         
-        out << " 1: atomic; esac;";
+        out << " TRUE: atomic; esac;";
       }
       else
         out << "atomic; -- thread has no atomic section";
@@ -740,7 +740,7 @@ void modelchecker_smvt::build_smv_file(
         out << "case" << std::endl
             << "    t" << thread_nr << ".end_thread: FALSE; -- thread ends" << std::endl
             << "    t" << thread_nr << ".started: TRUE; -- already running" << std::endl
-            << "    1: ";
+            << "    TRUE: ";
 
         bool first=true;
 
@@ -1135,7 +1135,7 @@ void modelchecker_smvt::build_smv_file_control(
             << ": ";
         build_targets(PC, out);
         out << ";\n";
-        out << "      1: " << PC+1 << ";" << std::endl;
+        out << "      TRUE: " << PC+1 << ";" << std::endl;
         out << "    esac;";
       }
     }
@@ -1148,7 +1148,7 @@ void modelchecker_smvt::build_smv_file_control(
         out << "case  -- assume/assert\n";
         out << "      guard" << PC
             << ": " << PC+1 << ";\n";
-        out << "      1: " << PC << ";" << std::endl;
+        out << "      TRUE: " << PC << ";" << std::endl;
         out << "    esac;";
       }
     }
@@ -1172,7 +1172,7 @@ void modelchecker_smvt::build_smv_file_control(
       out << PC+1 << "; -- location";
     else if(instruction.is_start_thread())
     {
-      out << "case initial_PC=" << PC << ": " << PC+1 << "; 1: ";
+      out << "case initial_PC=" << PC << ": " << PC+1 << "; TRUE: ";
       build_targets(PC, out);
       out << "; esac; -- start_thread";
     }
