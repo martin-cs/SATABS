@@ -685,9 +685,9 @@ void modelchecker_smvt::build_smv_file(
         for(unsigned PC=0; PC<inlined.PC_map.size(); PC++)
         {
           if(inlined.PC_map[PC].original->is_atomic_begin())
-            out << " t" << thread_nr << ".PC=" << PC << ": 1;";
+            out << " t" << thread_nr << ".PC=" << PC << ": TRUE;";
           else if(inlined.PC_map[PC].original->is_atomic_end())
-            out << " t" << thread_nr << ".PC=" << PC << ": 0;";
+            out << " t" << thread_nr << ".PC=" << PC << ": FALSE;";
         }
         
         out << " 1: atomic; esac;";
@@ -730,7 +730,7 @@ void modelchecker_smvt::build_smv_file(
       if(thread_nr==0)
       {
         // the 'main' thread
-        out << "1";
+        out << "TRUE";
       }
       else
       {
@@ -738,8 +738,8 @@ void modelchecker_smvt::build_smv_file(
         // they start on START_TREAD, and end on END_THREAD
         
         out << "case" << std::endl
-            << "    t" << thread_nr << ".end_thread: 0; -- thread ends" << std::endl
-            << "    t" << thread_nr << ".started: 1; -- already running" << std::endl
+            << "    t" << thread_nr << ".end_thread: FALSE; -- thread ends" << std::endl
+            << "    t" << thread_nr << ".started: TRUE; -- already running" << std::endl
             << "    1: ";
 
         bool first=true;
@@ -847,7 +847,7 @@ void modelchecker_smvt::build_smv_file_local_variables(
         << "INVAR !started -> !runs" << std::endl
         << std::endl;
   else
-    out << "DEFINE runs:=1;" << std::endl
+    out << "DEFINE runs:=TRUE;" << std::endl
         << std::endl;
 
   //
@@ -1313,7 +1313,7 @@ void modelchecker_smvt::build_smv_file_model(
           }
         }
         
-        if(cnt==0) out << "1";
+        if(cnt==0) out << "TRUE";
 
         out << std::endl;
       }
@@ -1475,7 +1475,7 @@ void modelchecker_smvt::build_smv_file_sync(
     }
   }
   
-  if(!found) out << "0";
+  if(!found) out << "FALSE";
 
   out << ";" << std::endl;
   out << std::endl;
