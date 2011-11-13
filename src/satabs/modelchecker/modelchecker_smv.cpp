@@ -1587,9 +1587,9 @@ std::string modelchecker_smvt::expr_string(const exprt &expr)
   else if(expr.id()==ID_constant)
   {
     if(expr.is_true())
-      return "1";
+      return "TRUE";
     else if(expr.is_false())
-      return "0";
+      return "FALSE";
   }
   
   // results in parse error in SMV
