@@ -14,6 +14,7 @@ Date: June 2003
 #include <expr_util.h>
 #include <arith_tools.h>
 #include <i2string.h>
+#include <replace_expr.h>
 
 #include <goto-symex/precondition.h>
 #include <goto-symex/postcondition.h>

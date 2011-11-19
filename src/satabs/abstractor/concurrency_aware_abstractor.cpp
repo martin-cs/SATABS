@@ -5,6 +5,9 @@
  *      Author: alad
  */
 
+#include <cstdlib>
+#include <algorithm>
+
 #include "concurrency_aware_abstractor.h"
 
 #include "concurrency_aware_abstract_transition_relation.h"
@@ -15,7 +18,7 @@
 
 #include <ansi-c/c_types.h>
 
-#include <util/arith_tools.h>
+#include <arith_tools.h>
 
 #include <sstream>
 

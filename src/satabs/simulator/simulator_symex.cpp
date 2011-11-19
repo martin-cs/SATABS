@@ -11,10 +11,11 @@ Purpose: Simulate an abstract counterexample on the concrete program
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 
 #include <expr_util.h>
 #include <i2string.h>
+#include <context.h>
 
 #include <solvers/sat/satcheck.h>
 #include <solvers/flattening/bv_pointers.h>

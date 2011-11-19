@@ -8,6 +8,8 @@ Date: September 2005
 
 \*******************************************************************/
 
+#include <cstdlib>
+
 #include "select_abstractor.h"
 #include "abstractor_wp.h"
 #include "abstractor_satqe.h"

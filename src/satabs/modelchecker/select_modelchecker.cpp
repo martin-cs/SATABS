@@ -9,6 +9,8 @@ Date: June 2003
 
 \*******************************************************************/
 
+#include <cstdlib>
+
 #include "select_modelchecker.h"
 #include "modelchecker_boolean_program.h"
 #include "modelchecker_smv.h"

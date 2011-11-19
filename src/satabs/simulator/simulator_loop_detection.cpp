@@ -10,6 +10,8 @@ Purpose:
 
 \*******************************************************************/
 
+#include <algorithm>
+
 //#define DEBUG
 #define MAGIC_UPPER_BOUND 65536
 
@@ -18,6 +20,7 @@ Purpose:
 #include <i2string.h>
 #include <arith_tools.h>
 #include <std_expr.h>
+#include <context.h>
 
 #include <solvers/flattening/sat_minimizer.h>
 #include <solvers/sat/pbs_dimacs_cnf.h>

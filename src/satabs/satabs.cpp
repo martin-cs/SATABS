@@ -21,11 +21,11 @@ Date: June 2003
 
 #include "cmdline_options.h"
 
-
 #ifndef _WIN32
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <signal.h>
+#include <iostream>
 
 void xcpu_termination_handler(int signum)
 {

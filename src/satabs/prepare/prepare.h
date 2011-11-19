@@ -15,8 +15,11 @@ Purpose: Preprocess the C program and convert it into a GOTO
 #ifndef CPROVER_CEGAR_PREPARE_H
 #define CPROVER_CEGAR_PREPARE_H
 
+#include <cstdlib>
+
 #include <ui_message.h>
 #include <options.h>
+#include <cmdline.h>
 
 #include <langapi/language_ui.h>
 

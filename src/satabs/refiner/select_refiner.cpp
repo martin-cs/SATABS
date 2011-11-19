@@ -8,6 +8,8 @@ Date: September 2005
 
 \*******************************************************************/
 
+#include <cstdlib>
+
 #include "select_refiner.h"
 #include "refiner_wp.h"
 #include "refiner_lifter.h"

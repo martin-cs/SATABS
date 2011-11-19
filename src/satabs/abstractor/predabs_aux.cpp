@@ -6,13 +6,15 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 
 #include <simplify_expr.h>
 #include <std_expr.h>
+#include <context.h>
 
 #include <goto-programs/wp.h>
 #include <langapi/language_util.h>
+#include <solvers/prop/prop.h>
 
 #include "predabs_aux.h"
 

@@ -5,6 +5,8 @@
  *      Author: alad
  */
 
+#include <algorithm>
+
 #include "locations_of_expressions.h"
 
 #include <ansi-c/c_types.h>

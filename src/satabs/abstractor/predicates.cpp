@@ -10,6 +10,10 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include "predicates.h"
 
+#include <std_expr.h>
+#include <context.h>
+#include <namespace.h>
+
 /*******************************************************************\
 
 Function: predicatest::lookup

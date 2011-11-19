@@ -14,6 +14,7 @@ Date: June 2003
 #include <i2string.h>
 #include <xml.h>
 #include <xml_irep.h>
+#include <context.h>
 
 #include <ansi-c/ansi_c_language.h>
 

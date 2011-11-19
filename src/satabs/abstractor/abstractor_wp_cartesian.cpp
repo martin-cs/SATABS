@@ -9,6 +9,8 @@ Author: Alastair Donaldson
 
 \*******************************************************************/
 
+#include <algorithm>
+
 #include <ansi-c/c_types.h>
 #include <solvers/flattening/bv_pointers.h>
 #include <solvers/sat/satcheck.h>
