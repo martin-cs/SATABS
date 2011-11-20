@@ -12,6 +12,7 @@ Author: Daniel Kroening
 #define CPROVER_CEGAR_MODELCHECKER_BOOLEAN_PROGRAM_H
 
 #include <iostream>
+#include <map>
 
 #include "modelchecker.h"
 
@@ -69,10 +70,14 @@ public:
     abstract_modelt &abstract_model,
     const std::string &file_name);    
 
+  virtual std::ostream& statistics(std::ostream &os) const;
+
 protected:
   enginet engine;
   bool loop_detection;
   unsigned max_threads; // 0 = no limit
+  typedef std::map<std::string, float> statst;
+  statst stats;
 
   std::vector<std::string> passive_variable_names; // Only relevant if we are doing concurrency-aware verification
 

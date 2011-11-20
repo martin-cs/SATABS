@@ -123,7 +123,15 @@ void satabs_safety_checkert::show_statistics()
 	  status(str.str());
   }
 
-
+  {
+    std::ostringstream str;
+    modelchecker.statistics(str);
+    if(!str.str().empty())
+    {
+      status("Statistics of modelchecker:");
+      status(str.str());
+    }
+  }
 }
 
 /*******************************************************************\

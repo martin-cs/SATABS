@@ -15,6 +15,7 @@ Author: Daniel Kroening
 #include <fstream>
 #include <list>
 #include <algorithm>
+#include <sstream>
 
 #include <str_getline.h>
 #include <i2string.h>
@@ -157,6 +158,39 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
       std::cerr << "THREAD LIMIT line: " << line << std::endl;
       threadbound=atoi(line.c_str()+12);
       std::cerr << "THREAD LIMIT found: " << threadbound << std::endl;
+    }
+    else if(line=="==========================[ Problem Statistics ]==========================")
+    {
+      for(++it; it!=file.end() && (*it)[0]!='='; ++it)
+      {
+        assert((*it)[0]=='|');
+        assert((*it)[55]==':');
+        std::string opt=it->substr(3,52);
+        assert(opt[51]=='.');
+        std::string::size_type last=opt.size();
+        for(--last; last>0 && opt[last]=='.'; --last);
+        opt.resize(last+1);
+        float val=-1;
+        std::istringstream ss(it->substr(56, 15));
+        ss >> val;
+        assert(val!=-1);
+        if(opt=="Non-broadcast assignment operations executed" ||
+            opt=="Broadcast assignment operations executed" ||
+            opt=="Time spent in non-broadcast assignment operations" ||
+            opt=="Time spent in broadcast assignment operations")
+        {
+          if(stats.find(opt)==stats.end())
+            stats[opt]=val;
+          else
+            stats[opt]+=val;
+        }
+        else if(opt=="Max number of slots used")
+        {
+          if(stats.find(opt)==stats.end() ||
+              stats[opt]<val)
+            stats[opt]=val;
+        }
+      }
     }
     else if(std::string(line, 0, 6)=="TRACE ")
     {
@@ -1007,7 +1041,7 @@ bool modelchecker_boolean_programt::check(
       
     case BOOM:
       status(std::string("Running BOOM"));
-      command="boom  -t";
+      command="boom  --stats -t";
       if(max_threads!=0)
         command+=" --threadbound "+i2string(max_threads);
       break;
@@ -1129,7 +1163,28 @@ void modelchecker_boolean_programt::save(
   build(abstract_model, "satabs."+i2string(sequence)+".bp");
 }
 
+/*******************************************************************\
 
+Function: modelchecker_boolean_programt::statistics
+
+  Inputs:
+
+ Outputs:
+
+ Purpose: 
+
+\*******************************************************************/
+
+std::ostream& modelchecker_boolean_programt::statistics(
+    std::ostream &os) const
+{
+  for(statst::const_iterator it=stats.begin();
+      it!=stats.end();
+      ++it)
+    os << it->first << ": " << it->second << std::endl;
+
+  return os;
+}
 
 /*******************************************************************\
 

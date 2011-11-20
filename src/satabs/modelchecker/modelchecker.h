@@ -39,6 +39,8 @@ public:
     abstract_modelt &abstract_model,
     unsigned sequence)=0;
 
+  virtual std::ostream& statistics(std::ostream &os) const;
+
 protected:
   // auxiliary functions
 
