@@ -16,7 +16,6 @@ Author: Daniel Kroening
 #include <list>
 #include <algorithm>
 
-#include <str_getline.h>
 #include <i2string.h>
 
 #include <ansi-c/expr2c.h>
@@ -68,7 +67,7 @@ bool modelchecker_spint::read_result
     while(true)
     {
       std::string line;
-      if(!str_getline(out2, line)) break;
+      if(!std::getline(out2, line)) break;
       file.push_back(line);
     }
 
@@ -84,7 +83,7 @@ bool modelchecker_spint::read_result
     while(true)
     {
       std::string line;
-      if(!str_getline(out1, line)) break;
+      if(!std::getline(out1, line)) break;
       file.push_back(line);
     }
 

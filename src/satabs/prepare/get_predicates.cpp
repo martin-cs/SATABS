@@ -13,8 +13,6 @@ Purpose:
 #include <fstream>
 #include <memory>
 
-#include <str_getline.h>
-
 #include <ansi-c/ansi_c_language.h>
 
 /*******************************************************************\
@@ -51,7 +49,7 @@ void get_predicates(
 
   while(infile)
   {
-    str_getline(infile, line);
+    std::getline(infile, line);
 
     if(line!="" && line[0]!='#' &&
        std::string(line, 0, 2)!="//")

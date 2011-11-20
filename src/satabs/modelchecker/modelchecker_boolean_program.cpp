@@ -17,7 +17,6 @@ Author: Daniel Kroening
 #include <algorithm>
 #include <sstream>
 
-#include <str_getline.h>
 #include <i2string.h>
 #include <substitute.h>
 #include <std_expr.h>
@@ -49,7 +48,7 @@ bool modelchecker_boolean_programt::read_result_boppo_boom(
   while(true)
   {
     std::string line;
-    if(!str_getline(out1, line)) break;
+    if(!std::getline(out1, line)) break;
     file.push_back(line);
   }
   

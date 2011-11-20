@@ -18,7 +18,6 @@ Author: Daniel Kroening
 #include <algorithm>
 #include <sstream>
 
-#include <str_getline.h>
 #include <i2string.h>
 #include <prefix.h>
 #include <std_expr.h>
@@ -73,7 +72,7 @@ bool modelchecker_smvt::read_result(
     while(true)
     {
       std::string line;
-      if(!str_getline(out2, line)) break;
+      if(!std::getline(out2, line)) break;
       std::cerr << "SMV error output: " << line << std::endl;
       file.push_back(line);
     }
@@ -97,7 +96,7 @@ bool modelchecker_smvt::read_result(
     while(true)
     {
       std::string line;
-      if(!str_getline(out1, line)) break;
+      if(!std::getline(out1, line)) break;
       file.push_back(line);
     }
     
@@ -160,7 +159,7 @@ bool modelchecker_smvt::read_result_cadence_smv(
   while(true)
   {
     std::string line;
-    if(!str_getline(out_ce, line)) break;
+    if(!std::getline(out_ce, line)) break;
     file.push_back(line);
   }
   
