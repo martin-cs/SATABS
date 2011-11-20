@@ -13,7 +13,6 @@ Purpose:
 #include <algorithm>
 
 //#define DEBUG
-#define MAGIC_UPPER_BOUND 65536
 
 #include <replace_expr.h>
 #include <simplify_expr.h>
@@ -791,7 +790,8 @@ void simulator_loop_detectiont::unwind_counterexample(
           loop_heads.push_back(loop_headt (it, N));
         }
 
-      if(N==0||N>MAGIC_UPPER_BOUND) N=1;
+      assert(N<=65536); // was #define MAGIC_UPPER_BOUND 65536, N>MAGIC_UPPER_BOUND -> N=1
+      if(N==0) N=1;
 
       loop_stack.top().unwindings= N-1;
       loop_stack.top().c_it=it;
