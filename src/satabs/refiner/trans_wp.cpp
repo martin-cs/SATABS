@@ -31,9 +31,9 @@ void trans_wpt::wp_rec(exprt &expr)
   Forall_operands(it, expr)
     wp_rec(*it);
 
-  if(expr.id()=="symbol")
+  if(expr.id()==ID_symbol)
   {
-    const irep_idt &identifier=expr.get("identifier");
+    const irep_idt &identifier=expr.get(ID_identifier);
     
     const symbolt &symbol=ns.lookup(identifier);
     

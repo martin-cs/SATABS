@@ -59,7 +59,7 @@ void get_predicates(
       if(language->to_expr(line, "", expr, message_handler, ns))
         throw "failed to parse `"+line+"'";
 
-      if(expr.type().id()!="bool")
+      if(expr.type().id()!=ID_bool)
       {
         std::string type_string;
         language->from_type(expr.type(), type_string, ns);

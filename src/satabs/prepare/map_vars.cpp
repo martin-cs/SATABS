@@ -47,10 +47,10 @@ Function: instantiate_symbol
 
 void instantiate_symbol(exprt &expr, unsigned cycle)
 {
-  if(expr.id()=="symbol" ||
-     expr.id()=="nondet_symbol")
+  if(expr.id()==ID_symbol ||
+     expr.id()==ID_nondet_symbol)
   {
-    //const std::string &identifier=expr.get("identifier");
+    //const std::string &identifier=expr.get(ID_identifier);
 
     expr.set("cycle", cycle);
   }
@@ -140,16 +140,16 @@ std::string map_varst::show_member(const exprt &expr)
 {
   std::string result;
 
-  if(expr.id()=="member")
+  if(expr.id()==ID_member)
   {
     if(expr.operands().size()!=1)
       throw "member expected to have one operand";
 
     result=show_member(expr.op0());
     result+=".";
-    result+=expr.get_string("component_name");
+    result+=expr.get_string(ID_component_name);
   }
-  else if(expr.id()=="index")
+  else if(expr.id()==ID_index)
   {
     if(expr.operands().size()!=2)
       throw "index expected to have two operands";
@@ -157,9 +157,9 @@ std::string map_varst::show_member(const exprt &expr)
     result=show_member(expr.op0());
     result+="[]";
   }
-  else if(expr.id()=="symbol")
+  else if(expr.id()==ID_symbol)
   {
-    const symbolt &symbol=lookup(expr.get("identifier"));
+    const symbolt &symbol=lookup(expr.get(ID_identifier));
     result=id2string(symbol.base_name);
   }
 
@@ -187,17 +187,17 @@ void map_varst::map_var(const exprt &symbol1, const symbolt &symbol2)
 
   // check types
 
-  if(symbol1.type().id()!="unsignedbv" &&
-     symbol1.type().id()!="signedbv" &&
-     symbol1.type().id()!="bool")
+  if(symbol1.type().id()!=ID_unsignedbv &&
+     symbol1.type().id()!=ID_signedbv &&
+     symbol1.type().id()!=ID_bool)
   {
     throw "failed to map symbol "+show_member(symbol1)+
           " because of type "+symbol1.type().to_string();
   }
 
-  if(symbol2.type.id()!="unsignedbv" &&
-     symbol2.type.id()!="signedbv" &&
-     symbol2.type.id()!="bool")
+  if(symbol2.type.id()!=ID_unsignedbv &&
+     symbol2.type.id()!=ID_signedbv &&
+     symbol2.type.id()!=ID_bool)
   {
     throw "failed to map symbol "+id2string(symbol2.name)+
           " because of type "+symbol2.type.to_string();
@@ -298,14 +298,14 @@ void map_varst::map_var(const std::set<irep_idt> &modules,
                         const exprt &expr,
                         const symbolt::hierarchyt &hierarchy)
 {
-  if(expr.type().id()=="struct")
+  if(expr.type().id()==ID_struct)
   {
     const irept::subt &components=
-      expr.type().find("components").get_sub();
+      expr.type().find(ID_components).get_sub();
 
     forall_irep(it, components)
     {
-      const irep_idt &name=it->get("name");
+      const irep_idt &name=it->get(ID_name);
 
       const symbolt &symbol=
         resolve_hierarchy(modules, id, expr, hierarchy, true);
@@ -313,9 +313,9 @@ void map_varst::map_var(const std::set<irep_idt> &modules,
       symbolt::hierarchyt new_hierarchy(hierarchy);
       new_hierarchy.push_back(symbol.name);
 
-      exprt new_expr("member", ((exprt &)(*it)).type());
+      exprt new_expr(ID_member, ((exprt &)(*it)).type());
       new_expr.copy_to_operands(expr);
-      new_expr.set("component_name", name);
+      new_expr.set(ID_component_name, name);
 
       map_var(modules, name, new_expr, new_hierarchy);
     }

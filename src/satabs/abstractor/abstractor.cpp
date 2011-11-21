@@ -303,8 +303,8 @@ exprt abstractort::get_value(
   
     if(value==predicates[i])
     {
-      dest=exprt("predicate_symbol", typet("bool"));
-      dest.set("identifier", i);
+      dest=exprt(ID_predicate_symbol, typet(ID_bool));
+      dest.set(ID_identifier, i);
       break;
     }
   }

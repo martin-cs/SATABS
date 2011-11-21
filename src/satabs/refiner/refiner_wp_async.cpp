@@ -152,16 +152,16 @@ bool refiner_wpt::get_instruction(
       instruction=c_it->second;
 
       // now overwrite the rhs with a non-deterministic value
-      exprt nondet("nondet_symbol", instruction.op1().type());
+      exprt nondet(ID_nondet_symbol, instruction.op1().type());
       nondet.set(
-        "identifier", 
-        "loop$"+instruction.op0().get_string("identifier")+"_"+
+        ID_identifier, 
+        "loop$"+instruction.op0().get_string(ID_identifier)+"_"+
         i2string(info_stack.size()));
       instruction.op1().swap(nondet);
 
       // add the corresponding constraint for this induction
       // variable to the invariant
-      exprt conjunct("and", typet("bool"));
+      exprt conjunct(ID_and, typet(ID_bool));
       conjunct.operands().resize(2);
       conjunct.op0().swap(recurrence);
       conjunct.op1().swap(invariant);
@@ -256,7 +256,7 @@ void refiner_wpt::add_induction_predicates(
         induction_info.loop_exit);
       
       // we'll treat the predicates as huge conjunction
-      exprt predicate = exprt ("and", typet("bool"));
+      exprt predicate = exprt (ID_and, typet(ID_bool));
 
       for (std::list<exprt>::const_iterator p_it = 
              induction_preds.begin();
@@ -273,7 +273,7 @@ void refiner_wpt::add_induction_predicates(
       // construct parameter + 1: The induction step
       exprt induction = predicate;
 
-      exprt plus = exprt ("+", parameter.type());
+      exprt plus = exprt (ID_plus, parameter.type());
       plus.copy_to_operands (from_integer (1, parameter.type()), parameter);
       replace_expr (parameter, plus, induction);
 
@@ -451,7 +451,7 @@ void refiner_wpt::add_induction_transitions(
 
     // insert N := N + 1
 
-    exprt successor = exprt ("+", info.parameter.type());
+    exprt successor = exprt (ID_plus, info.parameter.type());
     successor.copy_to_operands (
       from_integer (1, info.parameter.type()), info.parameter);
 

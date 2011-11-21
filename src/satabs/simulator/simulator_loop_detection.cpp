@@ -250,7 +250,7 @@ void simulator_loop_detectiont::build_loop_recurrence(
     
     if(s.is_assignment())
     {
-      if (solution[s.ssa_lhs].id()!="nondet_symbol" && 
+      if (solution[s.ssa_lhs].id()!=ID_nondet_symbol && 
           solution[s.ssa_lhs] != s.ssa_rhs &&
           !s.ssa_lhs.get_bool("induction_symbol"))
         has_recurrence = true;
@@ -269,7 +269,7 @@ void simulator_loop_detectiont::build_loop_recurrence(
       #endif
 
       // fix cond
-      assert(s.cond_expr.id()=="=" && s.cond_expr.operands().size()==2);
+      assert(s.cond_expr.id()==ID_equal && s.cond_expr.operands().size()==2);
       s.cond_expr.op1()=s.ssa_rhs;
 
       // remember the recurrence instruction and the
@@ -367,7 +367,7 @@ void simulator_loop_detectiont::check_for_induction_variables(
               if (lhs.get_bool("induction_symbol"))
                 {
                   const exprt& rhs = instr->code.op1();
-                  if (rhs.id()=="+" && rhs.operands().size()==2)
+                  if (rhs.id()==ID_plus && rhs.operands().size()==2)
                     {
                       const exprt& increase = rhs.op0();
                       const exprt& param = rhs.op1();
@@ -525,13 +525,13 @@ Function: simulator_loop_detectiont::get_fresh_induction_parameter
 void simulator_loop_detectiont::get_fresh_induction_parameter(
   exprt &parameter)
 {
-  exprt parameter_expr("symbol", uint_type());
+  exprt parameter_expr(ID_symbol, uint_type());
 
   bool found;
   do 
     {
       parameter_index++;
-      parameter_expr.set("identifier", "c::N$"+i2string(parameter_index));
+      parameter_expr.set(ID_identifier, "c::N$"+i2string(parameter_index));
       parameter_expr.set("induction_symbol", true);
 
       try 
@@ -548,7 +548,7 @@ void simulator_loop_detectiont::get_fresh_induction_parameter(
 
   symbolt sym;
 
-  sym.name = parameter_expr.get("identifier");
+  sym.name = parameter_expr.get(ID_identifier);
   sym.base_name = (irep_idt)("N$"+i2string(parameter_index));
   sym.module = (irep_idt)"c";
 

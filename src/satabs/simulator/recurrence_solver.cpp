@@ -197,7 +197,7 @@ void recurrence_solver::substitute_problem(
     {
       const exprt &subst_lhs = *l_it;
       irep_idt lhs_name = 
-        final_state.get_original_name (subst_lhs.get ("identifier"));
+        final_state.get_original_name (subst_lhs.get (ID_identifier));
       
       // this can only be referenced in later problem instances
       for (std::list<exprt>::const_iterator m_it = ++l_it;
@@ -205,7 +205,7 @@ void recurrence_solver::substitute_problem(
         {
           const exprt &curr_lhs = *m_it;
           irep_idt name = 
-            final_state.get_original_name (curr_lhs.get ("identifier"));
+            final_state.get_original_name (curr_lhs.get (ID_identifier));
           if (lhs_name == name)
             {
               // perform substitution!
@@ -243,7 +243,7 @@ bool recurrence_solver::is_recurrence(
   const std::set<exprt> &end_values)
 {
   irep_idt lhs_name = 
-    final_state.get_original_name (lhs.get ("identifier"));
+    final_state.get_original_name (lhs.get (ID_identifier));
 
   if (end_values.find (lhs) == end_values.end ())
     return false;
@@ -258,7 +258,7 @@ bool recurrence_solver::is_recurrence(
     {
       const exprt &var = *it;
       irep_idt orig_name = 
-        initial_state.get_original_name (var.get ("identifier"));
+        initial_state.get_original_name (var.get (ID_identifier));
       
       if (lhs_name == orig_name)
         {
@@ -305,7 +305,7 @@ bool recurrence_solver::match_recurrence(
   exprt uncasted_recurrence;
 
   irep_idt lhs_name = 
-    final_state.get_original_name (lhs.get ("identifier"));
+    final_state.get_original_name (lhs.get (ID_identifier));
 
   alpha.make_nil ();
   beta.make_nil ();
@@ -315,13 +315,13 @@ bool recurrence_solver::match_recurrence(
     return false;
 
   // unpack recurrence if necessary
-  if (recurrence.id() == "typecast")
+  if (recurrence.id() == ID_typecast)
     uncasted_recurrence = recurrence.op0();
   else
     uncasted_recurrence = recurrence;
 
   // try matching addition
-  if(uncasted_recurrence.id()=="+" &&
+  if(uncasted_recurrence.id()==ID_plus &&
      uncasted_recurrence.operands().size()>=2)
     {
       forall_operands (it, uncasted_recurrence)
@@ -329,7 +329,7 @@ bool recurrence_solver::match_recurrence(
           const exprt &op = *it;
           exprt uncasted_op;
 
-          if (op.id() == "typecast")
+          if (op.id() == ID_typecast)
             uncasted_op = op.op0();
           else
             uncasted_op = op;
@@ -342,7 +342,7 @@ bool recurrence_solver::match_recurrence(
             {
               // check if this is the previous value of lhs
               irep_idt name = 
-                initial_state.get_original_name (uncasted_op.get ("identifier"));
+                initial_state.get_original_name (uncasted_op.get (ID_identifier));
               if (name == lhs_name)
                 {
                   // this is what we were searching for
@@ -358,11 +358,11 @@ bool recurrence_solver::match_recurrence(
             {
               gamma = from_integer (1, parameter.type()); 
             }
-          else if (uncasted_op.id()=="*")
+          else if (uncasted_op.id()==ID_mult)
             {
               if (uncasted_op.op0().is_constant () &&
                   (uncasted_op.op1() == parameter || 
-                   (uncasted_op.op1().id() == "typecast" && 
+                   (uncasted_op.op1().id() == ID_typecast && 
                     uncasted_op.op1().op0() == parameter))
                   ) // assumption: constant always first
                 {
@@ -383,7 +383,7 @@ bool recurrence_solver::match_recurrence(
   // construct the sum for beta
   if (constants.size () > 1)
     {
-      beta = exprt ("+", (*constants.begin()).type ());
+      beta = exprt (ID_plus, (*constants.begin()).type ());
       
       for (std::set<exprt>::const_iterator it = constants.begin ();
            it != constants.end (); it++)
@@ -428,7 +428,7 @@ void recurrence_solver::construct_recurrence(
 {
   
   // construct lhs = alpha + beta * n + gamma * (n * (n+1))/ 2
-  solution_expr = exprt ("+", lhs.type ());
+  solution_expr = exprt (ID_plus, lhs.type ());
   
   solution_expr.move_to_operands (alpha);
   
@@ -445,7 +445,7 @@ void recurrence_solver::construct_recurrence(
       else
         {
           // put in multiplication, if necessary
-          exprt mult=exprt("*", beta.type());
+          exprt mult=exprt(ID_mult, beta.type());
           mult.copy_to_operands(beta, casted_parameter);
           solution_expr.copy_to_operands (mult);
         }
@@ -458,15 +458,15 @@ void recurrence_solver::construct_recurrence(
         casted_parameter.make_typecast(gamma.type());
 
       // construct (n+1)
-      exprt plus=exprt("+", gamma.type());
+      exprt plus=exprt(ID_plus, gamma.type());
       exprt one=from_integer (1, gamma.type ());
       plus.copy_to_operands(casted_parameter, one);
       // construct n*(n+1)
-      exprt mult=exprt("*", gamma.type());
+      exprt mult=exprt(ID_mult, gamma.type());
       mult.copy_to_operands(casted_parameter);
       mult.move_to_operands(plus);
       // construct n*(n+1)/2
-      exprt div=exprt("/", gamma.type());
+      exprt div=exprt(ID_div, gamma.type());
       exprt two=from_integer (2, gamma.type ());
       div.move_to_operands(mult,two);
       
@@ -481,7 +481,7 @@ void recurrence_solver::construct_recurrence(
         }
       else
         {
-          exprt gamma_mul=exprt("*", gamma.type());
+          exprt gamma_mul=exprt(ID_mult, gamma.type());
           gamma_mul.move_to_operands (gamma, div);
           // cast?
           exprt casted_gamma_mul = gamma_mul;
@@ -571,8 +571,8 @@ void recurrence_solver::solve_recurrence(
                             end_values))
       {
         // could not solve, so make it non-deterministic
-        exprt nondet("nondet_symbol", lhs.type());
-        nondet.set("identifier", "recurrence$"+i2string(++nondet_count));
+        exprt nondet(ID_nondet_symbol, lhs.type());
+        nondet.set(ID_identifier, "recurrence$"+i2string(++nondet_count));
         solution_expr=nondet;
       }
     else

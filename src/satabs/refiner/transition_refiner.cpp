@@ -714,7 +714,7 @@ void transition_refinert::constrain_goto_transition(
   
   if(constraint.is_false())
   {
-    constraint.id("or");
+    constraint.id(ID_or);
     constraint.copy_to_operands(false_exprt());
   }
 

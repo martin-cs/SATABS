@@ -50,15 +50,15 @@ void predicate_image_prover(
 
   for(unsigned i=0; i<curr_predicates.size(); i++)
   {
-    exprt cond("predicate_symbol", typet("bool"));
-    cond.set("identifier", i);
+    exprt cond(ID_predicate_symbol, typet(ID_bool));
+    cond.set(ID_identifier, i);
     symbolic_dec.symbolic_fact(curr_predicates[i], cond);
   }
 
   for(unsigned i=0; i<next_predicates.size(); i++)
   {
-    exprt cond("predicate_next_symbol", typet("bool"));
-    cond.set("identifier", i);
+    exprt cond(ID_predicate_next_symbol, typet(ID_bool));
+    cond.set(ID_identifier, i);
     symbolic_dec.symbolic_fact(next_predicates[i], cond);
 
     exprt tmp(predicates_wp[i]);

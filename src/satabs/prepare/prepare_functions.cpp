@@ -186,7 +186,7 @@ void prepare_functionst::do_function_calls(
     {
       code_function_callt &function_call=to_code_function_call(i_it->code);
     
-      assert(function_call.function().id()=="symbol");
+      assert(function_call.function().id()==ID_symbol);
 
       const irep_idt function_id=
         to_symbol_expr(function_call.function()).get_identifier();
@@ -241,15 +241,15 @@ void prepare_functionst::do_function_calls(
           t->make_other();
           t->location=i_it->location;
           t->function=i_it->function;
-          t->code=codet("expression");
+          t->code=codet(ID_expression);
           t->code.copy_to_operands(*a_it);
         }
         
         // return value
         if(function_call.lhs().is_not_nil())
         {
-          exprt rhs=exprt("sideeffect", function_call.lhs().type());
-          rhs.set("statement", "nondet");
+          exprt rhs=exprt(ID_sideeffect, function_call.lhs().type());
+          rhs.set(ID_statement, ID_nondet);
           rhs.location()=i_it->location;
 
           code_assignt code(function_call.lhs(), rhs);
@@ -312,7 +312,7 @@ void prepare_functionst::do_function_arguments(
     if(!i_it->is_function_call()) continue;
     
     code_function_callt old_function_call=to_code_function_call(i_it->code);
-    assert(old_function_call.function().id()=="symbol");
+    assert(old_function_call.function().id()==ID_symbol);
     irep_idt identifier=
       to_symbol_expr(old_function_call.function()).get_identifier();
     const code_typet &old_type=original_types[identifier];

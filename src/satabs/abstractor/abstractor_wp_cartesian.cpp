@@ -151,14 +151,14 @@ exprt abstractor_wp_cartesiant::disjunction_of_cubes_using_predicate_variables(c
 			int index = find_in_predicates(predicates, *it2);
 			if(-1 != index)
 			{
-				literal = exprt("predicate_symbol", typet("bool"));
-				literal.set("identifier", index);
+				literal = exprt(ID_predicate_symbol, typet(ID_bool));
+				literal.set(ID_identifier, index);
 			} else {
 				assert(it2->id() == ID_not);
 				index = find_in_predicates(predicates, it2->op0());
 				assert(-1 != index);
-				literal = exprt("predicate_symbol", typet("bool"));
-				literal.set("identifier", index);
+				literal = exprt(ID_predicate_symbol, typet(ID_bool));
+				literal.set(ID_identifier, index);
 				literal = not_exprt(literal);
 			}
 

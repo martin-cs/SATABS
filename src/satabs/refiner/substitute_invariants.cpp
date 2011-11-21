@@ -27,10 +27,10 @@ void subsitute_invariants_rec(
   const invariant_sett::invariantst &invariants,
   exprt &dest)
 {
-  if((dest.id()=="and" ||
-      dest.id()=="or" ||
-      dest.id()=="not") &&
-     dest.type().id()=="bool")
+  if((dest.id()==ID_and ||
+      dest.id()==ID_or ||
+      dest.id()==ID_not) &&
+     dest.type().id()==ID_bool)
   {
     Forall_operands(it, dest)
       subsitute_invariants_rec(invariants, *it);

@@ -139,8 +139,8 @@ void predicate_image_satqe(
         {
           constraint_cube_conj.operands().push_back(exprt());
           exprt &e=constraint_cube_conj.operands().back();
-          e=exprt("predicate_symbol", typet("bool"));
-          e.set("identifier", id);
+          e=exprt(ID_predicate_symbol, typet(ID_bool));
+          e.set(ID_identifier, id);
 
           if(!(*it2)[bit]) 
             e.make_not();
@@ -165,8 +165,8 @@ void predicate_image_satqe(
         {
           constraint_cube_conj.operands().push_back(exprt());
           exprt &e=constraint_cube_conj.operands().back();
-          e=exprt("predicate_next_symbol", typet("bool"));
-          e.set("identifier", id);
+          e=exprt(ID_predicate_next_symbol, typet(ID_bool));
+          e.set(ID_identifier, id);
 
           if(!(*it2)[bit]) 
             e.make_not();
