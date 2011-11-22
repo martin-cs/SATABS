@@ -1,6 +1,6 @@
 int m = 0, seed = 0;
 int f(int n) {
-	int r, n, p;
+	int r, p;
 #ifdef NOBUG
 	__CPROVER_parameter_predicates();
 #endif
