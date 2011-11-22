@@ -992,6 +992,8 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
   }
   else if(expr.id()=="bp_unused")
     return "_";
+  else if(expr.id()==ID_nondet_bool)
+    return "*";
 
   // no Boolean Program language expression for internal representation 
   return "??"+expr.id_string()+"??";
