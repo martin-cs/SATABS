@@ -1,9 +1,9 @@
 KNOWNBUG
 main.c
 --full-inlining --concurrency --modelchecker boom
-^EXIT=XX$
+^EXIT=0$
 ^SIGNAL=0$
-^VERIFICATION XXX$
+^VERIFICATION SUCCESSFUL$
 --
 ^warning: ignoring
 --
