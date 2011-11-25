@@ -88,8 +88,8 @@ exprt abstract_dynamic_objectst::build_case_split(const exprt &pointer)
     if(pointer.type()!=it->type())
       continue;
 
-    exprt value(ID_symbol, it->type().subtype());
-    value.set(ID_identifier, "satabs::dynamic_object"+i2string(cnt));
+    symbol_exprt value("satabs::dynamic_object"+i2string(cnt),
+        it->type().subtype());
   
     if(pointer==*it)
     {

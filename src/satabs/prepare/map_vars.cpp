@@ -28,9 +28,9 @@ Function: is_program_symbol
 
 bool is_program_symbol(const symbolt &symbol)
 {
-  return symbol.mode=="C" ||
-         symbol.mode=="SpecC" ||
-         symbol.mode=="cpp";
+  return symbol.mode==ID_C ||
+         symbol.mode==ID_SpecC ||
+         symbol.mode==ID_cpp;
 }
 
 /*******************************************************************\
@@ -313,10 +313,7 @@ void map_varst::map_var(const std::set<irep_idt> &modules,
       symbolt::hierarchyt new_hierarchy(hierarchy);
       new_hierarchy.push_back(symbol.name);
 
-      exprt new_expr(ID_member, ((exprt &)(*it)).type());
-      new_expr.copy_to_operands(expr);
-      new_expr.set(ID_component_name, name);
-
+      member_exprt new_expr(expr, name, ((exprt &)(*it)).type());
       map_var(modules, name, new_expr, new_hierarchy);
     }
   }
@@ -345,8 +342,7 @@ Function: map_varst::map_vars
 void map_varst::map_vars(const std::set<irep_idt> &modules)
 {
   Forall_symbols(it, context.symbols)
-    if((it->second.mode=="C" || it->second.mode=="SpecC") &&
-       it->second.is_extern)
+    if(is_program_symbol(it->second) && it->second.is_extern)
     {
       symbolt::hierarchyt hierarchy;
 

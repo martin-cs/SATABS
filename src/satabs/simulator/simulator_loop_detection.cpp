@@ -525,13 +525,13 @@ Function: simulator_loop_detectiont::get_fresh_induction_parameter
 void simulator_loop_detectiont::get_fresh_induction_parameter(
   exprt &parameter)
 {
-  exprt parameter_expr(ID_symbol, uint_type());
+  symbol_exprt parameter_expr(uint_type());
 
   bool found;
   do 
     {
       parameter_index++;
-      parameter_expr.set(ID_identifier, "c::N$"+i2string(parameter_index));
+      parameter_expr.set_identifier("c::N$"+i2string(parameter_index));
       parameter_expr.set("induction_symbol", true);
 
       try 
@@ -548,9 +548,9 @@ void simulator_loop_detectiont::get_fresh_induction_parameter(
 
   symbolt sym;
 
-  sym.name = parameter_expr.get(ID_identifier);
-  sym.base_name = (irep_idt)("N$"+i2string(parameter_index));
-  sym.module = (irep_idt)"c";
+  sym.name = parameter_expr.get_identifier();
+  sym.base_name = "N$"+i2string(parameter_index);
+  sym.module = ID_C;
 
   shadow_context.add (sym);
   
