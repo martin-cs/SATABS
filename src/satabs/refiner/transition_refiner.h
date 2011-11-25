@@ -30,8 +30,12 @@ public:
     abstract_modelt &abstract_model,
     const fail_infot &fail_info);
 
+  virtual std::ostream& statistics(std::ostream &os) const;
+
 protected:
   const bool prefix_first;
+  typedef std::map<std::string, unsigned> statst;
+  statst stats;
   
   // Updates the set of predicates for the same program according to
   // the counterexample. 

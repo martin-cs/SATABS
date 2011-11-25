@@ -741,3 +741,27 @@ void transition_refinert::constrain_assume_transition(
   negation.make_not();
   abstract_transition_relation.constraints.push_back(negation);
 }
+
+/*******************************************************************\
+
+Function: transition_refinert::statistics
+
+  Inputs:
+
+ Outputs:
+
+ Purpose: 
+
+\*******************************************************************/
+
+std::ostream& transition_refinert::statistics(
+    std::ostream &os) const
+{
+  for(statst::const_iterator it=stats.begin();
+      it!=stats.end();
+      ++it)
+    os << it->first << ": " << it->second << std::endl;
+
+  return os;
+}
+

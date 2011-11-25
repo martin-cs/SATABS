@@ -41,6 +41,11 @@ public:
   {
   }
 
+  virtual std::ostream& statistics(std::ostream &os) const
+  {
+    return os;
+  }
+
 protected:
   const concrete_modelt &concrete_model;
 };

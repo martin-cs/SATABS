@@ -158,26 +158,28 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
       threadbound=atoi(line.c_str()+12);
       std::cerr << "THREAD LIMIT found: " << threadbound << std::endl;
     }
-    else if(line=="==========================[ Problem Statistics ]==========================")
+    else if(line[0]=='=' &&
+        line.find("===[ Problem Statistics ]===")!=std::string::npos)
     {
       for(++it; it!=file.end() && (*it)[0]!='='; ++it)
       {
         assert((*it)[0]=='|');
-        assert((*it)[55]==':');
-        std::string opt=it->substr(3,52);
-        assert(opt[51]=='.');
+        std::string::size_type desc_end=it->rfind(".:");
+        assert(desc_end!=std::string::npos);
+        std::string opt=it->substr(3,desc_end-3);
+        assert(*opt.rbegin()=='.');
         std::string::size_type last=opt.size();
         for(--last; last>0 && opt[last]=='.'; --last);
         opt.resize(last+1);
         float val=-1;
-        std::istringstream ss(it->substr(56, 15));
+        std::istringstream ss(it->substr(desc_end+2, it->size()-desc_end-3));
         ss >> val;
-        assert(val!=-1);
         if(opt=="Non-broadcast assignment operations executed" ||
             opt=="Broadcast assignment operations executed" ||
             opt=="Time spent in non-broadcast assignment operations" ||
             opt=="Time spent in broadcast assignment operations")
         {
+          assert(val!=-1);
           if(stats.find(opt)==stats.end())
             stats[opt]=val;
           else
@@ -185,6 +187,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
         }
         else if(opt=="Max number of slots used")
         {
+          assert(val!=-1);
           if(stats.find(opt)==stats.end() ||
               stats[opt]<val)
             stats[opt]=val;

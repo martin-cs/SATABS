@@ -310,21 +310,3 @@ void modelcheckert::inlinedt::build(
   recursion_stack.erase(f_id);
 }
 
-/*******************************************************************\
-
-Function: modelcheckert::statistics
-
-  Inputs:
-
- Outputs:
-
- Purpose: 
-
-\*******************************************************************/
-
-std::ostream& modelcheckert::statistics(
-    std::ostream &os) const
-{
-  return os;
-}
-
