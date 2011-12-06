@@ -1692,7 +1692,7 @@ bool modelchecker_smvt::check(
     switch(engine)
     {
     case NUSMV:
-      command="NuSMV -f -dynamic";
+      command="NuSMV -dynamic";
       status(std::string("Running NuSMV: ")+command);
       break;
       
