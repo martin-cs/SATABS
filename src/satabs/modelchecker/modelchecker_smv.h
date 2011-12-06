@@ -129,6 +129,21 @@ private:
     abstract_modelt &abstract_model,
     const threadst &threads,
     abstract_counterexamplet &counterexample);
+    
+  static bool ce_boolean(const std::string &src)
+  {
+    // NuSMV generates TRUE/FALSE, SMV generates 0/1
+    if(src=="TRUE")
+      return true;
+    else if(src=="FALSE")
+      return false;
+    else if(src=="1")
+      return true;
+    else if(src=="0")
+      return false;
+    else
+      throw "unexpected counterexample value: `"+src+"'";
+  }
 
   void read_counterexample_cadence_smv(
     const std::list<std::string> &file,

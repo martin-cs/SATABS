@@ -354,7 +354,7 @@ void modelchecker_smvt::read_counterexample(
       }
       else if(variable=="runs")
       {
-        thread_infos[thread_nr].runs=atoi(value.c_str());
+        thread_infos[thread_nr].runs=ce_boolean(value);
         data_set=true;
       }
       else if(has_prefix(variable, "b"))
@@ -374,7 +374,8 @@ void modelchecker_smvt::read_counterexample(
           abstract_stept::thread_to_predicate_valuest::iterator it2 =
             abstract_state.thread_states.insert(
                 std::make_pair(tc, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
-          it2->second[nr] = atoi(value.c_str());
+                
+          it2->second[nr]=ce_boolean(value);
         }
         data_set=true;
       }
@@ -385,7 +386,7 @@ void modelchecker_smvt::read_counterexample(
           throw "invalid variable in abstract counterexample: "+
             variable;
 
-        thread_infos[thread_nr].guards[nr]=atoi(value.c_str());
+        thread_infos[thread_nr].guards[nr]=ce_boolean(value);
       }
       else if(has_prefix(variable, "nondet"))
       {
@@ -532,7 +533,7 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
         if(variable=="PC")
           thread_infos[thread_nr].PC=atoi(value.c_str());
         else if(variable=="runs")
-          thread_infos[thread_nr].runs=atoi(value.c_str());
+          thread_infos[thread_nr].runs=ce_boolean(value);
         else if(has_prefix(variable, "b"))
         {
           unsigned nr=atoi(variable.c_str()+1);
@@ -550,7 +551,8 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
             abstract_stept::thread_to_predicate_valuest::iterator it2 =
               abstract_state.thread_states.insert(
                   std::make_pair(tc, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
-            it2->second[nr] = atoi(value.c_str());
+
+            it2->second[nr]=ce_boolean(value);
           }
         }
         else if(has_prefix(variable, "guard"))
@@ -560,7 +562,7 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
             throw "invalid variable in abstract counterexample: "+
               variable;
 
-          thread_infos[thread_nr].guards[nr]=atoi(value.c_str());
+          thread_infos[thread_nr].guards[nr]=ce_boolean(value);
         }
         else if(has_prefix(variable, "nondet"))
         {
