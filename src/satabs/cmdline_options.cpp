@@ -13,6 +13,7 @@ Date: June 2003
 #include <memory>
 
 #include <message.h>
+#include <string2int.h>
 
 #include <goto-symex/xml_goto_trace.h>
 
@@ -72,7 +73,7 @@ int cmdline_optionst::doit()
   // set the same verbosity for all
   int verbosity=6;
   if(cmdline.isset("v"))
-    verbosity=atoi(cmdline.getval("v"));
+    verbosity=safe_str2int(cmdline.getval("v"));
 
   prepare.set_verbosity(verbosity);
 

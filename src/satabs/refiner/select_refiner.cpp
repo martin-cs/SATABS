@@ -16,6 +16,8 @@ Date: September 2005
 #include "no_refiner.h"
 #include "refiner_wp_only.h"
 
+#include <string2int.h>
+
 #ifdef HAVE_IPP
 #include "refiner_ipp.h"
 #endif
@@ -39,7 +41,7 @@ refinert *select_refiner(
   unsigned max_predicates_to_add;
   if(cmdline.isset("max-new-predicates"))
   {
-	  max_predicates_to_add = atoi(cmdline.getval("max-new-predicates"));
+	  max_predicates_to_add = safe_str2unsigned(cmdline.getval("max-new-predicates"));
   } else {
 	  max_predicates_to_add = (unsigned)(-1);
   }
@@ -58,7 +60,7 @@ refinert *select_refiner(
   {
     #ifdef HAVE_IPP
     int limit =
-      cmdline.isset("ipplimit") ?atoi(cmdline.getval("ipplimit")) : -1;
+      cmdline.isset("ipplimit") ?safe_str2int(cmdline.getval("ipplimit")) : -1;
     // -1 means use unsplit prover
     return new refiner_ippt(args, prefix_first, limit, max_predicates_to_add, prefer_non_pointer_predicates);
     #else

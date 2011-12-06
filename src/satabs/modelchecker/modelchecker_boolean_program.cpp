@@ -20,6 +20,7 @@ Author: Daniel Kroening
 #include <i2string.h>
 #include <substitute.h>
 #include <std_expr.h>
+#include <string2int.h>
 
 #include "../abstractor/concurrency_aware_abstract_transition_relation.h"
 
@@ -195,7 +196,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
     if(std::string(line, 0, 12)=="threadbound=")
     {
       std::cerr << "THREAD LIMIT line: " << line << std::endl;
-      threadbound=atoi(line.c_str()+12);
+      threadbound=safe_str2unsigned(line.c_str()+12);
       std::cerr << "THREAD LIMIT found: " << threadbound << std::endl;
     }
     else if(std::string(line, 0, 6)=="TRACE ")
@@ -224,7 +225,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
       {
         if(std::string(*l_it, 0, 2)=="PC")
         {
-          unsigned PC=atoi(l_it->c_str()+2);
+          unsigned PC=safe_str2unsigned(l_it->c_str()+2);
           assert(PC<PC_map.size());
           abstract_state.pc=PC_map[PC];
           abstract_state.label_nr=PC;
@@ -254,28 +255,28 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
           throw "failed to get variable name";
         else if(variable[0]=='b') // checked for emptyness above
         {
-          unsigned nr=atoi(variable.c_str()+1);
+          unsigned nr=safe_str2unsigned(variable.c_str()+1);
           if(nr>=abstract_model.variables.size())
             throw "invalid variable in abstract counterexample: "+
               variable;
 
           if(abstract_model.variables[nr].is_shared_global()) {
-        	  shared_predicate_values[nr] = atoi(value.c_str());
+        	  shared_predicate_values[nr] = safe_str2int(value.c_str());
           } else {
         	  std::map<unsigned, unsigned>::iterator it = number_of_times_predicate_has_been_seen.insert(std::make_pair(nr, 0)).first;
         	  abstract_stept::thread_to_predicate_valuest::iterator it2 =
         			  abstract_state.thread_states.insert(
         					  std::make_pair(it->second, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
-        	  it2->second[nr] = atoi(value.c_str());
+        	  it2->second[nr] = safe_str2int(value.c_str());
         	  it->second++;
           }
         }
         else if(std::string(variable, 0, 3)=="t")
         {
-          abstract_state.thread_nr=atoi(value.c_str());
+          abstract_state.thread_nr=safe_str2unsigned(value.c_str());
         }
         else if(variable=="TAKEN")
-          abstract_state.branch_taken=atoi(value.c_str());
+          abstract_state.branch_taken=safe_str2int(value.c_str());
         else
           throw "unknown variable in abstract counterexample: `"+
                 variable+"'";
@@ -890,7 +891,7 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
 {
   if(expr.id()==ID_predicate_symbol)
   {
-    unsigned p=atoi(expr.get(ID_identifier).c_str());
+    unsigned p=safe_str2unsigned(expr.get(ID_identifier).c_str());
 
     if(p>=variable_names.size())
     {
@@ -902,7 +903,7 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
   }
   else if(expr.id()==ID_predicate_next_symbol)
   {
-    unsigned p=atoi(expr.get(ID_identifier).c_str());
+    unsigned p=safe_str2unsigned(expr.get(ID_identifier).c_str());
 
     if(p>=variable_names.size())
     {
@@ -915,7 +916,7 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
   else if(expr.id()==ID_next_symbol)
   {
     assert(expr.op0().id()==ID_predicate_passive_symbol);
-    unsigned p=atoi(expr.op0().get(ID_identifier).c_str());
+    unsigned p=safe_str2unsigned(expr.op0().get(ID_identifier).c_str());
     assert(p < variable_names.size());
     return "'"+variable_names[p]+"$";
   }

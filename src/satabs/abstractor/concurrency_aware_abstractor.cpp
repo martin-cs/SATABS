@@ -19,6 +19,7 @@
 #include <ansi-c/c_types.h>
 
 #include <arith_tools.h>
+#include <string2int.h>
 
 #include <sstream>
 
@@ -97,7 +98,7 @@ void concurrency_aware_abstractort::pred_abstract_block(
 	          {
 	        	  std::cout << from_expr(concrete_model.ns, "", new_value);
 	          } else if(!new_value.is_nil()) {
-				  unsigned p=atoi(new_value.get(ID_identifier).c_str());
+				  unsigned p=safe_str2unsigned(new_value.get(ID_identifier).c_str());
 				  std::cout << from_expr(concrete_model.ns, "", all_predicates[p]);
 	          } else {
 	        	  std::cout << "*";

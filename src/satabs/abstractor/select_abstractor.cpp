@@ -17,6 +17,8 @@ Date: September 2005
 #include "abstractor_wp_cartesian.h"
 #include "concurrency_aware_abstractor.h"
 
+#include <string2int.h>
+
 /*******************************************************************\
 
 Function: select_abstractor
@@ -55,7 +57,7 @@ abstractort *select_abstractor(
     #endif
   else if(name=="cartesian")
   {
-    const unsigned int max_cube_length = cmdline.isset("max-cube-length")?atoi(cmdline.getval("max-cube-length")):3;
+    const unsigned int max_cube_length = cmdline.isset("max-cube-length")?safe_str2unsigned(cmdline.getval("max-cube-length")):3;
     specific_abstractor = new abstractor_wp_cartesiant(args, max_cube_length, functions);
   }
   else

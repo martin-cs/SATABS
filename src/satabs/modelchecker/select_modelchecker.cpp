@@ -16,6 +16,8 @@ Date: June 2003
 #include "modelchecker_smv.h"
 #include "modelchecker_spin.h"
 
+#include <string2int.h>
+
 /*******************************************************************\
 
 Function: select_modelchecker
@@ -37,7 +39,7 @@ modelcheckert *select_modelchecker(
 
   unsigned max_threads=2; // boom's default thread bound
   if(cmdline.isset("max-threads"))
-    max_threads=atoi(cmdline.getval("max-threads"));
+    max_threads=safe_str2unsigned(cmdline.getval("max-threads"));
     
   modelcheckert *m(NULL);
 

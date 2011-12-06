@@ -20,6 +20,7 @@ Purpose: Preprocess the C program and convert it into a GOTO
 #include <ui_message.h>
 #include <options.h>
 #include <cmdline.h>
+#include <string2int.h>
 
 #include <langapi/language_ui.h>
 
@@ -43,7 +44,7 @@ public:
   unsigned max_iterations()
   {
     if(cmdline.isset("iterations"))
-      return atoi(cmdline.getval("iterations"));
+      return safe_str2unsigned(cmdline.getval("iterations"));
 
     return 100; // default iterations
   }
