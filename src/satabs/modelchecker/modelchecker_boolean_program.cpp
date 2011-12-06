@@ -912,6 +912,13 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
     else
       return "'"+variable_names[p];
   }
+  else if(expr.id()==ID_next_symbol)
+  {
+    assert(expr.op0().id()==ID_predicate_passive_symbol);
+    unsigned p=atoi(expr.op0().get(ID_identifier).c_str());
+    assert(p < variable_names.size());
+    return "'"+variable_names[p]+"$";
+  }
   else if(expr.id()==ID_nondet_symbol)
   {
     return "*";
