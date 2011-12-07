@@ -137,9 +137,9 @@ private:
       return true;
     else if(src=="FALSE")
       return false;
-    else if(src=="1")
+    else if(src=="1" || src=="1,")
       return true;
-    else if(src=="0")
+    else if(src=="0" || src=="0,")
       return false;
     else
       throw "unexpected counterexample value: `"+src+"'";
