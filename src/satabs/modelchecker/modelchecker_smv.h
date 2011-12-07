@@ -141,7 +141,9 @@ private:
       return true;
     else if(src=="0" || src=="0,")
       return false;
-    else if(src=="{}" || src== "?") // SMV produces these
+    // SMV also produces empty set and an undocumented "?"
+    else if(src=="{}" || src=="{}," ||
+        src=="?" || src== "?,")
       return false;
     else
       throw "unexpected counterexample value: `"+src+"'";
