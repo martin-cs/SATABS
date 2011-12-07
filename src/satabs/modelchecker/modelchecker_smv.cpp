@@ -1698,8 +1698,8 @@ bool modelchecker_smvt::check(
       break;
       
     case CMU_SMV:
-      status(std::string("Running CMU SMV: ")+command);
       command="smv";
+      status(std::string("Running CMU SMV: ")+command);
       break;
 
     case CADENCE_SMV:
