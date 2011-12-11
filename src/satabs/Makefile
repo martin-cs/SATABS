@@ -61,19 +61,20 @@ SRC = satabs.cpp cmdline_options.cpp \
       simulator/recurrence_solver.cpp \
       simulator/path_slicer.cpp
 
-include $(CBMC)/src/config.inc
-include $(CBMC)/src/common
-
-LIBS = \
+OBJ += \
       $(CBMC)/src/ansi-c/ansi-c$(LIBEXT) \
       $(CBMC)/src/big-int/bigint$(OBJEXT) \
-      $(CBMC)/src/goto-symex/goto-symex$(LIBEXT) \
-      $(CBMC)/src/solvers/solvers$(LIBEXT) \
-      $(CBMC)/src/xmllang/xmllang$(LIBEXT) \
-      $(CBMC)/src/util/util$(LIBEXT) \
       $(CBMC)/src/goto-programs/goto-programs$(LIBEXT) \
+      $(CBMC)/src/goto-symex/goto-symex$(LIBEXT) \
       $(CBMC)/src/pointer-analysis/pointer-analysis$(LIBEXT) \
-      $(CBMC)/src/langapi/langapi$(LIBEXT)
+      $(CBMC)/src/langapi/langapi$(LIBEXT) \
+      $(CBMC)/src/xmllang/xmllang$(LIBEXT) \
+      $(CBMC)/src/solvers/solvers$(LIBEXT) \
+      $(CBMC)/src/util/util$(LIBEXT)
+
+
+include $(CBMC)/src/config.inc
+include $(CBMC)/src/common
 
 CLEANFILES = satabs$(EXEEXT)
 
