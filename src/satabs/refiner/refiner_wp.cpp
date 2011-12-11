@@ -282,6 +282,7 @@ bool refiner_wpt::refine_prefix(
               {
                 equal_exprt pred_new(to_code_assign(code).lhs(),
                     to_code_assign(code).rhs());
+                simplify(pred_new, concrete_model.ns);
 #ifdef DEBUG
                 std::cout << "Adding new predicate as we arrived at TRUE: "
                   << from_expr(concrete_model.ns, "", pred_new) << std::endl;
@@ -292,6 +293,7 @@ bool refiner_wpt::refine_prefix(
             else if(it->pc->type==ASSUME || it->pc->type==GOTO)
             {
               exprt pred_new=concrete_pc->guard;
+              simplify(pred_new, concrete_model.ns);
 #ifdef DEBUG
               std::cout << "Adding new predicate as we arrived at TRUE: "
                 << from_expr(concrete_model.ns, "", pred_new) << std::endl;

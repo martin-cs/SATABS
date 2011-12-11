@@ -55,6 +55,33 @@ void canonicalize_rec(exprt &expr, bool &negation)
 
 /*******************************************************************\
 
+Function: clean_annotations_and_type_rec
+
+  Inputs:
+
+ Outputs:
+
+ Purpose:
+
+\*******************************************************************/
+
+void clean_annotations_and_type_rec(exprt &expr, const namespacet &ns)
+{
+  expr.remove(ID_C_cformat);
+  expr.remove(ID_C_location);
+
+  if(expr.type().id()==ID_symbol)
+  {
+    typet type=ns.follow(expr.type());
+    expr.type().swap(type);
+  }
+
+  Forall_operands(it, expr)
+    clean_annotations_and_type_rec(*it, ns);
+}
+
+/*******************************************************************\
+
 Function: canonicalize
 
   Inputs:
@@ -76,6 +103,8 @@ void canonicalize(exprt &expr, bool &negation, const namespacet &ns)
   negation=false;
 
   canonicalize_rec(expr, negation);
+
+  clean_annotations_and_type_rec(expr, ns);
 }
 
 /*******************************************************************\

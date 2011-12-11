@@ -17,6 +17,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <solvers/prop/prop.h>
 
 #include "predabs_aux.h"
+#include "canonicalize.h"
 
 /*******************************************************************\
 
@@ -231,7 +232,7 @@ void build_equation(
     #endif
 
     //std::cout << "xp P " << i << " = " << from_expr(ns, "", predicates_wp[i]) << std::endl;
-    simplify(predicates_wp[i], ns);
+    canonicalize(predicates_wp[i], ns);
 
     //std::cout << "   P " << i << " = " << from_expr(ns, "", predicates[i]) << std::endl;
     //std::cout << "si P " << i << " = " << from_expr(ns, "", tmp) << std::endl;
