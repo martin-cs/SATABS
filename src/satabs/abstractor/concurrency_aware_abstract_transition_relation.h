@@ -13,7 +13,7 @@
 class concurrency_aware_abstract_transition_relationt : public abstract_transition_relationt {
 public:
 
-	std::set<unsigned> from_passive_predicates, to_passive_predicates;
+	// std::set<unsigned> from_passive_predicates, to_passive_predicates;
 	valuest passive_values;
 
 	concurrency_aware_abstract_transition_relationt();

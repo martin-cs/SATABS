@@ -21,8 +21,25 @@
 #include <arith_tools.h>
 #include <string2int.h>
 
-#include <sstream>
+static void adjust_pred_index(exprt& expr,
+    const predicatest& all_preds,
+    const predicatest& passive_preds)
+{
+  Forall_operands(it, expr)
+    adjust_pred_index(*it, all_preds, passive_preds);
 
+  if(expr.id()==ID_predicate_symbol)
+  {
+    unsigned p=safe_str2unsigned(expr.get(ID_identifier).c_str());
+    if(p >= passive_preds.size())
+    {
+      bool found=passive_preds.find(all_preds[p], p);
+      assert(found);
+      expr.id(ID_predicate_passive_symbol);
+      expr.set(ID_identifier, p);
+    }
+  }
+}
 
 void concurrency_aware_abstractort::pred_abstract_block(
 			goto_programt::const_targett target,
@@ -50,13 +67,9 @@ void concurrency_aware_abstractort::pred_abstract_block(
 
 	  for(unsigned int i = 0; i < predicates.size(); i++)
 	  {
-		  assert(all_predicates.size() == predicates.size() + passive_predicates.size());
 		  // Add passive versions of existing predicates (lookup does this)
-		  if(!predicates.find(make_passive(predicates[i])))
-		  {
-			  passive_predicates.lookup(make_passive(predicates[i]));
-			  all_predicates.lookup(make_passive(predicates[i]));
-		  }
+			  passive_predicates.lookup(predicatest::make_expr_passive(predicates[i], concrete_model.ns));
+			  all_predicates.lookup(predicatest::make_expr_passive(predicates[i], concrete_model.ns));
 	  }
 
 
@@ -71,9 +84,10 @@ void concurrency_aware_abstractort::pred_abstract_block(
 	    passive_constraints,
 	    passive_predicates_wp);
 
-	  for(unsigned i=0; i<passive_predicates.size(); i++)
+	  for(unsigned int i = 0; i < predicates.size(); i++)
 	  {
-	    if(passive_predicates_wp[i]==passive_predicates[i])
+	    if(passive_predicates_wp[i]==passive_predicates[i] ||
+          predicates[i]==predicatest::make_expr_passive(predicates[i], concrete_model.ns))
 	    {
 	      concurrency_aware_abstract_transition_relation->passive_values.erase(i);
 	      #ifdef DEBUG
@@ -106,10 +120,12 @@ void concurrency_aware_abstractort::pred_abstract_block(
 	          std::cout << std::endl << std::endl;
 	#endif
 
+            adjust_pred_index(new_value, all_predicates, passive_predicates);
 	          concurrency_aware_abstract_transition_relation->passive_values[i]=new_value;
 
 	          // if it changes, it's output
-	          concurrency_aware_abstract_transition_relation->to_passive_predicates.insert(i);
+            // TODO never used!?
+	          // concurrency_aware_abstract_transition_relation->to_passive_predicates.insert(i);
 
 	      }
 	    }
@@ -124,354 +140,6 @@ void concurrency_aware_abstractort::abstract_assume_guard(
               goto_programt::const_targett program_location)
 {
 	this->specific_abstractor->abstract_assume_guard(predicates, expr, ns, program_location);
-}
-
-
-
-
-exprt concurrency_aware_abstractort::make_passive(exprt phi)
-{
-	// Recursively mutate the expression, to make it passive
-	return make_passive_rec(phi);
-}
-
-exprt concurrency_aware_abstractort::make_passive_rec(exprt phi)
-{
-	if(phi.id()==ID_plus || phi.id()==ID_minus || phi.id()==ID_mult || phi.id()==ID_div
-			|| phi.id()==ID_mod || phi.id()==ID_shl || phi.id()==ID_ashr || phi.id()==ID_lshr
-			|| phi.id()==ID_lt || phi.id()==ID_gt || phi.id()==ID_le || phi.id()==ID_ge
-			|| phi.id()==ID_notequal || phi.id()==ID_equal || phi.id()==ID_bitand
-			|| phi.id()==ID_bitxor || phi.id()==ID_bitor || phi.id()==ID_and || phi.id()==ID_or
-			|| phi.id()==ID_implies)
-
-	  {
-		for(unsigned int i = 0; i < phi.operands().size(); i++)
-		{
-			phi.operands()[i] = make_passive_rec(phi.operands()[i]);
-		}
-		return phi;
-	  }
-
-	  else if(phi.id()==ID_unary_minus || phi.id()==ID_unary_plus || phi.id()==ID_not || phi.id()==ID_bitnot)
-	  {
-		  assert(phi.operands().size() == 1);
-		  phi.op0() = make_passive_rec(phi.op0());
-		  return phi;
-	  }
-
-	  else if(phi.id()=="invalid-pointer")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="pointer_arithmetic")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="pointer_difference")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="NULL-object")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_integer_address ||
-			  phi.id()==ID_stack_object ||
-			  phi.id()==ID_static_object)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_infinity)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="builtin-function")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="pointer_object")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="object_value")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="pointer_object_has_type")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_array_of)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_pointer_offset)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="pointer_base")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="pointer_cons")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="same-object")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="dynamic_object")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="is_dynamic_object")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="is_zero_string")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="zero_string")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="zero_string_length")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()=="buffer_size")
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_pointer_offset)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_isnan)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_isfinite)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_isinf)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_isnormal)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_builtin_offsetof)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_builtin_alignof)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_address_of)
-	  {
-		  phi.op0() = make_passive_rec(phi.op0());
-		  return phi;
-	  }
-
-	  else if(phi.id()==ID_dereference)
-	  {
-		  phi.op0() = make_passive_rec(phi.op0());
-		  return phi;
-	  }
-
-	  else if(phi.id()==ID_index) {
-		  assert(phi.operands().size() == 2);
-		  phi.op0() = make_passive_rec(phi.op0());
-		  phi.op1() = make_passive_rec(phi.op1());
-		  return phi;
-	  }
-
-	  else if(phi.id()==ID_member)
-	  {
-		  /* Somewhat surprisingly, a member expression has one operand - the containing struct.
-		   * Presumably the field is specified explicitly.
-		   */
-		  assert(phi.operands().size() == 1);
-		  phi.op0() = make_passive_rec(phi.op0());
-		  return phi;
-	  }
-
-	  else if(phi.id()=="array-member-value")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()=="struct-member-value")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_sideeffect)
-	  {
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-	  }
-
-	  else if(phi.id()==ID_ieee_float_equal)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_width)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_ieee_float_notequal)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_byte_update_little_endian)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_byte_update_big_endian)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_abs)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_if)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_forall)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_exists)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()=="lambda")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_with)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_symbol)
-	  {
-		  if(is_procedure_local(concrete_model.ns.lookup(phi.get(ID_identifier))))
-		  {
-			  std::ostringstream stream;
-			  stream << phi.get(ID_identifier) << "$";
-			  phi.set(ID_identifier, stream.str());
-		  }
-		  return phi;
-	  }
-
-	  else if(phi.id()==ID_next_symbol)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_nondet_symbol)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()=="predicate_symbol")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()=="predicate_next_symbol")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()=="quantified_symbol")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()=="nondet_bool")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()=="object_descriptor")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()=="Hoare")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_code)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_constant)
-		return phi;
-
-	  else if(phi.id()==ID_string_constant)
-		return phi;
-
-	  else if(phi.id()==ID_struct)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_vector)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_union)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_array)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()=="array-list")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_typecast)
-		  {
-			  phi.op0() = make_passive_rec(phi.op0());
-			  return phi;
-		  }
-
-	  else if(phi.id()=="implicit_address_of")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()=="implicit_dereference")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_comma)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_cond)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(std::string(phi.id_string(), 0, 9)=="overflow-")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_unknown)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()=="invalid")
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_extractbit)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_initializer_list)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	  else if(phi.id()==ID_designated_initializer)
-		  { std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	{ std::cout << "Cannot yet handle " << from_expr(concrete_model.ns, "", phi) << std::endl; assert(false); throw "not yet supported"; }
-
-	return phi;
 }
 
 

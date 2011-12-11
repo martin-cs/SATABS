@@ -84,3 +84,27 @@ bool operator== (const predicatest &p1, const predicatest &p2)
 {
   return p1.predicate_vector==p2.predicate_vector;
 }
+
+
+exprt predicatest::make_expr_passive(const exprt& phi, const namespacet& ns)
+{
+	// Recursively mutate the expression, to make it passive
+  exprt tmp(phi);
+	make_expr_passive_rec(tmp, ns);
+  return tmp;
+}
+
+void predicatest::make_expr_passive_rec(exprt& phi, const namespacet& ns)
+{
+  Forall_operands(it, phi)
+    make_expr_passive_rec(*it, ns);
+
+  if(phi.id()==ID_symbol)
+  {
+    const irep_idt &identifier=to_symbol_expr(phi).get_identifier();
+    assert(*identifier.as_string().rbegin()!='$');
+    if(is_procedure_local(ns.lookup(identifier)))
+      phi.set(ID_identifier, identifier.as_string()+"$");
+  }
+}
+

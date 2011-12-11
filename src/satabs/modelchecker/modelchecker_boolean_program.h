@@ -79,9 +79,9 @@ protected:
   typedef std::map<std::string, float> statst;
   statst stats;
 
-  std::vector<std::string> passive_variable_names; // Only relevant if we are doing concurrency-aware verification
+  //std::vector<std::string> passive_variable_names; // Only relevant if we are doing concurrency-aware verification
 
-  virtual void get_variable_names(const abstract_modelt &abstract_model);
+  //virtual void get_variable_names(const abstract_modelt &abstract_model);
 
   void build_boolean_program_file(
     abstract_modelt &abstract_model,

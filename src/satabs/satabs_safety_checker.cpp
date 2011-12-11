@@ -348,7 +348,7 @@ safety_checkert::resultt satabs_safety_checkert::operator()(
 
   if(concurrency_aware)
   {
-	  add_passive_symbols_to_namespace();
+	  // add_passive_symbols_to_namespace();
   }
 
 

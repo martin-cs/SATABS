@@ -13,6 +13,8 @@ Author: Daniel Kroening, kroening@kroening.com
 
 typedef exprt predicatet;
 
+class namespacet;
+
 class predicatest
 {
 public:
@@ -51,6 +53,8 @@ public:
   {
     return predicate_vector.size();
   }
+  
+  static exprt make_expr_passive(const exprt& phi, const namespacet& ns);
 
 protected:
   typedef std::map<predicatet, unsigned> predicate_mapt;
@@ -65,6 +69,8 @@ protected:
   {
     return !(p1==p2);
   }
+	
+  static void make_expr_passive_rec(exprt& phi, const namespacet& ns);
 };
 
 std::ostream& operator<< (std::ostream& out,

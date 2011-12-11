@@ -739,17 +739,22 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
 
       if(concurrency_aware)
       {
-    	  for(unsigned i=0; i<passive_variable_names.size(); i++)
-	  {
-		concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
-		assert(NULL != trans_rel);
-    		if(trans_rel->passive_values.count(i)!=0)
-    		{
-    			assert(!first);
-    			out << ",";
-    			out << passive_variable_names[i];
-    		}
-	  }
+        for(unsigned i=0; i<abstract_model.variables.size(); i++)
+        {
+          concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
+          assert(NULL != trans_rel);
+    		  if(trans_rel->passive_values.count(i)!=0)
+          {
+            assert(!abstract_model.variables[i].is_thread_local());
+            assert(abstract_model.variables[i].is_procedure_local() || abstract_model.variables[i].is_mixed());
+    			
+            assert(!first);
+    			  out << ",";
+            exprt tmp=exprt(ID_predicate_passive_symbol, typet("bool"));
+            tmp.set(ID_identifier, i);
+            out << expr_string(tmp);
+          }
+        }
       }
 
       if(first) // none changed?
@@ -785,10 +790,10 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
           concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
           assert(NULL != trans_rel);
 
-          for(unsigned i=0; i<passive_variable_names.size(); i++)
+          for(unsigned i=0; i<abstract_model.variables.size(); i++)
           {
             abstract_transition_relationt::valuest::const_iterator
-                    v_it=trans_rel->passive_values.find(i);
+              v_it=trans_rel->passive_values.find(i);
 
             if(v_it!=trans_rel->passive_values.end())
             {
@@ -892,26 +897,20 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
   if(expr.id()==ID_predicate_symbol)
   {
     unsigned p=safe_str2unsigned(expr.get(ID_identifier).c_str());
-
-    if(p>=variable_names.size())
-    {
-      assert(concurrency_aware);
-      return passive_variable_names[p - variable_names.size()];
-    }
-    else
-      return variable_names[p];
+    assert(p < variable_names.size());
+    return variable_names[p];
   }
   else if(expr.id()==ID_predicate_next_symbol)
   {
     unsigned p=safe_str2unsigned(expr.get(ID_identifier).c_str());
-
-    if(p>=variable_names.size())
-    {
-      assert(concurrency_aware);
-      return "'"+passive_variable_names[p - variable_names.size()];
-    }
-    else
-      return "'"+variable_names[p];
+    assert(p < variable_names.size());
+    return "'"+variable_names[p];
+  }
+  else if(expr.id()==ID_predicate_passive_symbol)
+  {
+    unsigned p=safe_str2unsigned(expr.get(ID_identifier).c_str());
+    assert(p < variable_names.size());
+    return variable_names[p]+"$";
   }
   else if(expr.id()==ID_next_symbol)
   {
@@ -1214,6 +1213,7 @@ Function: modelchecker_boolean_programt::get_variable_names
 
 \*******************************************************************/
 
+/*
 void modelchecker_boolean_programt::get_variable_names(
   const abstract_modelt &abstract_model)
 {
@@ -1239,5 +1239,6 @@ void modelchecker_boolean_programt::get_variable_names(
 
 
 }
+*/
 
 

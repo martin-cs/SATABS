@@ -49,10 +49,6 @@ protected:
                         const namespacet &ns,
                         goto_programt::const_targett program_location);
 
-	exprt make_passive(exprt phi);
-
-	exprt make_passive_rec(exprt phi);
-
 	std::set<symbol_exprt> targets_of_lvalue(const exprt& lvalue, goto_programt::const_targett program_location);
 
 	bool broadcast_required(
