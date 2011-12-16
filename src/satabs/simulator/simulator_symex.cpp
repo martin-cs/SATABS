@@ -81,6 +81,7 @@ void simulator_symext::convert(
     case goto_trace_stept::LOCATION:
     case goto_trace_stept::OUTPUT:
     case goto_trace_stept::INPUT:
+    case goto_trace_stept::DECL:
       break;
       
     default:
