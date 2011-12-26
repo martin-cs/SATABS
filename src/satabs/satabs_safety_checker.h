@@ -28,7 +28,8 @@ public:
     abstractort &abstractor,
     refinert &refiner,
     modelcheckert &modelchecker,
-    simulatort &simulator);
+    simulatort &simulator,
+    bool csv_stats);
 
   // you can add some predicates that are there right
   // from the beginning
@@ -59,8 +60,9 @@ protected:
   simulatort &simulator;
 
   // collecting statistics
-
+  const bool write_csv_stats;
   fine_timet total_time;
+  fine_timet total_start_time;
   fine_timet abstractor_time;
   fine_timet modelchecker_time;
   fine_timet simulator_time;
@@ -90,6 +92,7 @@ protected:
 
   void add_passive_symbols_to_namespace();
 
+  void csv_stats(std::ofstream &of);
 };
 
 #endif

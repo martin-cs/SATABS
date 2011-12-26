@@ -7,6 +7,7 @@ Author: Daniel Kroening, kroening@kroening.com
 \*******************************************************************/
 
 #include <sstream>
+#include <fstream>
 
 #include <i2string.h>
 
@@ -31,7 +32,8 @@ satabs_safety_checkert::satabs_safety_checkert(
   abstractort &_abstractor,
   refinert &_refiner,
   modelcheckert &_modelchecker,
-  simulatort &_simulator):
+  simulatort &_simulator,
+  bool csv_stats):
   safety_checkert(_ns),
   max_iterations(0),
   save_bps(false),
@@ -39,7 +41,8 @@ satabs_safety_checkert::satabs_safety_checkert(
   abstractor(_abstractor),
   refiner(_refiner),
   modelchecker(_modelchecker),
-  simulator(_simulator)
+  simulator(_simulator),
+  write_csv_stats(csv_stats)
 {
 }
 
@@ -142,6 +145,95 @@ void satabs_safety_checkert::show_statistics()
       status(str.str());
     }
   }
+}
+
+/*******************************************************************\
+
+Function: satabs_safety_checkert::csv_stats
+
+  Inputs:
+
+ Outputs:
+
+ Purpose:
+
+\*******************************************************************/
+
+void satabs_safety_checkert::csv_stats(std::ofstream &of)
+{
+  if(!write_csv_stats) return;
+
+  assert(iteration>=1);
+  assert(of.is_open());
+
+  if(iteration==1)
+  {
+    of << "iteration,\"nr predicates\",";
+    if(concurrency_aware)
+      of << "shared,mixed,local,";
+    of << "\"total time\",";
+    of << "\"abstractor time\",";
+    of << "\"model checker time\",";
+    of << "\"simulator time\",";
+    of << "\"refiner time\"";
+    of << std::endl;
+  }
+
+  of << iteration << "," <<
+    predicates.size() << ",";
+
+  if(concurrency_aware)
+  {
+	  unsigned int local_count = 0;
+	  unsigned int shared_count = 0;
+	  unsigned int mixed_count = 0;
+
+	  for(unsigned int i = 0; i < predicates.size(); i++)
+	  {
+		  switch(abstractor.get_var_class(predicates[i]))
+		  {
+		  case abstract_modelt::variablet::PROCEDURE_LOCAL:
+			  local_count++;
+			  break;
+		  case abstract_modelt::variablet::SHARED_GLOBAL:
+			  shared_count++;
+			  break;
+		  case abstract_modelt::variablet::MIXED:
+			  mixed_count++;
+			  break;
+		  default:
+			  assert(false);
+		  }
+	  }
+
+    of << shared_count << ","
+      << mixed_count << ","
+      << local_count << ",";
+  }
+
+  {
+    static fine_timet prev_tot_time=total_start_time;
+    output_time(current_time()-prev_tot_time, of);
+    prev_tot_time=current_time();
+    of << ",";
+    static fine_timet prev_abs_time=0;
+    output_time(abstractor_time-prev_abs_time, of);
+    prev_abs_time=abstractor_time;
+    of << ",";
+    static fine_timet prev_mc_time=0;
+    output_time(modelchecker_time-prev_mc_time, of);
+    prev_mc_time=modelchecker_time;
+    of << ",";
+    static fine_timet prev_sim_time=0;
+    output_time(simulator_time-prev_sim_time, of);
+    prev_sim_time=simulator_time;
+    of << ",";
+    static fine_timet prev_ref_time=0;
+    output_time(refiner_time-prev_ref_time, of);
+    prev_ref_time=refiner_time;
+  }
+
+  of << std::endl;
 }
 
 /*******************************************************************\
@@ -337,7 +429,7 @@ safety_checkert::resultt satabs_safety_checkert::operator()(
   status("*** Starting CEGAR Loop ***");
 
   resultt result=ERROR;
-  fine_timet start_time=current_time();
+  total_start_time=current_time();
   abstractor_time=0;
   modelchecker_time=0;
   simulator_time=0;
@@ -366,6 +458,9 @@ safety_checkert::resultt satabs_safety_checkert::operator()(
       initial_abstraction.init_preds(
         ns, predicates, initial_predicates, abstractor.abstract_model);
   }
+
+  std::auto_ptr<std::ofstream> csv(write_csv_stats?
+      new std::ofstream("cegar.csv"):0);
 
   while(true) 
   {
@@ -417,10 +512,13 @@ safety_checkert::resultt satabs_safety_checkert::operator()(
         break;
       }
     }
+
+    csv_stats(*csv);
   }
 
-  total_time=current_time()-start_time;
+  total_time=current_time()-total_start_time;
   show_statistics();
+  csv_stats(*csv);
   
   return result;
 }

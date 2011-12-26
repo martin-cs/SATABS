@@ -127,7 +127,8 @@ int cmdline_optionst::doit()
       *abstractor,
       *refiner,
       *modelchecker,
-      *simulator);
+      *simulator,
+      cmdline.isset("csv-stats"));
     
     satabs_safety_checker.initial_predicates=
       prepare.user_provided_predicates;
