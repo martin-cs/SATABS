@@ -269,12 +269,13 @@ bool transition_refinert::check_transition(
       continue;
 
     transition_cachet::entryt transition_cache_entry;
-    if(passive_id == abstract_state_from.thread_nr)
+    if(passive_id < abstract_state_from.thread_states.size())
     {
       // check cache if this is a local check
       transition_cache_entry.build(
           abstract_state_from,
-          abstract_state_to);
+          abstract_state_to,
+          passive_id);
 
       if(transition_cache.in_cache(transition_cache_entry))
       {
@@ -330,7 +331,7 @@ bool transition_refinert::check_transition(
     }
 
     if(!inconsistent_initial_state &&
-        passive_id == abstract_state_from.thread_nr)
+        passive_id < abstract_state_from.thread_states.size())
       transition_cache.insert(transition_cache_entry);
   }
 

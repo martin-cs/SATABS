@@ -18,12 +18,14 @@ Purpose:
 class transition_cachet
 {
 public:
-  typedef std::map<unsigned, bool> valuest;
+  //typedef std::map<unsigned, bool> valuest;
+  typedef std::vector<bool> valuest;
 
   struct entryt
   {
     goto_programt::const_targett pc;
     valuest from, to;
+    valuest from_passive, to_passive;
 
     friend bool operator==(
       const entryt &a,
@@ -32,19 +34,23 @@ public:
       if(a.pc!=b.pc)
         return false;
       
-      return a.from==b.from && a.to==b.to;
+      return a.from==b.from && a.to==b.to &&
+        a.from_passive==b.from_passive &&
+        a.to_passive==b.to_passive;
     }
     
     void build(
       const abstract_stept &abstract_state_from,
-      const abstract_stept &abstract_state_to);
+      const abstract_stept &abstract_state_to,
+      unsigned passive_id);
   };
 
   struct entry_hasht
   {
     size_t operator()(const entryt &e) const
     {
-      return ((unsigned long)&(*e.pc))^e.from.size()^e.to.size();
+      return ((unsigned long)&(*e.pc))^e.from.size()^e.to.size()
+        ^e.from_passive.size()^e.to_passive.size();
     }
   };
   
