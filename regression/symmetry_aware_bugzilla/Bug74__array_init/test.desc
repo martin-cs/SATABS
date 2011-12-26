@@ -1,4 +1,4 @@
-KNOWNBUG
+CORE
 main.c
 --concurrency --full-inlining --max-threads 2
 ^EXIT=0$

@@ -1,4 +1,4 @@
-KNOWNBUG
+CORE
 main.c
 --concurrency --full-inlining --abstractor cartesian --max-threads 2 --max-cube-length 2
 ^EXIT=0$
