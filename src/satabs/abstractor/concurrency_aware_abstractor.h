@@ -21,10 +21,15 @@
 class concurrency_aware_abstractort : public abstractort {
 public:
 
-	concurrency_aware_abstractort(const argst &args, std::auto_ptr<abstractort> specific_abstractor, const goto_functionst &functions) :
+	concurrency_aware_abstractort(
+      const argst &args,
+      std::auto_ptr<abstractort> specific_abstractor,
+      const goto_functionst &functions,
+      const bool _passive_nondet) :
 		abstractort(args),
 		specific_abstractor(specific_abstractor),
-		pointer_info(args.concrete_model.ns)
+		pointer_info(args.concrete_model.ns),
+    passive_nondet(_passive_nondet)
 	{
 		status("Performing pointer analysis for concurrency-aware abstraction");
 		pointer_info(functions);
@@ -59,6 +64,7 @@ protected:
 private:
 	std::auto_ptr<abstractort> specific_abstractor;
 	value_set_analysist pointer_info;
+  const bool passive_nondet;
 
 
 };

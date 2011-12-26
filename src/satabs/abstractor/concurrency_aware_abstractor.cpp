@@ -104,7 +104,9 @@ void concurrency_aware_abstractort::pred_abstract_block(
 
 	      if(broadcast_required(target, passive_predicates[i], target))
 	      {
-	          exprt new_value = specific_abstractor->get_value(-1 /* not used */ , all_predicates, passive_predicates_wp[i], concrete_model.ns, target);
+	          exprt new_value = passive_nondet ?
+              nil_exprt() :
+              specific_abstractor->get_value(-1 /* not used */ , all_predicates, passive_predicates_wp[i], concrete_model.ns, target);
 
 	#ifdef DEBUG
 	          std::cout << "New value: ";

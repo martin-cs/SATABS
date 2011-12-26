@@ -51,11 +51,14 @@ refinert *select_refiner(
     cmdline.isset("refiner")?cmdline.getval("refiner"):"wp";
     
   bool prefix_first=cmdline.isset("prefix-first");
+  
+  bool passive_constrain=!cmdline.isset("concurrency") ||
+    !cmdline.isset("passive-nondet");
 
   if(name=="wp_only")
-    return new refiner_wp_onlyt(args, prefix_first, max_predicates_to_add, prefer_non_pointer_predicates);
+    return new refiner_wp_onlyt(args, prefix_first, max_predicates_to_add, prefer_non_pointer_predicates, passive_constrain);
   else if(name=="wp")
-    return new refiner_wpt(args, prefix_first, max_predicates_to_add, prefer_non_pointer_predicates);
+    return new refiner_wpt(args, prefix_first, max_predicates_to_add, prefer_non_pointer_predicates, passive_constrain);
   else if(name=="ipp")
   {
     #ifdef HAVE_IPP
@@ -68,11 +71,11 @@ refinert *select_refiner(
     #endif
   }
   else if(name=="lifter")
-    return new refiner_liftert(args, prefix_first, max_predicates_to_add, prefer_non_pointer_predicates);
+    return new refiner_liftert(args, prefix_first, max_predicates_to_add, prefer_non_pointer_predicates, passive_constrain);
   else if(name=="none")
     return new no_refinert(args);
   else if(name=="transitions_only")
-    return new transition_refinert(args, false, max_predicates_to_add, prefer_non_pointer_predicates);
+    return new transition_refinert(args, false, max_predicates_to_add, prefer_non_pointer_predicates, passive_constrain);
   else
     throw "unknown refiner: "+name;
 }

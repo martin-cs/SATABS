@@ -65,7 +65,11 @@ abstractort *select_abstractor(
 
   if(cmdline.isset("concurrency"))
   {
-	  return new concurrency_aware_abstractort(args, std::auto_ptr<abstractort>(specific_abstractor), functions);
+	  return new concurrency_aware_abstractort(
+        args,
+        std::auto_ptr<abstractort>(specific_abstractor),
+        functions,
+        cmdline.isset("passive-nondet"));
   } else {
 	  return specific_abstractor;
   }

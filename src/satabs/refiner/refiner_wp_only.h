@@ -15,8 +15,8 @@
 class refiner_wp_onlyt:public refiner_wpt
 {
 public:
-  refiner_wp_onlyt(const argst &args, bool _prefix_first, unsigned max_predicates_to_add, bool prefer_non_pointer_predicates):
-    refiner_wpt(args, _prefix_first, max_predicates_to_add, prefer_non_pointer_predicates)
+  refiner_wp_onlyt(const argst &args, bool _prefix_first, unsigned max_predicates_to_add, bool prefer_non_pointer_predicates, bool passive_constrain):
+    refiner_wpt(args, _prefix_first, max_predicates_to_add, prefer_non_pointer_predicates, passive_constrain)
   {
   }
 

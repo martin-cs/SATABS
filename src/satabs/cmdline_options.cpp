@@ -278,6 +278,8 @@ void cmdline_optionst::help()
     " --concurrency                use CAV'11 method to handle concurrency\n"
     " --max-threads #              when \"concurrency\" is on, specifies maximum\n"
     "                                 number of threads to spawn (default: 2)\n"
+    " --passive-nondet             when \"concurrency\" is on, always force passive\n"
+    "                                 predicates to nondet on broadcast and don't constrain\n"
     "\n"
     "Other options:\n"
     " --v #                        verbosity level\n"

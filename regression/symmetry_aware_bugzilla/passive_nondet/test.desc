@@ -1,0 +1,12 @@
+CORE
+main.c
+--full-inlining --concurrency --modelchecker boom --max-threads 4 --passive-nondet
+^EXIT=1$
+^SIGNAL=0$
+^refinement failure$
+--
+^warning: ignoring
+--
+Works perfectly fine without --passive-nondet, but is intended to fail when
+adding this option.
+
