@@ -159,10 +159,39 @@ void simulator_symext::build_equation_prefix(
       break;
       
     case DEAD:
-    case START_THREAD:
-    case END_THREAD:
     case ATOMIC_BEGIN:
     case ATOMIC_END:
+      break;
+    
+    case START_THREAD:
+      if(it->relevant)
+      {
+        const namespacet &ns=concrete_model.ns;
+        std::set<irep_idt> l2_names;
+        state.level2.get_variables(l2_names);
+        for(std::set<irep_idt>::const_iterator
+            itn=l2_names.begin();
+            itn!=l2_names.end();
+            ++itn)
+        {
+          irep_idt l1_name=state.get_original_name(*itn);
+          const symbolt &sym=ns.lookup(l1_name);
+          if(!is_procedure_local(sym)) continue;
+
+          unsigned const next_thread=state.source.thread_nr+1;
+          l1_name=state.level0(l1_name, ns, next_thread);
+          l1_name=state.top().level1(l1_name);
+          symbol_exprt sl(l1_name, sym.type);
+          symbol_exprt sr(*itn, sym.type);
+          state.rename(sr, ns, goto_symex_statet::L2);
+          state.assignment(sl, sr, ns, constant_propagation);
+          prefix.equation.assignment(guardt(),
+              sl, sl, sl, sl, sr,
+              state.source, symex_targett::STATE);
+        }
+      }
+      break;
+    case END_THREAD:
       break;
 
     case RETURN:
