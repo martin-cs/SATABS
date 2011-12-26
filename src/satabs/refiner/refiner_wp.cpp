@@ -19,6 +19,7 @@ Date: June 2003
 
 #include <goto-programs/wp.h>
 #include <goto-symex/basic_symex.h>
+#include <goto-symex/goto_symex_state.h>
 
 #include <simplify_expr.h>
 #include <solvers/sat/satcheck.h>
@@ -129,6 +130,9 @@ bool refiner_wpt::refine_prefix(
     }
       
     // now do the WPs
+    goto_symex_statet renaming_state;
+    renaming_state.source.thread_nr=it->thread_nr;
+    renaming_state.rename(predicate, concrete_model.ns, goto_symex_statet::L0);
 
     for(it--; // skip last instruction
         it!=fail_info.steps.begin();
@@ -183,7 +187,9 @@ bool refiner_wpt::refine_prefix(
       std::cout << from_expr(concrete_model.ns, "", predicate) << std::endl;
       #endif
       
-      add_predicates(abstract_pc, predicates, predicate, found_new, TO);
+      exprt no_tid_predicate=predicate;
+      renaming_state.get_original_name(no_tid_predicate);
+      add_predicates(abstract_pc, predicates, no_tid_predicate, found_new, TO);
 
       // skip irrelevant instructions
       if(!it->relevant) continue;
@@ -198,16 +204,21 @@ bool refiner_wpt::refine_prefix(
         // if we haven't found a new predicate so far
         if(!found_new)
         {
-          predicate=implies_exprt(concrete_pc->guard, predicate);
+          exprt tid_guard=concrete_pc->guard;
+          renaming_state.source.thread_nr=it->thread_nr;
+          renaming_state.rename(tid_guard, concrete_model.ns, goto_symex_statet::L0);
+          predicate=implies_exprt(tid_guard, predicate);
           simplify(predicate, concrete_model.ns);
         }
         break;
 
       case GOTO:
         {
-          exprt guard=concrete_pc->guard;
-          if(!it->branch_taken) guard.make_not();
-          predicate=implies_exprt(guard, predicate);
+          exprt tid_guard=concrete_pc->guard;
+          if(!it->branch_taken) tid_guard.make_not();
+          renaming_state.source.thread_nr=it->thread_nr;
+          renaming_state.rename(tid_guard, concrete_model.ns, goto_symex_statet::L0);
+          predicate=implies_exprt(tid_guard, predicate);
           simplify(predicate, concrete_model.ns);
         }
         break;
@@ -223,20 +234,22 @@ bool refiner_wpt::refine_prefix(
         #endif
 
         {
-          codet tmp_code;
+          codet tid_tmp_code;
           if(!fail_info.use_invariants ||
-             !get_instruction(concrete_pc, loops, tmp_code, invariant))
-            tmp_code=to_code(concrete_pc->code);
+             !get_instruction(concrete_pc, loops, tid_tmp_code, invariant))
+            tid_tmp_code=to_code(concrete_pc->code);
 
 #ifdef DEBUG
           std::cout << "A P before: " << from_expr(concrete_model.ns, "", predicate) << std::endl;
-          std::cout << "Code:     " << from_expr(concrete_model.ns, "", tmp_code) << std::endl;
+          std::cout << "Code:     " << from_expr(concrete_model.ns, "", tid_tmp_code) << std::endl;
 #endif
           
           // compute weakest precondition
-          if(tmp_code.get_statement()==ID_assign)
-            approximate_nondet(to_code_assign(tmp_code).rhs());
-          exprt predicate_wp=wp(tmp_code, predicate, concrete_model.ns);
+          if(tid_tmp_code.get_statement()==ID_assign)
+            approximate_nondet(to_code_assign(tid_tmp_code).rhs());
+          renaming_state.source.thread_nr=it->thread_nr;
+          renaming_state.rename(tid_tmp_code, concrete_model.ns, goto_symex_statet::L0);
+          exprt predicate_wp=wp(tid_tmp_code, predicate, concrete_model.ns);
       
           simplify(predicate_wp, concrete_model.ns);
           predicate=predicate_wp;
@@ -287,7 +300,9 @@ bool refiner_wpt::refine_prefix(
                 std::cout << "Adding new predicate as we arrived at TRUE: "
                   << from_expr(concrete_model.ns, "", pred_new) << std::endl;
 #endif
-                add_predicates(abstract_pc, predicates, pred_new, found_new, FROM);
+                no_tid_predicate=pred_new;
+                renaming_state.get_original_name(no_tid_predicate);
+                add_predicates(abstract_pc, predicates, no_tid_predicate, found_new, FROM);
               }
             }
             else if(it->pc->type==ASSUME || it->pc->type==GOTO)
@@ -298,7 +313,9 @@ bool refiner_wpt::refine_prefix(
               std::cout << "Adding new predicate as we arrived at TRUE: "
                 << from_expr(concrete_model.ns, "", pred_new) << std::endl;
 #endif
-              add_predicates(abstract_pc, predicates, pred_new, found_new, FROM);
+              no_tid_predicate=pred_new;
+              renaming_state.get_original_name(no_tid_predicate);
+              add_predicates(abstract_pc, predicates, no_tid_predicate, found_new, FROM);
             }
           }
         }
@@ -308,7 +325,9 @@ bool refiner_wpt::refine_prefix(
       std::cout << "B P after:   " << from_expr(concrete_model.ns, "", predicate) << std::endl;
       #endif
 
-      add_predicates(abstract_pc, predicates, predicate, found_new, FROM);
+      no_tid_predicate=predicate;
+      renaming_state.get_original_name(no_tid_predicate);
+      add_predicates(abstract_pc, predicates, no_tid_predicate, found_new, FROM);
     }
 
     if(!predicate.is_true() && fail_info.warn_on_failure)
