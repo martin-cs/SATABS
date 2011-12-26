@@ -68,8 +68,8 @@ void concurrency_aware_abstractort::pred_abstract_block(
 	  for(unsigned int i = 0; i < predicates.size(); i++)
 	  {
 		  // Add passive versions of existing predicates (lookup does this)
-			  passive_predicates.lookup(predicatest::make_expr_passive(predicates[i], concrete_model.ns));
-			  all_predicates.lookup(predicatest::make_expr_passive(predicates[i], concrete_model.ns));
+			  passive_predicates.lookup(predicatest::make_expr_passive(predicates[i], concrete_model.ns, 0));
+			  all_predicates.lookup(predicatest::make_expr_passive(predicates[i], concrete_model.ns, 0));
 	  }
 
 
@@ -87,7 +87,7 @@ void concurrency_aware_abstractort::pred_abstract_block(
 	  for(unsigned int i = 0; i < predicates.size(); i++)
 	  {
 	    if(passive_predicates_wp[i]==passive_predicates[i] ||
-          predicates[i]==predicatest::make_expr_passive(predicates[i], concrete_model.ns))
+          predicates[i]==predicatest::make_expr_passive(predicates[i], concrete_model.ns, 0))
 	    {
 	      concurrency_aware_abstract_transition_relation->passive_values.erase(i);
 	      #ifdef DEBUG

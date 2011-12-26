@@ -69,7 +69,8 @@ protected:
   virtual bool check_guarded_transition(
     const predicatest &preficates,
     const abstract_stept &abstract_state_from,
-    const abstract_stept &abstract_state_to);
+    unsigned passive_id,
+    bool &inconsistent_initial_state);
 
   virtual void constrain_goto_transition(
     abstract_transition_relationt &abstract_transition_relation,

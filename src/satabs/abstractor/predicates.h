@@ -54,7 +54,10 @@ public:
     return predicate_vector.size();
   }
   
-  static exprt make_expr_passive(const exprt& phi, const namespacet& ns);
+  static exprt make_expr_passive(
+      const exprt& phi,
+      const namespacet& ns,
+      const unsigned subscript);
 
 protected:
   typedef std::map<predicatet, unsigned> predicate_mapt;
@@ -70,7 +73,10 @@ protected:
     return !(p1==p2);
   }
 	
-  static void make_expr_passive_rec(exprt& phi, const namespacet& ns);
+  static void make_expr_passive_rec(
+      exprt& phi,
+      const namespacet& ns,
+      const unsigned subscript);
 };
 
 std::ostream& operator<< (std::ostream& out,

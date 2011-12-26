@@ -6,6 +6,8 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
+#include <sstream>
+
 #include <langapi/language_util.h>
 
 #include "predicates.h"
@@ -86,25 +88,36 @@ bool operator== (const predicatest &p1, const predicatest &p2)
 }
 
 
-exprt predicatest::make_expr_passive(const exprt& phi, const namespacet& ns)
+exprt predicatest::make_expr_passive(
+    const exprt& phi,
+    const namespacet& ns,
+    const unsigned subscript)
 {
 	// Recursively mutate the expression, to make it passive
   exprt tmp(phi);
-	make_expr_passive_rec(tmp, ns);
+	make_expr_passive_rec(tmp, ns, subscript);
   return tmp;
 }
 
-void predicatest::make_expr_passive_rec(exprt& phi, const namespacet& ns)
+void predicatest::make_expr_passive_rec(
+    exprt& phi,
+    const namespacet& ns,
+    const unsigned subscript)
 {
   Forall_operands(it, phi)
-    make_expr_passive_rec(*it, ns);
+    make_expr_passive_rec(*it, ns, subscript);
 
   if(phi.id()==ID_symbol)
   {
-    const irep_idt &identifier=to_symbol_expr(phi).get_identifier();
-    assert(*identifier.as_string().rbegin()!='$');
+    symbol_exprt &phi_sym=to_symbol_expr(phi);
+    const irep_idt &identifier=phi_sym.get_identifier();
+    assert(identifier.as_string().find('#')==std::string::npos);
     if(is_procedure_local(ns.lookup(identifier)))
-      phi.set(ID_identifier, identifier.as_string()+"$");
+    {
+      std::ostringstream os;
+      os << identifier << '#' << subscript;
+      phi_sym.set_identifier(os.str());
+    }
   }
 }
 
