@@ -31,6 +31,24 @@ public:
     loop_detection(false),
     max_threads(_max_threads)
   {
+    stats.insert(std::make_pair(
+          "Non-broadcast assignment operations executed",
+          statt(false, 0)));
+    stats.insert(std::make_pair(
+          "Broadcast assignment operations executed",
+          statt(false, 0)));
+    stats.insert(std::make_pair(
+          "Time spent in non-broadcast assignment operations",
+          statt(false, 0)));
+    stats.insert(std::make_pair(
+          "Time spent in broadcast assignment operations",
+          statt(false, 0)));
+    stats.insert(std::make_pair(
+          "Total slots",
+          statt(false, 0)));
+    stats.insert(std::make_pair(
+          "Max number of slots used",
+          statt(true, 0)));
   }
 
   // A return value of TRUE means the program is correct,
@@ -70,14 +88,10 @@ public:
     abstract_modelt &abstract_model,
     const std::string &file_name);    
 
-  virtual std::ostream& statistics(std::ostream &os) const;
-
 protected:
   enginet engine;
   bool loop_detection;
   unsigned max_threads; // 0 = no limit
-  typedef std::map<std::string, float> statst;
-  statst stats;
 
   //std::vector<std::string> passive_variable_names; // Only relevant if we are doing concurrency-aware verification
 

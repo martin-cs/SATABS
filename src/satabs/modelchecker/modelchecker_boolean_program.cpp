@@ -89,17 +89,18 @@ bool modelchecker_boolean_programt::read_result_boppo_boom(
             opt=="Time spent in broadcast assignment operations")
         {
           assert(val!=-1);
-          if(stats.find(opt)==stats.end())
-            stats[opt]=val;
-          else
-            stats[opt]+=val;
+          assert(stats.find(opt)!=stats.end());
+          stats[opt].val+=val;
         }
         else if(opt=="Max number of slots used")
         {
           assert(val!=-1);
-          if(stats.find(opt)==stats.end() ||
-              stats[opt]<val)
-            stats[opt]=val;
+          assert(stats.find(opt)!=stats.end());
+          if(stats[opt].val<val)
+            stats[opt].val=val;
+          opt="Total slots";
+          assert(stats.find(opt)!=stats.end());
+          stats[opt].val+=val;
         }
       }
     }
@@ -1176,29 +1177,6 @@ void modelchecker_boolean_programt::save(
   unsigned sequence)
 {
   build(abstract_model, "satabs."+i2string(sequence)+".bp");
-}
-
-/*******************************************************************\
-
-Function: modelchecker_boolean_programt::statistics
-
-  Inputs:
-
- Outputs:
-
- Purpose: 
-
-\*******************************************************************/
-
-std::ostream& modelchecker_boolean_programt::statistics(
-    std::ostream &os) const
-{
-  for(statst::const_iterator it=stats.begin();
-      it!=stats.end();
-      ++it)
-    os << it->first << ": " << it->second << std::endl;
-
-  return os;
 }
 
 /*******************************************************************\

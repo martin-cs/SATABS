@@ -168,7 +168,12 @@ bool transition_refinert::check_transitions(
   if(error)
     status("Transitions are not spurious");
   else
+  {
     status("Found a spurious transition");
+    const std::string opt="Transition refinement iterations";
+    assert(stats.find(opt)!=stats.end());
+    ++(stats[opt].val);
+  }
   
   return error;
 }
@@ -303,7 +308,12 @@ bool transition_refinert::check_transition(
             abstract_state_from,
             passive_id,
             inconsistent_initial_state))
+      {
+        const std::string opt="Total transition refinements";
+        assert(stats.find(opt)!=stats.end());
+        ++(stats[opt].val);
         return true;
+      }
     }
     else
     {
@@ -311,7 +321,12 @@ bool transition_refinert::check_transition(
             abstract_state_from,
             abstract_state_to,
             passive_id))
+      {
+        const std::string opt="Total transition refinements";
+        assert(stats.find(opt)!=stats.end());
+        ++(stats[opt].val);
         return true;
+      }
     }
 
     if(!inconsistent_initial_state &&
@@ -483,10 +498,8 @@ bool transition_refinert::check_assignment_transition(
   if(passive_id >= num_threads)
   {
     const std::string opt="Spurious assignment transitions requiring more than 1 passive thread";
-    if(stats.find(opt)==stats.end())
-      stats[opt]=1;
-    else
-      ++(stats[opt]);
+    assert(stats.find(opt)!=stats.end());
+    ++(stats[opt].val);
     return false; // can't do anything
   }
 
@@ -689,10 +702,8 @@ bool transition_refinert::check_guarded_transition(
     if(passive_id >= num_threads)
     {
       const std::string opt="Invalid states requiring more than 1 passive thread";
-      if(stats.find(opt)==stats.end())
-        stats[opt]=1;
-      else
-        ++(stats[opt]);
+      assert(stats.find(opt)!=stats.end());
+      ++(stats[opt].val);
     }
     inconsistent_initial_state = true;
     print(9, "Guarded transition spurious due to invalid abstract state");
@@ -717,10 +728,8 @@ bool transition_refinert::check_guarded_transition(
   if(passive_id >= num_threads)
   {
     const std::string opt="Spurious guard transitions requiring more than 1 passive thread";
-    if(stats.find(opt)==stats.end())
-      stats[opt]=1;
-    else
-      ++(stats[opt]);
+    assert(stats.find(opt)!=stats.end());
+    ++(stats[opt].val);
     return false; // can't do anything
   }
 
@@ -833,28 +842,5 @@ void transition_refinert::constrain_assume_transition(
   exprt negation=condition;
   negation.make_not();
   abstract_transition_relation.constraints.push_back(negation);
-}
-
-/*******************************************************************\
-
-Function: transition_refinert::statistics
-
-  Inputs:
-
- Outputs:
-
- Purpose: 
-
-\*******************************************************************/
-
-std::ostream& transition_refinert::statistics(
-    std::ostream &os) const
-{
-  for(statst::const_iterator it=stats.begin();
-      it!=stats.end();
-      ++it)
-    os << it->first << ": " << it->second << std::endl;
-
-  return os;
 }
 

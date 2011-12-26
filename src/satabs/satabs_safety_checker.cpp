@@ -48,6 +48,31 @@ satabs_safety_checkert::satabs_safety_checkert(
 
 /*******************************************************************\
 
+Function: satabs_safety_checkert::show_loop_component_statistics
+
+  Inputs:
+
+ Outputs:
+
+ Purpose:
+
+\*******************************************************************/
+
+void satabs_safety_checkert::show_loop_component_statistics(
+    const loop_componentt &lc,
+    const std::string &name)
+{
+  std::ostringstream str;
+  lc.statistics(str);
+  if(!str.str().empty())
+  {
+    status("Statistics of "+name+":");
+    status(str.str());
+  }
+}
+
+/*******************************************************************\
+
 Function: satabs_safety_checkert::show_statistics
 
   Inputs:
@@ -126,25 +151,10 @@ void satabs_safety_checkert::show_statistics()
 	  status(str.str());
   }
 
-  {
-    std::ostringstream str;
-    modelchecker.statistics(str);
-    if(!str.str().empty())
-    {
-      status("Statistics of modelchecker:");
-      status(str.str());
-    }
-  }
-
-  {
-    std::ostringstream str;
-    refiner.statistics(str);
-    if(!str.str().empty())
-    {
-      status("Statistics of refiner:");
-      status(str.str());
-    }
-  }
+  show_loop_component_statistics(abstractor, "abstractor");
+  show_loop_component_statistics(modelchecker, "model checker");
+  show_loop_component_statistics(simulator, "simulator");
+  show_loop_component_statistics(refiner, "refiner");
 }
 
 /*******************************************************************\
@@ -166,6 +176,11 @@ void satabs_safety_checkert::csv_stats(std::ofstream &of)
   assert(iteration>=1);
   assert(of.is_open());
 
+  typedef std::list<std::pair<
+    loop_componentt::statst::const_iterator, float> >
+    loop_component_statst;
+  static loop_component_statst lc_stats;
+
   if(iteration==1)
   {
     of << "iteration,\"nr predicates\",";
@@ -175,7 +190,26 @@ void satabs_safety_checkert::csv_stats(std::ofstream &of)
     of << "\"abstractor time\",";
     of << "\"model checker time\",";
     of << "\"simulator time\",";
-    of << "\"refiner time\"";
+    of << "\"refiner time\",";
+
+    std::list<loop_componentt const*> lcs;
+    lcs.push_back(&abstractor);
+    lcs.push_back(&modelchecker);
+    lcs.push_back(&simulator);
+    lcs.push_back(&refiner);
+    for(std::list<loop_componentt const*>::const_iterator
+        it=lcs.begin();
+        it!=lcs.end();
+        ++it)
+      for(loop_componentt::statst::const_iterator
+          it2=(*it)->stats.begin();
+          it2!=(*it)->stats.end();
+          ++it2)
+        if(!it2->second.is_max)
+        {
+          lc_stats.push_back(std::make_pair(it2, 0));
+          of << "\"" << it2->first << "\",";
+        }
     of << std::endl;
   }
 
@@ -231,6 +265,16 @@ void satabs_safety_checkert::csv_stats(std::ofstream &of)
     static fine_timet prev_ref_time=0;
     output_time(refiner_time-prev_ref_time, of);
     prev_ref_time=refiner_time;
+    of << ",";
+  }
+
+  for(loop_component_statst::iterator
+      it=lc_stats.begin();
+      it!=lc_stats.end();
+      ++it)
+  {
+    of << (it->first->second.val - it->second) << ",";
+    it->second=it->first->second.val;
   }
 
   of << std::endl;

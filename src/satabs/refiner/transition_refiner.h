@@ -24,6 +24,21 @@ public:
     prefix_first(_prefix_first),
     passive_constrain(_passive_constrain)
   {
+    stats.insert(std::make_pair(
+          "Total transition refinements",
+          statt(false, 0)));
+    stats.insert(std::make_pair(
+          "Transition refinement iterations",
+          statt(false, 0)));
+    stats.insert(std::make_pair(
+          "Spurious guard transitions requiring more than 1 passive thread",
+          statt(false, 0)));
+    stats.insert(std::make_pair(
+          "Invalid states requiring more than 1 passive thread",
+          statt(false, 0)));
+    stats.insert(std::make_pair(
+          "Spurious assignment transitions requiring more than 1 passive thread",
+          statt(false, 0)));
   }
 
   void refine(
@@ -31,13 +46,9 @@ public:
     abstract_modelt &abstract_model,
     const fail_infot &fail_info);
 
-  virtual std::ostream& statistics(std::ostream &os) const;
-
 protected:
   const bool prefix_first;
   const bool passive_constrain;
-  typedef std::map<std::string, unsigned> statst;
-  statst stats;
   
   // Updates the set of predicates for the same program according to
   // the counterexample. 

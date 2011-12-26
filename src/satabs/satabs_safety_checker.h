@@ -93,6 +93,10 @@ protected:
   void add_passive_symbols_to_namespace();
 
   void csv_stats(std::ofstream &of);
+
+  void show_loop_component_statistics(
+    const loop_componentt &lc,
+    const std::string &name);
 };
 
 #endif
