@@ -114,7 +114,7 @@ void initial_abstractiont::init_preds(
     if(it->is_assert() || is_predicate(it))
     {
       std::set<predicatet> new_predicates;
-      discover_predicates(it->guard, new_predicates, ns);
+      discover_predicates(it->guard, new_predicates, ns, no_mixed_predicates);
       
       // we just take them all
       for(std::set<predicatet>::const_iterator

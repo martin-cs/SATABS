@@ -19,8 +19,15 @@ Purpose: Calculate predicates for predicate abstraction.
 class transition_refinert:public refinert
 {
 public:
-  transition_refinert(const argst &args, bool _prefix_first, unsigned max_predicates_to_add, bool prefer_non_pointer_predicates, bool _passive_constrain):
-    refinert(args, max_predicates_to_add, prefer_non_pointer_predicates),
+  transition_refinert(
+      const argst &args,
+      bool _prefix_first,
+      unsigned max_predicates_to_add,
+      bool prefer_non_pointer_predicates,
+      bool no_mixed_predicates,
+      bool _passive_constrain):
+    refinert(args, max_predicates_to_add,
+        prefer_non_pointer_predicates, no_mixed_predicates),
     prefix_first(_prefix_first),
     passive_constrain(_passive_constrain)
   {

@@ -22,8 +22,17 @@ private:
   int limit;
 
 public:
-  refiner_ippt(const argst &args, bool _prefix_first, int _limit, unsigned max_predicates_to_add):
-    refiner_wpt(args, _prefix_first, max_predicates_to_add),
+  refiner_ippt(
+      const argst &args,
+      bool _prefix_first,
+      int _limit,
+      unsigned max_predicates_to_add,
+      bool prefer_non_pointer_predicates,
+      bool no_mixed_predicates,
+      bool passive_constrain):
+    refiner_wpt(args, _prefix_first, max_predicates_to_add,
+        prefer_non_pointer_predicates, no_mixed_predicates,
+        passive_constrain),
     limit(_limit)
   {
   }

@@ -281,6 +281,8 @@ void cmdline_optionst::help()
     "                                 number of threads to spawn (default: 2)\n"
     " --passive-nondet             when \"concurrency\" is on, always force passive\n"
     "                                 predicates to nondet on broadcast and don't constrain\n"
+    " --no-mixed-predicates        don't add predicates involving shared and local variables\n"
+    " --csv-stats                  write statistics for each iteration to cegar.csv\n"
     "\n"
     "Other options:\n"
     " --v #                        verbosity level\n"

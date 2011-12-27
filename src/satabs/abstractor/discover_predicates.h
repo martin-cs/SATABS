@@ -18,6 +18,7 @@ Author: Daniel Kroening, kroening@kroening.com
 void discover_predicates(
   const exprt &expr,
   std::set<predicatet> &predicates,
-  const namespacet &ns);
+  const namespacet &ns,
+  const bool no_mixed_predicates);
 
 #endif

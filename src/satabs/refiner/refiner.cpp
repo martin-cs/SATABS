@@ -41,7 +41,7 @@ void refinert::add_predicates(
 {
 
   std::set<predicatet> new_predicates;
-  discover_predicates(expr, new_predicates, concrete_model.ns);
+  discover_predicates(expr, new_predicates, concrete_model.ns, no_mixed_predicates);
   
   std::set<unsigned> new_predicates_no;
 

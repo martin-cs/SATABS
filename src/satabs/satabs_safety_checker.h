@@ -68,7 +68,7 @@ protected:
   fine_timet simulator_time;
   fine_timet refiner_time;
 
-  void show_statistics();
+  void show_statistics(const namespacet &ns);
   
   // implementation
   
@@ -92,7 +92,9 @@ protected:
 
   void add_passive_symbols_to_namespace();
 
-  void csv_stats(std::ofstream &of);
+  void csv_stats(
+      std::ofstream &of,
+      const namespacet &ns);
 
   void show_loop_component_statistics(
     const loop_componentt &lc,

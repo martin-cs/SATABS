@@ -19,7 +19,7 @@ class no_refinert:public refinert
 {
 public:
   no_refinert(const argst &args):
-    refinert(args)
+    refinert(args, -1, false, false)
   {
   }
 

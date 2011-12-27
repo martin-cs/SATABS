@@ -60,8 +60,9 @@ public:
     const namespacet& ns,
     goto_programt::const_targett program_location);
 
-  abstract_modelt::variablet::var_classt get_var_class(
-    const predicatet &predicate);
+  static abstract_modelt::variablet::var_classt get_var_class(
+    const predicatet &predicate,
+    const namespacet &ns);
 
 protected:
 

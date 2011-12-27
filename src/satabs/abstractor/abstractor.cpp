@@ -53,7 +53,8 @@ void abstractort::abstract_variables(
         variables[i].description[j]=' ';
 
     // local or global?
-    variables[i].var_class=get_var_class(predicates[i]);
+    variables[i].var_class=get_var_class(predicates[i],
+        concrete_model.ns);
   }
 }
 
@@ -70,7 +71,7 @@ Function: abstractort::get_var_class
 \*******************************************************************/
 
 abstract_modelt::variablet::var_classt abstractort::get_var_class(
-  const predicatet &predicate)
+  const predicatet &predicate, const namespacet &ns)
 {
 	  // get list of symbols in the predicate
 
@@ -89,7 +90,7 @@ abstract_modelt::variablet::var_classt abstractort::get_var_class(
 	      it!=symbols.end();
 	      it++)
 	  {
-	    const symbolt &symbol=concrete_model.ns.lookup(*it);
+	    const symbolt &symbol=ns.lookup(*it);
 	    if(is_global(symbol))
 	    {
 	        found_shared_global=true;

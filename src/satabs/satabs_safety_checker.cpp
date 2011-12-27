@@ -83,7 +83,7 @@ Function: satabs_safety_checkert::show_statistics
 
 \*******************************************************************/
 
-void satabs_safety_checkert::show_statistics()
+void satabs_safety_checkert::show_statistics(const namespacet &ns)
 {
   {
     std::ostringstream str;
@@ -131,7 +131,7 @@ void satabs_safety_checkert::show_statistics()
 
 	  for(unsigned int i = 0; i < predicates.size(); i++)
 	  {
-		  switch(abstractor.get_var_class(predicates[i]))
+		  switch(abstractort::get_var_class(predicates[i], ns))
 		  {
 		  case abstract_modelt::variablet::PROCEDURE_LOCAL:
 			  local_count++;
@@ -169,7 +169,9 @@ Function: satabs_safety_checkert::csv_stats
 
 \*******************************************************************/
 
-void satabs_safety_checkert::csv_stats(std::ofstream &of)
+void satabs_safety_checkert::csv_stats(
+    std::ofstream &of,
+    const namespacet &ns)
 {
   if(!write_csv_stats) return;
 
@@ -224,7 +226,7 @@ void satabs_safety_checkert::csv_stats(std::ofstream &of)
 
 	  for(unsigned int i = 0; i < predicates.size(); i++)
 	  {
-		  switch(abstractor.get_var_class(predicates[i]))
+		  switch(abstractort::get_var_class(predicates[i], ns))
 		  {
 		  case abstract_modelt::variablet::PROCEDURE_LOCAL:
 			  local_count++;
@@ -491,7 +493,8 @@ safety_checkert::resultt satabs_safety_checkert::operator()(
   {
     // Create initial abstraction
     
-    initial_abstractiont initial_abstraction(get_message_handler());
+    initial_abstractiont initial_abstraction(get_message_handler(),
+        refiner.get_no_mixed_predicates());
     initial_abstraction.set_verbosity(get_verbosity());
     
     initial_abstraction.build(concrete_model, abstractor.abstract_model, concurrency_aware);
@@ -557,12 +560,12 @@ safety_checkert::resultt satabs_safety_checkert::operator()(
       }
     }
 
-    csv_stats(*csv);
+    csv_stats(*csv, concrete_model.ns);
   }
 
   total_time=current_time()-total_start_time;
-  show_statistics();
-  csv_stats(*csv);
+  show_statistics(concrete_model.ns);
+  csv_stats(*csv, concrete_model.ns);
   
   return result;
 }

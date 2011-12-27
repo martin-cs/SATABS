@@ -21,8 +21,20 @@ Purpose: Calculate predicates for predicate abstraction.
 class refiner_wpt:public transition_refinert
 {
 public:
-  refiner_wpt(const argst &args, bool _prefix_first, unsigned max_predicates_to_add, bool prefer_non_pointer_predicates, bool passive_constrain):
-    transition_refinert(args, _prefix_first, max_predicates_to_add, prefer_non_pointer_predicates, passive_constrain)
+  refiner_wpt(
+      const argst &args,
+      bool _prefix_first,
+      unsigned max_predicates_to_add,
+      bool prefer_non_pointer_predicates,
+      bool no_mixed_predicates,
+      bool passive_constrain):
+    transition_refinert(
+        args,
+        _prefix_first,
+        max_predicates_to_add,
+        prefer_non_pointer_predicates,
+        no_mixed_predicates,
+        passive_constrain)
   {
   }
 

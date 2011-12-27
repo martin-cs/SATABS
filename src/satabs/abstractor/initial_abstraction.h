@@ -24,8 +24,11 @@ Purpose: Calculate predicates for predicate abstraction.
 class initial_abstractiont:public messaget
 {
 public:
-  initial_abstractiont(message_handlert &_message_handler):
-    messaget(_message_handler)
+  initial_abstractiont(
+      message_handlert &_message_handler,
+      const bool _no_mixed_predicates):
+    messaget(_message_handler),
+    no_mixed_predicates(_no_mixed_predicates)
   {
   }
 
@@ -56,6 +59,8 @@ public:
   }
 
 protected:
+  const bool no_mixed_predicates;
+
   // Calculates the initial set of predicates for the given program
   void init_preds(
     const namespacet &ns,

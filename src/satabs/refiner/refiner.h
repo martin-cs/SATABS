@@ -23,8 +23,15 @@ Purpose: Calculate predicates for predicate abstraction.
 class refinert:public loop_componentt
 {
 public:
-  refinert(const argst &args, const unsigned max_predicates_to_add = (unsigned)(-1), const bool prefer_non_pointer_predicates = false):
-    loop_componentt(args), max_predicates_to_add(max_predicates_to_add), prefer_non_pointer_predicates(prefer_non_pointer_predicates)
+  refinert(
+      const argst &args,
+      const unsigned _max_predicates_to_add,
+      const bool _prefer_non_pointer_predicates,
+      const bool _no_mixed_predicates) :
+    loop_componentt(args),
+    max_predicates_to_add(_max_predicates_to_add),
+    prefer_non_pointer_predicates(_prefer_non_pointer_predicates),
+    no_mixed_predicates(_no_mixed_predicates)
   {
 	  reset_num_predicates_added();
   }
@@ -33,6 +40,11 @@ public:
     predicatest &predicates, 
     abstract_modelt &abstract_model,
     const fail_infot &fail_info)=0;
+
+  bool get_no_mixed_predicates() const
+  {
+    return no_mixed_predicates;
+  }
 
 protected:
   typedef enum { FROM, TO } wheret;
@@ -66,6 +78,7 @@ protected:
   const unsigned max_predicates_to_add;
   unsigned num_predicates_added;
   const bool prefer_non_pointer_predicates;
+  const bool no_mixed_predicates;
 
   void reset_num_predicates_added()
   {
