@@ -113,11 +113,13 @@ void satabs_inlinet::parameter_assignments(
           actual.make_typecast(arg_type);
         }
         else if((f_argtype.id()==ID_signedbv ||
-                 f_argtype.id()==ID_unsignedbv ||
-                 f_argtype.id()==ID_bool) &&
-                (f_acttype.id()==ID_signedbv ||
-                 f_acttype.id()==ID_unsignedbv ||
-                 f_acttype.id()==ID_bool))
+              f_argtype.id()==ID_unsignedbv ||
+              f_argtype.id()==ID_bool ||
+              f_argtype.id()==ID_pointer) &&
+            (f_acttype.id()==ID_signedbv ||
+             f_acttype.id()==ID_unsignedbv ||
+             f_acttype.id()==ID_bool ||
+             f_acttype.id()==ID_pointer))
         {
           actual.make_typecast(arg_type);
         }
