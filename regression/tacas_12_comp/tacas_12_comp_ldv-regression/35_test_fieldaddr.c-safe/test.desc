@@ -1,8 +1,0 @@
-CORE
-main.c
---full-inlining --32 --error-label ERROR
-^EXIT=0$
-^SIGNAL=0$
-^VERIFICATION SUCCESSFUL$
---
-^warning: ignoring
