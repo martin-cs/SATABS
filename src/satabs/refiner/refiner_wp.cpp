@@ -196,6 +196,91 @@ bool refiner_wpt::refine_prefix(
 
       exprt pred_bak=predicate;
 
+      exprt stmt;
+      stmt.make_nil();
+      if(it->pc->type==ASSIGN &&
+          concrete_pc->code.get_statement()==ID_assign)
+      {
+        const code_assignt &code=to_code_assign(concrete_pc->code);
+        stmt=equal_exprt(code.lhs(), code.rhs());
+      }
+      else if(it->pc->type==ASSUME || it->pc->type==GOTO)
+      {
+        stmt=concrete_pc->guard;
+        if(it->pc->type==GOTO && !it->branch_taken)
+          stmt.make_not();
+      }
+
+      if(!stmt.is_nil() && !predicate.is_constant())
+      {
+#ifdef SATCHECK_MINISAT2
+        satcheck_minisat_no_simplifiert satcheck;
+#else
+        satcheckt satcheck;
+#endif
+        bv_pointerst solver(concrete_model.ns, satcheck);
+        solver.unbounded_array=boolbvt::U_NONE;
+        bvt assumptions;
+
+        assert(it!=fail_info.steps.begin());
+        // grab predicate values in preceding step for *current* thread
+        abstract_counterexamplet::stepst::const_iterator next=it;
+        --next;
+        abstract_stept::thread_to_predicate_valuest::const_iterator
+          pred_values=next->thread_states.find(it->thread_nr);
+        assert(pred_values!=next->thread_states.end());
+        for(unsigned i=0; i < pred_values->second.size(); ++i)
+        {
+          literalt li=make_pos(concrete_model.ns, solver, predicates[i]);
+
+          assumptions.push_back(li.cond_negation(
+                !pred_values->second[i]));
+
+#ifdef DEBUG
+          std::cerr
+            << "PRED" << i << ": "
+            << (pred_values->second[i]?"":"!") << "("
+            << from_expr(concrete_model.ns, "", predicates[i]) << ")" << std::endl;
+#endif
+        }
+
+        satcheck.set_assumptions(assumptions);
+        simplify(stmt, concrete_model.ns);
+        solver.set_to_true(stmt);
+#ifdef DEBUG
+        std::cerr << "STMT "
+          << from_expr(concrete_model.ns, "", stmt) << std::endl;
+#endif
+
+        if(is_satisfiable(solver))
+        {
+          exprt pred_neg=predicate;
+          renaming_state.get_original_name(pred_neg);
+          pred_neg.make_not();
+          solver.set_to_true(pred_neg);
+#ifdef DEBUG
+          std::cerr << "P-NEG "
+            << from_expr(concrete_model.ns, "", pred_neg) << std::endl;
+#endif
+
+          if(!is_satisfiable(solver))
+          {
+#ifdef DEBUG
+                std::cout << "Adding stmt predicate as we arrived at TRUE: "
+                  << from_expr(concrete_model.ns, "", stmt) << std::endl;
+#endif
+                add_predicates(abstract_pc, predicates, stmt, found_new, TO);
+          }
+        }
+        else
+        {
+#ifdef DEBUG
+                std::cout << "Predicates inconsistent with "
+                  << from_expr(concrete_model.ns, "", stmt) << std::endl;
+#endif
+        }
+      }
+
       // compute weakest precondition
       switch(it->pc->type)
       {
@@ -286,38 +371,7 @@ bool refiner_wpt::refine_prefix(
           propt::resultt result=satcheck.prop_solve();
           assert(propt::P_SATISFIABLE==result || propt::P_UNSATISFIABLE==result);
           if(propt::P_UNSATISFIABLE==result)
-          {
             predicate.make_true();
-            if(it->pc->type==ASSIGN)
-            {
-              const codet &code=concrete_pc->code;
-              if(code.get_statement()==ID_assign)
-              {
-                equal_exprt pred_new(to_code_assign(code).lhs(),
-                    to_code_assign(code).rhs());
-                simplify(pred_new, concrete_model.ns);
-#ifdef DEBUG
-                std::cout << "Adding new predicate as we arrived at TRUE: "
-                  << from_expr(concrete_model.ns, "", pred_new) << std::endl;
-#endif
-                no_tid_predicate=pred_new;
-                renaming_state.get_original_name(no_tid_predicate);
-                add_predicates(abstract_pc, predicates, no_tid_predicate, found_new, FROM);
-              }
-            }
-            else if(it->pc->type==ASSUME || it->pc->type==GOTO)
-            {
-              exprt pred_new=concrete_pc->guard;
-              simplify(pred_new, concrete_model.ns);
-#ifdef DEBUG
-              std::cout << "Adding new predicate as we arrived at TRUE: "
-                << from_expr(concrete_model.ns, "", pred_new) << std::endl;
-#endif
-              no_tid_predicate=pred_new;
-              renaming_state.get_original_name(no_tid_predicate);
-              add_predicates(abstract_pc, predicates, no_tid_predicate, found_new, FROM);
-            }
-          }
         }
       }
       
