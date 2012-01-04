@@ -248,6 +248,11 @@ void abstractort::build_abstraction(
     case RETURN:
       // for now, we don't have return values
       break;
+      
+    case CATCH:
+    case THROW:
+      // ignore for now
+      break;
 
     default:
       throw "unexpected instruction";

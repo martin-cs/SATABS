@@ -1190,6 +1190,16 @@ void modelchecker_smvt::build_smv_file_control(
       build_targets(PC, out);
       out << "; -- return";
     }
+    else if(instruction.is_throw())
+    {
+      // treat like skip for now
+      out << PC+1 << "; -- throw";
+    }
+    else if(instruction.is_catch())
+    {
+      // treat like skip for now
+      out << PC+1 << "; -- catch";
+    }
     else
       throw "unknown statement";
 
@@ -1260,6 +1270,8 @@ void modelchecker_smvt::build_smv_file_model(
     case SKIP:
     case ATOMIC_BEGIN:
     case ATOMIC_END:
+    case THROW:
+    case CATCH:
       if(!abstract_model.variables.empty())
       {
         out << "TRANS (PC=" << PC << " & runs) -> ";

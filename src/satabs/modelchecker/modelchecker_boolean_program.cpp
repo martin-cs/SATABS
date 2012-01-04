@@ -858,6 +858,16 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     {
       out << "skip; // location only";
     }
+    else if(it->is_throw())
+    {
+      // treat like skip for now
+      out << "skip; // throw";
+    }
+    else if(it->is_catch())
+    {
+      // treat like skip for now
+      out << "skip; // catch";
+    }
     else
       throw "unknown statement";
 

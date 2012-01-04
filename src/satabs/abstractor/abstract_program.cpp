@@ -202,8 +202,16 @@ std::ostream& abstract_programt::output_instruction(
     out << "END THREAD" << std::endl;
     break;
     
+  case THROW:
+    out << "THROW" << std::endl;
+    break;
+
+  case CATCH:
+    out << "CATCH" << std::endl;
+    break;
+    
   default:
-    throw "unknown statement";
+    throw "unexpected instruction (abstract_program)";
   }
 
   return out;  
