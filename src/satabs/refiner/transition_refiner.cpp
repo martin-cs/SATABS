@@ -211,6 +211,12 @@ bool transition_refinert::check_transition(
     abstract_state_from.label_nr << " to label L" << 
     abstract_state_to.label_nr << std::endl;
   #endif
+  #ifdef DEBUG
+  ::std::cout << abstract_state_from << ::std::endl;
+  goto_programt tmp;
+  tmp.output_instruction(concrete_model.ns, "", std::cout, abstract_state_from.pc->code.concrete_pc);
+  ::std::cout << abstract_state_to << ::std::endl;
+  #endif
 
   if(c_instruction.is_skip() ||
      c_instruction.is_location() ||
@@ -458,14 +464,14 @@ bool transition_refinert::check_assignment_transition(
       assumptions.push_back(li.cond_negation(
             !from_predicates[t]->second[i]));
 
-      //#ifdef DEBUG
+      #ifdef DEBUG
       const std::string predname=
         (active_id==t?"P#":"PP"+i2string(t)+"#")+i2string(i);
       std::cerr
         << "F: " << predname << ": "
         << (from_predicates[t]->second[i]?"":"!") << "("
         << from_expr(concrete_model.ns, "", active_passive_preds[t][i]) << ")" << std::endl;
-      //#endif
+      #endif
 
       literalt lo=make_pos(concrete_model.ns, solver, predicates_wp[t][i]);
       predicate_variables_to[t][i]=lo;
@@ -473,12 +479,12 @@ bool transition_refinert::check_assignment_transition(
       assumptions.push_back(lo.cond_negation(
             !to_predicates[t]->second[i]));
 
-      //#ifdef DEBUG
+      #ifdef DEBUG
       std::cerr
         << "T: " << predname << ": "
         << (to_predicates[t]->second[i]?"":"!") << "("
         << from_expr(concrete_model.ns, "", predicates_wp[t][i]) << ")" << std::endl;
-      //#endif
+      #endif
     }
   }
   
@@ -517,7 +523,7 @@ bool transition_refinert::check_assignment_transition(
       e=exprt(ID_predicate_symbol, bool_typet());
       e.set(ID_identifier, i);
       if(from_predicates[active_id]->second[i]) e.make_not();
-#if 1
+#ifdef DEBUG
       std::cout << "C-F: " << from_expr(concrete_model.ns, "", e) << std::endl;
 #endif
     }
@@ -530,7 +536,7 @@ bool transition_refinert::check_assignment_transition(
       e=exprt(ID_predicate_passive_symbol, bool_typet());
       e.set(ID_identifier, i);
       if(from_predicates[passive_id]->second[i]) e.make_not();
-#if 1
+#ifdef DEBUG
       std::cout << "C-F: " << from_expr(concrete_model.ns, "", e) << std::endl;
 #endif
     }
@@ -542,7 +548,7 @@ bool transition_refinert::check_assignment_transition(
       e=exprt(ID_predicate_next_symbol, bool_typet());
       e.set(ID_identifier, i);
       if(to_predicates[active_id]->second[i]) e.make_not();
-#if 1
+#ifdef DEBUG
       std::cout << "C-T: " << from_expr(concrete_model.ns, "", e) << std::endl;
 #endif
     }
@@ -557,12 +563,12 @@ bool transition_refinert::check_assignment_transition(
       e.op0()=exprt(ID_predicate_passive_symbol, bool_typet());
       e.op0().set(ID_identifier, i);
       if(to_predicates[passive_id]->second[i]) e.make_not();
-#if 1
+#ifdef DEBUG
       std::cout << "C-T: " << from_expr(concrete_model.ns, "", e) << std::endl;
 #endif
     }
   }
-#if 1
+#ifdef DEBUG
   ::std::cerr << "Spurious in thread " << passive_id << " (active: " << abstract_state_from.thread_nr << "): " << ::std::endl;
   ::std::cerr << abstract_state_from << ::std::endl;
   goto_programt tmp;
@@ -685,14 +691,14 @@ bool transition_refinert::check_guarded_transition(
       assumptions.push_back(li.cond_negation(
             !from_predicates[t]->second[i]));
 
-      //#ifdef DEBUG
+      #ifdef DEBUG
       const std::string predname=
         (active_id==t?"P#":"PP"+i2string(t)+"#")+i2string(i);
       std::cerr
         << "G-F: " << predname << ": "
         << (from_predicates[t]->second[i]?"":"!") << "("
         << from_expr(concrete_model.ns, "", active_passive_preds[t][i]) << ")" << std::endl;
-      //#endif
+      #endif
     }
   }
   
@@ -747,9 +753,9 @@ bool transition_refinert::check_guarded_transition(
       e=exprt(ID_predicate_symbol, bool_typet());
       e.set(ID_identifier, i);
       if(!from_predicates[active_id]->second[i]) e.make_not();
-      //#if 0
+      #ifdef DEBUG
       std::cout << "G-C: " << from_expr(concrete_model.ns, "", e) << std::endl;
-      //#endif
+      #endif
     }
 
     if(passive_id!=active_id &&
@@ -760,7 +766,7 @@ bool transition_refinert::check_guarded_transition(
       e=exprt(ID_predicate_passive_symbol, bool_typet());
       e.set(ID_identifier, i);
       if(!from_predicates[passive_id]->second[i]) e.make_not();
-#if 1
+#ifdef DEBUG
       std::cout << "G-C-F: " << from_expr(concrete_model.ns, "", e) << std::endl;
 #endif
     }
