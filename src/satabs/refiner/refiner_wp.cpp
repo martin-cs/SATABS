@@ -195,6 +195,10 @@ bool refiner_wpt::refine_prefix(
       if(!it->relevant) continue;
 
       exprt pred_bak=predicate;
+#ifdef DEBUG
+      goto_programt tmp;
+      tmp.output_instruction(concrete_model.ns, "", std::cerr, concrete_pc);
+#endif
 
       exprt stmt;
       stmt.make_nil();
