@@ -287,7 +287,7 @@ bool refiner_wpt::refine_prefix(
       case ASSUME:
         // we only do this for assumptions
         // if we haven't found a new predicate so far
-        if(!found_new)
+        if(1/*!found_new*/)
         {
           exprt tid_guard=concrete_pc->guard;
           renaming_state.source.thread_nr=it->thread_nr;
