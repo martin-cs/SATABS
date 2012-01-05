@@ -31,6 +31,34 @@ Date: June 2003
 
 /*******************************************************************\
 
+Function: cmdline_optionst::get_command_line_options
+
+  Inputs:
+
+ Outputs:
+
+ Purpose: Parse and store options
+
+\*******************************************************************/
+
+void cmdline_optionst::get_command_line_options(optionst &options)
+{
+  options.set_option("bounds-check", cmdline.isset("bounds-check"));
+  options.set_option("div-by-zero-check", cmdline.isset("div-by-zero-check"));
+  options.set_option("pointer-check", cmdline.isset("pointer-check"));
+  options.set_option("assertions", !cmdline.isset("no-assertions"));
+  options.set_option("assumptions", !cmdline.isset("no-assumptions"));
+  options.set_option("simplify", !cmdline.isset("no-simplify"));
+  options.set_option("signed-overflow-check", cmdline.isset("signed-overflow-check"));
+  options.set_option("unsigned-overflow-check", cmdline.isset("unsigned-overflow-check"));
+  options.set_option("nan-check", cmdline.isset("nan-check"));
+
+  if(cmdline.isset("error-label"))
+    options.set_option("error-label", cmdline.getval("error-label"));
+}
+
+/*******************************************************************\
+
 Function: cmdline_optionst::doit
 
   Inputs:
@@ -49,20 +77,8 @@ int cmdline_optionst::doit()
     return 0;
   }
   
-  optionst options;
-
-  options.set_option("bounds-check", cmdline.isset("bounds-check"));
-  options.set_option("div-by-zero-check", cmdline.isset("div-by-zero-check"));
-  options.set_option("pointer-check", cmdline.isset("pointer-check"));
-  options.set_option("assertions", !cmdline.isset("no-assertions"));
-  options.set_option("assumptions", !cmdline.isset("no-assumptions"));
-  options.set_option("simplify", !cmdline.isset("no-simplify"));
-  options.set_option("signed-overflow-check", cmdline.isset("signed-overflow-check"));
-  options.set_option("unsigned-overflow-check", cmdline.isset("unsigned-overflow-check"));
-  options.set_option("nan-check", cmdline.isset("nan-check"));
-
-  if(cmdline.isset("error-label"))
-    options.set_option("error-label", cmdline.getval("error-label"));
+  optionst options;  
+  get_command_line_options(options);
 
   // context that can be changed within the CEGAR loop
   contextt shadow_context;

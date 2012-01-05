@@ -56,6 +56,9 @@ public:
     xml_interfacet(cmdline)
   {
   }
+
+protected:
+  void get_command_line_options(class optionst &options);
 };
 
 #endif
