@@ -321,8 +321,7 @@ int preparet::get_async_modules()
   goto_functions.compute_location_numbers();
 
   if(cmdline.isset("pointer-check") ||
-     cmdline.isset("show-value-sets") ||
-     cmdline.isset("data-race-check"))
+     cmdline.isset("show-value-sets"))
   {
     status("Pointer Analysis");
     value_set_analysist value_set_analysis(ns);
