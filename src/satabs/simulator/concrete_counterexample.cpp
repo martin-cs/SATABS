@@ -27,7 +27,8 @@ void show_counterexample_gui(
   const contextt &context,
   const concrete_counterexamplet &counterexample)
 {
-  show_goto_trace_gui(out, context, counterexample.goto_trace);
+  const namespacet ns(context);
+  show_goto_trace_gui(out, ns, counterexample.goto_trace);
 }
 
 /*******************************************************************\
@@ -49,7 +50,7 @@ void show_counterexample(
 {
   namespacet ns(context);
   
-  show_goto_trace(out, context, counterexample.goto_trace);
+  show_goto_trace(out, ns, counterexample.goto_trace);
 
   #if 0
   unsigned cycle=0;
