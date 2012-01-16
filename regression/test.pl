@@ -201,15 +201,17 @@ my @tests = @ARGV != 0 ? @ARGV : dirs();
 my $count = @tests;
 print "  $count " . (1==$count?"test":"tests") . " found\n\n";
 
+use Cwd qw(getcwd);
 my $failures = 0;
 my $skips = 0;
 print "Running tests\n";
 foreach my $test (@tests) {
   print "  Running $test";
 
+  my $cwd = getcwd;
   chdir $test;
   my $failed_skipped = test($test, "test.desc", $t_level, $opt_c, $opt_i);
-  chdir "..";
+  chdir $cwd;
 
   if($failed_skipped < 0) {
     $skips++;
