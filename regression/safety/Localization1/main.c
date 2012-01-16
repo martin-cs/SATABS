@@ -1,4 +1,4 @@
-int main(int argc, const char* argv[])
+int main()
 {
   // this should fail
   int pressure=10;
