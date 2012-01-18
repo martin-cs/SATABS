@@ -232,6 +232,10 @@ bool transition_refinert::check_transition(
   abstract_transition_relationt &abstract_transition_relation=
     abstract_state_from.pc->code.get_transition_relation();
 
+  if(!c_instruction.is_goto() &&
+      !c_instruction.is_assume() &&
+      !c_instruction.is_assert())
+  {
   if(!abstract_transition_relation.has_predicates())
   {
     print(9, "no predicates to check");
@@ -242,6 +246,7 @@ bool transition_refinert::check_transition(
   {
     print(9, "Transition is skip");
     return false; // ok
+  }
   }
 
   {
