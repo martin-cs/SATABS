@@ -1,6 +1,6 @@
 CORE
 rotating.c
---iterations 25 --function foo
+--iterations 130 --function foo
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$

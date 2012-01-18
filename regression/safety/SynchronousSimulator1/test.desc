@@ -1,6 +1,6 @@
 CORE
 SynchronousSimulator_satabs.c
---iterations 20
+--iterations 30
 ^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$

@@ -1,6 +1,6 @@
 CORE
 main.c
---iterations 25 --function foo
+--iterations 35 --function foo
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$

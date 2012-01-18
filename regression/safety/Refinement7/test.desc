@@ -1,6 +1,6 @@
 CORE
 main.c
---iterations 2
+--iterations 5
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$
