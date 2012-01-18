@@ -36,7 +36,7 @@ modelcheckert *select_modelchecker(
 {
   // the default model checker
   std::string name=
-    cmdline.isset("modelchecker")?cmdline.getval("modelchecker"):"boom");
+    cmdline.isset("modelchecker")?cmdline.getval("modelchecker"):"boom";
 
   unsigned max_threads=2; // boom's default thread bound
   if(cmdline.isset("max-threads"))

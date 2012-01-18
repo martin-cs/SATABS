@@ -256,8 +256,13 @@ int preparet::get_async_modules()
   status("Removing unused functions");
   remove_unused_functions(
     goto_functions, get_message_handler());
+    
+  // Boom requies full inlining.
+  bool boom=
+    !cmdline.isset("modelchecker") ||
+    std::string(cmdline.getval("modelchecker"))=="boom";
 
-  if(cmdline.isset("full-inlining"))
+  if(cmdline.isset("full-inlining") || boom)
   {
     status("Full inlining");
 
