@@ -34,17 +34,19 @@ modelcheckert *select_modelchecker(
   const cmdlinet &cmdline,
   const loop_componentt::argst &args)
 {
+  // the default model checker
   std::string name=
-    cmdline.isset("modelchecker")?cmdline.getval("modelchecker"):(cmdline.isset("concurrency")?"boom":"cadence-smv");
+    cmdline.isset("modelchecker")?cmdline.getval("modelchecker"):"boom");
 
   unsigned max_threads=2; // boom's default thread bound
   if(cmdline.isset("max-threads"))
     max_threads=safe_str2unsigned(cmdline.getval("max-threads"));
     
-  modelcheckert *m(NULL);
+  modelcheckert *m=NULL;
 
   if(name=="boppo")
-    m=new modelchecker_boolean_programt(args, modelchecker_boolean_programt::BOPPO, max_threads, cmdline.isset("concurrency"));
+    m=new modelchecker_boolean_programt(args, 
+      modelchecker_boolean_programt::BOPPO, max_threads, cmdline.isset("concurrency"));
   else if(name=="cmu-smv")
     m=new modelchecker_smvt(args, modelchecker_smvt::CMU_SMV, cmdline.isset("concurrency"));
   else if(name=="cadence-smv")
@@ -56,7 +58,8 @@ modelcheckert *select_modelchecker(
   else if(name=="spin")
     m=new modelchecker_spint(args, cmdline.isset("concurrency"));
   else if(name=="boom")
-	m=new modelchecker_boolean_programt(args, modelchecker_boolean_programt::BOOM, max_threads, cmdline.isset("concurrency"));
+    m=new modelchecker_boolean_programt(args,
+      modelchecker_boolean_programt::BOOM, max_threads, cmdline.isset("concurrency"));
   else
     throw "unknown modelchecker: "+name;
 
