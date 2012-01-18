@@ -1,8 +1,10 @@
 CORE
 main.c
---iterations 3 --bounds-check --pointer-check
+--iterations 100 --bounds-check --pointer-check
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$
 --
 ^warning: ignoring
+--
+takes 95 iterations when using boom
