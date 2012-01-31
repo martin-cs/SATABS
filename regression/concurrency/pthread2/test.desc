@@ -1,6 +1,6 @@
 CORE
 main.c
---iterations 25 --modelchecker boom --concurrency --full-inlining
+--iterations 25 --max-threads 3
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$
