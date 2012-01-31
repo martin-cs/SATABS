@@ -6,6 +6,7 @@ VERSION=`./satabs --version`
 VERSION_FILE=`echo $VERSION | sed "y/./-/"`
 BITS=`getconf LONG_BIT`
 CBMC=~/progr/cbmc/trunk
+BOOM=~/progr/boom
 
 echo $VERSION_FILE
 
@@ -16,10 +17,11 @@ mkdir /tmp/satabs-dist
 cp satabs /tmp/satabs-dist/
 cp ${CBMC}/src/goto-cc/goto-cc /tmp/satabs-dist/
 cp ${CBMC}/src/goto-instrument/goto-instrument /tmp/satabs-dist/
+cp ${BOOM}/build/bin/boom /tmp/satabs-dist/
 cp ../../LICENSE /tmp/satabs-dist/
 cd /tmp/satabs-dist
 tar cfz satabs-${VERSION_FILE}-linux-${BITS}.tgz satabs goto-cc \
-  goto-instrument LICENSE
+  goto-instrument boom LICENSE
 
 echo Copying.
 scp satabs-${VERSION_FILE}-linux-${BITS}.tgz kroening@www.cprover.org:/srv/www/cprover.org/satabs/download/
