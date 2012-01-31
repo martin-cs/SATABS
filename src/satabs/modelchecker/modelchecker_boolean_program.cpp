@@ -751,7 +751,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     			
             assert(!first);
     			  out << ",";
-            exprt tmp=exprt(ID_predicate_passive_symbol, typet("bool"));
+            exprt tmp=exprt(ID_predicate_passive_symbol, bool_typet());
             tmp.set(ID_identifier, i);
             out << expr_string(tmp);
           }
@@ -1060,16 +1060,19 @@ bool modelchecker_boolean_programt::check(
       status(std::string("Running BOPPO"));
       command="boppo --compact-trace --por";
       if(loop_detection)
-        {
-          command+=" --loop-detection";
-        }
+        command+=" --loop-detection";
       break;
       
     case BOOM:
       status(std::string("Running BOOM"));
-      command="boom  --stats -t";
+      command="boom --stats -t";
+      
+      // boom has a default of 2, which we override
+      // with a more reasonable number
       if(max_threads!=0)
         command+=" --threadbound "+i2string(max_threads);
+      else
+        command+=" --threadbound 5";
       break;
       
     case BEBOP:
