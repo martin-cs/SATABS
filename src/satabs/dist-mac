@@ -20,7 +20,7 @@ tar cfz satabs-${VERSION_FILE}-mac.tgz satabs goto-cc \
   goto-instrument LICENSE
 
 echo Copying.
-scp satabs-${VERSION_FILE}-mac.tgz kroening@dkr0.inf.ethz.ch:/home/www/cprover.org/satabs/download/
+scp satabs-${VERSION_FILE}-mac.tgz kroening@svn.cprover.org:/home/www/cprover.org/satabs/download/
 
 cd /tmp
 rm -R /tmp/satabs-dist
