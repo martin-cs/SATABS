@@ -14,8 +14,8 @@ echo $VERSION_FILE
 
 mkdir /tmp/satabs-dist
 cp satabs /tmp/satabs-dist/
-cp ${CBMC}/goto-cc/goto-cc /tmp/satabs-dist/
-cp ${CBMC}/goto-instrument/goto-instrument /tmp/satabs-dist/
+cp ${CBMC}/src/goto-cc/goto-cc /tmp/satabs-dist/
+cp ${CBMC}/src/goto-instrument/goto-instrument /tmp/satabs-dist/
 cp ../../LICENSE /tmp/satabs-dist/
 cd /tmp/satabs-dist
 tar cfz satabs-${VERSION_FILE}-linux-${BITS}.tgz satabs goto-cc \
