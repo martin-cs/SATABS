@@ -11,6 +11,7 @@ Purpose:
 \*******************************************************************/
 
 #include <algorithm>
+#include <iterator>
 
 //#define DEBUG
 

@@ -10,6 +10,7 @@ Author: Alastair Donaldson
 \*******************************************************************/
 
 #include <algorithm>
+#include <iterator>
 
 #include <ansi-c/c_types.h>
 #include <solvers/flattening/bv_pointers.h>

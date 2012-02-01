@@ -7,6 +7,7 @@
 
 #include <cstdlib>
 #include <algorithm>
+#include <iterator>
 
 #include "concurrency_aware_abstractor.h"
 

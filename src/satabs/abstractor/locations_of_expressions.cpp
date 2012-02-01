@@ -6,6 +6,7 @@
  */
 
 #include <algorithm>
+#include <iterator>
 
 #include "locations_of_expressions.h"
 
