@@ -39,13 +39,13 @@ abstractort *select_abstractor(
   std::string name=
     cmdline.isset("abstractor")?cmdline.getval("abstractor"):"wp";
 
-  abstractort * specific_abstractor = NULL;
+  abstractort *specific_abstractor=NULL;
 
   if(name=="wp")
-	specific_abstractor = new abstractor_wpt(args);
+    specific_abstractor = new abstractor_wpt(args);
   else if(name=="prover")
     #ifdef HAVE_PROVER
-	specific_abstractor = new abstractor_provert(args);
+    specific_abstractor = new abstractor_provert(args);
     #else
     throw "support for prover not linked in";
     #endif
@@ -57,21 +57,22 @@ abstractort *select_abstractor(
     #endif
   else if(name=="cartesian")
   {
-    const unsigned int max_cube_length = cmdline.isset("max-cube-length")?safe_str2unsigned(cmdline.getval("max-cube-length")):3;
-    specific_abstractor = new abstractor_wp_cartesiant(args, max_cube_length, functions);
+    const unsigned int max_cube_length =
+      cmdline.isset("max-cube-length")?safe_str2unsigned(cmdline.getval("max-cube-length")):3;
+    specific_abstractor =
+      new abstractor_wp_cartesiant(args, max_cube_length, functions);
   }
   else
     throw "unknown abstractor: "+name;
 
   if(cmdline.isset("concurrency"))
   {
-	  return new concurrency_aware_abstractort(
-        args,
-        std::auto_ptr<abstractort>(specific_abstractor),
-        functions,
-        cmdline.isset("passive-nondet"));
-  } else {
-	  return specific_abstractor;
+    return new concurrency_aware_abstractort(
+      args,
+      std::auto_ptr<abstractort>(specific_abstractor),
+      functions,
+      cmdline.isset("passive-nondet"));
   }
-
+  else
+    return specific_abstractor;
 }
