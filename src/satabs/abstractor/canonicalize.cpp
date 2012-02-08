@@ -43,8 +43,23 @@ void canonicalize_rec(exprt &expr, bool &negation)
       expr.id(ID_equal);
     }
   } 
-  else if(expr.id()==ID_le || expr.id()==ID_lt ||
-          expr.id()==ID_ge || expr.id()==ID_gt)
+  else if(expr.id()==ID_ge) // we only use le and lt
+  {
+    if(expr.operands().size()==2)
+    {
+      negation=!negation;
+      expr.id(ID_lt);
+    }
+  } 
+  else if(expr.id()==ID_gt) // we only use le and lt
+  {
+    if(expr.operands().size()==2)
+    {
+      negation=!negation;
+      expr.id(ID_le);
+    }
+  } 
+  else if(expr.id()==ID_le || expr.id()==ID_lt)
   {
     if(expr.operands().size()==2)
     {
