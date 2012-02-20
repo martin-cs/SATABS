@@ -231,6 +231,15 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
           abstract_state.pc=PC_map[PC];
           abstract_state.label_nr=PC;
           abstract_state.has_pc=true;
+          if(abstract_state.pc->is_end_function())
+          {
+            // we have full-inlining
+            assert(thread_count>1);
+            // we don't want the simulator to see this, it would pop an
+            // essential frame off the call stack
+            abstract_state.relevant=false;
+            debug("END_FUNCTION hidden");
+          }
         }
       }
 

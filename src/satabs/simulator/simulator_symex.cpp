@@ -201,9 +201,10 @@ void simulator_symext::build_equation_prefix(
       break;
       
     case END_FUNCTION:
-    default:
       // this one pops the frame
-      symex_simulator.symex_step(concrete_model.goto_functions, state);
+    default:
+      if(it->relevant)
+        symex_simulator.symex_step(concrete_model.goto_functions, state);
     }
     
     if(prefix.equation.SSA_steps.size()==s)
