@@ -38,7 +38,8 @@ modelcheckert *select_modelchecker(
   std::string name=
     cmdline.isset("modelchecker")?cmdline.getval("modelchecker"):"boom";
 
-  unsigned max_threads=2; // boom's default thread bound
+  // boom's default thread bound of 2 is too small
+  unsigned max_threads=5; 
   if(cmdline.isset("max-threads"))
     max_threads=safe_str2unsigned(cmdline.getval("max-threads"));
     
