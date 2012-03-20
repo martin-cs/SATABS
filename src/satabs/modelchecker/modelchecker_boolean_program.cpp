@@ -911,6 +911,8 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
   }
   
   out << "end\n\n";
+
+  if(tts_do) tts_builder.finalize();
 }
 
 /*******************************************************************\
