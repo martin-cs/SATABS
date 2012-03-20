@@ -37,6 +37,7 @@ satabs_safety_checkert::satabs_safety_checkert(
   safety_checkert(_ns),
   max_iterations(0),
   save_bps(false),
+  build_tts(false),
   concurrency_aware(false),
   abstractor(_abstractor),
   refiner(_refiner),
@@ -324,7 +325,8 @@ bool satabs_safety_checkert::do_modelchecking(
   {
     modelchecker_boolean_programt model_checker_boolean_program(
       loop_componentt::argst(get_message_handler(), concrete_model),
-      modelchecker_boolean_programt::BOPPO, 0, concurrency_aware);
+      modelchecker_boolean_programt::BOPPO, 0, concurrency_aware,
+      build_tts);
     model_checker_boolean_program.save(
       abstractor.abstract_model,
       iteration);

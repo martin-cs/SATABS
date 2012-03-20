@@ -154,6 +154,7 @@ int cmdline_optionst::doit()
     satabs_safety_checker.ui=prepare.get_ui();    
     satabs_safety_checker.max_iterations=prepare.max_iterations();
     satabs_safety_checker.save_bps=cmdline.isset("save-bps");    
+    satabs_safety_checker.build_tts=cmdline.isset("build-tts");    
     satabs_safety_checker.concurrency_aware=cmdline.isset("concurrency");
     satabs_safety_checker.set_verbosity(verbosity);
         
@@ -328,6 +329,9 @@ void cmdline_optionst::help()
     " --no-path-slicing            disable path slicer\n"
     " --save-bps                   save a Boolean program for each iteration\n"
     " --csv-stats                  write statistics for each iteration to cegar.csv\n"
+    " --build-tts                  if modelchecking using boom or boppo, also write\n"
+    "                                 thread transition systems to .tts files\n"
+    "                                 requires --full-inlining\n"
     " --concurrency                use CAV'11 method to handle concurrency\n"
     " --max-threads #              when \"concurrency\" is on, specifies maximum\n"
     "                                 number of threads to spawn (default: 2)\n"

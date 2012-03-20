@@ -16,6 +16,8 @@ Author: Daniel Kroening
 
 #include "modelchecker.h"
 
+class tts_buildert;
+
 class modelchecker_boolean_programt:public modelcheckert
 {
 public:
@@ -25,11 +27,13 @@ public:
     const loop_componentt::argst &args,
     enginet _engine,
     unsigned _max_threads,
-    const bool concurrency_aware):
+    const bool concurrency_aware,
+    const bool _build_tts):
     modelcheckert(args, concurrency_aware),
     engine(_engine),
     loop_detection(false),
-    max_threads(_max_threads)
+    max_threads(_max_threads),
+    build_tts(_build_tts)
   {
     stats.insert(std::make_pair(
           "Non-broadcast assignment operations executed",
@@ -86,12 +90,13 @@ public:
 
   virtual void build(
     abstract_modelt &abstract_model,
-    const std::string &file_name);    
+    const std::string &out_file_base_name);
 
 protected:
   enginet engine;
   bool loop_detection;
   unsigned max_threads; // 0 = no limit
+  const bool build_tts;
 
   //std::vector<std::string> passive_variable_names; // Only relevant if we are doing concurrency-aware verification
 
@@ -99,7 +104,8 @@ protected:
 
   void build_boolean_program_file(
     abstract_modelt &abstract_model,
-    std::ostream &out);
+    std::ostream &out,
+    tts_buildert &tts_builder);
 
   void build_boolean_program_file_local_variables(
     const abstract_modelt &abstract_model,
@@ -107,12 +113,14 @@ protected:
 
   void build_boolean_program_file_functions(
     abstract_modelt &abstract_model,
-    std::ostream &out);
+    std::ostream &out,
+    tts_buildert &tts_builder);
 
   void build_boolean_program_file_function(
     abstract_modelt &abstract_model,
     abstract_functionst::function_mapt::iterator f_it,
-    std::ostream &out);
+    std::ostream &out,
+    tts_buildert &tts_builder);
 
   void build_boolean_program_file_global_variables(
     const abstract_modelt &abstract_model,

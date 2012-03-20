@@ -51,7 +51,7 @@ public:
     "(no-path-slicing)(version)(shortest-prefix)"
     "(save-bps)(max-threads):(max-new-predicates):(prefer-non-pointer-predicates)"
     "(no-mixed-predicates)"
-    "(max-cube-length):(concurrency)(passive-nondet)(csv-stats)",
+    "(max-cube-length):(concurrency)(passive-nondet)(csv-stats)(build-tts)",
     argc, argv),
     xml_interfacet(cmdline)
   {

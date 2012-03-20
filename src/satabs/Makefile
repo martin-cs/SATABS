@@ -49,6 +49,7 @@ SRC = satabs.cpp cmdline_options.cpp \
       \
       modelchecker/abstract_counterexample.cpp \
       modelchecker/abstract_state.cpp \
+      modelchecker/tts_builder.cpp \
       modelchecker/modelchecker_boolean_program.cpp \
       modelchecker/select_modelchecker.cpp \
       modelchecker/modelchecker_smv.cpp \

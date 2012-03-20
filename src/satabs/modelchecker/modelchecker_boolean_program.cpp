@@ -25,6 +25,7 @@ Author: Daniel Kroening
 #include "../abstractor/concurrency_aware_abstract_transition_relation.h"
 
 #include "modelchecker_boolean_program.h"
+#include "tts_builder.h"
 
 /*******************************************************************\
 
@@ -345,7 +346,8 @@ Function: modelchecker_boolean_programt::build_boolean_program_file
 
 void modelchecker_boolean_programt::build_boolean_program_file(
   abstract_modelt &abstract_model,
-  std::ostream &out)
+  std::ostream &out,
+  tts_buildert &tts_builder)
 {
   // start printing Boolean program
 
@@ -353,7 +355,7 @@ void modelchecker_boolean_programt::build_boolean_program_file(
          "\n";
 
   build_boolean_program_file_global_variables(abstract_model, out);
-  build_boolean_program_file_functions(abstract_model, out);
+  build_boolean_program_file_functions(abstract_model, out, tts_builder);
 }
 
 /*******************************************************************\
@@ -490,7 +492,8 @@ Function: modelchecker_boolean_programt::build_boolean_program_file_functions
 
 void modelchecker_boolean_programt::build_boolean_program_file_functions(
   abstract_modelt &abstract_model,
-  std::ostream &out)
+  std::ostream &out,
+  tts_buildert &tts_builder)
 {
   PC_map.clear();
 
@@ -498,7 +501,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_functions(
       f_it=abstract_model.goto_functions.function_map.begin();
       f_it!=abstract_model.goto_functions.function_map.end();
       f_it++)
-    build_boolean_program_file_function(abstract_model, f_it, out);
+    build_boolean_program_file_function(abstract_model, f_it, out, tts_builder);
 }
 
 /*******************************************************************\
@@ -516,13 +519,16 @@ Function: modelchecker_boolean_programt::build_boolean_program_file_function
 void modelchecker_boolean_programt::build_boolean_program_file_function(
   abstract_modelt &abstract_model,
   abstract_functionst::function_mapt::iterator f_it,
-  std::ostream &out)
+  std::ostream &out,
+  tts_buildert &tts_builder)
 {
   // header
   out << "// " << f_it->first << std::endl;
   out << "void " << convert_function_name(f_it->first)
       << "() begin\n"
          "\n";
+
+  const bool tts_do=build_tts && f_it->first=="main";
 
   // local variables
 
@@ -537,7 +543,10 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
         {
           max_len=std::max(max_len, variable_names[i].size());
           has_procedure_local_variables=true;
+          if(tts_do) tts_builder.add_local_var(i);
         }
+        else
+          if(tts_do) tts_builder.add_shared_var(i);
     }
 
     if(has_procedure_local_variables)
@@ -604,6 +613,8 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
   }
 
   abstract_programt &abstract_program=f_it->second.body;
+
+  if(tts_do) tts_builder.build_prologue(abstract_program);
   
   // control flow
   
@@ -895,6 +906,8 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     }
 
     out << std::endl;
+
+    if(tts_do) tts_builder.build_instruction(it, PC);
   }
   
   out << "end\n\n";
@@ -1054,11 +1067,11 @@ bool modelchecker_boolean_programt::check(
 {
   std::string temp_base="cegar_tmp";
 
-  std::string temp_boolean_program=temp_base+"_abstract.bp";
+  std::string temp_boolean_program_bn=temp_base+"_abstract";
   std::string temp_boolean_program_out1=temp_base+"_boolean_program_out1";
   std::string temp_boolean_program_out2=temp_base+"_boolean_program_out2";
 
-  build(abstract_model, temp_boolean_program);
+  build(abstract_model, temp_boolean_program_bn);
 
   {
     std::string command;
@@ -1098,7 +1111,7 @@ bool modelchecker_boolean_programt::check(
       assert(false);
     }
 
-    command+=" "+temp_boolean_program+" >"+temp_boolean_program_out1+
+    command+=" "+temp_boolean_program_bn+".bp >"+temp_boolean_program_out1+
              " 2>"+temp_boolean_program_out2;
 
     status(command);
@@ -1172,14 +1185,17 @@ Function: modelchecker_boolean_programt::build
 
 void modelchecker_boolean_programt::build(
   abstract_modelt &abstract_model,
-  const std::string &out_file_name)
+  const std::string &out_file_base_name)
 {
   get_variable_names(abstract_model);
   //get_nondet_symbols(abstract_model);
   //get_events(abstract_model);
 
+  std::string out_file_name=out_file_base_name+".bp";
   std::ofstream out(out_file_name.c_str());
-  build_boolean_program_file(abstract_model, out);
+  tts_buildert tts_builder(build_tts, out_file_base_name+".tts");
+
+  build_boolean_program_file(abstract_model, out, tts_builder);
 }
 
 /*******************************************************************\
@@ -1198,7 +1214,7 @@ void modelchecker_boolean_programt::save(
   abstract_modelt &abstract_model,
   unsigned sequence)
 {
-  build(abstract_model, "satabs."+i2string(sequence)+".bp");
+  build(abstract_model, "satabs."+i2string(sequence));
 }
 
 /*******************************************************************\

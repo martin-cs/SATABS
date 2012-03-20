@@ -44,6 +44,9 @@ public:
   // save the Boolean programs?
   bool save_bps;
 
+  // build thread transition systems?
+  bool build_tts;
+
   // handle concurrency using CAV'11 technique?
   bool concurrency_aware;
 

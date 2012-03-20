@@ -44,10 +44,16 @@ modelcheckert *select_modelchecker(
     max_threads=safe_str2unsigned(cmdline.getval("max-threads"));
     
   modelcheckert *m=NULL;
+  if(cmdline.isset("build-tts"))
+  {
+    assert((name=="boppo" && cmdline.isset("full-inlining"))
+        || name=="boom");
+  }
 
   if(name=="boppo")
     m=new modelchecker_boolean_programt(args, 
-      modelchecker_boolean_programt::BOPPO, max_threads, cmdline.isset("concurrency"));
+      modelchecker_boolean_programt::BOPPO, max_threads,
+      cmdline.isset("concurrency"), cmdline.isset("build-tts"));
   else if(name=="cmu-smv")
     m=new modelchecker_smvt(args, modelchecker_smvt::CMU_SMV, cmdline.isset("concurrency"));
   else if(name=="cadence-smv")
@@ -60,7 +66,8 @@ modelcheckert *select_modelchecker(
     m=new modelchecker_spint(args, cmdline.isset("concurrency"));
   else if(name=="boom")
     m=new modelchecker_boolean_programt(args,
-      modelchecker_boolean_programt::BOOM, max_threads, cmdline.isset("concurrency"));
+      modelchecker_boolean_programt::BOOM, max_threads,
+      cmdline.isset("concurrency"), cmdline.isset("build-tts"));
   else
     throw "unknown modelchecker: "+name;
 
