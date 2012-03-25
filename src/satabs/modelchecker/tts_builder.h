@@ -20,8 +20,7 @@ Author: Michael Tautschnig
 #include <mp_arith.h>
 
 #include <solvers/prop/literal.h>
-
-#include "satabs/abstractor/abstract_program.h"
+#include "../abstractor/abstract_program.h"
 
 class tts_buildert
 {
