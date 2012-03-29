@@ -115,7 +115,7 @@ class tts_buildert
       const bool m2,
       const bool ts2,
       const unsigned PC2,
-      const bool oh1);
+      const bool oh2);
 
   bool skip_make_assign(
       const std::vector<bool> &state,
