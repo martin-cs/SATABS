@@ -41,6 +41,7 @@ void canonicalize_rec(exprt &expr, bool &negation)
     {
       negation=!negation;
       expr.id(ID_equal);
+      canonicalize_rec(expr, negation);
     }
   } 
   else if(expr.id()==ID_ge) // we only use le and lt
@@ -49,6 +50,7 @@ void canonicalize_rec(exprt &expr, bool &negation)
     {
       negation=!negation;
       expr.id(ID_lt);
+      canonicalize_rec(expr, negation);
     }
   } 
   else if(expr.id()==ID_gt) // we only use le and lt
@@ -57,6 +59,7 @@ void canonicalize_rec(exprt &expr, bool &negation)
     {
       negation=!negation;
       expr.id(ID_le);
+      canonicalize_rec(expr, negation);
     }
   } 
   else if(expr.id()==ID_le || expr.id()==ID_lt)
@@ -66,6 +69,17 @@ void canonicalize_rec(exprt &expr, bool &negation)
        
     }
   } 
+  else if(expr.id()==ID_equal)
+  {
+    // we order the operands with <
+    assert(expr.operands().size()==2);
+
+    if(expr.op0()<expr.op1())
+    {
+    }
+    else
+      expr.op0().swap(expr.op1());
+  }
 }
 
 /*******************************************************************\
