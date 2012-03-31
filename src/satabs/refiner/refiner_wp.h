@@ -26,6 +26,7 @@ public:
       bool _prefix_first,
       unsigned max_predicates_to_add,
       bool prefer_non_pointer_predicates,
+      bool remove_equivalent_predicates,
       bool no_mixed_predicates,
       bool passive_constrain):
     transition_refinert(
@@ -33,6 +34,7 @@ public:
         _prefix_first,
         max_predicates_to_add,
         prefer_non_pointer_predicates,
+        remove_equivalent_predicates,
         no_mixed_predicates,
         passive_constrain)
   {

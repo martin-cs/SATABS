@@ -19,6 +19,38 @@ static std::auto_ptr<std::map<exprt, bool> > is_unsatisfiable_cache;
 
 /*******************************************************************\
 
+Function: is_equivalent
+
+  Inputs: expression e1, expression e2, and namespace ns
+
+ Outputs: returns true if e1 and e2 are  equivalent, i.e. under all
+          valuations their values equal. The other implication might
+          not hold (for speed purposes we employ some heuristics)
+
+ Purpose: decides (using SAT) whether expression e1 is equivalent
+          to expression e2
+
+\*******************************************************************/
+
+bool is_equivalent(const exprt& e1, const exprt& e2, const namespacet& ns)
+{
+  irep_idt i1 = e1.id();
+  irep_idt i2 = e2.id();
+
+  //for speedup do some quick checks that mostly imply non-equivalence
+  if (i1 == ID_equal &&
+      (i2 == ID_lt || i2 == ID_gt || i2==ID_le || i2==ID_ge))
+	return false;
+
+  if (i2 == ID_equal &&
+      (i1 == ID_lt || i1 == ID_gt || i1==ID_le || i1==ID_ge))
+	return false;
+
+  return is_valid(equal_exprt(e1,e2), ns);
+}
+
+/*******************************************************************\
+
 Function: is_valid
 
   Inputs: expression e, and namespace ns

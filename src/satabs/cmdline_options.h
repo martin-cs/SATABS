@@ -50,6 +50,7 @@ public:
     "(nan-check)(error-label):(prefix-first)(no-arch)"
     "(no-path-slicing)(version)(shortest-prefix)"
     "(save-bps)(max-threads):(max-new-predicates):(prefer-non-pointer-predicates)"
+    "(remove-equivalent-predicates)"
     "(no-mixed-predicates)"
     "(max-cube-length):(concurrency)(passive-nondet)(csv-stats)(build-tts)",
     argc, argv),

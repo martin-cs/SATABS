@@ -46,6 +46,7 @@ refinert *select_refiner(
 	  max_predicates_to_add = (unsigned)(-1);
   }
   bool prefer_non_pointer_predicates = cmdline.isset("prefer-non-pointer-predicates");
+  bool remove_equivalent_predicates = cmdline.isset("remove-equivalent-predicates");
 
   std::string name=
     cmdline.isset("refiner")?cmdline.getval("refiner"):"wp";
@@ -60,10 +61,12 @@ refinert *select_refiner(
   if(name=="wp_only")
     return new refiner_wp_onlyt(args, prefix_first,
         max_predicates_to_add, prefer_non_pointer_predicates,
+        remove_equivalent_predicates,
         no_mixed_predicates, passive_constrain);
   else if(name=="wp")
     return new refiner_wpt(args, prefix_first,
         max_predicates_to_add, prefer_non_pointer_predicates,
+        remove_equivalent_predicates,
         no_mixed_predicates, passive_constrain);
   else if(name=="ipp")
   {
@@ -73,6 +76,7 @@ refinert *select_refiner(
     // -1 means use unsplit prover
     return new refiner_ippt(args, prefix_first, limit,
         max_predicates_to_add, prefer_non_pointer_predicates,
+        remove_equivalent_predicates,
         no_mixed_predicates, passive_constrain);
     #else
     throw "support for IPP not linked in";
@@ -81,12 +85,14 @@ refinert *select_refiner(
   else if(name=="lifter")
     return new refiner_liftert(args, prefix_first,
         max_predicates_to_add, prefer_non_pointer_predicates,
+        remove_equivalent_predicates,
         no_mixed_predicates, passive_constrain);
   else if(name=="none")
     return new no_refinert(args);
   else if(name=="transitions_only")
     return new transition_refinert(args, false,
         max_predicates_to_add, prefer_non_pointer_predicates,
+        remove_equivalent_predicates,
         no_mixed_predicates, passive_constrain);
   else
     throw "unknown refiner: "+name;

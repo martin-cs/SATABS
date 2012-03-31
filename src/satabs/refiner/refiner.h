@@ -27,10 +27,12 @@ public:
       const argst &args,
       const unsigned _max_predicates_to_add,
       const bool _prefer_non_pointer_predicates,
+      const bool _remove_equivalent_predicates,
       const bool _no_mixed_predicates) :
     loop_componentt(args),
     max_predicates_to_add(_max_predicates_to_add),
     prefer_non_pointer_predicates(_prefer_non_pointer_predicates),
+    remove_equivalent_predicates(_remove_equivalent_predicates),
     no_mixed_predicates(_no_mixed_predicates)
   {
 	  reset_num_predicates_added();
@@ -78,6 +80,7 @@ protected:
   const unsigned max_predicates_to_add;
   unsigned num_predicates_added;
   const bool prefer_non_pointer_predicates;
+  const bool remove_equivalent_predicates;
   const bool no_mixed_predicates;
 
   void reset_num_predicates_added()

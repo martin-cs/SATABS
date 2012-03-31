@@ -14,6 +14,8 @@
 #include <expr.h>
 #include <namespace.h>
 
+bool is_equivalent(const exprt& e1, const exprt& e2, const namespacet& ns);
+
 bool is_valid(const exprt& e, const namespacet& ns);
 
 bool is_unsatisfiable(const exprt& e, const namespacet& ns);

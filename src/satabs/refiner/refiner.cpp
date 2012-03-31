@@ -65,19 +65,67 @@ void refinert::add_predicates(
 			  std::cout << "It is not a pointer pred\n";
 		  }
 
+		  if(!predicates.find(p))
+		  	continue;
+
 		  if(is_pointer_predicate(p) || is_redundant(p, concrete_model.ns))
 		  {
 			  // Do not add redundant predicate, or predicate which involves address-of
 			  continue;
 		  }
-
-		  if(!predicates.find(p))
-		  {
-			  std::string msg="Adding predicate `"+from_expr(concrete_model.ns, "", p)+"'";
-			  debug(msg);
-			  debug(p.pretty());
-			  num_predicates_added++;
+                  
+                  if (remove_equivalent_predicates)
+                  {
+		    //check if the predicate to be added is equivalent to some other
+		    //predicate which was considered already, if yes, skip it.
+		    bool is_eq_to_added = false;
+		    for(std::set<predicatet>::const_iterator
+		        p_added_it=new_predicates.begin();
+		        p_added_it!=p_it;
+		        p_added_it++)
+		    {
+		      const exprt &p_added = *p_added_it;
+		      if (is_equivalent(p,p_added,concrete_model.ns))
+		      {
+		        is_eq_to_added = true;
+		        std::string msg="Predicate `" + from_expr(concrete_model.ns, "", p) +
+		          "' is equivalent to `" + from_expr(concrete_model.ns, "", p_added) +
+		          "' which will was already considered, hence I am skipping it";
+		        debug(msg);
+		        debug(p.pretty());
+		        break;
+		      }
+		    }
+		
+		    if (is_eq_to_added)
+		      continue;
+		
+		    //check if the predicate to be added is equivalent to some
+		    //predicate that was added during previous cegar loops.
+		    bool is_eq_to_old = false;
+		    for(unsigned i = 0; i < predicates.size(); i++)
+		    {
+		      const exprt &p_old=predicates[i];
+		      if (is_equivalent(p,p_old,concrete_model.ns))
+		      {
+		        is_eq_to_old = true;
+		        std::string msg="Predicate `" + from_expr(concrete_model.ns, "", p) +
+		          "' is equivalent to `" + from_expr(concrete_model.ns, "", p_old) +
+		          "' which is already added, hence I am skipping it";
+		        debug(msg);
+		        debug(p.pretty());
+		        break;
+		      }
+		    }
+		
+		    if (is_eq_to_old)
+		      continue;
 		  }
+
+		  std::string msg="Adding predicate `"+from_expr(concrete_model.ns, "", p)+"'";
+		  debug(msg);
+		  debug(p.pretty());
+		  num_predicates_added++;
 
 		  new_predicates_no.insert(predicates.lookup(*p_it));
 	  }
@@ -91,19 +139,70 @@ void refinert::add_predicates(
   {
     const exprt &p=*p_it;
 
-    if(is_redundant(p, concrete_model.ns))
+    //do not add predicates that were added in previous iterations
+    if(predicates.find(p))
     {
-    	// Do not add redundant predicate
-    	continue;
+      continue;
     }
 
-    if(!predicates.find(p))
+    if(is_redundant(p, concrete_model.ns))
     {
-      std::string msg="Adding predicate `"+from_expr(concrete_model.ns, "", p)+"'";
-      debug(msg);
-      debug(p.pretty());
-      num_predicates_added++;
+      // Do not add redundant predicate
+      continue;
     }
+
+    if (remove_equivalent_predicates)
+    {
+      //check if the predicate to be added is equivalent to some other
+      //predicate which was considered already, if yes, skip it.
+      bool is_eq_to_added = false;
+      for(std::set<predicatet>::const_iterator
+          p_added_it=new_predicates.begin();
+          p_added_it!=p_it;
+          p_added_it++)
+      {
+        const exprt &p_added = *p_added_it;
+        if (is_equivalent(p,p_added,concrete_model.ns))
+        {
+          is_eq_to_added = true;
+          std::string msg="Predicate `" + from_expr(concrete_model.ns, "", p) +
+            "' is equivalent to `" + from_expr(concrete_model.ns, "", p_added) +
+            "' which will was already considered, hence I am skipping it";
+          debug(msg);
+          debug(p.pretty());
+          break;
+        }
+      }
+
+      if (is_eq_to_added)
+        continue;
+
+      //check if the predicate to be added is equivalent to some
+      //predicate that was added during previous cegar loops.
+      bool is_eq_to_old = false;
+      for(unsigned i = 0; i < predicates.size(); i++)
+      {
+        const exprt &p_old=predicates[i];
+        if (is_equivalent(p,p_old,concrete_model.ns))
+        {
+          is_eq_to_old = true;
+          std::string msg="Predicate `" + from_expr(concrete_model.ns, "", p) +
+            "' is equivalent to `" + from_expr(concrete_model.ns, "", p_old) +
+            "' which is already added, hence I am skipping it";
+          debug(msg);
+          debug(p.pretty());
+          break;
+        }
+      }
+
+      if (is_eq_to_old)
+        continue;
+    }
+
+    std::string msg="Adding predicate `"+from_expr(concrete_model.ns, "", p)+"'";
+    debug(msg);
+    debug(p.pretty());
+    num_predicates_added++;
 
     new_predicates_no.insert(predicates.lookup(*p_it));
 
