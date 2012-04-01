@@ -61,40 +61,37 @@ void abstract_stept::output(std::ostream &out) const
           out << "(?)           ";
       }
       else
-        out << "(?)           ";
+        out << "// no PC" << std::endl;
+
+      if(has_pc && pc->is_goto())
+        out << "branch_taken=" << branch_taken;
+
+      out << std::endl;
+      for(thread_to_predicate_valuest::const_iterator it = thread_states.begin(); it != thread_states.end(); it++)
+      {
+        out << "  thread " << it->first << ": (";
+        for(unsigned i = 0; i < it->second.size(); i++)
+        {
+          out << "b" << i << " = " << it->second[i];
+          if(i < it->second.size() - 1) out << " ";
+        }
+        out << ")" << std::endl;
+      }
+
+      out << std::endl;
+      break;
+
+    case LOOP_BEGIN:
+      out << "===== LOOP [:" << std::endl;
+      break;
+
+    case LOOP_END:
+      out << "===== LOOP :]" << std::endl;
+      break;
+
+    default:
+      assert(false);
   }
-  else
-    out << "// no PC" << std::endl;
-
-  if(has_pc && pc->is_goto())
-    out << "branch_taken=" << branch_taken;
-
-  out << std::endl;
-  for(thread_to_predicate_valuest::const_iterator it = thread_states.begin(); it != thread_states.end(); it++)
-  {
-    out << "  thread " << it->first << ": (";
-    for(unsigned i = 0; i < it->second.size(); i++)
-    {
-      out << "b" << i << " = " << it->second[i];
-      if(i < it->second.size() - 1) out << " ";
-    }
-    out << ")" << std::endl;
-  }
-
-  out << std::endl;
-  break;
-
-  case LOOP_BEGIN:
-  out << "===== LOOP [:" << std::endl;
-  break;
-
-  case LOOP_END:
-  out << "===== LOOP :]" << std::endl;
-  break;
-
-  default:
-  assert(false);
-}
 }
 
 /*******************************************************************\

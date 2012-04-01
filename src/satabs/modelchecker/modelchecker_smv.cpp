@@ -1349,46 +1349,46 @@ void modelchecker_smvt::build_smv_file_model(
             out << '(' << expr_string(*e_it) << ')' << std::endl;
           }
         }
+        break;
+
+      default:
+        assert(false);
     }
-    break;
 
-    default:
-    assert(false);
+
+    out << "    -- TO Predicates:";
+    for(std::set<unsigned>::const_iterator
+        p_it=instruction.code.get_transition_relation().to_predicates.begin();
+        p_it!=instruction.code.get_transition_relation().to_predicates.end();
+        p_it++)
+      out << " " << variable_names[*p_it];
+
+    out << std::endl;
   }
 
-  out << "    -- TO Predicates:";
-  for(std::set<unsigned>::const_iterator
-      p_it=instruction.code.get_transition_relation().to_predicates.begin();
-      p_it!=instruction.code.get_transition_relation().to_predicates.end();
-      p_it++)
-    out << " " << variable_names[*p_it];
+  // termination state
 
-  out << std::endl;
-}
-
-// termination state
-
-if(!abstract_model.variables.empty())
-{
-  out << "-- termination" << std::endl;
-  out << "TRANS (PC=" << inlined.PC_map.size() << " & runs) -> ";
-
-  for(unsigned i=0;
-      i<abstract_model.variables.size();
-      i++)
+  if(!abstract_model.variables.empty())
   {
-    if((i%2)==1)
-      out << std::endl << "             ";
+    out << "-- termination" << std::endl;
+    out << "TRANS (PC=" << inlined.PC_map.size() << " & runs) -> ";
 
-    if(i!=0) out << " & ";
-    out << "next(" << variable_names[i]
-      << ")=" << variable_names[i];
+    for(unsigned i=0;
+        i<abstract_model.variables.size();
+        i++)
+    {
+      if((i%2)==1)
+        out << std::endl << "             ";
+
+      if(i!=0) out << " & ";
+      out << "next(" << variable_names[i]
+        << ")=" << variable_names[i];
+    }
+
+    out << std::endl;
   }
 
   out << std::endl;
-}
-
-out << std::endl;
 }
 
 /*******************************************************************\
@@ -1715,6 +1715,11 @@ bool modelchecker_smvt::check(
       case CMU_SMV:
         command="smv";
         status(std::string("Running CMU SMV: ")+command);
+        break;
+
+      case CADENCE_SMV:
+        command="smv -force -sift";
+        status(std::string("Running Cadence SMV: ")+command);
         break;
 
       case SATMC:
