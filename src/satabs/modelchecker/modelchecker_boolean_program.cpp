@@ -1129,7 +1129,6 @@ bool modelchecker_boolean_programt::check(
 
     switch(engine)
     {
-      <<<<<<< HEAD
       case BOPPO:
       case BOOM:
         return read_result_boppo_boom(
@@ -1138,17 +1137,6 @@ bool modelchecker_boolean_programt::check(
 
       default:
         assert(false);
-        =======
-      case BOPPO:
-      case BOOM:
-          return read_result_boppo_boom(
-              out1, out2, abstract_model, counterexample);
-          break;
-
-      case BEBOP:
-      case MOPED:
-          assert(false);
-          >>>>>>> 9aa4a7c... Whitespace cleanup ONLY
     }
   }
 
