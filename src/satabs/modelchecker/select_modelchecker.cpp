@@ -3,7 +3,7 @@
 Module: Modelchecker Selection
 
 Authors: Daniel Kroening, kroening@kroening.com
-         Karen Yorav
+Karen Yorav
 
 Date: June 2003
 
@@ -20,17 +20,17 @@ Date: June 2003
 
 Function: select_modelchecker
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 modelcheckert *select_modelchecker(
-  const optionst &options,
-  const loop_componentt::argst &args)
+    const optionst &options,
+    const loop_componentt::argst &args)
 {
   const std::string name=options.get_option("modelchecker");
 
@@ -45,12 +45,12 @@ modelcheckert *select_modelchecker(
 
   if(name=="boom")
     m=new modelchecker_boolean_programt(args,
-      modelchecker_boolean_programt::BOOM, max_threads,
-      concurrency, build_tts);
+        modelchecker_boolean_programt::BOOM, max_threads,
+        concurrency, build_tts);
   else if(name=="boppo")
     m=new modelchecker_boolean_programt(args,
-      modelchecker_boolean_programt::BOPPO, max_threads,
-      concurrency, build_tts);
+        modelchecker_boolean_programt::BOPPO, max_threads,
+        concurrency, build_tts);
   else if(name=="cmu-smv")
     m=new modelchecker_smvt(args, modelchecker_smvt::CMU_SMV, concurrency);
   else if(name=="cadence-smv")

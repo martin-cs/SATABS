@@ -3,7 +3,7 @@
 Module: The Abstract Model
 
 Author: Daniel Kroening
-        Karen Yorav 
+Karen Yorav 
 
 Date: June 2003
 
@@ -18,48 +18,48 @@ Date: June 2003
 
 class abstract_modelt
 {
-public:
-  // abstract program
-  abstract_functionst goto_functions;
-  
-  // variables
-  struct variablet
-  {
-    std::string description;
-    
-    // the threading category
-    enum var_classt { NONE, SHARED_GLOBAL, THREAD_LOCAL, PROCEDURE_LOCAL, MIXED };
-    var_classt var_class;
-    
-    bool is_shared_global() const { return var_class==SHARED_GLOBAL; }
-    bool is_thread_local() const { return var_class==THREAD_LOCAL; }
-    bool is_procedure_local() const { return var_class==PROCEDURE_LOCAL; }
-    bool is_mixed() const { return var_class==MIXED; }
-    
-    // if local, which function?
-    typedef std::set<irep_idt> functionst;
-    functionst functions;
-    
-    variablet():var_class(NONE)
+  public:
+    // abstract program
+    abstract_functionst goto_functions;
+
+    // variables
+    struct variablet
+    {
+      std::string description;
+
+      // the threading category
+      enum var_classt { NONE, SHARED_GLOBAL, THREAD_LOCAL, PROCEDURE_LOCAL, MIXED };
+      var_classt var_class;
+
+      bool is_shared_global() const { return var_class==SHARED_GLOBAL; }
+      bool is_thread_local() const { return var_class==THREAD_LOCAL; }
+      bool is_procedure_local() const { return var_class==PROCEDURE_LOCAL; }
+      bool is_mixed() const { return var_class==MIXED; }
+
+      // if local, which function?
+      typedef std::set<irep_idt> functionst;
+      functionst functions;
+
+      variablet():var_class(NONE)
+      {
+      }
+    };
+
+    typedef std::vector<variablet> variablest;
+    variablest variables;
+
+    abstract_modelt()
     {
     }
-  };
 
-  typedef std::vector<variablet> variablest;
-  variablest variables;
-  
-  abstract_modelt()
-  {
-  }
-  
-  void output(const namespacet &ns, std::ostream &out) const
-  {
-    goto_functions.output(ns, out);
-  }
-  
-  // given a concrete location, returns the appropriate abstract one
-  abstract_programt::targett get_abstract_location(
-    goto_programt::const_targett concrete_location);
+    void output(const namespacet &ns, std::ostream &out) const
+    {
+      goto_functions.output(ns, out);
+    }
+
+    // given a concrete location, returns the appropriate abstract one
+    abstract_programt::targett get_abstract_location(
+        goto_programt::const_targett concrete_location);
 };
 
 #endif

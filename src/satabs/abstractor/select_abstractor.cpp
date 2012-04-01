@@ -21,18 +21,18 @@ Date: September 2005
 
 Function: select_abstractor
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 abstractort *select_abstractor(
-  const optionst &options,
-  const loop_componentt::argst &args,
-  const goto_functionst &functions)
+    const optionst &options,
+    const loop_componentt::argst &args,
+    const goto_functionst &functions)
 {
   const std::string name=options.get_option("abstractor");
 
@@ -41,17 +41,17 @@ abstractort *select_abstractor(
   if(name=="wp")
     specific_abstractor = new abstractor_wpt(args);
   else if(name=="prover")
-    #ifdef HAVE_PROVER
+#ifdef HAVE_PROVER
     specific_abstractor = new abstractor_provert(args);
-    #else
-    throw "support for prover not linked in";
-    #endif
+#else
+  throw "support for prover not linked in";
+#endif
   else if(name=="satqe")
-    #ifdef HAVE_SATQE
+#ifdef HAVE_SATQE
     specific_abstractor = new abstractor_satqet(args);
-    #else
-    throw "support for satqe not linked in";
-    #endif
+#else
+  throw "support for satqe not linked in";
+#endif
   else if(name=="cartesian")
     specific_abstractor =
       new abstractor_wp_cartesiant(args,
@@ -62,10 +62,10 @@ abstractort *select_abstractor(
   if(options.get_bool_option("concurrency"))
   {
     return new concurrency_aware_abstractort(
-      args,
-      std::auto_ptr<abstractort>(specific_abstractor),
-      functions,
-      options.get_bool_option("passive-nondet"));
+        args,
+        std::auto_ptr<abstractort>(specific_abstractor),
+        functions,
+        options.get_bool_option("passive-nondet"));
   }
   else
     return specific_abstractor;

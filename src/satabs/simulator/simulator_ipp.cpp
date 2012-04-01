@@ -21,19 +21,19 @@ Purpose:
 
 Function: simulator_ippt::check_prefix_equation
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
-  
+
 bool simulator_ippt::check_prefix_equation(
-  prefixt &prefix,
-  goto_symex_statet &state,
-  concrete_counterexamplet &concrete_counterexample,
-  fail_infot &fail_info)
+    prefixt &prefix,
+    goto_symex_statet &state,
+    concrete_counterexamplet &concrete_counterexample,
+    fail_infot &fail_info)
 {
   interpolating_tpt interpolating_tp(limit);
 
@@ -47,7 +47,7 @@ bool simulator_ippt::check_prefix_equation(
     if(tmp.is_nil()) tmp.make_true();
 
     ::base_type(tmp, ns);
-                        
+
     if(c_it->is_assert())
       interpolating_tp.set_to_false(tmp);
     else
@@ -56,22 +56,22 @@ bool simulator_ippt::check_prefix_equation(
 
   switch(interpolating_tp.dec_solve())
   {
-  case decision_proceduret::D_TAUTOLOGY:
-  case decision_proceduret::D_SATISFIABLE:
-    return false;
-  
-  case decision_proceduret::D_UNSATISFIABLE:
-    status("Counterexample prefix is spurious");
+    case decision_proceduret::D_TAUTOLOGY:
+    case decision_proceduret::D_SATISFIABLE:
+      return false;
 
-    interpolating_tp.get_interpolant_list().swap(interpolant_list);
-    
-    Forall_expr_list(it, interpolant_list)
-      state.get_original_name(*it);
+    case decision_proceduret::D_UNSATISFIABLE:
+      status("Counterexample prefix is spurious");
 
-    return true;
-  
-  default:
-    throw "error from interpolating theorem prover";
+      interpolating_tp.get_interpolant_list().swap(interpolant_list);
+
+      Forall_expr_list(it, interpolant_list)
+        state.get_original_name(*it);
+
+      return true;
+
+    default:
+      throw "error from interpolating theorem prover";
   }
 }
 
@@ -79,22 +79,22 @@ bool simulator_ippt::check_prefix_equation(
 
 Function: simulator_ippt::check_prefix
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: check an abstract counterexample
-          Returns TRUE if the counterexample is spurious,
-          and FALSE otherwise
+Purpose: check an abstract counterexample
+Returns TRUE if the counterexample is spurious,
+and FALSE otherwise
 
 \*******************************************************************/
 
 bool simulator_ippt::check_prefix(
-  const predicatest &predicates,
-  const abstract_modelt &abstract_model,
-  abstract_counterexamplet &abstract_counterexample,
-  concrete_counterexamplet &concrete_counterexample,
-  fail_infot &fail_info)
+    const predicatest &predicates,
+    const abstract_modelt &abstract_model,
+    abstract_counterexamplet &abstract_counterexample,
+    concrete_counterexamplet &concrete_counterexample,
+    fail_infot &fail_info)
 {
   assert(abstract_counterexample.steps.size()!=0);
 
@@ -107,15 +107,15 @@ bool simulator_ippt::check_prefix(
 
   build_equation_prefix(abstract_counterexample, prefix, state, false);
 
-  #if 0
+#if 0
   std::cout << prefix.equation;
-  #endif
-  
+#endif
+
   // run decision procedure
-  
+
   return check_prefix_equation(
-    prefix,
-    state,
-    concrete_counterexample,
-    fail_info);
+      prefix,
+      state,
+      concrete_counterexample,
+      fail_info);
 }

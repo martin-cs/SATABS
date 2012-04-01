@@ -3,7 +3,7 @@
 Module: Model Checker Base Class
 
 Author: Daniel Kroening
-        Karen Yorav 
+Karen Yorav 
 
 Date: June 2003
 
@@ -20,22 +20,22 @@ Date: June 2003
 
 Function: modelcheckert::is_variable_name
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool modelcheckert::is_variable_name(
-  const std::string &name)
+    const std::string &name)
 {
   if(name=="") return false;
 
   for(unsigned i=0; i<name.size(); i++)
     if(!isalnum(name[i]) &&
-       name[i]!='_')
+        name[i]!='_')
       return false;
 
   return true;
@@ -45,16 +45,16 @@ bool modelcheckert::is_variable_name(
 
 Function: modelcheckert::get_variable_names
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelcheckert::get_variable_names(
-  const abstract_modelt &abstract_model)
+    const abstract_modelt &abstract_model)
 {
   variable_names.resize(abstract_model.variables.size());
 
@@ -66,7 +66,7 @@ void modelcheckert::get_variable_names(
 
     std::string description=
       abstract_model.variables[i].description;
-      
+
     // do some substitution
     substitute(description, " ", "_");
     substitute(description, "==", "eq");
@@ -92,11 +92,11 @@ void modelcheckert::get_variable_names(
 
 Function: modelcheckert::enable_loop_detection
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -109,11 +109,11 @@ void modelcheckert::enable_loop_detection()
 
 Function: modelcheckert::get_nondet_symbols
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -134,8 +134,8 @@ void modelcheckert::get_nondet_symbols(const abstract_modelt &abstract_model)
       // add nondets for refined gotos and assumes
       if ((i_it->is_goto()||i_it->is_assume())&&
           i_it->code.get_transition_relation().constraints.size())
-          get_nondet_symbols
-            (i_it->code.get_transition_relation().constraints.front());
+        get_nondet_symbols
+          (i_it->code.get_transition_relation().constraints.front());
     }
 }
 
@@ -143,11 +143,11 @@ void modelcheckert::get_nondet_symbols(const abstract_modelt &abstract_model)
 
 Function: modelcheckert::get_nondet_symbols
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -157,11 +157,11 @@ void modelcheckert::get_nondet_symbols(const exprt &expr)
     get_nondet_symbols(*it);
 
   if(expr.id()==ID_nondet_symbol ||
-     expr.id()==ID_bp_schoose)
+      expr.id()==ID_bp_schoose)
   {
     nondet_symbols.insert(std::pair<exprt, std::string>
-      (static_cast<const exprt &>(expr.find(ID_expression)), 
-       "nondet"+i2string(nondet_symbols.size())));
+        (static_cast<const exprt &>(expr.find(ID_expression)), 
+         "nondet"+i2string(nondet_symbols.size())));
   }
 }
 
@@ -169,11 +169,11 @@ void modelcheckert::get_nondet_symbols(const exprt &expr)
 
 Function: modelcheckert::inlinedt::build
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -190,11 +190,11 @@ void modelcheckert::inlinedt::build(abstract_modelt &abstract_model)
 
 Function: modelcheckert::inlinedt::has_assertion
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -203,7 +203,7 @@ bool modelcheckert::inlinedt::has_assertion() const
   for(unsigned PC=0; PC<PC_map.size(); PC++)
     if(PC_map[PC].original->is_assert())
       return true;
-      
+
   return false;
 }
 
@@ -211,18 +211,18 @@ bool modelcheckert::inlinedt::has_assertion() const
 
 Function: modelcheckert::inlinedt::build
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelcheckert::inlinedt::build(
-  abstract_modelt &abstract_model,
-  const irep_idt f_id,
-  std::set<irep_idt> &recursion_stack)
+    abstract_modelt &abstract_model,
+    const irep_idt f_id,
+    std::set<irep_idt> &recursion_stack)
 {
   abstract_functionst::function_mapt::iterator f_it=
     abstract_model.goto_functions.function_map.find(f_id);
@@ -239,14 +239,14 @@ void modelcheckert::inlinedt::build(
     recursion_stack.insert(f_id);
 
   abstract_programt &abstract_program=f_it->second.body;
-  
+
   // first build target map
   // and do inlining
   typedef std::map<abstract_programt::const_targett, unsigned> target_mapt;
   target_mapt target_map;
-  
+
   PC_map.reserve(PC_map.size()+abstract_program.instructions.size());
-  
+
   unsigned last_PC;
 
   for(abstract_programt::instructionst::iterator
@@ -267,16 +267,16 @@ void modelcheckert::inlinedt::build(
       // figure out what is called
       const code_function_callt &call=
         to_code_function_call(i_it->code.concrete_pc->code);
-        
+
       if(call.function().id()!="symbol")
         throw "expected symbol as function argument";
-        
+
       const symbol_exprt &symbol=to_symbol_expr(call.function());
-      
+
       build(abstract_model, symbol.get_identifier(), recursion_stack);
     }
   }
-  
+
   // 2nd run: do targets
 
   for(abstract_programt::instructionst::iterator
@@ -301,7 +301,7 @@ void modelcheckert::inlinedt::build(
       {
         target_mapt::const_iterator m_it=target_map.find(*t_it);
         if(m_it==target_map.end()) throw "failed to find target";
-      
+
         PC_map[PC].targets.push_back(m_it->second);
       }
     }

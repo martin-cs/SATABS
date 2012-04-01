@@ -25,20 +25,20 @@ Author: Daniel Kroening, kroening@kroening.com
 
 Function: make_pos
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: ensures that the literal is positive
-          and that all literals that are quantified over
-          are unique
+Purpose: ensures that the literal is positive
+and that all literals that are quantified over
+are unique
 
 \*******************************************************************/
 
 literalt make_pos(
-  const namespacet &ns,
-  prop_convt &conv,
-  const exprt &expr)
+    const namespacet &ns,
+    prop_convt &conv,
+    const exprt &expr)
 {
   exprt tmp_expr(expr);
   literalt l=conv.convert(tmp_expr);
@@ -52,16 +52,16 @@ literalt make_pos(
 
 Function: uses_symbol
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool uses_symbol(const exprt &expr,
-                 const std::set<irep_idt> &symbols)
+    const std::set<irep_idt> &symbols)
 {
   forall_operands(it, expr)
     if(uses_symbol(*it, symbols))
@@ -77,20 +77,20 @@ bool uses_symbol(const exprt &expr,
 
 Function: get_final_predicates
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 #if 0
 void get_final_predicates(
-  const std::vector<exprt> &predicates,
-  goto_symex_statet &state,
-  std::vector<exprt> &final_predicates,
-  const namespacet &ns)
+    const std::vector<exprt> &predicates,
+    goto_symex_statet &state,
+    std::vector<exprt> &final_predicates,
+    const namespacet &ns)
 {
   final_predicates.resize(predicates.size());
   for(unsigned i=0; i<predicates.size(); i++)
@@ -106,27 +106,27 @@ void get_final_predicates(
 
 Function:
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void build_equation(
-  const namespacet &ns,
-  const predicatest &predicates,
-  goto_programt::const_targett target,
-  std::list<exprt> &constraints,
-  //symex_target_equationt &equation,
-  //std::vector<exprt> &curr_predicates,
-  //std::vector<exprt> &next_predicates,
-  std::vector<exprt> &predicates_wp)
+    const namespacet &ns,
+    const predicatest &predicates,
+    goto_programt::const_targett target,
+    std::list<exprt> &constraints,
+    //symex_target_equationt &equation,
+    //std::vector<exprt> &curr_predicates,
+    //std::vector<exprt> &next_predicates,
+    std::vector<exprt> &predicates_wp)
 {
   constraints.clear();
 
-  #if 0
+#if 0
   goto_programt::const_targett next_target;
   next_target=target;
   next_target++;
@@ -134,37 +134,37 @@ void build_equation(
   // next_target may be end of thread
   if(!concrete_model.value_set_analysis.has_location(next_target))
     next_target=target;
-  #endif
+#endif
 
-  #if 0
+#if 0
   optionst options;
   contextt new_context;
   abstract_dynamic_objectst abstract_dynamic_objects;
   codet tmp_code(to_code(target->code));
 
   abstract_dynamic_objects.collect(tmp_code);
-  
+
   curr_predicates.resize(predicates.size());
   next_predicates.resize(predicates.size());
-  #endif
-  
+#endif
+
   predicates_wp.resize(predicates.size());  
 
-  #if 0
+#if 0
   for(unsigned i=0; i<predicates.size(); i++)
   {
     curr_predicates[i]=predicates[i];
     next_predicates[i]=predicates[i];
     abstract_dynamic_objects.collect(predicates[i]);
-    
+
     //std::cout << "P " << i << " = " << from_expr(ns, "", predicates[i]) << std::endl;
     //std::cout << predicates[i].pretty() << std::endl;
   }
-  #endif
-  
+#endif
+
   // done collecting, do dynamic objects
-  
-  #if 0
+
+#if 0
   for(unsigned i=0; i<predicates.size(); i++)
   {
     abstract_dynamic_objects.replace(curr_predicates[i]);
@@ -172,19 +172,19 @@ void build_equation(
   }
 
   abstract_dynamic_objects.replace(tmp_code);
-  #endif
+#endif
 
-  #if 0    
+#if 0    
   goto_symex_statet state;
   state.source.pc=target;
-  #endif
-  
-  #if 0
+#endif
+
+#if 0
   {
     // find invariant set
     const invariant_sett::invariantst &invariants=
       concrete_model.invariant_propagation.lookup(target).invariants;
-  
+
     for(invariant_sett::invariantst::expr_sett::const_iterator
         it=invariants.expr_set().begin();
         it!=invariants.expr_set().end();
@@ -195,9 +195,9 @@ void build_equation(
       constraints.push_back(tmp);
     }
   }
-  #endif
+#endif
 
-  #if 0
+#if 0
   for(unsigned i=0; i<predicates.size(); i++)
   {
     state.rename(curr_predicates[i], ns);
@@ -211,8 +211,8 @@ void build_equation(
     state.rename(next_predicates[i], ns);
     simplify(next_predicates[i], ns);
   }
-  #endif
-  
+#endif
+
   codet code=target->code;
   if(code.get_statement() ==ID_decl)
   {
@@ -225,13 +225,13 @@ void build_equation(
   {
     predicates_wp[i]=wp(code, predicates[i], ns);
 
-    #if 0
+#if 0
     precondition(
-      ns,
-      concrete_model.value_set_analysis,
-      next_target,
-      equation, state, predicates_wp[i]);
-    #endif
+        ns,
+        concrete_model.value_set_analysis,
+        next_target,
+        equation, state, predicates_wp[i]);
+#endif
 
     //std::cout << "xp P " << i << " = " << from_expr(ns, "", predicates_wp[i]) << std::endl;
     canonicalize(predicates_wp[i], ns);

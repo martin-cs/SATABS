@@ -1,12 +1,12 @@
 /*******************************************************************\
-  
+
 Module: Prepare a C program for use by CEGAR
 
 Author: Daniel Kroening
-        Karen Yorav
+Karen Yorav
 
 Date: June 2003
- 
+
 \*******************************************************************/
 
 #include <expr_util.h>
@@ -55,18 +55,18 @@ Date: June 2003
 
 Function: preparet::preparet
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: convert input program into goto program
+Purpose: convert input program into goto program
 
 \*******************************************************************/
 
 preparet::preparet(
-  const cmdlinet &_cmdline,
-  const optionst &_options,
-  contextt &_shadow_context): 
+    const cmdlinet &_cmdline,
+    const optionst &_options,
+    contextt &_shadow_context): 
   language_uit("SATABS " SATABS_VERSION, _cmdline),
   ns(context, _shadow_context),
   shadow_context(_shadow_context),
@@ -79,31 +79,31 @@ preparet::preparet(
 
 Function: preparet::doit
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: convert input program into goto program
+Purpose: convert input program into goto program
 
 \*******************************************************************/
 
 int preparet::doit()
 {
   register_languages();
-  
+
   try
   {
     // do we have a goto binary?
     if(cmdline.args.size()==1 &&
-       is_goto_binary(cmdline.args[0]))
+        is_goto_binary(cmdline.args[0]))
     {
       status("Reading GOTO program from file");
 
       if(read_goto_binary(cmdline.args[0],
-           context, goto_functions,
-           get_message_handler()))
+            context, goto_functions,
+            get_message_handler()))
         return 1;
-        
+
       config.ansi_c.set_from_context(context);
     }
     else
@@ -111,28 +111,28 @@ int preparet::doit()
       //
       // parsing
       //
-       
+
       if(parse()) return 1;
-       
+
       //
       // type checking
       //
-       
+
       if(typecheck()) return 1;
-       
+
       //
       // final adjustments
       //
-       
+
       if(final()) return 1;
     }
-    
+
     {
       int return_value_get_sync_modules=get_sync_modules();
       if(return_value_get_sync_modules>=0)
         return return_value_get_sync_modules;
     }
-    
+
     {
       int return_value_get_async_modules=get_async_modules();
       if(return_value_get_async_modules>=0)
@@ -149,10 +149,10 @@ int preparet::doit()
 
     if(cmdline.isset("predicates"))
       get_predicates(
-        cmdline.getval("predicates"),
-        get_message_handler(),
-        ns,
-        user_provided_predicates);
+          cmdline.getval("predicates"),
+          get_message_handler(),
+          ns,
+          user_provided_predicates);
   }
 
   catch(const char *e)
@@ -166,12 +166,12 @@ int preparet::doit()
     error(e);
     return 1;
   }
-  
+
   catch(int)
   {
     return 1;
   }
-  
+
   return -1; // proceed!
 }
 
@@ -179,11 +179,11 @@ int preparet::doit()
 
 Function: preparet::get_sync_modules
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -196,11 +196,11 @@ int preparet::get_sync_modules()
 
 Function: preparet::get_async_modules
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -219,45 +219,45 @@ int preparet::get_async_modules()
     status("Generating GOTO Program");
 
     goto_convert(
-      context,
-      options,
-      goto_functions,
-      get_message_handler());
+        context,
+        options,
+        goto_functions,
+        get_message_handler());
   }
-    
+
   // we no longer need any parse trees or language files
   clear_parse();
-   
+
   // finally add the library
   status("Adding CPROVER library");      
   link_to_library(
-    context, goto_functions, options, get_message_handler());
-    
+      context, goto_functions, options, get_message_handler());
+
   if(cmdline.isset("show-goto-functions"))
   {
     goto_functions.output(ns, std::cout);
     return 0;
   }
-  
+
   unsigned functions=goto_functions.function_map.size();
   unsigned instructions=0;
   forall_goto_functions(it, goto_functions)
     instructions+=it->second.body.instructions.size();
-  
+
   status(i2string(functions)+" functions, "+
-         i2string(instructions)+" instructions.");
-  
+      i2string(instructions)+" instructions.");
+
   if(cmdline.isset("string-abstraction"))
     string_instrumentation(
-      context, get_message_handler(), goto_functions);
+        context, get_message_handler(), goto_functions);
 
   status("Removing function pointers");
   remove_function_pointers(ns, goto_functions, cmdline.isset("pointer-check"));
 
   status("Removing unused functions");
   remove_unused_functions(
-    goto_functions, get_message_handler());
-    
+      goto_functions, get_message_handler());
+
   // Boom requies full inlining.
   bool boom=
     !cmdline.isset("modelchecker") ||
@@ -268,9 +268,9 @@ int preparet::get_async_modules()
     status("Full inlining");
 
     satabs_inline(
-      goto_functions,
-      ns,
-      get_message_handler());
+        goto_functions,
+        ns,
+        get_message_handler());
   }
   else
   {
@@ -278,19 +278,19 @@ int preparet::get_async_modules()
     status("Partial inlining");
 
     satabs_partial_inline(
-      goto_functions,
-      ns,
-      get_message_handler());
-  
+        goto_functions,
+        ns,
+        get_message_handler());
+
     // we do this again, to remove all the functions that are inlined now
     remove_unused_functions(
-      goto_functions, get_message_handler());
+        goto_functions, get_message_handler());
 
     status("Adjusting functions");
     prepare_functions(
-      context,
-      goto_functions,
-      get_message_handler());
+        context,
+        goto_functions,
+        get_message_handler());
 
     // show it?
     if(cmdline.isset("show-adjusted-functions"))
@@ -299,7 +299,7 @@ int preparet::get_async_modules()
       return 0;
     }
   }
-  
+
   // add loop ids
   goto_functions.compute_loop_numbers();
 
@@ -319,15 +319,15 @@ int preparet::get_async_modules()
   {
     status("String Abstraction");
     string_abstraction(
-      context,
-      get_message_handler(),
-      goto_functions);
+        context,
+        get_message_handler(),
+        goto_functions);
   }  
-  
+
   goto_functions.compute_location_numbers();
 
   if(cmdline.isset("pointer-check") ||
-     cmdline.isset("show-value-sets"))
+      cmdline.isset("show-value-sets"))
   {
     status("Pointer Analysis");
     value_set_analysist value_set_analysis(ns);
@@ -346,43 +346,43 @@ int preparet::get_async_modules()
 
       // add pointer checks
       pointer_checks(
-        goto_functions, context, options, value_set_analysis);
+          goto_functions, context, options, value_set_analysis);
     }
   }
-  
+
   goto_functions.compute_location_numbers();
 
-  #if 0  
+#if 0  
   // do invariant propagation
   if(!cmdline.isset("no-invariant-sets"))
   {
     status("Invariant Propagation");
     invariant_propagation(
-      goto_functions);
+        goto_functions);
   }
   else
     invariant_propagation.initialize(
-      goto_functions);
+        goto_functions);
 
   if(cmdline.isset("show-invariant-sets"))
   {
     invariant_propagation.output(
-      goto_functions, std::cout);
+        goto_functions, std::cout);
     return 0;
   }
 
   // simplify
   if(!cmdline.isset("no-invariant-sets"))
     invariant_propagation.simplify(
-      goto_functions);
-  #endif
+        goto_functions);
+#endif
 
   // set claim
   if(cmdline.isset("claim"))
     set_claims(
-      goto_functions,
-      cmdline.get_values("claim"));
-      
+        goto_functions,
+        cmdline.get_values("claim"));
+
   // reachability slice?
   if(!cmdline.isset("no-slicing"))
     reachability_slicer(goto_functions);

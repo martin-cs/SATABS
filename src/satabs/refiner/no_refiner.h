@@ -17,21 +17,21 @@ Purpose: Do nothing.
 
 class no_refinert:public refinert
 {
-public:
-  no_refinert(
-      const optionst& options,
-      const argst &args):
-    refinert(options, args)
+  public:
+    no_refinert(
+        const optionst& options,
+        const argst &args):
+      refinert(options, args)
   {
   }
 
-  virtual void refine(
-    predicatest &predicates, 
-    abstract_modelt &abstract_model,
-    const fail_infot &fail_info)
-  {
-    // we really do nothing!
-  }
+    virtual void refine(
+        predicatest &predicates, 
+        abstract_modelt &abstract_model,
+        const fail_infot &fail_info)
+    {
+      // we really do nothing!
+    }
 
 };
 

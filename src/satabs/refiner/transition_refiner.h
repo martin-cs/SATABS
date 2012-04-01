@@ -18,16 +18,16 @@ Purpose: Calculate predicates for predicate abstraction.
 
 class transition_refinert:public refinert
 {
-public:
-  transition_refinert(
-      const optionst &options,
-      const argst &args,
-      const bool transitions_only) :
-    refinert(options, args),
-    prefix_first(!transitions_only &&
-        options.get_bool_option("prefix-first")),
-    passive_constrain(!options.get_bool_option("concurrency") ||
-        !options.get_bool_option("passive-nondet"))
+  public:
+    transition_refinert(
+        const optionst &options,
+        const argst &args,
+        const bool transitions_only) :
+      refinert(options, args),
+      prefix_first(!transitions_only &&
+          options.get_bool_option("prefix-first")),
+      passive_constrain(!options.get_bool_option("concurrency") ||
+          !options.get_bool_option("passive-nondet"))
 
   {
     stats.insert(std::make_pair(
@@ -47,58 +47,58 @@ public:
           statt(false, 0)));
   }
 
-  void refine(
-    predicatest &predicates, 
-    abstract_modelt &abstract_model,
-    const fail_infot &fail_info);
+    void refine(
+        predicatest &predicates, 
+        abstract_modelt &abstract_model,
+        const fail_infot &fail_info);
 
-protected:
-  const bool prefix_first;
-  const bool passive_constrain;
-  
-  // Updates the set of predicates for the same program according to
-  // the counterexample. 
-  virtual bool refine_prefix(
-    predicatest &predicates, 
-    abstract_modelt &abstract_model,
-    const fail_infot &fail_info)
-  {
-    return true; // return error
-  }
+  protected:
+    const bool prefix_first;
+    const bool passive_constrain;
 
-  virtual bool check_transitions(
-    const predicatest &predicates, 
-    abstract_modelt &abstract_model,
-    const fail_infot &fail_info);
+    // Updates the set of predicates for the same program according to
+    // the counterexample. 
+    virtual bool refine_prefix(
+        predicatest &predicates, 
+        abstract_modelt &abstract_model,
+        const fail_infot &fail_info)
+    {
+      return true; // return error
+    }
 
-  virtual bool check_transition(
-    const predicatest &preficates,
-    const abstract_stept &abstract_state_from,
-    const abstract_stept &abstract_state_to,
-    bool &first_check);
+    virtual bool check_transitions(
+        const predicatest &predicates, 
+        abstract_modelt &abstract_model,
+        const fail_infot &fail_info);
 
-  virtual bool check_assignment_transition(
-    const predicatest &preficates,
-    const abstract_stept &abstract_state_from,
-    const abstract_stept &abstract_state_to,
-    unsigned passive_id);
+    virtual bool check_transition(
+        const predicatest &preficates,
+        const abstract_stept &abstract_state_from,
+        const abstract_stept &abstract_state_to,
+        bool &first_check);
 
-  virtual bool check_guarded_transition(
-    const predicatest &preficates,
-    const abstract_stept &abstract_state_from,
-    unsigned passive_id,
-    bool &inconsistent_initial_state);
+    virtual bool check_assignment_transition(
+        const predicatest &preficates,
+        const abstract_stept &abstract_state_from,
+        const abstract_stept &abstract_state_to,
+        unsigned passive_id);
 
-  virtual void constrain_goto_transition(
-    abstract_transition_relationt &abstract_transition_relation,
-    const exprt &condition,
-    bool negated);
+    virtual bool check_guarded_transition(
+        const predicatest &preficates,
+        const abstract_stept &abstract_state_from,
+        unsigned passive_id,
+        bool &inconsistent_initial_state);
 
-  virtual void constrain_assume_transition(
-    abstract_transition_relationt &abstract_transition_relation,
-    const exprt &condition);
+    virtual void constrain_goto_transition(
+        abstract_transition_relationt &abstract_transition_relation,
+        const exprt &condition,
+        bool negated);
 
-  transition_cachet transition_cache;
+    virtual void constrain_assume_transition(
+        abstract_transition_relationt &abstract_transition_relation,
+        const exprt &condition);
+
+    transition_cachet transition_cache;
 };
 
 #endif

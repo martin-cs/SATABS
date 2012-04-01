@@ -16,9 +16,9 @@ Author: Daniel Kroening, kroening@kroening.com
 class namespacet;
 
 void discover_predicates(
-  const exprt &expr,
-  std::set<predicatet> &predicates,
-  const namespacet &ns,
-  const bool no_mixed_predicates);
+    const exprt &expr,
+    std::set<predicatet> &predicates,
+    const namespacet &ns,
+    const bool no_mixed_predicates);
 
 #endif

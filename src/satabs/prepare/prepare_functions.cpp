@@ -1,11 +1,11 @@
 /*******************************************************************\
-  
+
 Module: Prepare a C program for use by CEGAR
 
 Author: Daniel Kroening
 
 Date:   September 2009
- 
+
 \*******************************************************************/
 
 #include <std_code.h>
@@ -17,50 +17,50 @@ Date:   September 2009
 
 class prepare_functionst:public messaget
 {
-public:
-  prepare_functionst(contextt &_context):context(_context)
+  public:
+    prepare_functionst(contextt &_context):context(_context)
   {
   }
 
-  void operator()(
-    goto_functionst &goto_functions);
+    void operator()(
+        goto_functionst &goto_functions);
 
-protected:
-  typedef std::map<irep_idt, code_typet> original_typest;
-  original_typest original_types;
-  
-  contextt &context;
+  protected:
+    typedef std::map<irep_idt, code_typet> original_typest;
+    original_typest original_types;
 
-  void adjust_function_arguments(
-    const code_typet::argumentst &arguments);
+    contextt &context;
 
-  void do_return_value(
-    goto_functionst::function_mapt::iterator f_it);
+    void adjust_function_arguments(
+        const code_typet::argumentst &arguments);
 
-  void do_function_calls(
-    goto_functionst &goto_functions,
-    goto_programt &goto_program);
+    void do_return_value(
+        goto_functionst::function_mapt::iterator f_it);
 
-  void do_function_arguments(
-    goto_functionst::function_mapt::iterator f_it);
+    void do_function_calls(
+        goto_functionst &goto_functions,
+        goto_programt &goto_program);
 
-  std::set<irep_idt> no_body_set;
+    void do_function_arguments(
+        goto_functionst::function_mapt::iterator f_it);
+
+    std::set<irep_idt> no_body_set;
 };
 
 /*******************************************************************\
 
 Function: prepare_functionst::adjust_function_arguments
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: turns function arguments into thread-local variables
+Purpose: turns function arguments into thread-local variables
 
 \*******************************************************************/
 
 void prepare_functionst::adjust_function_arguments(
-  const code_typet::argumentst &arguments)
+    const code_typet::argumentst &arguments)
 {
   for(code_typet::argumentst::const_iterator
       a_it=arguments.begin();
@@ -68,16 +68,16 @@ void prepare_functionst::adjust_function_arguments(
       a_it++)
   {
     const irep_idt &identifier=a_it->get_identifier();
-    
+
     if(identifier=="") continue;
-    
+
     const contextt::symbolst::iterator s_it=
       context.symbols.find(identifier);
-    
+
     assert(s_it!=context.symbols.end());
-    
+
     symbolt &symbol=s_it->second;
-    
+
     symbol.thread_local=true;
     symbol.file_local=false;
     symbol.static_lifetime=true;
@@ -88,16 +88,16 @@ void prepare_functionst::adjust_function_arguments(
 
 Function: prepare_functionst::do_return_value
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: turns 'return x' into an assignment and 'return'
+Purpose: turns 'return x' into an assignment and 'return'
 
 \*******************************************************************/
 
 void prepare_functionst::do_return_value(
-  goto_functionst::function_mapt::iterator f_it)
+    goto_functionst::function_mapt::iterator f_it)
 {
   typet return_type=f_it->second.type.return_type();
 
@@ -113,7 +113,7 @@ void prepare_functionst::do_return_value(
 
   assert(s_it!=context.symbols.end());
   symbolt &function_symbol=s_it->second;
-  
+
   // make the return type 'void'
   f_it->second.type.return_type()==empty_typet();
   function_symbol.type=f_it->second.type;
@@ -131,9 +131,9 @@ void prepare_functionst::do_return_value(
   new_symbol.name=id2string(function_symbol.name)+"#return_value";
   new_symbol.mode=function_symbol.mode;
   new_symbol.type=return_type;
-  
+
   context.add(new_symbol);
-  
+
   goto_programt &goto_program=f_it->second.body;
 
   Forall_goto_program_instructions(i_it, goto_program)
@@ -146,12 +146,12 @@ void prepare_functionst::do_return_value(
       symbol_exprt lhs_expr;
       lhs_expr.set_identifier(id2string(function_id)+"#return_value");
       lhs_expr.type()=return_type;
-      
+
       code_assignt assignment(lhs_expr, i_it->code.op0());
 
       // now remove return value from i_it
       i_it->code.operands().resize(0);
-      
+
       goto_programt::instructiont tmp_i;
       tmp_i.make_assignment();
       tmp_i.code=assignment;
@@ -159,7 +159,7 @@ void prepare_functionst::do_return_value(
       tmp_i.function=i_it->function;
 
       goto_program.insert_before_swap(i_it, tmp_i);
-      
+
       i_it++;
     }
   }
@@ -169,33 +169,33 @@ void prepare_functionst::do_return_value(
 
 Function: prepare_functionst::do_function_calls
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: turns x=f(...) into f(...); lhs=f#return_value;
+Purpose: turns x=f(...) into f(...); lhs=f#return_value;
 
 \*******************************************************************/
 
 void prepare_functionst::do_function_calls(
-  goto_functionst &goto_functions,
-  goto_programt &goto_program)
+    goto_functionst &goto_functions,
+    goto_programt &goto_program)
 {
   Forall_goto_program_instructions(i_it, goto_program)
   {
     if(i_it->is_function_call())
     {
       code_function_callt &function_call=to_code_function_call(i_it->code);
-    
+
       assert(function_call.function().id()==ID_symbol);
 
       const irep_idt function_id=
         to_symbol_expr(function_call.function()).get_identifier();
-        
+
       // see if we have a body
       goto_functionst::function_mapt::const_iterator
         f_it=goto_functions.function_map.find(function_id);
-        
+
       if(f_it==goto_functions.function_map.end())
         throw "failed to find function in function map";
 
@@ -208,7 +208,7 @@ void prepare_functionst::do_function_calls(
         {
           // fix the type
           to_code_type(function_call.function().type()).return_type()=empty_typet();
-  
+
           if(function_call.lhs().is_not_nil())
           {
             symbol_exprt rhs;
@@ -230,7 +230,7 @@ void prepare_functionst::do_function_calls(
       {
         if(no_body_set.insert(f_it->first).second)
           warning("no body for function `"+id2string(f_it->first)+"'");
-      
+
         goto_programt tmp;
 
         // evaluate function arguments -- they might have
@@ -245,7 +245,7 @@ void prepare_functionst::do_function_calls(
           t->code=codet(ID_expression);
           t->code.copy_to_operands(*a_it);
         }
-        
+
         // return value
         if(function_call.lhs().is_not_nil())
         {
@@ -254,7 +254,7 @@ void prepare_functionst::do_function_calls(
 
           code_assignt code(function_call.lhs(), rhs);
           code.location()=i_it->location;
-        
+
           goto_programt::targett t=tmp.add_instruction(ASSIGN);
           t->location=i_it->location;
           t->function=i_it->function;
@@ -277,17 +277,17 @@ void prepare_functionst::do_function_calls(
 
 Function: prepare_functionst::do_function_arguments
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: replace function arguments by assignments to
-          thread-local variables
+Purpose: replace function arguments by assignments to
+thread-local variables
 
 \*******************************************************************/
 
 void prepare_functionst::do_function_arguments(
-  goto_functionst::function_mapt::iterator f_it)
+    goto_functionst::function_mapt::iterator f_it)
 {
   {
     // look up the function symbol
@@ -310,21 +310,21 @@ void prepare_functionst::do_function_arguments(
   Forall_goto_program_instructions(i_it, goto_program)
   {
     if(!i_it->is_function_call()) continue;
-    
+
     code_function_callt old_function_call=to_code_function_call(i_it->code);
     assert(old_function_call.function().id()==ID_symbol);
     irep_idt identifier=
       to_symbol_expr(old_function_call.function()).get_identifier();
     const code_typet &old_type=original_types[identifier];
-    
+
     // replace f(a, b, c) by "x1=a; x2=b; x3=c; f();"
     // this doesn't really work in case of recursive calls
-    
+
     // first clean up and adjust type
     code_function_callt &function_call=to_code_function_call(i_it->code);
     function_call.arguments().resize(0);
     to_code_type(function_call.function().type()).arguments().clear();    
-    
+
     for(unsigned i=0; i<old_function_call.arguments().size(); i++)
     {
       if(i>=old_type.arguments().size()) break;
@@ -337,7 +337,7 @@ void prepare_functionst::do_function_arguments(
         symbol_exprt lhs;
         lhs.type()=a.type();
         lhs.set_identifier(argument_identifier);
-        
+
         if(lhs.type()!=value.type())
           value.make_typecast(lhs.type());
 
@@ -351,7 +351,7 @@ void prepare_functionst::do_function_arguments(
         i_it++;
       }
     }
-    
+
   }
 }
 
@@ -359,11 +359,11 @@ void prepare_functionst::do_function_arguments(
 
 Function: prepare_functionst::operator()
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -390,18 +390,18 @@ void prepare_functionst::operator()(goto_functionst &goto_functions)
 
 Function: prepare_functions
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: convert input program into goto program
+Purpose: convert input program into goto program
 
 \*******************************************************************/
 
 void prepare_functions(
-  contextt &context,
-  goto_functionst &goto_functions,
-  message_handlert &message_handler)
+    contextt &context,
+    goto_functionst &goto_functions,
+    message_handlert &message_handler)
 {
   prepare_functionst pf(context);
   pf.set_message_handler(message_handler);

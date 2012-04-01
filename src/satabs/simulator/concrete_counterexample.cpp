@@ -4,7 +4,7 @@ Module: Counterexamples
 
 Author: Daniel Kroening
 
-  Date: June 2003
+Date: June 2003
 
 \*******************************************************************/
 
@@ -14,18 +14,18 @@ Author: Daniel Kroening
 
 Function: show_counterexample_gui
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void show_counterexample_gui(
-  std::ostream &out,
-  const contextt &context,
-  const concrete_counterexamplet &counterexample)
+    std::ostream &out,
+    const contextt &context,
+    const concrete_counterexamplet &counterexample)
 {
   const namespacet ns(context);
   show_goto_trace_gui(out, ns, counterexample.goto_trace);
@@ -35,24 +35,24 @@ void show_counterexample_gui(
 
 Function: show_counterexample
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void show_counterexample(
-  std::ostream &out,
-  const contextt &context,
-  const concrete_counterexamplet &counterexample)
+    std::ostream &out,
+    const contextt &context,
+    const concrete_counterexamplet &counterexample)
 {
   namespacet ns(context);
-  
+
   show_goto_trace(out, ns, counterexample.goto_trace);
 
-  #if 0
+#if 0
   unsigned cycle=0;
 
   for(concrete_counterexamplet::additional_tracet::const_iterator
@@ -68,10 +68,10 @@ void show_counterexample(
         v_it!=it->values.end();
         v_it++)
       counterexample_value(out, ns, v_it->first, v_it->second,
-                           pretty_names);
+          pretty_names);
 
     out << std::endl;
   }
-  #endif
+#endif
 
 }

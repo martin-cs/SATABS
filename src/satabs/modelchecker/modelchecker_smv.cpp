@@ -4,7 +4,7 @@ Module: SMV Model Checker Interface
 
 Author: Daniel Kroening
 
-  Date: June 2003
+Date: June 2003
 
 \*******************************************************************/
 
@@ -31,17 +31,17 @@ Author: Daniel Kroening
 
 Function: modelchecker_smvt::smv_ce_thread_infot::build
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::smv_ce_thread_infot::build(
-  const inlinedt &inlined,
-  const threadt &thread)
+    const inlinedt &inlined,
+    const threadt &thread)
 {
   guards.resize(inlined.PC_map.size());
   t=&thread;
@@ -51,24 +51,24 @@ void modelchecker_smvt::smv_ce_thread_infot::build(
 
 Function: modelchecker_smvt::read_result
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool modelchecker_smvt::read_result(
-  std::istream &out1,
-  std::istream &out2,
-  std::istream &out_ce,
-  abstract_modelt &abstract_model,
-  const threadst &threads,
-  abstract_counterexamplet &counterexample)
+    std::istream &out1,
+    std::istream &out2,
+    std::istream &out_ce,
+    abstract_modelt &abstract_model,
+    const threadst &threads,
+    abstract_counterexamplet &counterexample)
 {
   // check for errors first
-  
+
   {
     std::list<std::string> file;
 
@@ -85,14 +85,14 @@ bool modelchecker_smvt::read_result(
   }
 
   // now read output
-  
+
   if(engine==CADENCE_SMV)
     return read_result_cadence_smv(
-      out_ce,
-      abstract_model,
-      threads,
-      counterexample);
-  
+        out_ce,
+        abstract_model,
+        threads,
+        counterexample);
+
   {
     std::list<std::string> file;
 
@@ -102,7 +102,7 @@ bool modelchecker_smvt::read_result(
       if(!std::getline(out1, line)) break;
       file.push_back(line);
     }
-    
+
     if(file.empty())
     {
       error("No output from SMV");
@@ -123,7 +123,7 @@ bool modelchecker_smvt::read_result(
           // produce counterexample
           status("SMV produced counterexample");
           read_counterexample(file, it, abstract_model,
-                              threads, counterexample);
+              threads, counterexample);
           print(9, "SMV counterexample sucessfully read\n");
 
           // show it
@@ -143,19 +143,19 @@ bool modelchecker_smvt::read_result(
 
 Function: modelchecker_smvt::read_result_cadence_smv
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool modelchecker_smvt::read_result_cadence_smv(
-  std::istream &out_ce,
-  abstract_modelt &abstract_model,
-  const threadst &threads,
-  abstract_counterexamplet &counterexample)
+    std::istream &out_ce,
+    abstract_modelt &abstract_model,
+    const threadst &threads,
+    abstract_counterexamplet &counterexample)
 {
   std::list<std::string> file;
 
@@ -165,7 +165,7 @@ bool modelchecker_smvt::read_result_cadence_smv(
     if(!std::getline(out_ce, line)) break;
     file.push_back(line);
   }
-  
+
   if(file.empty()) {
     throw "SMV error - Cadence SMV produced no output";
   }
@@ -184,8 +184,8 @@ bool modelchecker_smvt::read_result_cadence_smv(
         // produce counterexample
         status("Cadence SMV produced counterexample");
         read_counterexample_cadence_smv(
-          file, it, abstract_model,
-          threads, counterexample);
+            file, it, abstract_model,
+            threads, counterexample);
         print(9, "Cadence SMV counterexample sucessfully read");
         return false;
       }
@@ -201,19 +201,19 @@ bool modelchecker_smvt::read_result_cadence_smv(
 
 Function: modelchecker_smvt::read_counterexample_store
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::read_counterexample_store(
-  const abstract_modelt &abstract_model,
-  abstract_counterexamplet &counterexample,
-  thread_infost &thread_infos,
-  abstract_stept &abstract_state)
+    const abstract_modelt &abstract_model,
+    abstract_counterexamplet &counterexample,
+    thread_infost &thread_infos,
+    abstract_stept &abstract_state)
 {
   // end of state -- find out which thread was running
   unsigned thread_nr=0;
@@ -257,25 +257,25 @@ void modelchecker_smvt::read_counterexample_store(
 
 Function: modelchecker_smvt::read_counterexample
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::read_counterexample(
-  const std::list<std::string> &file,
-  std::list<std::string>::const_iterator it,
-  abstract_modelt &abstract_model,
-  const threadst &threads,
-  abstract_counterexamplet &counterexample)
+    const std::list<std::string> &file,
+    std::list<std::string>::const_iterator it,
+    abstract_modelt &abstract_model,
+    const threadst &threads,
+    abstract_counterexamplet &counterexample)
 {
   while(it!=file.end() && 
-        (std::string(*it, 0, 1)=="*" ||
-         std::string(*it, 0, 1)=="-" ||
-         std::string(*it, 0, 5)=="Trace"))
+      (std::string(*it, 0, 1)=="*" ||
+       std::string(*it, 0, 1)=="-" ||
+       std::string(*it, 0, 5)=="Trace"))
     it++;
 
   abstract_statet abstract_state;
@@ -302,14 +302,14 @@ void modelchecker_smvt::read_counterexample(
     else if(*it=="resources used:")
       break;
     else if(std::string(*it, 0, 6)=="state " ||
-            std::string(*it, 0, 10)=="-> State: " ||
-            std::string(*it, 0, 10)=="-> Input: " ||
-            *it=="")
+        std::string(*it, 0, 10)=="-> State: " ||
+        std::string(*it, 0, 10)=="-> Input: " ||
+        *it=="")
     {
       if(!data_set) continue;
 
       read_counterexample_store(
-        abstract_model, counterexample, thread_infos, abstract_state);
+          abstract_model, counterexample, thread_infos, abstract_state);
 
       data_set=false;
     }
@@ -324,7 +324,7 @@ void modelchecker_smvt::read_counterexample(
       std::string value(*it, p+2, std::string::npos);
 
       while(!original_variable.empty() &&
-            original_variable[0]==' ')
+          original_variable[0]==' ')
         original_variable.erase(0, 1);
 
       std::string variable=original_variable;
@@ -377,7 +377,7 @@ void modelchecker_smvt::read_counterexample(
           abstract_stept::thread_to_predicate_valuest::iterator it2 =
             abstract_state.thread_states.insert(
                 std::make_pair(tc, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
-                
+
           it2->second[nr]=ce_boolean(value);
         }
         data_set=true;
@@ -411,33 +411,33 @@ void modelchecker_smvt::read_counterexample(
       }
       else
         throw "unknown variable in abstract counterexample: "+
-              original_variable+" (stripped: `"+variable+"')";
+          original_variable+" (stripped: `"+variable+"')";
     }
   }
 
   if(data_set)
     read_counterexample_store(
-      abstract_model, counterexample, thread_infos, abstract_state);
+        abstract_model, counterexample, thread_infos, abstract_state);
 }
 
 /*******************************************************************\
 
 Function: modelchecker_smvt::read_counterexample_cadence_smv
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::read_counterexample_cadence_smv(
-  const std::list<std::string> &file,
-  std::list<std::string>::const_iterator it,
-  abstract_modelt &abstract_model,
-  const threadst &threads,
-  abstract_counterexamplet &counterexample)
+    const std::list<std::string> &file,
+    std::list<std::string>::const_iterator it,
+    abstract_modelt &abstract_model,
+    const threadst &threads,
+    abstract_counterexamplet &counterexample)
 {
 
   while(it!=file.end() && *it!="{")
@@ -466,7 +466,7 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
 
     if(std::string(*it, 0, 8)!="/* state")
       throw "expected state in counterexample, but got "+*it;
-      
+
     abstract_statet abstract_state;
 
     it++;
@@ -483,7 +483,7 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
       {
         // done with the state
         read_counterexample_store(
-          abstract_model, counterexample, thread_infos, abstract_state);
+            abstract_model, counterexample, thread_infos, abstract_state);
         break;
       }
       else
@@ -497,11 +497,11 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
         std::string value(*it, p+2, std::string::npos);
 
         while(!original_variable.empty() &&
-              original_variable[0]==' ')
+            original_variable[0]==' ')
           original_variable.erase(0, 1);
 
         while(!original_variable.empty() &&
-              original_variable[original_variable.size()-1]==' ')
+            original_variable[original_variable.size()-1]==' ')
           original_variable.erase(original_variable.size()-1, std::string::npos);
 
         std::string variable=original_variable;
@@ -587,11 +587,11 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
         }
         else
           throw "unknown variable in abstract counterexample: "+
-                original_variable+" (stripped: "+variable+")";
+            original_variable+" (stripped: "+variable+")";
       }
     }
   }
-  
+
   //std::cout << counterexample << std::endl;
 }
 
@@ -599,33 +599,33 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
 
 Function: modelchecker_smvt::build_smv_file
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::build_smv_file(
-  const abstract_modelt &abstract_model,
-  const threadst &threads,
-  std::ostream &out)
+    const abstract_modelt &abstract_model,
+    const threadst &threads,
+    std::ostream &out)
 {
   // start printing SMV
 
   out << "-- automatically generated by CPROVER/SATABS\n"
-         "\n";
-         
+    "\n";
+
   out << "-- threads: " << threads.size() << std::endl
-      << std::endl;
+    << std::endl;
 
   if(threads.size()==1)
   {
     threaded=false;
 
     out << "MODULE main\n"
-           "\n";
+      "\n";
 
     build_smv_file_global_variables(abstract_model, out);
 
@@ -636,7 +636,7 @@ void modelchecker_smvt::build_smv_file(
     threaded=true;
 
     out << "MODULE main\n"
-           "\n";
+      "\n";
 
     build_smv_file_global_variables(abstract_model, out);
 
@@ -648,9 +648,9 @@ void modelchecker_smvt::build_smv_file(
           t_it++, thread_nr++)
       {
         out << "VAR t" << thread_nr << ": thread(";
-        
+
         // initial PC
-        
+
         out << t_it->initial_PC;
 
         // the predicates
@@ -665,11 +665,11 @@ void modelchecker_smvt::build_smv_file(
     }
 
     out << std::endl;
-    
+
     out << "-- atomic sections" << std::endl;
-    
+
     out << "VAR atomic: boolean;" << std::endl << std::endl;
-    
+
     out << "ASSIGN init(atomic):=0;" << std::endl << std::endl;
     out << "ASSIGN next(atomic):=case" << std::endl;
 
@@ -681,7 +681,7 @@ void modelchecker_smvt::build_smv_file(
           has_atomic=true;
 
       out << "    t" << thread_nr << ".runs: ";
-      
+
       if(has_atomic)
       {
         out << "case";
@@ -693,15 +693,15 @@ void modelchecker_smvt::build_smv_file(
           else if(inlined.PC_map[PC].original->is_atomic_end())
             out << " t" << thread_nr << ".PC=" << PC << ": FALSE;";
         }
-        
+
         out << " TRUE: atomic; esac;";
       }
       else
         out << "atomic; -- thread has no atomic section";
-      
+
       out << std::endl;
     }
-    
+
     out << "  esac;" << std::endl;
 
     out << std::endl;
@@ -709,7 +709,7 @@ void modelchecker_smvt::build_smv_file(
     for(unsigned thread_nr=0; thread_nr<threads.size(); thread_nr++)
     {
       out << "TRANS (t" << thread_nr << ".runs & next(atomic))->next(t"
-          << thread_nr << ".runs)" << std::endl;
+        << thread_nr << ".runs)" << std::endl;
     }    
 
     out << std::endl;
@@ -726,11 +726,11 @@ void modelchecker_smvt::build_smv_file(
         out << "1";
       else
         out << "0";
-      
+
       out << ";" << std::endl;
 
       out << "ASSIGN next(t" << thread_nr << ".started):=";
-      
+
       if(thread_nr==0)
       {
         // the 'main' thread
@@ -740,11 +740,11 @@ void modelchecker_smvt::build_smv_file(
       {
         // any 'children'
         // they start on START_TREAD, and end on END_THREAD
-        
+
         out << "case" << std::endl
-            << "    t" << thread_nr << ".end_thread: FALSE; -- thread ends" << std::endl
-            << "    t" << thread_nr << ".started: TRUE; -- already running" << std::endl
-            << "    TRUE: ";
+          << "    t" << thread_nr << ".end_thread: FALSE; -- thread ends" << std::endl
+          << "    t" << thread_nr << ".started: TRUE; -- already running" << std::endl
+          << "    TRUE: ";
 
         bool first=true;
 
@@ -755,10 +755,10 @@ void modelchecker_smvt::build_smv_file(
         }
 
         out << ">=1;" << std::endl;
-        
+
         out << "  esac";
       }
-      
+
       out << ";" << std::endl;
     }
 
@@ -773,7 +773,7 @@ void modelchecker_smvt::build_smv_file(
       if(thread_nr!=0) out << "+";
       out << "t" << thread_nr << ".runs";
     }
-    
+
     out << "=1";
 
     out << std::endl;
@@ -805,17 +805,17 @@ void modelchecker_smvt::build_smv_file(
 
 Function: modelchecker_smvt::build_smv_file
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::build_smv_file(
-  const abstract_modelt &abstract_model,  
-  std::ostream &out)
+    const abstract_modelt &abstract_model,  
+    std::ostream &out)
 {
   build_smv_file_local_variables(abstract_model, out);
   build_smv_file_guards(abstract_model, out);
@@ -829,17 +829,17 @@ void modelchecker_smvt::build_smv_file(
 
 Function: modelchecker_smvt::build_smv_file_local_variables
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::build_smv_file_local_variables(
-  const abstract_modelt &abstract_model,
-  std::ostream &out)
+    const abstract_modelt &abstract_model,
+    std::ostream &out)
 {
   //
   // runs-bit
@@ -847,12 +847,12 @@ void modelchecker_smvt::build_smv_file_local_variables(
 
   if(threaded)
     out << "VAR runs: boolean;" << std::endl
-        << "VAR started: boolean;" << std::endl
-        << "INVAR !started -> !runs" << std::endl
-        << std::endl;
+      << "VAR started: boolean;" << std::endl
+      << "INVAR !started -> !runs" << std::endl
+      << std::endl;
   else
     out << "DEFINE runs:=TRUE;" << std::endl
-        << std::endl;
+      << std::endl;
 
   //
   // Program counter
@@ -861,41 +861,41 @@ void modelchecker_smvt::build_smv_file_local_variables(
   unsigned number_of_instructions=inlined.PC_map.size();
 
   out << "-- program counter\n"
-         "-- " << number_of_instructions << " is the \"terminating\" PC\n"
-         "\n"
-         "VAR PC: 0.."
-      << number_of_instructions
-      << ";\n"
-         "\n";
+    "-- " << number_of_instructions << " is the \"terminating\" PC\n"
+    "\n"
+    "VAR PC: 0.."
+    << number_of_instructions
+    << ";\n"
+    "\n";
 
   out << "-- initial PC\n"
-         "\n"
-         "ASSIGN init(PC):=" << (threaded?"initial_PC":"0") << ";\n"
-         "\n";
+    "\n"
+    "ASSIGN init(PC):=" << (threaded?"initial_PC":"0") << ";\n"
+    "\n";
 }
 
 /*******************************************************************\
 
 Function: modelchecker_smvt::build_smv_file_global_variables
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
-void modelchecker_smvt::build_smv_file_global_variables
- (const abstract_modelt &abstract_model,
-  std::ostream &out)
+  void modelchecker_smvt::build_smv_file_global_variables
+(const abstract_modelt &abstract_model,
+ std::ostream &out)
 {
   //
   // Program variables
   //
 
   out << "-- variables of the abstract program\n"
-         "\n";
+    "\n";
 
   size_t max_len=0;
 
@@ -909,7 +909,7 @@ void modelchecker_smvt::build_smv_file_global_variables
       i++)
   {
     out << "VAR " << variable_names[i]
-        << ": boolean;";
+      << ": boolean;";
 
     if(abstract_model.variables[i].description!="")
     {
@@ -929,24 +929,24 @@ void modelchecker_smvt::build_smv_file_global_variables
 
 Function: modelchecker_smvt::build_smv_file_guards
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::build_smv_file_guards(
-  const abstract_modelt &abstract_model,
-  std::ostream &out)
+    const abstract_modelt &abstract_model,
+    std::ostream &out)
 {
   //
   // nondet choice variables
   //
 
   out << "-- non-deterministic choice\n"
-         "\n";
+    "\n";
 
   for(nondet_symbolst::const_iterator
       it=nondet_symbols.begin();
@@ -961,21 +961,21 @@ void modelchecker_smvt::build_smv_file_guards(
   //
 
   out << "-- guards\n"
-         "\n";
+    "\n";
 
   for(unsigned PC=0; PC<inlined.PC_map.size(); PC++)
   {
     abstract_programt::instructiont &instruction=
       *inlined.PC_map[PC].original;
-  
+
     if(instruction.is_goto() || instruction.is_assume() ||
-       instruction.is_assert())
+        instruction.is_assert())
     {
       if(!instruction.location.is_nil())
         out << "-- " << instruction.location << std::endl;
 
       out << "DEFINE guard" << PC << ":=";
-      
+
       if(instruction.code.get_transition_relation().constraints.empty())
         out << expr_string(instruction.guard) << ";" << std::endl;
       else
@@ -995,9 +995,9 @@ void modelchecker_smvt::build_smv_file_guards(
           out << "(" << expr_string(instruction.guard) << ")";
 
           for(abstract_transition_relationt::constraintst::const_iterator
-            e_it=instruction.code.get_transition_relation().constraints.begin();
-            e_it!=instruction.code.get_transition_relation().constraints.end();
-            e_it++)
+              e_it=instruction.code.get_transition_relation().constraints.begin();
+              e_it!=instruction.code.get_transition_relation().constraints.end();
+              e_it++)
           {
             out << " & (" << expr_string(*e_it) << ')';
           }
@@ -1015,11 +1015,11 @@ void modelchecker_smvt::build_smv_file_guards(
 
 Function: modelchecker_smvt::build_threads
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1045,11 +1045,11 @@ void modelchecker_smvt::build_threads(threadst &dest)
 
 Function: modelchecker_smvt::build_targets
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1065,7 +1065,7 @@ void modelchecker_smvt::build_targets(unsigned PC, std::ostream &out)
   {
     if(instruction.targets.empty())
       throw "no targets for branch";
-  
+
     if(instruction.targets.size()==1)
       out << instruction.targets.front();
     else
@@ -1079,10 +1079,10 @@ void modelchecker_smvt::build_targets(unsigned PC, std::ostream &out)
       {
         if(t_it!=instruction.targets.begin())
           out << ", ";
-        
+
         out << *t_it;
       }
-      
+
       out << " }";
     }
   }
@@ -1092,17 +1092,17 @@ void modelchecker_smvt::build_targets(unsigned PC, std::ostream &out)
 
 Function: modelchecker_smvt::build_smv_file_control
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::build_smv_file_control(
-  const abstract_modelt &abstract_model,
-  std::ostream &out)
+    const abstract_modelt &abstract_model,
+    std::ostream &out)
 {
   unsigned number_of_instructions=inlined.PC_map.size();
 
@@ -1111,15 +1111,15 @@ void modelchecker_smvt::build_smv_file_control(
   //
 
   out << "-- control flow\n"
-         "\n"
-         "ASSIGN next(PC):=case\n"
-         "    !runs: PC;" << std::endl;
+    "\n"
+    "ASSIGN next(PC):=case\n"
+    "    !runs: PC;" << std::endl;
 
   for(unsigned PC=0; PC<inlined.PC_map.size(); PC++)
   {
     const abstract_programt::instructiont &instruction=
       *inlined.PC_map[PC].original;
-  
+
     if(!instruction.location.is_nil())
       out << "    -- " << instruction.location << std::endl;
 
@@ -1136,7 +1136,7 @@ void modelchecker_smvt::build_smv_file_control(
       {
         out << "case  -- goto (with guard)\n";
         out << "      guard" << PC
-            << ": ";
+          << ": ";
         build_targets(PC, out);
         out << ";\n";
         out << "      TRUE: " << PC+1 << ";" << std::endl;
@@ -1151,7 +1151,7 @@ void modelchecker_smvt::build_smv_file_control(
       {
         out << "case  -- assume/assert\n";
         out << "      guard" << PC
-            << ": " << PC+1 << ";\n";
+          << ": " << PC+1 << ";\n";
         out << "      TRUE: " << PC << ";" << std::endl;
         out << "    esac;";
       }
@@ -1209,42 +1209,42 @@ void modelchecker_smvt::build_smv_file_control(
   }
 
   out << "    -- infinite loop for termination\n"
-         "    PC=" << number_of_instructions
-      << ": " << number_of_instructions 
-      << ";\n";
- 
+    "    PC=" << number_of_instructions
+    << ": " << number_of_instructions 
+    << ";\n";
+
   out << "  esac;\n"
-         "\n";
+    "\n";
 }
 
 /*******************************************************************\
 
 Function: modelchecker_smvt::build_smv_file_model
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::build_smv_file_model(
-  const abstract_modelt &abstract_model,
-  std::ostream &out)
+    const abstract_modelt &abstract_model,
+    std::ostream &out)
 {
   //
   // Generate TRANS for the abstract transitions
   //
 
   out << "-- the transition constraints\n"
-         "\n";
+    "\n";
 
   for(unsigned PC=0; PC<inlined.PC_map.size(); PC++)
   {
     const abstract_programt::instructiont &instruction=
       *inlined.PC_map[PC].original;
-  
+
     if(!instruction.location.is_nil())
       out << "-- " << instruction.location << std::endl;
 
@@ -1259,159 +1259,160 @@ void modelchecker_smvt::build_smv_file_model(
 
     switch(instruction.type)
     {
-    case GOTO:
-    case FUNCTION_CALL:
-    case RETURN:
-    case DEAD:
-    case ASSUME:
-    case ASSERT:
-    case START_THREAD:
-    case END_THREAD:
-    case END_FUNCTION:
-    case LOCATION:
-    case SKIP:
-    case ATOMIC_BEGIN:
-    case ATOMIC_END:
-    case THROW:
-    case CATCH:
-      if(!abstract_model.variables.empty())
-      {
-        out << "TRANS (PC=" << PC << " & runs) -> ";
-
-        for(unsigned i=0;
-            i<abstract_model.variables.size();
-            i++)
+      case GOTO:
+      case FUNCTION_CALL:
+      case RETURN:
+      case DEAD:
+      case ASSUME:
+      case ASSERT:
+      case START_THREAD:
+      case END_THREAD:
+      case END_FUNCTION:
+      case LOCATION:
+      case SKIP:
+      case ATOMIC_BEGIN:
+      case ATOMIC_END:
+      case THROW:
+      case CATCH:
+        if(!abstract_model.variables.empty())
         {
-          if((i%2)==1)
-            out << std::endl << "             ";
+          out << "TRANS (PC=" << PC << " & runs) -> ";
 
-          if(i!=0) out << " & ";
-          out << "next(" << variable_names[i]
-              << ")=" << variable_names[i];
-        }
-
-        out << std::endl;
-      }      
-      break;
-
-    case ASSIGN:      
-    case OTHER:
-    case DECL:
-      {
-        out << "TRANS (PC=" << PC << " & runs) -> ";
-
-        unsigned cnt=0;
-
-        for(unsigned i=0; i<abstract_model.variables.size(); i++)
-        {
-          abstract_transition_relationt::valuest::const_iterator
-            v_it=instruction.code.get_transition_relation().values.find(i);
-
-          const exprt &value=
-            v_it==instruction.code.get_transition_relation().values.end()?
-              exprt("unchanged"):v_it->second;
-
-          if(value.is_not_nil())
+          for(unsigned i=0;
+              i<abstract_model.variables.size();
+              i++)
           {
-            if((cnt%2)==1)
+            if((i%2)==1)
               out << std::endl << "             ";
 
-            if(cnt!=0) out << " & ";
+            if(i!=0) out << " & ";
             out << "next(" << variable_names[i]
+              << ")=" << variable_names[i];
+          }
+
+          out << std::endl;
+        }      
+        break;
+
+      case ASSIGN:      
+      case OTHER:
+      case DECL:
+        {
+          out << "TRANS (PC=" << PC << " & runs) -> ";
+
+          unsigned cnt=0;
+
+          for(unsigned i=0; i<abstract_model.variables.size(); i++)
+          {
+            abstract_transition_relationt::valuest::const_iterator
+              v_it=instruction.code.get_transition_relation().values.find(i);
+
+            const exprt &value=
+              v_it==instruction.code.get_transition_relation().values.end()?
+              exprt("unchanged"):v_it->second;
+
+            if(value.is_not_nil())
+            {
+              if((cnt%2)==1)
+                out << std::endl << "             ";
+
+              if(cnt!=0) out << " & ";
+              out << "next(" << variable_names[i]
                 << ")=";
 
-            if(value.id()=="unchanged")
-              out << variable_names[i];
-            else
-              out << "(" << expr_string(value) << ")";
+              if(value.id()=="unchanged")
+                out << variable_names[i];
+              else
+                out << "(" << expr_string(value) << ")";
 
-            cnt++;
+              cnt++;
+            }
+          }
+
+          if(cnt==0) out << "TRUE";
+
+          out << std::endl;
+        }
+
+        if(!instruction.code.get_transition_relation().constraints.empty())
+        {
+          out << "TRANS (PC=" << PC << " & runs) -> ";
+
+          for(abstract_transition_relationt::constraintst::const_iterator
+              e_it=instruction.code.get_transition_relation().constraints.begin();
+              e_it!=instruction.code.get_transition_relation().constraints.end();
+              e_it++)
+          {
+            if(e_it!=instruction.code.get_transition_relation().constraints.begin())
+              out << "              & ";
+
+            out << '(' << expr_string(*e_it) << ')' << std::endl;
           }
         }
-        
-        if(cnt==0) out << "TRUE";
-
-        out << std::endl;
-      }
-
-      if(!instruction.code.get_transition_relation().constraints.empty())
-      {
-        out << "TRANS (PC=" << PC << " & runs) -> ";
-
-        for(abstract_transition_relationt::constraintst::const_iterator
-            e_it=instruction.code.get_transition_relation().constraints.begin();
-            e_it!=instruction.code.get_transition_relation().constraints.end();
-            e_it++)
-        {
-          if(e_it!=instruction.code.get_transition_relation().constraints.begin())
-            out << "              & ";
-
-          out << '(' << expr_string(*e_it) << ')' << std::endl;
-        }
-      }
-      break;
-      
-    default:
-      assert(false);
     }
+    break;
 
-    out << "    -- TO Predicates:";
-    for(std::set<unsigned>::const_iterator
-        p_it=instruction.code.get_transition_relation().to_predicates.begin();
-        p_it!=instruction.code.get_transition_relation().to_predicates.end();
-        p_it++)
-      out << " " << variable_names[*p_it];
-
-    out << std::endl;
+    default:
+    assert(false);
   }
 
-  // termination state
+  out << "    -- TO Predicates:";
+  for(std::set<unsigned>::const_iterator
+      p_it=instruction.code.get_transition_relation().to_predicates.begin();
+      p_it!=instruction.code.get_transition_relation().to_predicates.end();
+      p_it++)
+    out << " " << variable_names[*p_it];
 
-  if(!abstract_model.variables.empty())
+  out << std::endl;
+}
+
+// termination state
+
+if(!abstract_model.variables.empty())
+{
+  out << "-- termination" << std::endl;
+  out << "TRANS (PC=" << inlined.PC_map.size() << " & runs) -> ";
+
+  for(unsigned i=0;
+      i<abstract_model.variables.size();
+      i++)
   {
-    out << "-- termination" << std::endl;
-    out << "TRANS (PC=" << inlined.PC_map.size() << " & runs) -> ";
+    if((i%2)==1)
+      out << std::endl << "             ";
 
-    for(unsigned i=0;
-        i<abstract_model.variables.size();
-        i++)
-    {
-      if((i%2)==1)
-        out << std::endl << "             ";
-
-      if(i!=0) out << " & ";
-      out << "next(" << variable_names[i]
-          << ")=" << variable_names[i];
-    }
-
-    out << std::endl;
+    if(i!=0) out << " & ";
+    out << "next(" << variable_names[i]
+      << ")=" << variable_names[i];
   }
 
   out << std::endl;
+}
+
+out << std::endl;
 }
 
 /*******************************************************************\
 
 Function: modelchecker_smvt::build_smv_file_spec
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::build_smv_file_spec(
-  const abstract_modelt &abstract_model,
-  std::ostream &out)
+    const abstract_modelt &abstract_model,
+    std::ostream &out)
 {
   //
   // Generate SPEC from assertions
   //
 
   out << "-- the specification\n"
-         "\n";
+    "\n";
 
   for(unsigned PC=0; PC<inlined.PC_map.size(); PC++)
   {
@@ -1424,7 +1425,7 @@ void modelchecker_smvt::build_smv_file_spec(
         out << "-- " << instruction.location << std::endl;
 
       out << "SPEC AG ((PC=" << PC
-          << " & runs) -> guard" << PC << ")" << std::endl;
+        << " & runs) -> guard" << PC << ")" << std::endl;
     }
   }
 
@@ -1435,27 +1436,27 @@ void modelchecker_smvt::build_smv_file_spec(
 
 Function: modelchecker_smvt::build_smv_file_sync
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_smvt::build_smv_file_sync(
-  const abstract_modelt &abstract_model,
-  std::ostream &out)
+    const abstract_modelt &abstract_model,
+    std::ostream &out)
 {
   //
   // Generate start_thread_...
   //
-  
+
   if(!threaded) return;
 
   out << "-- thread startup and termination\n"
-         "\n";
-         
+    "\n";
+
   unsigned start_thread_nr=0;
   bool found;
 
@@ -1463,7 +1464,7 @@ void modelchecker_smvt::build_smv_file_sync(
   {
     const abstract_programt::instructiont &instruction=
       *inlined.PC_map[PC].original;
-    
+
     if(instruction.is_start_thread())
     {
       start_thread_nr++;
@@ -1471,11 +1472,11 @@ void modelchecker_smvt::build_smv_file_sync(
       out << std::endl;
     }
   }
-  
+
   //
   // Generate end_thread
   //
-  
+
   out << "DEFINE end_thread:=";
   found=false;
 
@@ -1483,14 +1484,14 @@ void modelchecker_smvt::build_smv_file_sync(
   {
     const abstract_programt::instructiont &instruction=
       *inlined.PC_map[PC].original;
-    
+
     if(instruction.is_end_thread())
     {
       if(found) out << " | "; else found=true;
       out << "(PC=" << PC << " & runs)";
     }
   }
-  
+
   if(!found) out << "FALSE";
 
   out << ";" << std::endl;
@@ -1501,11 +1502,11 @@ void modelchecker_smvt::build_smv_file_sync(
 
 Function: modelchecker_smvt::expr_string
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: transform expression into SMV syntax
+Purpose: transform expression into SMV syntax
 
 \*******************************************************************/
 
@@ -1525,7 +1526,7 @@ std::string modelchecker_smvt::expr_string(const exprt &expr)
   {
     nondet_symbolst::const_iterator it=
       nondet_symbols.find(
-        static_cast<const exprt &>(expr.find("expression")));
+          static_cast<const exprt &>(expr.find("expression")));
 
     if(it==nondet_symbols.end())
       throw "failed to find nondet_symbol";
@@ -1533,13 +1534,13 @@ std::string modelchecker_smvt::expr_string(const exprt &expr)
     return it->second;
   }
   else if(expr.id()==ID_equal ||
-          expr.id()==ID_and ||
-          expr.id()==ID_or ||
-          expr.id()==ID_implies) // binary
+      expr.id()==ID_and ||
+      expr.id()==ID_or ||
+      expr.id()==ID_implies) // binary
   {
     bool first=true;
     std::string symbol;
-    
+
     if(expr.id()==ID_equal)
       symbol="<->"; // boolean!
     else if(expr.id()==ID_and)
@@ -1548,7 +1549,7 @@ std::string modelchecker_smvt::expr_string(const exprt &expr)
       symbol="|";
     else if(expr.id()==ID_implies)
       symbol="->";
-      
+
     std::string dest;
 
     forall_operands(it, expr)
@@ -1561,7 +1562,7 @@ std::string modelchecker_smvt::expr_string(const exprt &expr)
         dest+=symbol;
         dest+=' ';
       }
-      
+
       bool use_paren=
         (expr.id()!=ID_and || expr.id()!=ID_or || expr.id()!=it->id()) &&
         it->id()!=ID_symbol &&
@@ -1573,7 +1574,7 @@ std::string modelchecker_smvt::expr_string(const exprt &expr)
       dest+=expr_string(*it);
       if(use_paren) dest+=')';
     }
-    
+
     return dest;
   }
   else if(expr.id()==ID_not)
@@ -1589,7 +1590,7 @@ std::string modelchecker_smvt::expr_string(const exprt &expr)
     if(use_paren) dest+='(';
     dest+=expr_string(expr.op0());
     if(use_paren) dest+=')';
-    
+
     return dest;
   }
   else if(expr.id()==ID_symbol)
@@ -1607,7 +1608,7 @@ std::string modelchecker_smvt::expr_string(const exprt &expr)
     else if(expr.is_false())
       return "FALSE";
   }
-  
+
   // results in parse error in SMV
   return "??"+expr.id_string()+"??";
 }
@@ -1616,26 +1617,26 @@ std::string modelchecker_smvt::expr_string(const exprt &expr)
 
 Function: modelchecker_smvt::convert_schoose_expression
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: given schoose[A,B] and a guard, 
-          construct (* && !B) || (A && guard)
+Purpose: given schoose[A,B] and a guard, 
+construct (* && !B) || (A && guard)
 
 \*******************************************************************/
 
 exprt modelchecker_smvt::convert_schoose_expression(
-  const exprt &expr, const exprt &guard)
+    const exprt &expr, const exprt &guard)
 {
   nondet_symbolst::const_iterator it=
     nondet_symbols.find(static_cast<const exprt &>(expr.find("expression")));
-  
+
   if(it==nondet_symbols.end())
     throw "failed to find nondet_symbol";
-  
+
   symbol_exprt nondet(it->second, bool_typet());
-  
+
   exprt conj(ID_and, bool_typet());
   conj.move_to_operands(nondet);
   conj.copy_to_operands(expr.op1());
@@ -1648,7 +1649,7 @@ exprt modelchecker_smvt::convert_schoose_expression(
 
   target.move_to_operands(conj);
   target.copy_to_operands(expr.op0());
-  
+
   return target;
 }
 
@@ -1656,20 +1657,20 @@ exprt modelchecker_smvt::convert_schoose_expression(
 
 Function: modelchecker_smvt::check
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: model check an abstract program using SMV, return
-          counterexample if failed
-          Return value of TRUE means the program is correct,
-          if FALSE is returned, ce will contain the counterexample
+Purpose: model check an abstract program using SMV, return
+counterexample if failed
+Return value of TRUE means the program is correct,
+if FALSE is returned, ce will contain the counterexample
 
 \*******************************************************************/
 
 bool modelchecker_smvt::check(
-  abstract_modelt &abstract_model,
-  abstract_counterexamplet &counterexample)
+    abstract_modelt &abstract_model,
+    abstract_counterexamplet &counterexample)
 {
   std::string temp_base="cegar_tmp";
 
@@ -1677,14 +1678,14 @@ bool modelchecker_smvt::check(
   std::string temp_smv_out1=temp_base+"_smv_out1";
   std::string temp_smv_out2=temp_base+"_smv_out2";
   std::string temp_smv_out_ce=temp_base+"_abstract.out";
-  
+
   remove(temp_smv_out1.c_str());
   remove(temp_smv_out2.c_str());
   remove(temp_smv_out_ce.c_str());
 
   get_variable_names(abstract_model);
   get_nondet_symbols(abstract_model);
-  
+
   inlined.build(abstract_model);
 
   threadst threads;
@@ -1706,42 +1707,37 @@ bool modelchecker_smvt::check(
 
     switch(engine)
     {
-    case NUSMV:
-      command="NuSMV -dynamic";
-      status(std::string("Running NuSMV: ")+command);
-      break;
-      
-    case CMU_SMV:
-      command="smv";
-      status(std::string("Running CMU SMV: ")+command);
-      break;
+      case NUSMV:
+        command="NuSMV -dynamic";
+        status(std::string("Running NuSMV: ")+command);
+        break;
 
-    case CADENCE_SMV:
-      command="smv -force -sift";
-      status(std::string("Running Cadence SMV: ")+command);
-      break;
+      case CMU_SMV:
+        command="smv";
+        status(std::string("Running CMU SMV: ")+command);
+        break;
 
-    case SATMC:
-      command="satmc";
-      status(std::string("Running SATMC")+command);
-      break;
-      
-    default:
-      assert(false);
+      case SATMC:
+        command="satmc";
+        status(std::string("Running SATMC")+command);
+        break;
+
+      default:
+        assert(false);
     }
 
     command+=" "+temp_smv+" >"+temp_smv_out1+
-             " 2>"+temp_smv_out2;
+      " 2>"+temp_smv_out2;
 
     {
-    	print(9, "The full model checker command to be executed is:\n"+command+"\n");
+      print(9, "The full model checker command to be executed is:\n"+command+"\n");
     }
 
     int return_code = system(command.c_str());
     {
-    	std::ostringstream str;
-    	str << "Got return code " << return_code << std::endl;
-    	print(9, str.str());
+      std::ostringstream str;
+      str << "Got return code " << return_code << std::endl;
+      print(9, str.str());
     }
   }
 
@@ -1749,15 +1745,15 @@ bool modelchecker_smvt::check(
 
   {
     std::ifstream out1(temp_smv_out1.c_str()),
-                  out2(temp_smv_out2.c_str()),
-                  out_ce(temp_smv_out_ce.c_str());
+      out2(temp_smv_out2.c_str()),
+      out_ce(temp_smv_out_ce.c_str());
 
     result=read_result(
-      out1,
-      out2,
-      out_ce,
-      abstract_model, threads,
-      counterexample);
+        out1,
+        out2,
+        out_ce,
+        abstract_model, threads,
+        counterexample);
   }
 
   return result;
@@ -1767,23 +1763,23 @@ bool modelchecker_smvt::check(
 
 Function: modelchecker_smvt::save
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: 
+Purpose: 
 
 \*******************************************************************/
 
 void modelchecker_smvt::save(
-  abstract_modelt &abstract_model,
-  unsigned sequence)
+    abstract_modelt &abstract_model,
+    unsigned sequence)
 {
   std::string out_file_name="satabs."+i2string(sequence)+".smv";
 
   get_variable_names(abstract_model);
   get_nondet_symbols(abstract_model);
-  
+
   inlined.build(abstract_model);
 
   threadst threads;

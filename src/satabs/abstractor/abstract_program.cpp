@@ -16,19 +16,19 @@ Date: January 2004
 
 Function: abstract_programt::output_other_instruction
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 std::ostream& abstract_programt::output_instruction(
-  const namespacet &ns,
-  const irep_idt &identifier,
-  std::ostream &out,
-  const_targett it) const
+    const namespacet &ns,
+    const irep_idt &identifier,
+    std::ostream &out,
+    const_targett it) const
 {
   if(!it->location.is_nil())
     out << "        // " << it->location.as_string() << "\n";
@@ -41,7 +41,7 @@ std::ostream& abstract_programt::output_instruction(
       p_it!=it->code.get_transition_relation().from_predicates.end();
       p_it++)
     out << " " << *p_it;
-  
+
   out << std::endl;
 
   out << "        ";
@@ -51,7 +51,7 @@ std::ostream& abstract_programt::output_instruction(
       p_it!=it->code.get_transition_relation().to_predicates.end();
       p_it++)
     out << " " << *p_it;
-  
+
   out << std::endl;
 
   if(!it->labels.empty())
@@ -64,7 +64,7 @@ std::ostream& abstract_programt::output_instruction(
     {
       out << " " << *l_it;
     }
-    
+
     out << std::endl;
   }
 
@@ -75,143 +75,143 @@ std::ostream& abstract_programt::output_instruction(
 
   switch(it->type)
   {
-  case NO_INSTRUCTION_TYPE:
-    out << "NO INSTRUCTION TYPE SET" << std::endl;
-    break;
-  
-  case GOTO:
-    if(!it->guard.is_true())
-    {
-      out << "IF "
+    case NO_INSTRUCTION_TYPE:
+      out << "NO INSTRUCTION TYPE SET" << std::endl;
+      break;
+
+    case GOTO:
+      if(!it->guard.is_true())
+      {
+        out << "IF "
           << from_expr(ns, identifier, it->guard)
           << " THEN ";
-    }
-
-    out << "GOTO ";
-    
-    for(instructiont::targetst::const_iterator
-        gt_it=it->targets.begin();
-        gt_it!=it->targets.end();
-        gt_it++)
-    {
-      if(gt_it!=it->targets.begin()) out << ", ";
-      out << (*gt_it)->target_number;
-    }
-      
-    out << std::endl;
-    break;
-    
-  case RETURN:
-  case OTHER:
-  case DECL:
-  case FUNCTION_CALL:
-  case ASSIGN:
-    {
-      #if 0
-      for(symex_equationt::equationt::premisest::const_iterator
-          p_it=it->code.equation.assignments.begin();
-          p_it!=it->code.equation.assignments.end();
-          p_it++)
-        out << from_expr(ns, identifier, *p_it) << std::endl;
-      #endif
-
-      out << "        ";
-      out << "Changed predicates:";
-
-      for(abstract_transition_relationt::valuest::const_iterator
-          p_it=it->code.get_transition_relation().values.begin();
-          p_it!=it->code.get_transition_relation().values.end();
-          p_it++)
-        out << " " << p_it->first;
-
-      out << std::endl;
-
-      out << "        ";
-      out << "Constraints: ";         
-
-      for(abstract_transition_relationt::constraintst::const_iterator
-          e_it=it->code.get_transition_relation().constraints.begin();
-          e_it!=it->code.get_transition_relation().constraints.end();
-          e_it++)
-      {
-        const exprt &constraint=*e_it;
-
-        if(e_it!=it->code.get_transition_relation().constraints.begin())
-          out << "             ";
-
-        out << expr2c(constraint, ns) << std::endl;
       }
-      
+
+      out << "GOTO ";
+
+      for(instructiont::targetst::const_iterator
+          gt_it=it->targets.begin();
+          gt_it!=it->targets.end();
+          gt_it++)
+      {
+        if(gt_it!=it->targets.begin()) out << ", ";
+        out << (*gt_it)->target_number;
+      }
+
       out << std::endl;
+      break;
 
-      return out;
-    }
-    break;
-    
-  case ASSUME:
-  case ASSERT:
-    if(it->is_assume())
-      out << "ASSUME ";
-    else
-      out << "ASSERT ";
-      
-    {
-      out << from_expr(ns, identifier, it->guard);
-    
-      const irep_idt &comment=it->location.get("comment");
-      if(comment!="") out << " // " << comment;
-    }
-      
-    out << std::endl;
-    break;
-    
-  case SKIP:
-    out << "SKIP" << std::endl;
-    break;
-    
-  case END_FUNCTION:
-    out << "END_FUNCTION" << std::endl;
-    break;
-    
-  case LOCATION:
-    out << "LOCATION" << std::endl;
-    break;
-    
-  case DEAD:
-    out << "DEAD" << std::endl;
-    break;
-    
-  case ATOMIC_BEGIN:
-    out << "ATOMIC_BEGIN" << std::endl;
-    break;
-    
-  case ATOMIC_END:
-    out << "ATOMIC_END" << std::endl;
-    break;
-    
-  case START_THREAD:
-    out << "START THREAD ";
+    case RETURN:
+    case OTHER:
+    case DECL:
+    case FUNCTION_CALL:
+    case ASSIGN:
+      {
+#if 0
+        for(symex_equationt::equationt::premisest::const_iterator
+            p_it=it->code.equation.assignments.begin();
+            p_it!=it->code.equation.assignments.end();
+            p_it++)
+          out << from_expr(ns, identifier, *p_it) << std::endl;
+#endif
 
-    if(it->targets.size()==1)
-      out << it->targets.front()->target_number;
-    
-    out << std::endl;
-    break;
-    
-  case END_THREAD:
-    out << "END THREAD" << std::endl;
-    break;
-    
-  case THROW:
-    out << "THROW" << std::endl;
-    break;
+        out << "        ";
+        out << "Changed predicates:";
 
-  case CATCH:
-    out << "CATCH" << std::endl;
-    break;
-    
-  default:
-    throw "unexpected instruction (abstract_program)";
+        for(abstract_transition_relationt::valuest::const_iterator
+            p_it=it->code.get_transition_relation().values.begin();
+            p_it!=it->code.get_transition_relation().values.end();
+            p_it++)
+          out << " " << p_it->first;
+
+        out << std::endl;
+
+        out << "        ";
+        out << "Constraints: ";         
+
+        for(abstract_transition_relationt::constraintst::const_iterator
+            e_it=it->code.get_transition_relation().constraints.begin();
+            e_it!=it->code.get_transition_relation().constraints.end();
+            e_it++)
+        {
+          const exprt &constraint=*e_it;
+
+          if(e_it!=it->code.get_transition_relation().constraints.begin())
+            out << "             ";
+
+          out << expr2c(constraint, ns) << std::endl;
+        }
+
+        out << std::endl;
+
+        return out;
+      }
+      break;
+
+    case ASSUME:
+    case ASSERT:
+      if(it->is_assume())
+        out << "ASSUME ";
+      else
+        out << "ASSERT ";
+
+      {
+        out << from_expr(ns, identifier, it->guard);
+
+        const irep_idt &comment=it->location.get("comment");
+        if(comment!="") out << " // " << comment;
+      }
+
+      out << std::endl;
+      break;
+
+    case SKIP:
+      out << "SKIP" << std::endl;
+      break;
+
+    case END_FUNCTION:
+      out << "END_FUNCTION" << std::endl;
+      break;
+
+    case LOCATION:
+      out << "LOCATION" << std::endl;
+      break;
+
+    case DEAD:
+      out << "DEAD" << std::endl;
+      break;
+
+    case ATOMIC_BEGIN:
+      out << "ATOMIC_BEGIN" << std::endl;
+      break;
+
+    case ATOMIC_END:
+      out << "ATOMIC_END" << std::endl;
+      break;
+
+    case START_THREAD:
+      out << "START THREAD ";
+
+      if(it->targets.size()==1)
+        out << it->targets.front()->target_number;
+
+      out << std::endl;
+      break;
+
+    case END_THREAD:
+      out << "END THREAD" << std::endl;
+      break;
+
+    case THROW:
+      out << "THROW" << std::endl;
+      break;
+
+    case CATCH:
+      out << "CATCH" << std::endl;
+      break;
+
+    default:
+      throw "unexpected instruction (abstract_program)";
   }
 
   return out;  
@@ -221,16 +221,16 @@ std::ostream& abstract_programt::output_instruction(
 
 Function: operator<
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool operator<(const abstract_programt::const_targett i1,
-               const abstract_programt::const_targett i2)
+    const abstract_programt::const_targett i2)
 {
   const abstract_programt::instructiont &_i1=*i1;
   const abstract_programt::instructiont &_i2=*i2;

@@ -17,9 +17,9 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #if 0
 void map_vars(contextt &context,
-              const std::list<concrete_transition_systemt> &modules,
-              replace_mapt &replace_map,
-              message_handlert *message);
+    const std::list<concrete_transition_systemt> &modules,
+    replace_mapt &replace_map,
+    message_handlert *message);
 
 bool is_program_symbol(const symbolt &symbol);
 #endif

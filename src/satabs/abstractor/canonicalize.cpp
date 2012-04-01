@@ -16,11 +16,11 @@ Author: Daniel Kroening, kroening@kroening.com
 
 Function: canonicalize_rec
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -68,7 +68,7 @@ void canonicalize_rec(exprt &expr, bool &negation)
   {
     if(expr.operands().size()==2)
     {
-       
+
     }
   } 
   else if(expr.id()==ID_equal)
@@ -88,11 +88,11 @@ void canonicalize_rec(exprt &expr, bool &negation)
 
 Function: clean_annotations_and_type_rec
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -115,11 +115,11 @@ void clean_annotations_and_type_rec(exprt &expr, const namespacet &ns)
 
 Function: canonicalize
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -142,11 +142,11 @@ void canonicalize(exprt &expr, bool &negation, const namespacet &ns)
 
 Function: canonicalize
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 

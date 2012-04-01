@@ -19,19 +19,19 @@ Purpose:
 
 Function: get_predicates
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void get_predicates(
-  const std::string &file,
-  message_handlert &message_handler,
-  const namespacet &ns,
-  std::vector<exprt> &predicates)
+    const std::string &file,
+    message_handlert &message_handler,
+    const namespacet &ns,
+    std::vector<exprt> &predicates)
 {
   std::ifstream infile(file.c_str());
 
@@ -52,7 +52,7 @@ void get_predicates(
     std::getline(infile, line);
 
     if(line!="" && line[0]!='#' &&
-       std::string(line, 0, 2)!="//")
+        std::string(line, 0, 2)!="//")
     {
       exprt expr;
 

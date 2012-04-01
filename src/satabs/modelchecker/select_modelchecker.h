@@ -3,7 +3,7 @@
 Module: Model Checker Selection
 
 Authors: Daniel Kroening, kroening@kroening.com
-         Karen Yorav
+Karen Yorav
 
 Date: June 2003
 
@@ -18,7 +18,7 @@ class optionst;
 class modelcheckert;
 
 modelcheckert *select_modelchecker(
-  const optionst &options,
-  const loop_componentt::argst &args);
+    const optionst &options,
+    const loop_componentt::argst &args);
 
 #endif

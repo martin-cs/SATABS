@@ -22,9 +22,9 @@ class message_handlert;
 class namespacet;
 
 void get_predicates(
-  const std::string &file,
-  message_handlert &message_handler,
-  const namespacet &ns,
-  std::vector<exprt> &predicates);
+    const std::string &file,
+    message_handlert &message_handler,
+    const namespacet &ns,
+    std::vector<exprt> &predicates);
 
 #endif

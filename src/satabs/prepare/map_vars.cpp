@@ -18,37 +18,37 @@ Author: Daniel Kroening, kroening@kroening.com
 
 Function: is_program_symbol
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool is_program_symbol(const symbolt &symbol)
 {
   return symbol.mode==ID_C ||
-         symbol.mode==ID_SpecC ||
-         symbol.mode==ID_cpp;
+    symbol.mode==ID_SpecC ||
+    symbol.mode==ID_cpp;
 }
 
 /*******************************************************************\
 
 Function: instantiate_symbol
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void instantiate_symbol(exprt &expr, unsigned cycle)
 {
   if(expr.id()==ID_symbol ||
-     expr.id()==ID_nondet_symbol)
+      expr.id()==ID_nondet_symbol)
   {
     //const std::string &identifier=expr.get(ID_identifier);
 
@@ -61,56 +61,56 @@ void instantiate_symbol(exprt &expr, unsigned cycle)
 
 /*******************************************************************\
 
-   Class: map_varst
+Class: map_varst
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 #if 0
 class map_varst:public messaget
 {
- public:
-  map_varst(contextt &_context, replace_mapt &_replace_map,
-            message_handlert &_message):
-    messaget(_message),
-    context(_context), replace_map(_replace_map)
+  public:
+    map_varst(contextt &_context, replace_mapt &_replace_map,
+        message_handlert &_message):
+      messaget(_message),
+      context(_context), replace_map(_replace_map)
   { }
 
-  void map_vars(const std::set<irep_idt> &modules);
-  
- protected:
-  contextt &context;
-  replace_mapt &replace_map;
+    void map_vars(const std::set<irep_idt> &modules);
 
-  symbolt &lookup(const irep_idt &identifier);
+  protected:
+    contextt &context;
+    replace_mapt &replace_map;
 
-  void map_var(const std::set<irep_idt> &modules,
-               const irep_idt &id,
-               const exprt &expr,
-               const symbolt::hierarchyt &hierarchy);
+    symbolt &lookup(const irep_idt &identifier);
 
-  void map_var(const exprt &symbol1, const symbolt &symbol2);
+    void map_var(const std::set<irep_idt> &modules,
+        const irep_idt &id,
+        const exprt &expr,
+        const symbolt::hierarchyt &hierarchy);
 
-  std::string show_member(const exprt &expr);
+    void map_var(const exprt &symbol1, const symbolt &symbol2);
 
-  const symbolt &resolve_hierarchy
-   (const std::set<irep_idt> &modules,
-    const irep_idt &id,
-    const exprt &expr,
-    const symbolt::hierarchyt &hierarchy,
-    bool module_instance);
+    std::string show_member(const exprt &expr);
+
+    const symbolt &resolve_hierarchy
+      (const std::set<irep_idt> &modules,
+       const irep_idt &id,
+       const exprt &expr,
+       const symbolt::hierarchyt &hierarchy,
+       bool module_instance);
 };
 
 /*******************************************************************\
 
 Function: map_varst::lookup
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -128,11 +128,11 @@ symbolt &map_varst::lookup(const irep_idt &identifier)
 
 Function: map_varst::show_member
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -170,11 +170,11 @@ std::string map_varst::show_member(const exprt &expr)
 
 Function: map_varst::map_var
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -183,24 +183,24 @@ void map_varst::map_var(const exprt &symbol1, const symbolt &symbol2)
   // show to user
 
   print(6, "mapping "+show_member(symbol1)+" to "+
-           id2string(symbol2.name)+"\n");
+      id2string(symbol2.name)+"\n");
 
   // check types
 
   if(symbol1.type().id()!=ID_unsignedbv &&
-     symbol1.type().id()!=ID_signedbv &&
-     symbol1.type().id()!=ID_bool)
+      symbol1.type().id()!=ID_signedbv &&
+      symbol1.type().id()!=ID_bool)
   {
     throw "failed to map symbol "+show_member(symbol1)+
-          " because of type "+symbol1.type().to_string();
+      " because of type "+symbol1.type().to_string();
   }
 
   if(symbol2.type.id()!=ID_unsignedbv &&
-     symbol2.type.id()!=ID_signedbv &&
-     symbol2.type.id()!=ID_bool)
+      symbol2.type.id()!=ID_signedbv &&
+      symbol2.type.id()!=ID_bool)
   {
     throw "failed to map symbol "+id2string(symbol2.name)+
-          " because of type "+symbol2.type.to_string();
+      " because of type "+symbol2.type.to_string();
   }
 
   // map values
@@ -217,20 +217,20 @@ void map_varst::map_var(const exprt &symbol1, const symbolt &symbol2)
 
 Function: map_varst::resolve_hierarchy
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
-const symbolt &map_varst::resolve_hierarchy
- (const std::set<irep_idt> &modules,
-  const irep_idt &id,
-  const exprt &expr,
-  const symbolt::hierarchyt &hierarchy,
-  bool module_instance)
+  const symbolt &map_varst::resolve_hierarchy
+(const std::set<irep_idt> &modules,
+ const irep_idt &id,
+ const exprt &expr,
+ const symbolt::hierarchyt &hierarchy,
+ bool module_instance)
 {
   symbolptr_listt symbolptr_list;
 
@@ -239,20 +239,20 @@ const symbolt &map_varst::resolve_hierarchy
     const symbolt &s=lookup(it->second);
 
     if(s.is_type || s.free_var || 
-       modules.find(s.module)==modules.end() ||
-       s.hierarchy!=hierarchy)
+        modules.find(s.module)==modules.end() ||
+        s.hierarchy!=hierarchy)
       continue;
 
     if(module_instance!=(s.type.id()=="module_instance"))
       continue;
-    
+
     symbolptr_list.push_back(&s);
   }
 
   if(symbolptr_list.empty())
   {
     print(1, "external identifier "+show_member(expr)+
-             " not found\n");
+        " not found\n");
 
     if(!hierarchy.empty())
     {
@@ -268,7 +268,7 @@ const symbolt &map_varst::resolve_hierarchy
   else if(symbolptr_list.size()>=2)
   {
     print(1, "external identifier "+show_member(expr)+
-             " does not uniquely resolve:\n");
+        " does not uniquely resolve:\n");
 
     forall_symbolptr_list(it, symbolptr_list)
       print(1, "  "+id2string((*it)->name)+"\n");
@@ -285,18 +285,18 @@ const symbolt &map_varst::resolve_hierarchy
 
 Function: map_varst::map_var
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void map_varst::map_var(const std::set<irep_idt> &modules,
-                        const irep_idt &id,
-                        const exprt &expr,
-                        const symbolt::hierarchyt &hierarchy)
+    const irep_idt &id,
+    const exprt &expr,
+    const symbolt::hierarchyt &hierarchy)
 {
   if(expr.type().id()==ID_struct)
   {
@@ -330,12 +330,12 @@ void map_varst::map_var(const std::set<irep_idt> &modules,
 
 Function: map_varst::map_vars
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: Looks through context for external ANSI-C symbols
-          Calls map_var to find mapping to HDL
+Purpose: Looks through context for external ANSI-C symbols
+Calls map_var to find mapping to HDL
 
 \*******************************************************************/
 
@@ -359,18 +359,18 @@ void map_varst::map_vars(const std::set<irep_idt> &modules)
 
 Function: map_vars
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void map_vars(contextt &context,
-              const std::list<concrete_transition_systemt> &modules,
-              replace_mapt &replace_map,
-              message_handlert &message)
+    const std::list<concrete_transition_systemt> &modules,
+    replace_mapt &replace_map,
+    message_handlert &message)
 {
   // get names of top-level modules
 

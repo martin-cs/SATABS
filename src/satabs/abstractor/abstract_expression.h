@@ -14,8 +14,8 @@ class predicatest;
 class namespacet;
 
 void abstract_expression(
-  const predicatest &predicates,
-  exprt &expr,
-  const namespacet &ns);
+    const predicatest &predicates,
+    exprt &expr,
+    const namespacet &ns);
 
 #endif

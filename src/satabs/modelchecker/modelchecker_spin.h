@@ -4,7 +4,7 @@ Module: Spin Model Checker Interface
 
 Author: Daniel Kroening
 
-  Date: June 2003
+Date: June 2003
 
 \*******************************************************************/
 
@@ -15,12 +15,12 @@ Author: Daniel Kroening
 
 class modelchecker_spint:public modelcheckert
 {
-public:
-  modelchecker_spint(
-    const loop_componentt::argst &args,
-    const bool concurrency_aware):
-    modelcheckert(args, concurrency_aware),
-    inlined(args.message_handler)
+  public:
+    modelchecker_spint(
+        const loop_componentt::argst &args,
+        const bool concurrency_aware):
+      modelcheckert(args, concurrency_aware),
+      inlined(args.message_handler)
   {
     if(concurrency_aware)
     {
@@ -28,62 +28,62 @@ public:
     }
   }
 
-  // A return value of TRUE means the program is correct,
-  // if FALSE is returned, abstract_counterexample will
-  // contain the counterexample
-  virtual bool check(
-    abstract_modelt &abstract_model,
-    abstract_counterexamplet &abstract_counterexample);
-    
-  virtual std::string description() const
-  {
-    return "SPIN";
-  }
-  
-  virtual void save(
-    abstract_modelt &abstract_model,
-    unsigned sequence);
-    
-  void build(
-    abstract_modelt &abstract_model,
-    const std::string &out_file_name);
+    // A return value of TRUE means the program is correct,
+    // if FALSE is returned, abstract_counterexample will
+    // contain the counterexample
+    virtual bool check(
+        abstract_modelt &abstract_model,
+        abstract_counterexamplet &abstract_counterexample);
 
-private:
-  void build_promela_file(
-    const abstract_modelt &abstract_model,
-    std::ostream &out);
+    virtual std::string description() const
+    {
+      return "SPIN";
+    }
 
-  void build_promela_file_control(
-    const abstract_modelt &abstract_model,
-    std::ostream &out);
+    virtual void save(
+        abstract_modelt &abstract_model,
+        unsigned sequence);
 
-  void build_promela_file_global_variables(
-    const abstract_modelt &abstract_model,
-    std::ostream &out);
+    void build(
+        abstract_modelt &abstract_model,
+        const std::string &out_file_name);
 
-  void build_promela_file_trans(
-    const abstract_modelt &abstract_model,
-    const abstract_transition_relationt &abstract_transition_relation,
-    std::ostream &out);
+  private:
+    void build_promela_file(
+        const abstract_modelt &abstract_model,
+        std::ostream &out);
 
-  bool read_result(
-    std::istream &out1,
-    std::istream &out2,
-    const abstract_modelt &abstract_model,
-    abstract_counterexamplet &counterexample);
+    void build_promela_file_control(
+        const abstract_modelt &abstract_model,
+        std::ostream &out);
 
-  void read_counterexample(
-    const std::list<std::string> &file,
-    std::list<std::string>::const_iterator it,
-    const abstract_modelt &abstract_model,
-    abstract_counterexamplet &counterexample);
+    void build_promela_file_global_variables(
+        const abstract_modelt &abstract_model,
+        std::ostream &out);
 
-  void instantiate_expression(exprt &expr);
-  
-  virtual std::string expr_string(const exprt &expr);
-  
-  // we need the program inlined
-  inlinedt inlined;
+    void build_promela_file_trans(
+        const abstract_modelt &abstract_model,
+        const abstract_transition_relationt &abstract_transition_relation,
+        std::ostream &out);
+
+    bool read_result(
+        std::istream &out1,
+        std::istream &out2,
+        const abstract_modelt &abstract_model,
+        abstract_counterexamplet &counterexample);
+
+    void read_counterexample(
+        const std::list<std::string> &file,
+        std::list<std::string>::const_iterator it,
+        const abstract_modelt &abstract_model,
+        abstract_counterexamplet &counterexample);
+
+    void instantiate_expression(exprt &expr);
+
+    virtual std::string expr_string(const exprt &expr);
+
+    // we need the program inlined
+    inlinedt inlined;
 };
 
 #endif

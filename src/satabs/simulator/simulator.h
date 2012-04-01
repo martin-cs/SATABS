@@ -25,22 +25,22 @@ class fail_infot;
 
 class simulatort:public loop_componentt
 {
-public:
-  simulatort(const argst &args):
-    loop_componentt(args)
+  public:
+    simulatort(const argst &args):
+      loop_componentt(args)
   {
   }
 
-  // Returns TRUE if the counterexample is spurious,
-  // and FALSE otherwise. If FALSE is returned, a concrete
-  // counterexample is provided as well
-  
-  virtual bool is_spurious(
-    const predicatest &predicates,
-    const abstract_modelt &abstract_model,
-    abstract_counterexamplet &abstract_counterexample,
-    concrete_counterexamplet &concrete_counterexample,
-    fail_infot &fail_info)=0;
+    // Returns TRUE if the counterexample is spurious,
+    // and FALSE otherwise. If FALSE is returned, a concrete
+    // counterexample is provided as well
+
+    virtual bool is_spurious(
+        const predicatest &predicates,
+        const abstract_modelt &abstract_model,
+        abstract_counterexamplet &abstract_counterexample,
+        concrete_counterexamplet &concrete_counterexample,
+        fail_infot &fail_info)=0;
 };
 
 #endif

@@ -26,21 +26,21 @@ Author: Daniel Kroening, kroening@kroening.com
 
 Function: satabs_safety_checkert::satabs_safety_checkert
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 satabs_safety_checkert::satabs_safety_checkert(
-  const namespacet &_ns,
-  abstractort &_abstractor,
-  refinert &_refiner,
-  modelcheckert &_modelchecker,
-  simulatort &_simulator,
-  bool csv_stats):
+    const namespacet &_ns,
+    abstractort &_abstractor,
+    refinert &_refiner,
+    modelcheckert &_modelchecker,
+    simulatort &_simulator,
+    bool csv_stats):
   safety_checkert(_ns),
   max_iterations(0),
   save_bps(false),
@@ -58,11 +58,11 @@ satabs_safety_checkert::satabs_safety_checkert(
 
 Function: satabs_safety_checkert::show_loop_component_statistics
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -83,11 +83,11 @@ void satabs_safety_checkert::show_loop_component_statistics(
 
 Function: satabs_safety_checkert::show_statistics
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -108,13 +108,13 @@ void satabs_safety_checkert::show_statistics(const namespacet &ns)
     str << " refiner";
     status(str.str());
   }
-  
+
   {
     std::ostringstream str;
     str << "Iterations: " << iteration;
     status(str.str());
   }
-  
+
   {
     std::ostringstream str;
     str << "Predicates: " << predicates.size();
@@ -124,40 +124,40 @@ void satabs_safety_checkert::show_statistics(const namespacet &ns)
     for(unsigned p=0; p<predicates.size(); p++)
     {
       str2 << "P" << p << ": "
-                << from_expr(ns, "", predicates[p])
-                << std::endl;
+        << from_expr(ns, "", predicates[p])
+        << std::endl;
     }
     print(10, str2.str());
 
   }
-  
+
   if(concurrency_aware)
   {
-	  unsigned int local_count = 0;
-	  unsigned int shared_count = 0;
-	  unsigned int mixed_count = 0;
+    unsigned int local_count = 0;
+    unsigned int shared_count = 0;
+    unsigned int mixed_count = 0;
 
-	  for(unsigned int i = 0; i < predicates.size(); i++)
-	  {
-		  switch(abstractort::get_var_class(predicates[i], ns))
-		  {
+    for(unsigned int i = 0; i < predicates.size(); i++)
+    {
+      switch(abstractort::get_var_class(predicates[i], ns))
+      {
         case abstract_modelt::variablet::THREAD_LOCAL:
-		  case abstract_modelt::variablet::PROCEDURE_LOCAL:
-			  local_count++;
-			  break;
-		  case abstract_modelt::variablet::SHARED_GLOBAL:
-			  shared_count++;
-			  break;
-		  case abstract_modelt::variablet::MIXED:
-			  mixed_count++;
-			  break;
+        case abstract_modelt::variablet::PROCEDURE_LOCAL:
+          local_count++;
+          break;
+        case abstract_modelt::variablet::SHARED_GLOBAL:
+          shared_count++;
+          break;
+        case abstract_modelt::variablet::MIXED:
+          mixed_count++;
+          break;
         case abstract_modelt::variablet::NONE:
           assert(false);
-		  }
-	  }
-	  std::ostringstream str;
-	  str << "Breakdown of predicate types:" << std::endl << "   shared: " << shared_count << std::endl << "   local: " << local_count << std::endl << "   mixed: " << mixed_count;
-	  status(str.str());
+      }
+    }
+    std::ostringstream str;
+    str << "Breakdown of predicate types:" << std::endl << "   shared: " << shared_count << std::endl << "   local: " << local_count << std::endl << "   mixed: " << mixed_count;
+    status(str.str());
   }
 
   show_loop_component_statistics(abstractor, "abstractor");
@@ -170,11 +170,11 @@ void satabs_safety_checkert::show_statistics(const namespacet &ns)
 
 Function: satabs_safety_checkert::csv_stats
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -229,28 +229,28 @@ void satabs_safety_checkert::csv_stats(
 
   if(concurrency_aware)
   {
-	  unsigned int local_count = 0;
-	  unsigned int shared_count = 0;
-	  unsigned int mixed_count = 0;
+    unsigned int local_count = 0;
+    unsigned int shared_count = 0;
+    unsigned int mixed_count = 0;
 
-	  for(unsigned int i = 0; i < predicates.size(); i++)
-	  {
-		  switch(abstractort::get_var_class(predicates[i], ns))
-		  {
+    for(unsigned int i = 0; i < predicates.size(); i++)
+    {
+      switch(abstractort::get_var_class(predicates[i], ns))
+      {
         case abstract_modelt::variablet::THREAD_LOCAL:
-		  case abstract_modelt::variablet::PROCEDURE_LOCAL:
-			  local_count++;
-			  break;
-		  case abstract_modelt::variablet::SHARED_GLOBAL:
-			  shared_count++;
-			  break;
-		  case abstract_modelt::variablet::MIXED:
-			  mixed_count++;
-			  break;
+        case abstract_modelt::variablet::PROCEDURE_LOCAL:
+          local_count++;
+          break;
+        case abstract_modelt::variablet::SHARED_GLOBAL:
+          shared_count++;
+          break;
+        case abstract_modelt::variablet::MIXED:
+          mixed_count++;
+          break;
         case abstract_modelt::variablet::NONE:
           assert(false);
-		  }
-	  }
+      }
+    }
 
     of << shared_count << ","
       << mixed_count << ","
@@ -296,11 +296,11 @@ void satabs_safety_checkert::csv_stats(
 
 Function: satabs_safety_checkert::do_abstraction
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -317,38 +317,38 @@ void satabs_safety_checkert::do_abstraction()
 
 Function: satabs_safety_checkert::do_modelchecking
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool satabs_safety_checkert::do_modelchecking(
-  const concrete_modelt &concrete_model,
-  abstract_counterexamplet &abstract_counterexample)
+    const concrete_modelt &concrete_model,
+    abstract_counterexamplet &abstract_counterexample)
 {
   // do we want to save Boolean programs?
   if(save_bps)
   {
     modelchecker_boolean_programt model_checker_boolean_program(
-      loop_componentt::argst(get_message_handler(), concrete_model),
-      modelchecker_boolean_programt::BOPPO, 0, concurrency_aware,
-      build_tts);
+        loop_componentt::argst(get_message_handler(), concrete_model),
+        modelchecker_boolean_programt::BOPPO, 0, concurrency_aware,
+        build_tts);
     model_checker_boolean_program.save(
-      abstractor.abstract_model,
-      iteration);
+        abstractor.abstract_model,
+        iteration);
   }
 
   fine_timet start_time=current_time();
 
   bool pass=
     modelchecker.check(abstractor.abstract_model,
-                       abstract_counterexample); 
+        abstract_counterexample); 
 
   modelchecker_time+=current_time()-start_time;
-  
+
   return pass;
 }
 
@@ -356,31 +356,31 @@ bool satabs_safety_checkert::do_modelchecking(
 
 Function: satabs_safety_checkert::do_simulation
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool satabs_safety_checkert::do_simulation(
-  abstract_counterexamplet &abstract_counterexample,
-  concrete_counterexamplet &concrete_counterexample,
-  fail_infot &fail_info)
+    abstract_counterexamplet &abstract_counterexample,
+    concrete_counterexamplet &concrete_counterexample,
+    fail_infot &fail_info)
 {
   fine_timet start_time=current_time();
-  
+
   // Check the counterexample
   bool is_spurious=simulator.is_spurious(
-    predicates,
-    abstractor.abstract_model,
-    abstract_counterexample,
-    concrete_counterexample,
-    fail_info);
+      predicates,
+      abstractor.abstract_model,
+      abstract_counterexample,
+      concrete_counterexample,
+      fail_info);
 
   simulator_time+=current_time()-start_time;
-    
+
   return is_spurious;
 }
 
@@ -388,24 +388,24 @@ bool satabs_safety_checkert::do_simulation(
 
 Function: satabs_safety_checkert::do_refinement
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void satabs_safety_checkert::do_refinement(
-  const abstract_counterexamplet &abstract_counterexample,
-  fail_infot &fail_info)
+    const abstract_counterexamplet &abstract_counterexample,
+    fail_infot &fail_info)
 {
   fine_timet start_time=current_time();
 
   refiner.refine(
-     predicates,
-     abstractor.abstract_model,
-     fail_info);
+      predicates,
+      abstractor.abstract_model,
+      fail_info);
 
   refiner_time+=current_time()-start_time;
 }
@@ -414,16 +414,16 @@ void satabs_safety_checkert::do_refinement(
 
 Function: satabs_safety_checkert::operator()
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: execute the CEGAR loop
+Purpose: execute the CEGAR loop
 
 \*******************************************************************/
 
 safety_checkert::resultt satabs_safety_checkert::operator()(
-  const goto_functionst &goto_functions)
+    const goto_functionst &goto_functions)
 {
   status("*** Starting CEGAR Loop ***");
 
@@ -434,23 +434,23 @@ safety_checkert::resultt satabs_safety_checkert::operator()(
   simulator_time=0;
   refiner_time=0;
   iteration=0;
-  
+
   concrete_modelt concrete_model(ns, goto_functions);
 
   {
     // Create initial abstraction
-    
+
     initial_abstractiont initial_abstraction(get_message_handler(),
         refiner.get_no_mixed_predicates());
     initial_abstraction.set_verbosity(get_verbosity());
-    
+
     initial_abstraction.build(concrete_model, abstractor.abstract_model, concurrency_aware);
-    
+
     if(initial_predicates.empty())
       initial_abstraction.init_preds(ns, predicates, concrete_model);
     else
       initial_abstraction.init_preds(
-        ns, predicates, initial_predicates, abstractor.abstract_model);
+          ns, predicates, initial_predicates, abstractor.abstract_model);
   }
 
   std::auto_ptr<std::ofstream> csv(write_csv_stats?
@@ -477,12 +477,12 @@ safety_checkert::resultt satabs_safety_checkert::operator()(
     { 
       fail_infot fail_info;
       concrete_counterexamplet concrete_counterexample;
-      
+
       // Check the counterexample
       if(do_simulation(
-        abstract_counterexample,
-        concrete_counterexample,
-        fail_info))
+            abstract_counterexample,
+            concrete_counterexample,
+            fail_info))
       {
         status("Trace is spurious");
 
@@ -513,7 +513,7 @@ safety_checkert::resultt satabs_safety_checkert::operator()(
   total_time=current_time()-total_start_time;
   show_statistics(concrete_model.ns);
   csv_stats(*csv, concrete_model.ns);
-  
+
   return result;
 }
 
@@ -521,11 +521,11 @@ safety_checkert::resultt satabs_safety_checkert::operator()(
 
 Function: satabs_safety_checkert::re_abstract
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: mark an instruction for re-abstraction
+Purpose: mark an instruction for re-abstraction
 
 \*******************************************************************/
 
@@ -533,12 +533,12 @@ void satabs_safety_checkert::re_abstract(const goto_programt::const_targett targ
 {
   abstract_functionst &afuncs=abstractor.abstract_model.goto_functions;
   for(abstract_functionst::function_mapt::iterator it=
-        afuncs.function_map.begin();
+      afuncs.function_map.begin();
       it!=afuncs.function_map.end();
       it++)
   {
     for(abstract_programt::instructionst::iterator iit=
-          it->second.body.instructions.begin();
+        it->second.body.instructions.begin();
         iit!=it->second.body.instructions.end();
         iit++)    
     {

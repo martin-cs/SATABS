@@ -1,11 +1,11 @@
 /*******************************************************************\
-  
+
 Module: Prepare a C program for use by CEGAR
 
 Author: Daniel Kroening
 
 Date: July 2009
- 
+
 \*******************************************************************/
 
 #include <langapi/mode.h>
@@ -26,23 +26,23 @@ Date: July 2009
 
 Function: preparet::register_languages
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void preparet::register_languages()
 {
   register_language(new_ansi_c_language);
-  
-  #ifdef HAVE_CPP
-  register_language(new_cpp_language);
-  #endif
 
-  #ifdef HAVE_SPECC
+#ifdef HAVE_CPP
+  register_language(new_cpp_language);
+#endif
+
+#ifdef HAVE_SPECC
   register_language(new_specc_language);
-  #endif
+#endif
 }

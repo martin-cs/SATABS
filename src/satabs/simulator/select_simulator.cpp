@@ -3,7 +3,7 @@
 Module: simulator Selection
 
 Authors: Daniel Kroening, kroening@kroening.com
-         Karen Yorav
+Karen Yorav
 
 Date: June 2003
 
@@ -19,18 +19,18 @@ Date: June 2003
 
 Function: select_simulator
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 simulatort *select_simulator(
-  const optionst &options,
-  const loop_componentt::argst &args,
-  contextt &_shadow_context)
+    const optionst &options,
+    const loop_componentt::argst &args,
+    contextt &_shadow_context)
 {
   const std::string name=options.get_option("simulator");
 

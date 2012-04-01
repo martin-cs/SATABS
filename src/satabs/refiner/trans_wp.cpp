@@ -18,11 +18,11 @@ Purpose: Calculate predicates for predicate abstraction
 
 Function: trans_wpt::wp_rec
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -34,9 +34,9 @@ void trans_wpt::wp_rec(exprt &expr)
   if(expr.id()==ID_symbol)
   {
     const irep_idt &identifier=expr.get(ID_identifier);
-    
+
     const symbolt &symbol=ns.lookup(identifier);
-    
+
     if(symbol.is_macro)
     {
       // it's just a macro
@@ -47,7 +47,7 @@ void trans_wpt::wp_rec(exprt &expr)
     {
       next_state_functionst::const_iterator
         it=next_state_functions.find(identifier);
-      
+
       if(it==next_state_functions.end())
       {
         throw "trans_wpt: no next state function for "+
@@ -71,11 +71,11 @@ void trans_wpt::wp_rec(exprt &expr)
 
 Function: trans_wpt::wp
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 

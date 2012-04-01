@@ -4,7 +4,7 @@ Module: Counterexamples
 
 Author: Daniel Kroening
 
-  Date: June 2003
+Date: June 2003
 
 \*******************************************************************/
 
@@ -16,11 +16,11 @@ Author: Daniel Kroening
 
 Function: abstract_counterexamplet::get_step_nr
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -42,11 +42,11 @@ abstract_counterexamplet::get_step_nr(unsigned i) const
 
 Function: abstract_counterexamplet::has_loops
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -58,24 +58,24 @@ bool abstract_counterexamplet::has_loops() const
       it++)
     if(it->step_type==abstract_stept::LOOP_BEGIN)
       return true;
-                                
+
   return false;
 }
-                                                                    
+
 /*******************************************************************\
 
 Function: operator <<
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
-std::ostream &operator<<
- (std::ostream &out, const abstract_counterexamplet &counterexample)
+  std::ostream &operator<<
+(std::ostream &out, const abstract_counterexamplet &counterexample)
 {
   for(abstract_counterexamplet::stepst::const_iterator
       it=counterexample.steps.begin();

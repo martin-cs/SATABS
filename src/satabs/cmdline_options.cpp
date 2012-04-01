@@ -3,7 +3,7 @@
 Module: Parsing Command Line Options for CEGAR
 
 Author: Daniel Kroening
-        Karen Yorav
+Karen Yorav
 
 Date: June 2003
 
@@ -40,11 +40,11 @@ Date: June 2003
 
 Function: cmdline_optionst::get_command_line_options
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: Parse and store options
+Purpose: Parse and store options
 
 \*******************************************************************/
 
@@ -149,11 +149,11 @@ void cmdline_optionst::get_command_line_options(optionst &options)
 
 Function: cmdline_optionst::doit
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: Parse and store options
+Purpose: Parse and store options
 
 \*******************************************************************/
 
@@ -164,7 +164,7 @@ int cmdline_optionst::doit()
     std::cout << SATABS_VERSION << std::endl;
     return 0;
   }
-  
+
   optionst options;  
   get_command_line_options(options);
 
@@ -197,47 +197,47 @@ int cmdline_optionst::doit()
   try
   {
     messaget message(message_handler);
-  
+
     concrete_modelt concrete_model(prepare.ns, prepare.goto_functions);
 
     loop_componentt::argst args(
-      message_handler, concrete_model);
-    
+        message_handler, concrete_model);
+
     // The tools we need
 
     // finds predicates
     std::auto_ptr<refinert> refiner(
-      select_refiner(options, args));
+        select_refiner(options, args));
 
     // calculates abstract program
     std::auto_ptr<abstractort> abstractor(
-      select_abstractor(options, args, prepare.goto_functions));
+        select_abstractor(options, args, prepare.goto_functions));
 
     // model checking engine
     std::auto_ptr<modelcheckert> modelchecker(
-      select_modelchecker(options, args));
+        select_modelchecker(options, args));
 
     // simulator
     std::auto_ptr<simulatort> simulator(
-      select_simulator(options, args, prepare.shadow_context));
-    
+        select_simulator(options, args, prepare.shadow_context));
+
     // set their verbosity -- all the same for now
     refiner->set_verbosity(verbosity);
     abstractor->set_verbosity(verbosity);
     modelchecker->set_verbosity(verbosity);
     simulator->set_verbosity(verbosity);    
-    
+
     satabs_safety_checkert satabs_safety_checker(
-      prepare.ns,
-      *abstractor,
-      *refiner,
-      *modelchecker,
-      *simulator,
-      cmdline.isset("csv-stats"));
-    
+        prepare.ns,
+        *abstractor,
+        *refiner,
+        *modelchecker,
+        *simulator,
+        cmdline.isset("csv-stats"));
+
     satabs_safety_checker.initial_predicates=
       prepare.user_provided_predicates;
-      
+
     satabs_safety_checker.set_message_handler(message_handler);
     satabs_safety_checker.ui=prepare.get_ui();    
     satabs_safety_checker.max_iterations=options.get_int_option("iterations");
@@ -245,45 +245,45 @@ int cmdline_optionst::doit()
     satabs_safety_checker.build_tts=cmdline.isset("build-tts");    
     satabs_safety_checker.concurrency_aware=cmdline.isset("concurrency");
     satabs_safety_checker.set_verbosity(verbosity);
-        
+
     switch(satabs_safety_checker(prepare.goto_functions))
     {
-    case safety_checkert::SAFE:
-      message.result("VERIFICATION SUCCESSFUL");
+      case safety_checkert::SAFE:
+        message.result("VERIFICATION SUCCESSFUL");
 
-      if(prepare.get_ui()==ui_message_handlert::XML_UI)
-      {
-        xmlt xml("cprover-status");
-        xml.data="SUCCESS";
-        std::cout << xml << std::endl;
-      }
+        if(prepare.get_ui()==ui_message_handlert::XML_UI)
+        {
+          xmlt xml("cprover-status");
+          xml.data="SUCCESS";
+          std::cout << xml << std::endl;
+        }
 
-      return 0;
-    
-    case safety_checkert::UNSAFE:
-      if(prepare.get_ui()==ui_message_handlert::XML_UI)
-      {
-        xmlt xml1;
-        convert(concrete_model.ns, satabs_safety_checker.error_trace, xml1);
-        std::cout << xml1 << std::endl;
+        return 0;
 
-        xmlt xml2("cprover-status");
-        xml2.data="FAILURE";
-        std::cout << xml2 << std::endl;
-      }
-      else
-      {
-        message.result("Counterexample:");
-        show_goto_trace(std::cout, concrete_model.ns,
-                        satabs_safety_checker.error_trace);
-        message.result("VERIFICATION FAILED");
-      }
+      case safety_checkert::UNSAFE:
+        if(prepare.get_ui()==ui_message_handlert::XML_UI)
+        {
+          xmlt xml1;
+          convert(concrete_model.ns, satabs_safety_checker.error_trace, xml1);
+          std::cout << xml1 << std::endl;
 
-      return 10;
-    
-    case safety_checkert::ERROR:
-    default:;
-      return 12;
+          xmlt xml2("cprover-status");
+          xml2.data="FAILURE";
+          std::cout << xml2 << std::endl;
+        }
+        else
+        {
+          message.result("Counterexample:");
+          show_goto_trace(std::cout, concrete_model.ns,
+              satabs_safety_checker.error_trace);
+          message.result("VERIFICATION FAILED");
+        }
+
+        return 10;
+
+      case safety_checkert::ERROR:
+      default:;
+              return 12;
     }
   }
 
@@ -298,7 +298,7 @@ int cmdline_optionst::doit()
     prepare.error(e);
     return 1;
   }
-  
+
   catch(std::bad_alloc)
   {
     prepare.error("Out of memory");
@@ -312,11 +312,11 @@ int cmdline_optionst::doit()
 
 Function: cmdline_optionst::help
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: display command line help
+Purpose: display command line help
 
 \*******************************************************************/
 
@@ -348,24 +348,24 @@ void cmdline_optionst::help()
     " --show-adjusted-functions    show partially inlined goto program\n"
     " --show-final-program         show goto program after inlining and instrumentation\n"
     " --ppc-macos                  set MACOS/PPC architecture\n"
-    #ifdef _WIN32
+#ifdef _WIN32
     " --i386-macos                 set MACOS/I386 architecture\n"
     " --i386-linux                 set Linux/I386 architecture\n"
     " --i386-win32                 set Windows/I386 architecture (default)\n"
     " --winx64                     set Windows/X64 architecture\n"
-    #else
-    #ifdef __APPLE__
+#else
+#ifdef __APPLE__
     " --i386-macos                 set MACOS/I386 architecture (default)\n"
     " --i386-linux                 set Linux/I386 architecture\n"
     " --i386-win32                 set Windows/I386 architecture\n"
     " --winx64                     set Windows/X64 architecture\n"
-    #else
+#else
     " --i386-macos                 set MACOS/I386 architecture\n"
     " --i386-linux                 set Linux/I386 architecture (default)\n"
     " --i386-win32                 set Windows/I386 architecture\n"
     " --winx64                     set Windows/X64 architecture\n"
-    #endif
-    #endif
+#endif
+#endif
     " --no-arch                    don't set up an architecture\n"
     " --round-to-nearest           IEEE floating point rounding mode (default)\n"
     " --round-to-plus-inf          IEEE floating point rounding mode\n"

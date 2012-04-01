@@ -19,8 +19,8 @@ class namespacet;
 class abstract_counterexamplet;
 
 void path_slicer(
-  const namespacet &ns,
-  const abstract_functionst &abstract_functions,
-  abstract_counterexamplet &abstract_counterexample);
+    const namespacet &ns,
+    const abstract_functionst &abstract_functions,
+    abstract_counterexamplet &abstract_counterexample);
 
 #endif

@@ -19,11 +19,11 @@ Author: Daniel Kroening, kroening@kroening.com
 
 Function: has_if
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -34,7 +34,7 @@ bool has_if(const exprt &expr)
 
   forall_operands(it, expr)
     if(has_if(*it)) return true;
-  
+
   return false;
 }
 
@@ -42,11 +42,11 @@ bool has_if(const exprt &expr)
 
 Function: replace_if
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -65,7 +65,7 @@ bool replace_if(exprt &expr, exprt &cond, bool branch)
   Forall_operands(it, expr)
     if(replace_if(*it, cond, branch))
       return true;
-  
+
   return false;
 }
 
@@ -73,23 +73,23 @@ bool replace_if(exprt &expr, exprt &cond, bool branch)
 
 Function: lift_if
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void lift_if(
-  const exprt &expr,
-  exprt &p0,
-  exprt &p1,
-  exprt &p2)
+    const exprt &expr,
+    exprt &p0,
+    exprt &p1,
+    exprt &p2)
 {
   p1=expr;
   p2=expr;
-  
+
   replace_if(p1, p0, true);
   replace_if(p2, p0, false);
 }
@@ -98,11 +98,11 @@ void lift_if(
 
 Function: has_nondet_symbol
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -120,11 +120,11 @@ static bool has_nondet_symbol(const exprt &expr)
 
 Function: has_dynamic_symbol
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -147,51 +147,51 @@ static bool has_dynamic_symbol(const exprt &expr)
 class discover_predicatest
 {
   public:
-  discover_predicatest(
-      std::set<predicatet> &_predicates,
-      const namespacet &_ns,
-      const bool _no_mixed_predicates) :
-    predicates(_predicates),
-    ns(_ns),
-    no_mixed_predicates(_no_mixed_predicates)
+    discover_predicatest(
+        std::set<predicatet> &_predicates,
+        const namespacet &_ns,
+        const bool _no_mixed_predicates) :
+      predicates(_predicates),
+      ns(_ns),
+      no_mixed_predicates(_no_mixed_predicates)
   {
   }
 
-  void operator()(const exprt &expr)
-  {
-    discover_predicates_rec(expr, false);
-  }
+    void operator()(const exprt &expr)
+    {
+      discover_predicates_rec(expr, false);
+    }
 
   private:
-  std::set<predicatet> &predicates;
-  const namespacet &ns;
-  const bool no_mixed_predicates;
+    std::set<predicatet> &predicates;
+    const namespacet &ns;
+    const bool no_mixed_predicates;
 
-  void discover_predicates_rec(
-      const exprt &expr,
-      bool canonicalized);
+    void discover_predicates_rec(
+        const exprt &expr,
+        bool canonicalized);
 };
 
 /*******************************************************************\
 
 Function: discover_predicatest::discover_predicates_rec
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void discover_predicatest::discover_predicates_rec(
-  const exprt &expr,
-  bool canonicalized)
+    const exprt &expr,
+    bool canonicalized)
 {
   assert(expr.type().id()==ID_bool);
 
   if(expr.id()==ID_and || expr.id()==ID_implies ||
-     expr.id()==ID_not || expr.id()==ID_or)
+      expr.id()==ID_not || expr.id()==ID_or)
   {
     forall_operands(it, expr)
       discover_predicates_rec(*it, canonicalized);
@@ -201,8 +201,8 @@ void discover_predicatest::discover_predicates_rec(
   else if(expr.id()==ID_equal || expr.id()==ID_notequal)
   {
     if(expr.operands().size()==2 &&
-       expr.op0().type().id()==ID_bool &&
-       expr.op1().type().id()==ID_bool)
+        expr.op0().type().id()==ID_bool &&
+        expr.op1().type().id()==ID_bool)
     {
       discover_predicates_rec(expr.op0(), canonicalized);
       discover_predicates_rec(expr.op1(), canonicalized);
@@ -212,7 +212,7 @@ void discover_predicatest::discover_predicates_rec(
   else if(expr.id()==ID_if)
   {
     if(expr.operands().size()==3 &&
-       expr.op0().type().id()==ID_bool)
+        expr.op0().type().id()==ID_bool)
     {
       discover_predicates_rec(expr.op0(), canonicalized);
       discover_predicates_rec(expr.op1(), canonicalized);
@@ -249,9 +249,9 @@ void discover_predicatest::discover_predicates_rec(
   else
   {
     if(!has_nondet_symbol(expr) &&
-       !has_dynamic_symbol(expr) &&
-       (!no_mixed_predicates ||
-        abstractort::get_var_class(expr, ns)!=abstract_modelt::variablet::MIXED))
+        !has_dynamic_symbol(expr) &&
+        (!no_mixed_predicates ||
+         abstractort::get_var_class(expr, ns)!=abstract_modelt::variablet::MIXED))
       predicates.insert(expr);
   }
 }
@@ -260,19 +260,19 @@ void discover_predicatest::discover_predicates_rec(
 
 Function: discover_predicates
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void discover_predicates(
-  const exprt &expr,
-  std::set<predicatet> &predicates,
-  const namespacet &ns,
-  const bool no_mixed_predicates)
+    const exprt &expr,
+    std::set<predicatet> &predicates,
+    const namespacet &ns,
+    const bool no_mixed_predicates)
 {
   discover_predicatest dp(predicates, ns, no_mixed_predicates);
   dp(expr);

@@ -18,34 +18,34 @@ Author: Daniel Kroening, kroening@kroening.com
 
 Function: predicate_image_prover
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: compute abstract transition relation from equation
+Purpose: compute abstract transition relation from equation
 
 \*******************************************************************/
 
 void predicate_image_prover(
-  message_handlert *message_handler,
-  const std::vector<exprt> &curr_predicates,
-  const std::vector<exprt> &next_predicates,
-  const std::vector<exprt> &predicates_wp,
-  const std::list<exprt> &constaints,
-  const symex_target_equationt &equation,
-  const namespacet &ns,
-  abstract_transition_relationt &abstract_transition_relation)
+    message_handlert *message_handler,
+    const std::vector<exprt> &curr_predicates,
+    const std::vector<exprt> &next_predicates,
+    const std::vector<exprt> &predicates_wp,
+    const std::list<exprt> &constaints,
+    const symex_target_equationt &equation,
+    const namespacet &ns,
+    abstract_transition_relationt &abstract_transition_relation)
 {
   if(curr_predicates.empty()) return;
 
   message_handler->print(9, "********** RUNNING PROVER");
 
-  #ifdef HAVE_PROVER
+#ifdef HAVE_PROVER
   symbolic_dect symbolic_dec;
-  
+
   // pass equation to prover
   equation.convert_assignments(symbolic_dec);
-  
+
   // pass predicates to prover
 
   for(unsigned i=0; i<curr_predicates.size(); i++)
@@ -66,7 +66,7 @@ void predicate_image_prover(
     state.rename(tmp, ns);
     symbolic_dec.symbolic_fact(tmp, cond);
   }
-  
+
   // run prover
   if(symbolic_dec.dec_solve()!=decision_proceduret::D_SATISFIABLE)
     throw "unexpected result from symbolic_dect";
@@ -83,9 +83,9 @@ void predicate_image_prover(
   forall_expr_list(it, constraints)
     if(expr_set.insert(*it).second)
       abstract_transition_relation.constraints.push_back(*it);
-  #else
+#else
   assert(false);
-  #endif
+#endif
 
   message_handler->print(9, "********** PROVER DONE");
 }

@@ -16,24 +16,24 @@
 
 class refiner_wp_onlyt:public refiner_wpt
 {
-public:
-  refiner_wp_onlyt(
-      const optionst &options,
-      const argst &args) :
-    refiner_wpt(options, args)
+  public:
+    refiner_wp_onlyt(
+        const optionst &options,
+        const argst &args) :
+      refiner_wpt(options, args)
   {
   }
 
-protected:
-  virtual bool check_transitions(
-    const predicatest &predicates,
-    abstract_modelt &abstract_model,
-    const fail_infot &fail_info)
-  {
-	  // This refiner does not even try to check the transitions
-	  print(9, "Not refining transitions -- this is disabled.");
-	  return true;
-  }
+  protected:
+    virtual bool check_transitions(
+        const predicatest &predicates,
+        abstract_modelt &abstract_model,
+        const fail_infot &fail_info)
+    {
+      // This refiner does not even try to check the transitions
+      print(9, "Not refining transitions -- this is disabled.");
+      return true;
+    }
 
 };
 

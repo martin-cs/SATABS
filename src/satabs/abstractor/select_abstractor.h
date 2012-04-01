@@ -3,7 +3,7 @@
 Module: Abstractor Selection
 
 Authors: Daniel Kroening, kroening@kroening.com
-         Karen Yorav
+Karen Yorav
 
 Date: September 2005
 
@@ -20,8 +20,8 @@ class abstractort;
 class optionst;
 
 abstractort *select_abstractor(
-  const optionst &options,
-  const loop_componentt::argst &args,
-  const goto_functionst &functions);
+    const optionst &options,
+    const loop_componentt::argst &args,
+    const goto_functionst &functions);
 
 #endif

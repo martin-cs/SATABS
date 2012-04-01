@@ -20,11 +20,11 @@ Author: Daniel Kroening, kroening@kroening.com
 
 Function: predicatest::lookup
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: find (and add, if not found) a predicate
+Purpose: find (and add, if not found) a predicate
 
 \*******************************************************************/
 
@@ -32,8 +32,8 @@ unsigned predicatest::lookup(const predicatet &predicate)
 {
   std::pair<predicate_mapt::iterator, bool> result=
     predicate_map.insert(
-    std::pair<predicatet, unsigned>
-    (predicate, predicate_vector.size()));
+        std::pair<predicatet, unsigned>
+        (predicate, predicate_vector.size()));
 
   if(result.second) // already there?
   {
@@ -48,23 +48,23 @@ unsigned predicatest::lookup(const predicatet &predicate)
 
 Function: operator<<
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 std::ostream& operator<< (std::ostream& out,
-                          const predicatest &predicates)
+    const predicatest &predicates)
 {
   for(unsigned i=0; i<predicates.size(); i++)
   {
     contextt context;
     namespacet ns(context);
     out << "b" << i << " <=> "
-        << from_expr(ns, "", predicates[i]) << std::endl;
+      << from_expr(ns, "", predicates[i]) << std::endl;
   }
 
   return out;
@@ -74,11 +74,11 @@ std::ostream& operator<< (std::ostream& out,
 
 Function: operator==
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -93,9 +93,9 @@ exprt predicatest::make_expr_passive(
     const namespacet& ns,
     const unsigned subscript)
 {
-	// Recursively mutate the expression, to make it passive
+  // Recursively mutate the expression, to make it passive
   exprt tmp(phi);
-	make_expr_passive_rec(tmp, ns, subscript);
+  make_expr_passive_rec(tmp, ns, subscript);
   return tmp;
 }
 

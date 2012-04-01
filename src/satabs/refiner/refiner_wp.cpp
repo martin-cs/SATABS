@@ -1,11 +1,11 @@
 /*******************************************************************\
-  
+
 Module: Predicate Refinement for CEGAR
 
 Author: Daniel Kroening
 
 Date: June 2003
- 
+
 \*******************************************************************/
 
 #include <cassert>
@@ -36,19 +36,19 @@ Date: June 2003
 
 Function: refiner_wpt::refine_prefix
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: generate a new set of predicates given
-          a spurious counterexample
+Purpose: generate a new set of predicates given
+a spurious counterexample
 
 \*******************************************************************/
 
 bool refiner_wpt::refine_prefix(
-  predicatest &predicates, 
-  abstract_modelt &abstract_model,
-  const fail_infot &fail_info)
+    predicatest &predicates, 
+    abstract_modelt &abstract_model,
+    const fail_infot &fail_info)
 {
   status("Refining set of predicates according to counterexample (WP)");
 
@@ -61,9 +61,9 @@ bool refiner_wpt::refine_prefix(
   exprt invariant;
   if(fail_info.use_invariants)
     status("Using recurrence predicates detected by loop detection.");
-  
+
   print(10, "refiner_wpt::refine_prefix_async 1");
-  
+
   print(10, "Inconsistent prefix:");
 
   for(abstract_counterexamplet::stepst::const_reverse_iterator 
@@ -80,10 +80,10 @@ bool refiner_wpt::refine_prefix(
 
     if(concrete_pc->is_goto())
       str << "GUARD: " << (r_it->branch_taken?"(":"!(")
-                << from_expr(concrete_model.ns, "", concrete_pc->guard) << ")";
+        << from_expr(concrete_model.ns, "", concrete_pc->guard) << ")";
     else if(concrete_pc->is_assert())
       str << "ASSERT: "
-                << from_expr(concrete_model.ns, "", concrete_pc->guard);
+        << from_expr(concrete_model.ns, "", concrete_pc->guard);
     else if(concrete_pc->is_location())
       str << "LOC" << std::endl;
     else if(concrete_pc->is_other() || concrete_pc->is_assign() || concrete_pc->is_decl())
@@ -100,16 +100,16 @@ bool refiner_wpt::refine_prefix(
     print(10, str.str());
   }
 
-  
+
   {
     // get the constraint causing the failure
 
     exprt predicate=fail_info.guard;
 
-    #ifdef DEBUG
+#ifdef DEBUG
     std::cout << "P start0: " 
-              << from_expr(concrete_model.ns, "", predicate) << std::endl;
-    #endif
+      << from_expr(concrete_model.ns, "", predicate) << std::endl;
+#endif
 
     simplify(predicate, concrete_model.ns);
 
@@ -122,15 +122,15 @@ bool refiner_wpt::refine_prefix(
     {
       abstract_programt::targett abstract_pc=it->pc;
 
-      #ifdef DEBUG
+#ifdef DEBUG
       std::cout << "P start1: " 
-                << from_expr(concrete_model.ns, "", predicate) << std::endl;
-      #endif
+        << from_expr(concrete_model.ns, "", predicate) << std::endl;
+#endif
 
       add_predicates(
-        abstract_pc, predicates, predicate, found_new, FROM);
+          abstract_pc, predicates, predicate, found_new, FROM);
     }
-      
+
     // now do the WPs
     goto_symex_statet renaming_state;
     renaming_state.source.thread_nr=it->thread_nr;
@@ -140,9 +140,9 @@ bool refiner_wpt::refine_prefix(
         it!=fail_info.steps.begin();
         it--)
     {
-      #ifdef DEBUG
+#ifdef DEBUG
       std::cout << "refiner_wpt::refine_prefix_async 2\n";
-      #endif
+#endif
 
       // handle loops 
       if(fail_info.use_invariants)
@@ -150,12 +150,12 @@ bool refiner_wpt::refine_prefix(
         if(it->is_loop_begin())
         {
           loops.pop_back(); // pop induction_info if we leave loop
-          
+
 #ifdef DEBUG
           std::cout << "INV: "
-                    << from_expr(concrete_model.ns, "", invariant) << std::endl;
+            << from_expr(concrete_model.ns, "", invariant) << std::endl;
 #endif           
-          
+
           exprt wp(ID_and, typet(ID_bool));
           wp.operands().resize(2);
           wp.op0().swap(invariant);
@@ -177,18 +177,18 @@ bool refiner_wpt::refine_prefix(
         // ok, refuted it, done
         break;
       }
-        
+
       // add the predicate
 
       goto_programt::const_targett concrete_pc=
         it->pc->code.concrete_pc;
-        
+
       abstract_programt::targett abstract_pc=it->pc;
-        
-      #ifdef DEBUG
+
+#ifdef DEBUG
       std::cout << from_expr(concrete_model.ns, "", predicate) << std::endl;
-      #endif
-      
+#endif
+
       exprt no_tid_predicate=predicate;
       renaming_state.get_original_name(no_tid_predicate);
       add_predicates(abstract_pc, predicates, no_tid_predicate, found_new, TO);
@@ -205,76 +205,76 @@ bool refiner_wpt::refine_prefix(
       // compute weakest precondition
       switch(it->pc->type)
       {
-      case ASSUME:
-        // we only do this for assumptions
-        // if we haven't found a new predicate so far
-        if(1/*!found_new*/)
-        {
-          exprt tid_guard=concrete_pc->guard;
-          renaming_state.source.thread_nr=it->thread_nr;
-          renaming_state.rename(tid_guard, concrete_model.ns, goto_symex_statet::L0);
-          predicate=implies_exprt(tid_guard, predicate);
-          simplify(predicate, concrete_model.ns);
-        }
-        break;
+        case ASSUME:
+          // we only do this for assumptions
+          // if we haven't found a new predicate so far
+          if(1/*!found_new*/)
+          {
+            exprt tid_guard=concrete_pc->guard;
+            renaming_state.source.thread_nr=it->thread_nr;
+            renaming_state.rename(tid_guard, concrete_model.ns, goto_symex_statet::L0);
+            predicate=implies_exprt(tid_guard, predicate);
+            simplify(predicate, concrete_model.ns);
+          }
+          break;
 
-      case GOTO:
-        {
-          exprt tid_guard=concrete_pc->guard;
-          if(!it->branch_taken) tid_guard.make_not();
-          renaming_state.source.thread_nr=it->thread_nr;
-          renaming_state.rename(tid_guard, concrete_model.ns, goto_symex_statet::L0);
-          predicate=implies_exprt(tid_guard, predicate);
-          simplify(predicate, concrete_model.ns);
-        }
-        break;
+        case GOTO:
+          {
+            exprt tid_guard=concrete_pc->guard;
+            if(!it->branch_taken) tid_guard.make_not();
+            renaming_state.source.thread_nr=it->thread_nr;
+            renaming_state.rename(tid_guard, concrete_model.ns, goto_symex_statet::L0);
+            predicate=implies_exprt(tid_guard, predicate);
+            simplify(predicate, concrete_model.ns);
+          }
+          break;
 
-      case OTHER:
-    	/* Ignore if user-specified predicate, otherwise treat like assign */
-    	if(it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_predicate || it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_parameter_predicates || it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_return_predicates)
-    		break;
-      case DECL:
-      case ASSIGN:
-        #ifdef DEBUG
-        std::cout << "OTHER/ASSIGN/DECL\n";
-        #endif
+        case OTHER:
+          /* Ignore if user-specified predicate, otherwise treat like assign */
+          if(it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_predicate || it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_parameter_predicates || it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_return_predicates)
+            break;
+        case DECL:
+        case ASSIGN:
+#ifdef DEBUG
+          std::cout << "OTHER/ASSIGN/DECL\n";
+#endif
 
-        {
-          codet tid_tmp_code;
-          if(!fail_info.use_invariants ||
-             !get_instruction(concrete_pc, loops, tid_tmp_code, invariant))
-            tid_tmp_code=to_code(concrete_pc->code);
+          {
+            codet tid_tmp_code;
+            if(!fail_info.use_invariants ||
+                !get_instruction(concrete_pc, loops, tid_tmp_code, invariant))
+              tid_tmp_code=to_code(concrete_pc->code);
 
 #ifdef DEBUG
-          std::cout << "A P before: " << from_expr(concrete_model.ns, "", predicate) << std::endl;
-          std::cout << "Code:     " << from_expr(concrete_model.ns, "", tid_tmp_code) << std::endl;
+            std::cout << "A P before: " << from_expr(concrete_model.ns, "", predicate) << std::endl;
+            std::cout << "Code:     " << from_expr(concrete_model.ns, "", tid_tmp_code) << std::endl;
 #endif
-          
-          // compute weakest precondition
-          if(tid_tmp_code.get_statement()==ID_assign)
-            approximate_nondet(to_code_assign(tid_tmp_code).rhs());
-          renaming_state.source.thread_nr=it->thread_nr;
-          renaming_state.rename(tid_tmp_code, concrete_model.ns, goto_symex_statet::L0);
-          exprt predicate_wp=wp(tid_tmp_code, predicate, concrete_model.ns);
-      
-          simplify(predicate_wp, concrete_model.ns);
-          predicate=predicate_wp;
+
+            // compute weakest precondition
+            if(tid_tmp_code.get_statement()==ID_assign)
+              approximate_nondet(to_code_assign(tid_tmp_code).rhs());
+            renaming_state.source.thread_nr=it->thread_nr;
+            renaming_state.rename(tid_tmp_code, concrete_model.ns, goto_symex_statet::L0);
+            exprt predicate_wp=wp(tid_tmp_code, predicate, concrete_model.ns);
+
+            simplify(predicate_wp, concrete_model.ns);
+            predicate=predicate_wp;
 
 #ifdef DEBUG
-          std::cout << "A P after:  " << from_expr(concrete_model.ns, "", predicate) << std::endl;
+            std::cout << "A P after:  " << from_expr(concrete_model.ns, "", predicate) << std::endl;
 #endif
-        }
-        break;
+          }
+          break;
 
-      default:
-        // ignore
-        break;
+        default:
+          // ignore
+          break;
       }
 
 #ifdef DEBUG
-          std::cout << "B P to-check:  " << from_expr(concrete_model.ns, "", predicate) << std::endl;
+      std::cout << "B P to-check:  " << from_expr(concrete_model.ns, "", predicate) << std::endl;
 #endif
-          
+
       if(pred_bak != predicate)
       {
         satcheckt satcheck;
@@ -326,10 +326,10 @@ bool refiner_wpt::refine_prefix(
           }
         }
       }
-      
-      #ifdef DEBUG
+
+#ifdef DEBUG
       std::cout << "B P after:   " << from_expr(concrete_model.ns, "", predicate) << std::endl;
-      #endif
+#endif
 
       no_tid_predicate=predicate;
       renaming_state.get_original_name(no_tid_predicate);
@@ -339,18 +339,18 @@ bool refiner_wpt::refine_prefix(
     if(!predicate.is_true() && fail_info.warn_on_failure)
     {
       warning("Failed to refute spurious trace with WPs (got "+
-              from_expr(concrete_model.ns, "", predicate)+")");
+          from_expr(concrete_model.ns, "", predicate)+")");
     }
   }
 
   if(found_new && fail_info.use_invariants)
   {
     add_induction_predicates(
-      fail_info,
-      abstract_model,
-      predicates);
+        fail_info,
+        abstract_model,
+        predicates);
   }
-  
+
   // make sure we have progress
   return !found_new;
 }

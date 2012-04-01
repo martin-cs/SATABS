@@ -3,11 +3,11 @@
 Module: SAT-based Decision Procedure for Simulator
 
 Author: Daniel Kroening
-    
+
 Date: October 2004
 
 Purpose: Simulate an abstract counterexample on the concrete program
-         to determmine whether it is spurious.
+to determmine whether it is spurious.
 
 \*******************************************************************/
 
@@ -19,20 +19,20 @@ Purpose: Simulate an abstract counterexample on the concrete program
 
 class satcheck_wrappert
 {
-public:
-  satcheckt satcheck;
+  public:
+    satcheckt satcheck;
 };
 
 class simulator_sat_dect:
   public satcheck_wrappert,
   public bv_pointerst
 {
-public:
-  virtual const std::string description()
-  { return "Bit vector SAT"; }
-  
-  explicit simulator_sat_dect(const namespacet &_ns):
-    bv_pointerst(_ns, satcheck) { }
+  public:
+    virtual const std::string description()
+    { return "Bit vector SAT"; }
+
+    explicit simulator_sat_dect(const namespacet &_ns):
+      bv_pointerst(_ns, satcheck) { }
 };
 
 #endif

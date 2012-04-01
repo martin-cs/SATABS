@@ -3,7 +3,7 @@
 Module: Simulator Selection
 
 Authors: Daniel Kroening, kroening@kroening.com
-         Karen Yorav
+Karen Yorav
 
 Date: June 2003
 
@@ -19,8 +19,8 @@ class optionst;
 class simulatort;
 
 simulatort *select_simulator(
-  const optionst &options,
-  const loop_componentt::argst &args,
-  contextt &_shadow_context);
+    const optionst &options,
+    const loop_componentt::argst &args,
+    contextt &_shadow_context);
 
 #endif

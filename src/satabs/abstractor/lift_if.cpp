@@ -14,18 +14,18 @@ Author: Daniel Kroening, kroening@kroening.com
 
 Function: has_non_boolean_if
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool has_non_boolean_if(const exprt &expr, exprt &cond)
 {
   if(expr.id()==ID_if &&
-     expr.type().id()!=ID_bool)
+      expr.type().id()!=ID_bool)
   {
     assert(expr.operands().size()==3);
     cond=expr.op0();
@@ -35,7 +35,7 @@ bool has_non_boolean_if(const exprt &expr, exprt &cond)
   forall_operands(it, expr)
     if(has_non_boolean_if(*it, cond))
       return true;
-  
+
   return false;
 }
 
@@ -43,11 +43,11 @@ bool has_non_boolean_if(const exprt &expr, exprt &cond)
 
 Function: has_non_boolean_if
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -61,11 +61,11 @@ bool has_non_boolean_if(const exprt &expr)
 
 Function: replace_if
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -74,7 +74,7 @@ bool replace_if(const exprt &cond, bool branch, exprt &expr)
   if(expr.id()==ID_if)
   {
     assert(expr.operands().size()==3);
-    
+
     if(expr.op0()==cond)
     {
       exprt tmp;
@@ -87,7 +87,7 @@ bool replace_if(const exprt &cond, bool branch, exprt &expr)
   Forall_operands(it, expr)
     if(replace_if(cond, branch, *it))
       return true;
-  
+
   return false;
 }
 
@@ -95,18 +95,18 @@ bool replace_if(const exprt &cond, bool branch, exprt &expr)
 
 Function: lift_if
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void lift_if(exprt &expr)
 {
   exprt cond;
-  
+
   if(has_non_boolean_if(expr, cond))
   {
     exprt new_expr(ID_if, bool_typet());

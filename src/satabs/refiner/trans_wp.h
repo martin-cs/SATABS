@@ -17,16 +17,16 @@ Purpose: Calculate predicates for predicate abstraction
 
 class trans_wpt:public word_level_transt
 {
-public:
-  trans_wpt(const namespacet &_ns):
-    word_level_transt(_ns)
+  public:
+    trans_wpt(const namespacet &_ns):
+      word_level_transt(_ns)
   {
   }
 
-  void wp(exprt &expr);
-  
-protected:
-  void wp_rec(exprt &expr);
+    void wp(exprt &expr);
+
+  protected:
+    void wp_rec(exprt &expr);
 };
 
 #endif

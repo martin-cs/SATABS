@@ -3,7 +3,7 @@
 Module: Predicate Abstraction of a Basic Block
 
 Author: Daniel Kroening, kroening@kroening.com
-        Stefano Tonetta, tonettas@lu.unisi.ch
+Stefano Tonetta, tonettas@lu.unisi.ch
 
 \*******************************************************************/
 
@@ -21,27 +21,27 @@ Author: Daniel Kroening, kroening@kroening.com
 
 Function: predicate_image_satqe
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: It feeds zChaff with equation and gets back a set of
-          cubes that represent the solutions of the SAT instance
-          projected on the predicates. It translates the cubes into
-          an expression and stores it as constraint of the abstract
-          transition relation.
+Purpose: It feeds zChaff with equation and gets back a set of
+cubes that represent the solutions of the SAT instance
+projected on the predicates. It translates the cubes into
+an expression and stores it as constraint of the abstract
+transition relation.
 
 \*******************************************************************/
 
 void predicate_image_satqe(
-  message_handlert &message_handler,
-  const std::vector<exprt> &deref_curr_predicates,
-  const std::vector<exprt> &deref_next_predicates,
-  const std::list<exprt> &constraints,
-  symex_target_equationt &equation,
-  const namespacet &ns,
-  abstract_transition_relationt &
-  abstract_transition_relation)
+    message_handlert &message_handler,
+    const std::vector<exprt> &deref_curr_predicates,
+    const std::vector<exprt> &deref_next_predicates,
+    const std::list<exprt> &constraints,
+    symex_target_equationt &equation,
+    const namespacet &ns,
+    abstract_transition_relationt &
+    abstract_transition_relation)
 {
   const std::set<unsigned> &from_predicates=
     abstract_transition_relation.from_predicates;
@@ -60,7 +60,7 @@ void predicate_image_satqe(
 
   // turn equation into CNF
   equation.convert(solver);
-  
+
   for(std::set<unsigned>::const_iterator
       it=from_predicates.begin();
       it!=from_predicates.end();
@@ -90,20 +90,20 @@ void predicate_image_satqe(
   // solve it
   switch(solver.dec_solve())
   {
-   case decision_proceduret::D_UNSATISFIABLE:
-    // OK, this is what we expect
-    break;
+    case decision_proceduret::D_UNSATISFIABLE:
+      // OK, this is what we expect
+      break;
 
-   default:
-    throw "unexpected result from satqe.solve()";
+    default:
+      throw "unexpected result from satqe.solve()";
   }
 
   message_handler.print(9, "Generated "+
-    i2string(cube_set.no_insertions())+" cube(s)");
+      i2string(cube_set.no_insertions())+" cube(s)");
 
-  #if 0
+#if 0
   std::cout << cube_set;
-  #endif
+#endif
 
   exprt constraint_cubes_disj = true_exprt();
 
@@ -124,9 +124,9 @@ void predicate_image_satqe(
       unsigned i=0;
 
       /* Assume it->first[i] is true iff the i-th predicate is in the
-	 cube. Assume predicates are stored in it->first in the order of
-	 from_predicates followed by to_predicates. Scan it->first and
-	 from/to_predicates in parallel to get the cube. */
+         cube. Assume predicates are stored in it->first in the order of
+         from_predicates followed by to_predicates. Scan it->first and
+         from/to_predicates in parallel to get the cube. */
 
       for(std::set<unsigned>::const_iterator
           it3=from_predicates.begin();
@@ -134,7 +134,7 @@ void predicate_image_satqe(
           it3++)
       {
         unsigned id=*it3;
-        
+
         if(!it->first[i])
         {
           constraint_cube_conj.operands().push_back(exprt());
@@ -146,11 +146,11 @@ void predicate_image_satqe(
             e.make_not();
 
           bit++;
-          #if 0
+#if 0
           std::cout << "C: " << from_expr(ns, "", e) << std::endl;
-          #endif
+#endif
         }
-          
+
         i++;
       }
 
@@ -172,9 +172,9 @@ void predicate_image_satqe(
             e.make_not();
 
           bit++;
-          #if 0
+#if 0
           std::cout << "C: " << from_expr(ns, "", e) << std::endl;
-          #endif
+#endif
         }
 
         i++;
@@ -187,11 +187,11 @@ void predicate_image_satqe(
 
       /* Add the conjunct in disjunction to previous cubes. */
       if(constraint_cubes_disj.is_true())
-	constraint_cubes_disj=constraint_cube_conj;
+        constraint_cubes_disj=constraint_cube_conj;
       else
-	constraint_cubes_disj=gen_or(
-	  constraint_cubes_disj,
-	  constraint_cube_conj);      
+        constraint_cubes_disj=gen_or(
+            constraint_cubes_disj,
+            constraint_cube_conj);      
     }
   }
 

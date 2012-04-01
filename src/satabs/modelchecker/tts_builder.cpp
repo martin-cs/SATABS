@@ -4,7 +4,7 @@ Module: Thread Transition System Output
 
 Author: Michael Tautschnig
 
-  Date: January 2012
+Date: January 2012
 
 \*******************************************************************/
 
@@ -27,11 +27,11 @@ Author: Michael Tautschnig
 
 Function: tts_buildert::tts_buildert
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -50,11 +50,11 @@ tts_buildert::tts_buildert(
 
 Function: tts_buildert::add_local_var
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -68,11 +68,11 @@ void tts_buildert::add_local_var(unsigned var)
 
 Function: tts_buildert::add_shared_var
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -86,11 +86,11 @@ void tts_buildert::add_shared_var(unsigned var)
 
 Function: tts_buildert::build_prologue
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -240,11 +240,11 @@ void tts_buildert::build_prologue(
 
 Function: tts_buildert::finalize
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -281,11 +281,11 @@ void tts_buildert::finalize()
 
 Function: tts_buildert::build_instruction
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -479,11 +479,11 @@ void tts_buildert::build_instruction(
 
 Function: tts_buildert::inc_state
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -503,11 +503,11 @@ void tts_buildert::inc_state(std::vector<bool> &states)
 
 Function: tts_buildert::inc_state_symmetric
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -531,11 +531,11 @@ void tts_buildert::inc_state_symmetric(std::vector<bool> &states)
 
 Function: tts_buildert::get_shared_state_num
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -564,11 +564,11 @@ void tts_buildert::get_shared_state_num(
 
 Function: tts_buildert::get_local_state_num
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -598,11 +598,11 @@ void tts_buildert::get_local_state_num(
 
 Function: tts_buildert::print_shared_state
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -626,11 +626,11 @@ void tts_buildert::print_shared_state(
 
 Function: tts_buildert::local_state_string
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -655,11 +655,11 @@ void tts_buildert::local_state_string(
 
 Function: tts_buildert::print_local_state
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -676,11 +676,11 @@ void tts_buildert::print_local_state(
 
 Function: tts_buildert::print_tuples
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -708,11 +708,11 @@ void tts_buildert::print_tuples(
 
 Function: tts_buildert::make_skip
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -746,11 +746,11 @@ void tts_buildert::make_skip(
 
 Function: tts_buildert::make_atomic
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -789,11 +789,11 @@ void tts_buildert::make_atomic(
 
 Function: make_nnf
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -845,11 +845,11 @@ static void make_nnf(exprt &expr)
 
 Function: lift_and
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -907,11 +907,11 @@ static void lift_and(exprt &expr)
 
 Function: tts_buildert::to_cnf
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1002,11 +1002,11 @@ void tts_buildert::to_cnf(
 
 Function: tts_buildert::to_cnf
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1067,11 +1067,11 @@ void tts_buildert::to_cnf(
 
 Function: tts_buildert::cnf_sat
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1087,11 +1087,11 @@ bool tts_buildert::cnf_sat(
 
 Function: tts_buildert::cnf_sat
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1119,11 +1119,11 @@ bool tts_buildert::cnf_sat(
 
 Function: tts_buildert::clause_sat
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1184,11 +1184,11 @@ bool tts_buildert::clause_sat(
 
 Function: tts_buildert::make_assert
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1263,11 +1263,11 @@ void tts_buildert::make_assert(
 
 Function: tts_buildert::make_assume
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1321,11 +1321,11 @@ void tts_buildert::make_assume(
 
 Function: tts_buildert::make_goto
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1387,11 +1387,11 @@ void tts_buildert::make_goto(
 
 Function: tts_buildert::make_start_thread
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1435,11 +1435,11 @@ void tts_buildert::make_start_thread(
 
 Function: tts_buildert::skip_make_assign
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1461,11 +1461,11 @@ bool tts_buildert::skip_make_assign(
 
 Function: tts_buildert::make_assign
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1482,11 +1482,11 @@ void tts_buildert::make_assign(
 
 Function: tts_buildert::make_active_passive_assign
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1558,11 +1558,11 @@ void tts_buildert::make_active_passive_assign(
 
 Function: tts_buildert::skip_make_passive_assign
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -1584,11 +1584,11 @@ bool tts_buildert::skip_make_passive_assign(
 
 Function: tts_buildert::make_passive_assign
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 

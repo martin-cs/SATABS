@@ -1,11 +1,11 @@
 /*******************************************************************\
-  
+
 Module: Initial Abstraction
 
 Author: Daniel Kroening
 
 Date: June 2003
- 
+
 \*******************************************************************/
 
 #include <cassert>
@@ -45,18 +45,18 @@ void initial_abstractiont::build(
 
 Function: initial_abstractiont::init_preds
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: generate initial set of predicates for a concrete program
+Purpose: generate initial set of predicates for a concrete program
 
 \*******************************************************************/
 
 void initial_abstractiont::init_preds(
-  const namespacet &ns,
-  predicatest &predicates, 
-  const concrete_modelt &concrete_model)
+    const namespacet &ns,
+    predicatest &predicates, 
+    const concrete_modelt &concrete_model)
 {
   status("Calculating initial set of predicates");
 
@@ -66,7 +66,7 @@ void initial_abstractiont::init_preds(
   str << "Initial predicates are:" << std::endl;
   for(unsigned int i = 0; i < predicates.size(); i++)
   {
-	  str << from_expr(ns, "", predicates[i]) << std::endl;
+    str << from_expr(ns, "", predicates[i]) << std::endl;
   }
   print(9, str.str());
 
@@ -76,18 +76,18 @@ void initial_abstractiont::init_preds(
 
 Function: initial_abstractiont::init_preds
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: generate initial set of predicates for a concrete program
+Purpose: generate initial set of predicates for a concrete program
 
 \*******************************************************************/
 
 void initial_abstractiont::init_preds(
-  const namespacet &ns,
-  predicatest &predicates, 
-  const goto_functionst &goto_functions)
+    const namespacet &ns,
+    predicatest &predicates, 
+    const goto_functionst &goto_functions)
 {
   forall_goto_functions(it, goto_functions)
     init_preds(ns, predicates, it->second.body);
@@ -102,31 +102,31 @@ Inputs:  Goto program instruction
 Outputs: Boolean
 
 Purpose: Decides whether the given instruction specifies an initial
-         predicate
+predicate
 
 \*******************************************************************/
 
 static bool is_predicate(goto_programt::instructionst::const_iterator it)
 {
-	return (it->type == OTHER) && (it->code.get_statement() == ID_user_specified_predicate);
+  return (it->type == OTHER) && (it->code.get_statement() == ID_user_specified_predicate);
 }
 
 /*******************************************************************\
 
 Function: initial_abstractiont::init_preds
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: generate initial set of predicates for a concrete program
+Purpose: generate initial set of predicates for a concrete program
 
 \*******************************************************************/
 
 void initial_abstractiont::init_preds(
-  const namespacet &ns,
-  predicatest &predicates, 
-  const goto_programt &goto_program)
+    const namespacet &ns,
+    predicatest &predicates, 
+    const goto_programt &goto_program)
 {
 
   // collect all properties
@@ -139,14 +139,14 @@ void initial_abstractiont::init_preds(
     {
       std::set<predicatet> new_predicates;
       discover_predicates(it->guard, new_predicates, ns, no_mixed_predicates);
-      
+
       // we just take them all
       for(std::set<predicatet>::const_iterator
           p_it=new_predicates.begin();
           p_it!=new_predicates.end();
           p_it++)
-    	  if(!is_redundant(*p_it, ns))
-    		  predicates.lookup(*p_it);
+        if(!is_redundant(*p_it, ns))
+          predicates.lookup(*p_it);
     }
 }
 
@@ -154,19 +154,19 @@ void initial_abstractiont::init_preds(
 
 Function: initial_abstractiont::init_preds
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: generate initial set of predicates for a concrete program
+Purpose: generate initial set of predicates for a concrete program
 
 \*******************************************************************/
 
 void initial_abstractiont::init_preds(
-  const namespacet &ns,
-  predicatest &predicates, 
-  const std::vector<exprt> &initial_predicates,
-  abstract_modelt &abstract_model)
+    const namespacet &ns,
+    predicatest &predicates, 
+    const std::vector<exprt> &initial_predicates,
+    abstract_modelt &abstract_model)
 {
   status("Using provided set of initial predicates");
 
@@ -180,19 +180,19 @@ void initial_abstractiont::init_preds(
     canonicalize(p, negation, ns);
     predicates.lookup(p);
   }
-  
+
   // we add these _everywhere_
-  
+
   abstract_functionst &functions=
     abstract_model.goto_functions;
-    
+
   for(abstract_functionst::function_mapt::iterator
       f_it=functions.function_map.begin();
       f_it!=functions.function_map.end();
       f_it++)
   {
     abstract_programt &program=f_it->second.body;
-  
+
     for(abstract_programt::instructionst::iterator
         i_it=program.instructions.begin();
         i_it!=program.instructions.end();
@@ -211,26 +211,26 @@ void initial_abstractiont::init_preds(
 
 Function: initial_abstractiont::build_control_flow
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: compute abstraction according to set of predicates
+Purpose: compute abstraction according to set of predicates
 
 \*******************************************************************/
 
 void initial_abstractiont::build_control_flow(
-  const goto_programt &concrete_program,
-  abstract_programt &abstract_program,
-  bool concurrency_aware)
+    const goto_programt &concrete_program,
+    abstract_programt &abstract_program,
+    bool concurrency_aware)
 {
   abstract_program.clear();
-  
+
   // Loop over program - 1st time collects targets
 
   // Definitions for mapping between concrete and abstract instructions  
   typedef std::map<goto_programt::const_targett,
-                   abstract_programt::targett> targets_mappingt;
+          abstract_programt::targett> targets_mappingt;
 
   targets_mappingt targets_mapping;
 
@@ -256,9 +256,9 @@ void initial_abstractiont::build_control_flow(
     // decide which sort of transition relation to choose
     if(concurrency_aware)
     {
-    	new_abstract_instruction->code.set_transition_relation(std::auto_ptr<abstract_transition_relationt>(new concurrency_aware_abstract_transition_relationt()));
+      new_abstract_instruction->code.set_transition_relation(std::auto_ptr<abstract_transition_relationt>(new concurrency_aware_abstract_transition_relationt()));
     } else {
-    	new_abstract_instruction->code.set_transition_relation(std::auto_ptr<abstract_transition_relationt>(new abstract_transition_relationt()));
+      new_abstract_instruction->code.set_transition_relation(std::auto_ptr<abstract_transition_relationt>(new abstract_transition_relationt()));
     }
 
   }
@@ -288,7 +288,7 @@ void initial_abstractiont::build_control_flow(
       }
     }
   }
-  
+
   abstract_program.update();
 }
 
@@ -296,25 +296,25 @@ void initial_abstractiont::build_control_flow(
 
 Function: initial_abstractiont::build_control_flow
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: compute abstraction according to set of predicates
+Purpose: compute abstraction according to set of predicates
 
 \*******************************************************************/
 
 void initial_abstractiont::build_control_flow(
-  const goto_functionst &concrete_functions,
-  abstract_functionst &abstract_functions,
-  bool concurrency_aware)
+    const goto_functionst &concrete_functions,
+    abstract_functionst &abstract_functions,
+    bool concurrency_aware)
 {
   forall_goto_functions(it, concrete_functions)
   {
     const goto_functionst::goto_functiont &f=it->second;
     abstract_functionst::goto_functiont &a=
       abstract_functions.function_map[it->first];
-    
+
     if(!a.body.empty()) continue; // has been done already
 
     a.body_available=f.body_available;

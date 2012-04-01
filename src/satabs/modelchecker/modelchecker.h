@@ -3,7 +3,7 @@
 Module: Model Checker Base Class
 
 Author: Daniel Kroening
-        Karen Yorav 
+Karen Yorav 
 
 Date: June 2003
 
@@ -23,74 +23,74 @@ class abstract_modelt;
 /* A general purpose model checker */
 class modelcheckert:public loop_componentt
 {
-public:
-  modelcheckert(const loop_componentt::argst &args, const bool _concurrency_aware):
-    loop_componentt(args), concurrency_aware(_concurrency_aware)
+  public:
+    modelcheckert(const loop_componentt::argst &args, const bool _concurrency_aware):
+      loop_componentt(args), concurrency_aware(_concurrency_aware)
   {
   }
 
-  // A return value of TRUE means the program is correct,
-  // if FALSE is returned, counterexample will contain the counterexample
-  virtual bool check(
-    abstract_modelt &abstract_model,
-    abstract_counterexamplet &abstract_counterexample)=0;
+    // A return value of TRUE means the program is correct,
+    // if FALSE is returned, counterexample will contain the counterexample
+    virtual bool check(
+        abstract_modelt &abstract_model,
+        abstract_counterexamplet &abstract_counterexample)=0;
 
-  virtual void enable_loop_detection();
-  
-  virtual std::string description() const=0;
+    virtual void enable_loop_detection();
 
-  // save the model into a file
-  virtual void save(
-    abstract_modelt &abstract_model,
-    unsigned sequence)=0;
+    virtual std::string description() const=0;
 
-protected:
-  // auxiliary functions
+    // save the model into a file
+    virtual void save(
+        abstract_modelt &abstract_model,
+        unsigned sequence)=0;
 
-  std::vector<std::string> variable_names;
-  
-  static bool is_variable_name(const std::string &variable_name);
-
-  virtual void get_variable_names(const abstract_modelt &abstract_model);
-
-  typedef std::map<exprt, std::string> nondet_symbolst;
-  nondet_symbolst nondet_symbols;
-  
-  const bool concurrency_aware; // Is concurrency enabled?
-
-  void get_nondet_symbols(const abstract_modelt &abstract_model);
-  void get_nondet_symbols(const exprt &expr);
-  
-  // turn expression into string
-  virtual std::string expr_string(const exprt &expr)=0;
-  
-  // auxiliary class to obtain inlined version of boolean program
-  class inlinedt
-  {
-  public:
-    inlinedt(message_handlert &_mh) : message(_mh) {}
-
-    struct instructiont
-    {
-      abstract_programt::targett original;
-      typedef std::vector<unsigned> targetst;
-      targetst targets;
-    };
-    
-    typedef std::vector<instructiont> PC_mapt;
-    PC_mapt PC_map;
-
-    void build(abstract_modelt &abstract_model);
-    
-    bool has_assertion() const;
-    
   protected:
-    messaget message;
+    // auxiliary functions
 
-    void build(abstract_modelt &abstract_model,
-               const irep_idt f_id,
-               std::set<irep_idt> &recursion_stack);
-  };
+    std::vector<std::string> variable_names;
+
+    static bool is_variable_name(const std::string &variable_name);
+
+    virtual void get_variable_names(const abstract_modelt &abstract_model);
+
+    typedef std::map<exprt, std::string> nondet_symbolst;
+    nondet_symbolst nondet_symbols;
+
+    const bool concurrency_aware; // Is concurrency enabled?
+
+    void get_nondet_symbols(const abstract_modelt &abstract_model);
+    void get_nondet_symbols(const exprt &expr);
+
+    // turn expression into string
+    virtual std::string expr_string(const exprt &expr)=0;
+
+    // auxiliary class to obtain inlined version of boolean program
+    class inlinedt
+    {
+      public:
+        inlinedt(message_handlert &_mh) : message(_mh) {}
+
+        struct instructiont
+        {
+          abstract_programt::targett original;
+          typedef std::vector<unsigned> targetst;
+          targetst targets;
+        };
+
+        typedef std::vector<instructiont> PC_mapt;
+        PC_mapt PC_map;
+
+        void build(abstract_modelt &abstract_model);
+
+        bool has_assertion() const;
+
+      protected:
+        messaget message;
+
+        void build(abstract_modelt &abstract_model,
+            const irep_idt f_id,
+            std::set<irep_idt> &recursion_stack);
+    };
 };
 
 #endif

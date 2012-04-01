@@ -3,9 +3,9 @@
 Module: Abstractor (generates abstract program given a set of predicates)
 
 Author: Daniel Kroening
-        Karen Yorav 
+Karen Yorav 
 
-  Date: June 2003
+Date: June 2003
 
 \*******************************************************************/
 
@@ -26,17 +26,17 @@ Author: Daniel Kroening
 
 Function: abstractort::abstract_variables
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void abstractort::abstract_variables(
-  const predicatest &predicates,
-  abstract_modelt::variablest &variables)
+    const predicatest &predicates,
+    abstract_modelt::variablest &variables)
 {
   variables.resize(predicates.size());
 
@@ -48,7 +48,7 @@ void abstractort::abstract_variables(
     // remove line breaks
     for(unsigned j = 0; j<variables[i].description.size(); j++)
       if(variables[i].description[j]=='\n' ||
-         variables[i].description[j]=='\r')
+          variables[i].description[j]=='\r')
         variables[i].description[j]=' ';
 
     // local or global?
@@ -61,75 +61,75 @@ void abstractort::abstract_variables(
 
 Function: abstractort::get_var_class
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: computes the thread-category of the abstract variable
+Purpose: computes the thread-category of the abstract variable
 
 \*******************************************************************/
 
 abstract_modelt::variablet::var_classt abstractort::get_var_class(
-  const predicatet &predicate, const namespacet &ns)
+    const predicatet &predicate, const namespacet &ns)
 {
-	  // get list of symbols in the predicate
+  // get list of symbols in the predicate
 
-	  typedef hash_set_cont<irep_idt, irep_id_hash> symbolst;
-	  symbolst symbols;
+  typedef hash_set_cont<irep_idt, irep_id_hash> symbolst;
+  symbolst symbols;
 
-	  find_symbols(predicate, symbols);
+  find_symbols(predicate, symbols);
 
-	  // is there a global variable in there?
+  // is there a global variable in there?
 
-	  bool found_shared_global=false,
-	       found_thread_local=false,
-	       found_procedure_local=false;
+  bool found_shared_global=false,
+       found_thread_local=false,
+       found_procedure_local=false;
 
-	  for(symbolst::const_iterator it=symbols.begin();
-	      it!=symbols.end();
-	      it++)
-	  {
-	    const symbolt &symbol=ns.lookup(*it);
-	    if(is_global(symbol))
-	    {
-	        found_shared_global=true;
-	    } else if(is_thread_local(symbol)) {
-	        found_thread_local=true;
-	    } else {
-	    	assert(is_procedure_local(symbol));
-	    	found_procedure_local = true;
-	    }
-	  }
+  for(symbolst::const_iterator it=symbols.begin();
+      it!=symbols.end();
+      it++)
+  {
+    const symbolt &symbol=ns.lookup(*it);
+    if(is_global(symbol))
+    {
+      found_shared_global=true;
+    } else if(is_thread_local(symbol)) {
+      found_thread_local=true;
+    } else {
+      assert(is_procedure_local(symbol));
+      found_procedure_local = true;
+    }
+  }
 
-	  #if 0
-	  return found_shared_global?
-	           abstract_modelt::variablet::SHARED_GLOBAL:
-	         found_thread_local?
-	           abstract_modelt::variablet::THREAD_LOCAL:
-	           abstract_modelt::variablet::PROCEDURE_LOCAL;
-	  #else
+#if 0
+  return found_shared_global?
+    abstract_modelt::variablet::SHARED_GLOBAL:
+    found_thread_local?
+    abstract_modelt::variablet::THREAD_LOCAL:
+    abstract_modelt::variablet::PROCEDURE_LOCAL;
+#else
 
-	  if((found_procedure_local || found_thread_local) && !found_shared_global) {
-		  return abstract_modelt::variablet::PROCEDURE_LOCAL;
-	  }
-	  if(found_shared_global && !(found_procedure_local || found_thread_local)) {
-		  return abstract_modelt::variablet::SHARED_GLOBAL;
-	  }
+  if((found_procedure_local || found_thread_local) && !found_shared_global) {
+    return abstract_modelt::variablet::PROCEDURE_LOCAL;
+  }
+  if(found_shared_global && !(found_procedure_local || found_thread_local)) {
+    return abstract_modelt::variablet::SHARED_GLOBAL;
+  }
 
-	  return abstract_modelt::variablet::MIXED;
+  return abstract_modelt::variablet::MIXED;
 
-	  #endif
+#endif
 }
 
 /*******************************************************************\
 
 Function: abstractort::build_abstraction
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: compute abstraction according to set of predicates
+Purpose: compute abstraction according to set of predicates
 
 \*******************************************************************/
 
@@ -138,7 +138,7 @@ void abstractort::build_abstraction(const predicatest &predicates)
   // new predicates?
   have_new_predicates=(predicates!=old_predicates);
   old_predicates=predicates;
-  
+
   status("Computing Predicate Abstraction for Program");
 
   // define abstract variables
@@ -162,18 +162,18 @@ void abstractort::build_abstraction(const predicatest &predicates)
 
 Function: abstractort::build_abstraction
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: compute abstraction according to set of predicates
+Purpose: compute abstraction according to set of predicates
 
 \*******************************************************************/
 
 void abstractort::build_abstraction(
-  const predicatest &predicates, 
-  const goto_programt &goto_program,
-  abstract_programt &abstract_program)
+    const predicatest &predicates, 
+    const goto_programt &goto_program,
+    abstract_programt &abstract_program)
 {
   // this needs to be done every time: the abstract guards
   // and the abstract transition relation depend on the predicates
@@ -188,7 +188,7 @@ void abstractort::build_abstraction(
   {
     // only do it if marked 're-abstract', or we have to
     if(!have_new_predicates &&
-       !a_it->code.re_abstract) continue;
+        !a_it->code.re_abstract) continue;
 
     a_it->code.re_abstract=false;
 
@@ -196,65 +196,65 @@ void abstractort::build_abstraction(
 
     switch(c_it->type)
     {
-    case GOTO:
-    case ASSERT:
-      // if it's a goto or assert, abstract the guard
-      a_it->guard=c_it->guard;
-      abstract_expression(predicates, a_it->guard, concrete_model.ns);
-      break;
+      case GOTO:
+      case ASSERT:
+        // if it's a goto or assert, abstract the guard
+        a_it->guard=c_it->guard;
+        abstract_expression(predicates, a_it->guard, concrete_model.ns);
+        break;
 
-    case ASSUME:
-      // if it's an assume, abstract the guard
-      a_it->guard=c_it->guard;
-      abstract_assume_guard(predicates, a_it->guard, concrete_model.ns, c_it);
-      break;
+      case ASSUME:
+        // if it's an assume, abstract the guard
+        a_it->guard=c_it->guard;
+        abstract_assume_guard(predicates, a_it->guard, concrete_model.ns, c_it);
+        break;
 
-    case ASSIGN:
-      pred_abstract_block(
-        c_it,
-        predicates,
-        a_it->code.get_transition_relation());
-      break;
-
-    case OTHER:
-    case DECL:
-      if(c_it->code.is_nil() || c_it->code.get_statement()==ID_user_specified_predicate || c_it->code.get_statement()==ID_user_specified_parameter_predicates || c_it->code.get_statement()==ID_user_specified_return_predicates)
-        a_it->code.get_transition_relation().clear();
-      else
-      {
+      case ASSIGN:
         pred_abstract_block(
-          c_it,
-          predicates,
-          a_it->code.get_transition_relation());
-      }
-      break;
+            c_it,
+            predicates,
+            a_it->code.get_transition_relation());
+        break;
 
-    case DEAD:
-    case SKIP:
-    case START_THREAD:
-    case END_THREAD:
-    case END_FUNCTION:
-    case LOCATION:
-    case ATOMIC_BEGIN:
-    case ATOMIC_END:
-      // nothing
-      break;
+      case OTHER:
+      case DECL:
+        if(c_it->code.is_nil() || c_it->code.get_statement()==ID_user_specified_predicate || c_it->code.get_statement()==ID_user_specified_parameter_predicates || c_it->code.get_statement()==ID_user_specified_return_predicates)
+          a_it->code.get_transition_relation().clear();
+        else
+        {
+          pred_abstract_block(
+              c_it,
+              predicates,
+              a_it->code.get_transition_relation());
+        }
+        break;
 
-    case FUNCTION_CALL:
-      // for now, we don't have arguments
-      break;
+      case DEAD:
+      case SKIP:
+      case START_THREAD:
+      case END_THREAD:
+      case END_FUNCTION:
+      case LOCATION:
+      case ATOMIC_BEGIN:
+      case ATOMIC_END:
+        // nothing
+        break;
 
-    case RETURN:
-      // for now, we don't have return values
-      break;
-      
-    case CATCH:
-    case THROW:
-      // ignore for now
-      break;
+      case FUNCTION_CALL:
+        // for now, we don't have arguments
+        break;
 
-    default:
-      throw "unexpected instruction";
+      case RETURN:
+        // for now, we don't have return values
+        break;
+
+      case CATCH:
+      case THROW:
+        // ignore for now
+        break;
+
+      default:
+        throw "unexpected instruction";
     }
   }
 }
@@ -263,20 +263,20 @@ void abstractort::build_abstraction(
 
 Function: abstractort::get_value
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 exprt abstractort::get_value(
-  unsigned p_nr,
-  const predicatest &predicates,
-  const exprt &value,
-  const namespacet& ns,
-  goto_programt::const_targett program_location)
+    unsigned p_nr,
+    const predicatest &predicates,
+    const exprt &value,
+    const namespacet& ns,
+    goto_programt::const_targett program_location)
 {
   if(value.is_constant()) return value;
 
@@ -285,12 +285,12 @@ exprt abstractort::get_value(
 
   if(is_valid(value, ns))
   {
-	  return true_exprt();
+    return true_exprt();
   }
 
   if(is_unsatisfiable(value, ns))
   {
-	  return false_exprt();
+    return false_exprt();
   }
 
   exprt dest;
@@ -299,13 +299,13 @@ exprt abstractort::get_value(
   // previous predicate?
   for(unsigned i=0; i<predicates.size(); i++)
   {
-    #if 0
+#if 0
     contextt context;
     const namespacet ns(context);
     std::cout << "V " << p_nr << " " << from_expr(ns, "", value) << std::endl;
     std::cout << "P " << i << " " << from_expr(ns, "", predicates[i]) << std::endl;
-    #endif
-  
+#endif
+
     if(value==predicates[i])
     {
       dest=exprt(ID_predicate_symbol, typet(ID_bool));
@@ -313,6 +313,6 @@ exprt abstractort::get_value(
       break;
     }
   }
-  
+
   return dest;
 }

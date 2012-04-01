@@ -28,21 +28,21 @@
 
 Function: satabs_inlinet::parameter_assignments
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void satabs_inlinet::parameter_assignments(
-  const locationt &location,
-  const irep_idt &function_name,
-  const code_typet &code_type,
-  const exprt::operandst &arguments,
-  goto_programt &dest,
-  bool add_parameter_predicates)
+    const locationt &location,
+    const irep_idt &function_name,
+    const code_typet &code_type,
+    const exprt::operandst &arguments,
+    goto_programt &dest,
+    bool add_parameter_predicates)
 {
   // iterates over the operands
   exprt::operandst::const_iterator it1=arguments.begin();
@@ -105,10 +105,10 @@ void satabs_inlinet::parameter_assignments(
 
         // we are willing to do some conversion
         if((f_argtype.id()==ID_pointer &&
-            f_acttype.id()==ID_pointer) ||
-           (f_argtype.id()==ID_array &&
-            f_acttype.id()==ID_pointer &&
-            f_argtype.subtype()==f_acttype.subtype()))
+              f_acttype.id()==ID_pointer) ||
+            (f_argtype.id()==ID_array &&
+             f_acttype.id()==ID_pointer &&
+             f_argtype.subtype()==f_acttype.subtype()))
         {
           actual.make_typecast(arg_type);
         }
@@ -128,11 +128,11 @@ void satabs_inlinet::parameter_assignments(
           err_location(*it1);
 
           str << "function call: argument `" << identifier
-              << "' type mismatch: got `"
-              << from_type(ns, identifier, it1->type())
-              << "', expected `"
-              << from_type(ns, identifier, arg_type)
-              << "'";
+            << "' type mismatch: got `"
+            << from_type(ns, identifier, it1->type())
+            << "', expected `"
+            << from_type(ns, identifier, arg_type)
+            << "'";
           throw 0;
         }
       }
@@ -171,19 +171,19 @@ void satabs_inlinet::parameter_assignments(
 
 Function: satabs_inlinet::satabs_replace_return
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void satabs_inlinet::satabs_replace_return(
-  goto_programt &dest,
-  const exprt &lhs,
-  const exprt &constrain,
-  bool add_return_predicates)
+    goto_programt &dest,
+    const exprt &lhs,
+    const exprt &constrain,
+    bool add_return_predicates)
 {
   for(goto_programt::instructionst::iterator
       it=dest.instructions.begin();
@@ -199,7 +199,7 @@ void satabs_inlinet::satabs_replace_return(
           err_location(it->code);
           str << "return expects one operand!" << std::endl;
           warning();
-	  continue;
+          continue;
         }
 
         goto_programt tmp;
@@ -210,12 +210,12 @@ void satabs_inlinet::satabs_replace_return(
         // this may happen if the declared return type at the call site
         // differs from the defined return type
         if(code_assign.lhs().type()!=
-           code_assign.rhs().type())
+            code_assign.rhs().type())
           code_assign.rhs().make_typecast(code_assign.lhs().type());
 
         if(add_return_predicates && !(code_assign.rhs() == nondet_exprt(code_assign.rhs().type())))
         {
-      	  goto_programt::targett t = dest.add_instruction(OTHER);
+          goto_programt::targett t = dest.add_instruction(OTHER);
           t->guard = equal_exprt(code_assign.lhs(), code_assign.rhs());
           t->location = it->location;
           t->function = it->location.get_function();
@@ -261,11 +261,11 @@ void satabs_inlinet::satabs_replace_return(
 
 Function: satabs_replace_location
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -283,11 +283,11 @@ void satabs_replace_location(locationt &dest, const locationt &new_location)
 
 Function: satabs_replace_location
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -303,87 +303,87 @@ void satabs_replace_location(exprt &dest, const locationt &new_location)
 
 static bool is_parameter_predicates(goto_programt::instructionst::const_iterator it)
 {
-	return (it->type == OTHER) && (it->code.get_statement() == ID_user_specified_parameter_predicates);
+  return (it->type == OTHER) && (it->code.get_statement() == ID_user_specified_parameter_predicates);
 }
 
 static bool is_return_predicates(goto_programt::instructionst::const_iterator it)
 {
-	return (it->type == OTHER) && (it->code.get_statement() == ID_user_specified_return_predicates);
+  return (it->type == OTHER) && (it->code.get_statement() == ID_user_specified_return_predicates);
 }
 
 bool contains_parameter_predicates_hint(const goto_programt& body)
 {
-	for(goto_programt::instructionst::const_iterator it = body.instructions.begin(); it != body.instructions.end(); it++)
-	{
-		if(is_parameter_predicates(it))
-		{
-			return true;
-		}
-	}
-	return false;
+  for(goto_programt::instructionst::const_iterator it = body.instructions.begin(); it != body.instructions.end(); it++)
+  {
+    if(is_parameter_predicates(it))
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 bool contains_return_predicates_hint(const goto_programt& body)
 {
-	for(goto_programt::instructionst::const_iterator it = body.instructions.begin(); it != body.instructions.end(); it++)
-	{
-		if(is_return_predicates(it))
-		{
-			return true;
-		}
-	}
-	return false;
+  for(goto_programt::instructionst::const_iterator it = body.instructions.begin(); it != body.instructions.end(); it++)
+  {
+    if(is_return_predicates(it))
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 void remove_parameter_predicates_hints(goto_programt& body)
 {
-	for(goto_programt::instructionst::iterator it = body.instructions.begin(); it != body.instructions.end(); it++)
-	{
-		if(is_parameter_predicates(it))
-		{
-			it->make_skip();
-		}
-	}
+  for(goto_programt::instructionst::iterator it = body.instructions.begin(); it != body.instructions.end(); it++)
+  {
+    if(is_parameter_predicates(it))
+    {
+      it->make_skip();
+    }
+  }
 }
 
 void remove_return_predicates_hints(goto_programt& body)
 {
-	for(goto_programt::instructionst::iterator it = body.instructions.begin(); it != body.instructions.end(); it++)
-	{
-		if(is_return_predicates(it))
-		{
-			it->make_skip();
-		}
-	}
+  for(goto_programt::instructionst::iterator it = body.instructions.begin(); it != body.instructions.end(); it++)
+  {
+    if(is_return_predicates(it))
+    {
+      it->make_skip();
+    }
+  }
 }
 
 /*******************************************************************\
 
 Function: satabs_inlinet::expand_function_call
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void satabs_inlinet::expand_function_call(
-  goto_programt &dest,
-  goto_programt::targett &target,
-  const exprt &lhs,
-  const exprt &function,
-  const exprt::operandst &arguments,
-  const exprt &constrain,
-  bool full)
+    goto_programt &dest,
+    goto_programt::targett &target,
+    const exprt &lhs,
+    const exprt &function,
+    const exprt::operandst &arguments,
+    const exprt &constrain,
+    bool full)
 {
   // look it up
   if(function.id()!=ID_symbol)
   {
     err_location(function);
     throw "function_call expects symbol as function operand, "
-          "but got `"+function.id_string()+"'";
+      "but got `"+function.id_string()+"'";
   }
 
   const irep_idt &identifier=function.get(ID_identifier);
@@ -420,7 +420,7 @@ void satabs_inlinet::expand_function_call(
 
     err_location(function);
     str << "failed to find function `" << identifier
-        << "'";
+      << "'";
     throw 0;
   }
 
@@ -430,7 +430,7 @@ void satabs_inlinet::expand_function_call(
   if(!full)
   {
     if(!f.body_available ||
-       (!f.is_inlined() && f.body.instructions.size() > smallfunc_limit))
+        (!f.is_inlined() && f.body.instructions.size() > smallfunc_limit))
     {
       target++;
       return;
@@ -499,7 +499,7 @@ void satabs_inlinet::expand_function_call(
     {
       err_location(function);
       str << "no body for function `" << identifier
-          << "'";
+        << "'";
       warning();
     }
 
@@ -546,11 +546,11 @@ void satabs_inlinet::expand_function_call(
 
 Function: satabs_inlinet::satabs_inline
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -558,31 +558,31 @@ void satabs_inlinet::satabs_inline(goto_programt &dest)
 {
   satabs_inline_rec(dest, true);
   satabs_replace_return(dest,
-    static_cast<const exprt &>(get_nil_irep()),
-    static_cast<const exprt &>(get_nil_irep()),
-    false);
+      static_cast<const exprt &>(get_nil_irep()),
+      static_cast<const exprt &>(get_nil_irep()),
+      false);
 }
 
 /*******************************************************************\
 
 Function: satabs_inlinet::satabs_inline_rec
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void satabs_inlinet::satabs_inline_rec(
-  goto_functionst::function_mapt::iterator f_it,
-  bool full)
+    goto_functionst::function_mapt::iterator f_it,
+    bool full)
 {
   // already done?
 
   if(finished_inlining_set.find(f_it->first)!=
-     finished_inlining_set.end())
+      finished_inlining_set.end())
     return; // yes
 
   // do it
@@ -598,11 +598,11 @@ void satabs_inlinet::satabs_inline_rec(
 
 Function: satabs_inlinet::satabs_inline_rec
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -613,7 +613,7 @@ void satabs_inlinet::satabs_inline_rec(goto_programt &dest, bool full)
   for(goto_programt::instructionst::iterator
       it=dest.instructions.begin();
       it!=dest.instructions.end();
-      ) // no it++, done by inline_instruction
+     ) // no it++, done by inline_instruction
   {
     if(inline_instruction(dest, full, it))
       changed=true;
@@ -630,18 +630,18 @@ void satabs_inlinet::satabs_inline_rec(goto_programt &dest, bool full)
 
 Function: satabs_inlinet::inline_instruction
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool satabs_inlinet::inline_instruction(
-  goto_programt &dest,
-  bool full,
-  goto_programt::targett &it)
+    goto_programt &dest,
+    bool full,
+    goto_programt::targett &it)
 {
   if(it->is_function_call())
   {
@@ -650,8 +650,8 @@ bool satabs_inlinet::inline_instruction(
     if(call.function().id()==ID_symbol)
     {
       expand_function_call(
-        dest, it, call.lhs(), call.function(), call.arguments(),
-        static_cast<const exprt &>(get_nil_irep()), full);
+          dest, it, call.lhs(), call.function(), call.arguments(),
+          static_cast<const exprt &>(get_nil_irep()), full);
 
       return true;
     }
@@ -660,17 +660,17 @@ bool satabs_inlinet::inline_instruction(
   {
     // these are for Boolean programs
     if(it->code.get(ID_statement)==ID_bp_constrain &&
-       it->code.operands().size()==2 &&
-       it->code.op0().operands().size()==2 &&
-       it->code.op0().op1().get(ID_statement)==ID_function_call)
+        it->code.operands().size()==2 &&
+        it->code.op0().operands().size()==2 &&
+        it->code.op0().op1().get(ID_statement)==ID_function_call)
     {
       expand_function_call(
-        dest, it,
-        it->code.op0().op0(), // lhs
-        it->code.op0().op1().op0(), // function
-        it->code.op0().op1().op1().operands(), // arguments
-        it->code.op1(), // constraint
-        full);
+          dest, it,
+          it->code.op0().op0(), // lhs
+          it->code.op0().op1().op0(), // function
+          it->code.op0().op1().op1().operands(), // arguments
+          it->code.op1(), // constraint
+          full);
 
       return true;
     }
@@ -686,18 +686,18 @@ bool satabs_inlinet::inline_instruction(
 
 Function: satabs_inline
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void satabs_inline(
-  goto_functionst &goto_functions,
-  const namespacet &ns,
-  message_handlert &message_handler)
+    goto_functionst &goto_functions,
+    const namespacet &ns,
+    message_handlert &message_handler)
 {
   satabs_inlinet satabs_inline(goto_functions, ns, message_handler);
 
@@ -747,24 +747,24 @@ void satabs_inline(
 
 Function: satabs_partial_inline
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void satabs_partial_inline(
-  goto_functionst &goto_functions,
-  const namespacet &ns,
-  message_handlert &message_handler,
-  unsigned _smallfunc_limit)
+    goto_functionst &goto_functions,
+    const namespacet &ns,
+    message_handlert &message_handler,
+    unsigned _smallfunc_limit)
 {
   satabs_inlinet satabs_inline(
-    goto_functions,
-    ns,
-    message_handler);
+      goto_functions,
+      ns,
+      message_handler);
 
   satabs_inline.smallfunc_limit=_smallfunc_limit;
 

@@ -7,7 +7,7 @@ Author: Daniel Kroening
 Date: October 2004
 
 Purpose: Simulate an abstract counterexample on the concrete program
-         to determmine whether it is spurious.
+to determmine whether it is spurious.
 
 \*******************************************************************/
 
@@ -33,21 +33,21 @@ Purpose: Simulate an abstract counterexample on the concrete program
 
 Function: simulator_symext::convert
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void simulator_symext::convert(
-  prop_convt &prop_conv,
-  symex_target_equationt &equation,
-  symex_target_equationt::SSA_stepst::const_iterator last)
+    prop_convt &prop_conv,
+    symex_target_equationt &equation,
+    symex_target_equationt::SSA_stepst::const_iterator last)
 {
   last++;
-  
+
   for(symex_target_equationt::SSA_stepst::iterator
       it=equation.SSA_steps.begin();
       it!=last;
@@ -57,38 +57,26 @@ void simulator_symext::convert(
 
     switch(it->type)
     {
-    case goto_trace_stept::ASSIGNMENT:
-    case goto_trace_stept::ASSUME:
-      {
-        exprt tmp=it->cond_expr;
-        prop_conv.set_to_true(tmp);
-        it->cond_literal=const_literal(true);
-        #if 0
-        std::cout << "CONSTRAINT: " << from_expr(ns, "", tmp) << std::endl;
-        #endif
-      }
-      break;
-    
-    case goto_trace_stept::ASSERT:
-      {
-        exprt tmp=it->cond_expr;
-        // we assume there is only one
-        prop_conv.set_to_false(tmp);
-        it->cond_literal=const_literal(false);
-        #if 0
-        std::cout << "CONSTRAINT: NOT " << from_expr(ns, "", tmp) << std::endl;
-        #endif
-      }
-      break;
+      case goto_trace_stept::ASSIGNMENT:
+      case goto_trace_stept::ASSUME:
+        {
+          exprt tmp=it->cond_expr;
+          prop_conv.set_to_true(tmp);
+          it->cond_literal=const_literal(true);
+#if 0
+          std::cout << "CONSTRAINT: " << from_expr(ns, "", tmp) << std::endl;
+#endif
+        }
+        break;
 
-    case goto_trace_stept::LOCATION:
-    case goto_trace_stept::OUTPUT:
-    case goto_trace_stept::INPUT:
-    case goto_trace_stept::DECL:
-      break;
-      
-    default:
-      assert(false);
+      case goto_trace_stept::LOCATION:
+      case goto_trace_stept::OUTPUT:
+      case goto_trace_stept::INPUT:
+      case goto_trace_stept::DECL:
+        break;
+
+      default:
+        assert(false);
     }
   }
 }
@@ -97,19 +85,19 @@ void simulator_symext::convert(
 
 Function: simulator_symext::build_equation_prefix
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void simulator_symext::build_equation_prefix(
-  const abstract_counterexamplet &abstract_counterexample,
-  prefixt &prefix,
-  goto_symex_statet &state,
-  bool constant_propagation)
+    const abstract_counterexamplet &abstract_counterexample,
+    prefixt &prefix,
+    goto_symex_statet &state,
+    bool constant_propagation)
 {
   contextt new_context;
   namespacet new_ns(concrete_model.ns.get_context(), new_context);
@@ -120,7 +108,7 @@ void simulator_symext::build_equation_prefix(
 
   // just concatenate the concrete basic blocks as they
   // are in the abstract counterexample
-  
+
   assert(!abstract_counterexample.steps.empty());
 
   for(abstract_counterexamplet::stepst::const_iterator
@@ -129,100 +117,100 @@ void simulator_symext::build_equation_prefix(
       it++)
   {
     if(!it->is_state()) continue;
-  
+
     bool last_state=abstract_counterexample.is_last_step(it);
-    
+
     // get the concrete basic block
     goto_programt::const_targett c_target=it->pc->code.concrete_pc;
-    
+
     if(last_state)
     {
       if(!c_target->is_assert())
         throw "expected assertion at end of abstract trace";
     }
-    
+
     state.source.pc=c_target;
     state.source.thread_nr=it->thread_nr;
-    
+
     unsigned s=prefix.equation.SSA_steps.size();
 
     switch(c_target->type)
     {
-    case GOTO:
-      if(it->relevant)
-        symex_simulator.symex_step_goto(state, it->branch_taken);
-      break;
+      case GOTO:
+        if(it->relevant)
+          symex_simulator.symex_step_goto(state, it->branch_taken);
+        break;
 
-    case ASSERT:
-      if(last_state && it->relevant)
-      {
-        symex_simulator.symex_step(concrete_model.goto_functions, state);
-        assert(prefix.equation.SSA_steps.size()==s+1);
-      }
-      break;
-      
-    case DEAD:
-    case ATOMIC_BEGIN:
-    case ATOMIC_END:
-      break;
-    
-    case START_THREAD:
-      if(it->relevant)
-      {
-        const namespacet &ns=concrete_model.ns;
-        std::set<irep_idt> l2_names;
-        state.level2.get_variables(l2_names);
-        for(std::set<irep_idt>::const_iterator
-            itn=l2_names.begin();
-            itn!=l2_names.end();
-            ++itn)
+      case ASSERT:
+        if(last_state && it->relevant)
         {
-          irep_idt l1_name=state.get_original_name(*itn);
-          const symbolt &sym=ns.lookup(l1_name);
-          if(!is_procedure_local(sym)) continue;
-
-          unsigned const next_thread=state.source.thread_nr+1;
-          l1_name=state.level0(l1_name, ns, next_thread);
-          l1_name=state.top().level1(l1_name);
-          symbol_exprt sl(l1_name, sym.type);
-          symbol_exprt sr(*itn, sym.type);
-          state.rename(sr, ns, goto_symex_statet::L2);
-          state.assignment(sl, sr, ns, constant_propagation);
-          prefix.equation.assignment(guardt(),
-              sl, sl, sl, sl, sr,
-              state.source, symex_targett::STATE);
+          symex_simulator.symex_step(concrete_model.goto_functions, state);
+          assert(prefix.equation.SSA_steps.size()==s+1);
         }
-      }
-      break;
-    case END_THREAD:
-      break;
+        break;
 
-    case RETURN:
-      // the usual RETURN branches to the END_FUNCTION
-      if(it->relevant)
-        symex_simulator.symex_step_return(state);
-      break;
-      
-    case END_FUNCTION:
-      // this one pops the frame
-    default:
-      if(it->relevant)
-        symex_simulator.symex_step(concrete_model.goto_functions, state);
+      case DEAD:
+      case ATOMIC_BEGIN:
+      case ATOMIC_END:
+        break;
+
+      case START_THREAD:
+        if(it->relevant)
+        {
+          const namespacet &ns=concrete_model.ns;
+          std::set<irep_idt> l2_names;
+          state.level2.get_variables(l2_names);
+          for(std::set<irep_idt>::const_iterator
+              itn=l2_names.begin();
+              itn!=l2_names.end();
+              ++itn)
+          {
+            irep_idt l1_name=state.get_original_name(*itn);
+            const symbolt &sym=ns.lookup(l1_name);
+            if(!is_procedure_local(sym)) continue;
+
+            unsigned const next_thread=state.source.thread_nr+1;
+            l1_name=state.level0(l1_name, ns, next_thread);
+            l1_name=state.top().level1(l1_name);
+            symbol_exprt sl(l1_name, sym.type);
+            symbol_exprt sr(*itn, sym.type);
+            state.rename(sr, ns, goto_symex_statet::L2);
+            state.assignment(sl, sr, ns, constant_propagation);
+            prefix.equation.assignment(guardt(),
+                sl, sl, sl, sl, sr,
+                state.source, symex_targett::STATE);
+          }
+        }
+        break;
+      case END_THREAD:
+        break;
+
+      case RETURN:
+        // the usual RETURN branches to the END_FUNCTION
+        if(it->relevant)
+          symex_simulator.symex_step_return(state);
+        break;
+
+      case END_FUNCTION:
+        // this one pops the frame
+      default:
+        if(it->relevant)
+          symex_simulator.symex_step(concrete_model.goto_functions, state);
     }
-    
+
     if(prefix.equation.SSA_steps.size()==s)
     {
       // just note that we have been there
       prefix.equation.location(state.guard, state.source);
     }
-    
+
     // record it
     prefix.record(--prefix.equation.SSA_steps.end(), it);
 
     // there might be more than one assignment per statement
     //assert(prefix.equation.SSA_steps.size()==s+1);
   }
-  
+
   //prefix.equation.output(std::cout);
   assert(!prefix.equation.SSA_steps.empty());
   assert(prefix.equation.SSA_steps.back().is_assert());
@@ -232,27 +220,27 @@ void simulator_symext::build_equation_prefix(
 
 Function: simulator_symext::get_fail_info
 
-  Inputs: 
+Inputs: 
 
- Outputs:
+Outputs:
 
- Purpose: Finds the shortest infeasible prefix of prefix
+Purpose: Finds the shortest infeasible prefix of prefix
 
 \*******************************************************************/
 
 void simulator_symext::get_fail_info(
-  const abstract_counterexamplet &abstract_counterexample,
-  const simulator_sat_dect &satcheck,
-  const prefixt &prefix,
-  const symex_target_equationt::SSA_stepst::const_iterator c_it,
-  fail_infot &fail_info)
+    const abstract_counterexamplet &abstract_counterexample,
+    const simulator_sat_dect &satcheck,
+    const prefixt &prefix,
+    const symex_target_equationt::SSA_stepst::const_iterator c_it,
+    fail_infot &fail_info)
 {
   fail_info.all_steps=abstract_counterexample.steps;
 
   // this must be an assumption, an assertion or a goto
   assert(c_it->source.pc->is_assert() ||
-         c_it->source.pc->is_assume() ||
-         c_it->source.pc->is_goto());
+      c_it->source.pc->is_assume() ||
+      c_it->source.pc->is_goto());
 
   abstract_counterexamplet::stepst::const_iterator a_it=
     prefix.get_abstract_step(c_it);
@@ -267,7 +255,7 @@ void simulator_symext::get_fail_info(
     fail_info.steps.push_back(*it);
     if(it==a_it) break;
   }
-      
+
   fail_info.guard=c_it->source.pc->guard;
 
   // we might need to negate it
@@ -280,20 +268,20 @@ void simulator_symext::get_fail_info(
 
 Function: simulator_symext::check_prefix_equation
 
-  Inputs: 
+Inputs: 
 
- Outputs:
+Outputs:
 
- Purpose: Finds the shortest infeasible prefix of prefix
+Purpose: Finds the shortest infeasible prefix of prefix
 
 \*******************************************************************/
 
 bool simulator_symext::check_prefix_equation(
-  const abstract_counterexamplet &abstract_counterexample,
-  prefixt &prefix,
-  goto_symex_statet &state,
-  concrete_counterexamplet &concrete_counterexample,
-  fail_infot &fail_info)
+    const abstract_counterexamplet &abstract_counterexample,
+    prefixt &prefix,
+    goto_symex_statet &state,
+    concrete_counterexamplet &concrete_counterexample,
+    fail_infot &fail_info)
 {
   unsigned int left = 0;     /* leftmost index of search interval  */
   unsigned int right = 0;    /* rightmost index of search interval */
@@ -302,14 +290,14 @@ bool simulator_symext::check_prefix_equation(
 
   // first of all, that should end with an assertion
   // if not, it's spurious for sure
-  
+
   assert(!prefix.equation.SSA_steps.empty());  
   assert(prefix.equation.SSA_steps.back().is_assert());
 
   status("Unprocessed prefix of size "+ i2string (prefix.equation.SSA_steps.size ()));
 
   symex_target_equationt::SSA_stepst::const_iterator c_it;
-  
+
   /* construct an array of iterators (for binary search) */
   std::vector<symex_target_equationt::SSA_stepst::const_iterator> state_array;
 
@@ -319,7 +307,7 @@ bool simulator_symext::check_prefix_equation(
   {
     /* assignments and locations don't make a path infeasible */
     if(!(c_it->is_assignment() ||
-         c_it->is_location()))
+          c_it->is_location()))
     {
       if(!(c_it->is_assume() && c_it->cond_expr.is_true()))
       {
@@ -327,8 +315,8 @@ bool simulator_symext::check_prefix_equation(
 
         // this must be an assumption, an assertion or a goto
         assert(c_it->source.pc->is_assert() ||
-               c_it->source.pc->is_assume() ||
-               c_it->source.pc->is_goto());
+            c_it->source.pc->is_assume() ||
+            c_it->source.pc->is_goto());
       }
     }
   }
@@ -348,7 +336,7 @@ bool simulator_symext::check_prefix_equation(
     status("Simulating prefix of size "+i2string(index+1));
 
     c_it=state_array[index];
-    
+
     simulator_sat_dect satcheck(concrete_model.ns);
     convert(satcheck, prefix.equation, c_it);
 
@@ -358,10 +346,10 @@ bool simulator_symext::check_prefix_equation(
       if(c_it->is_assert())
       {
         build_goto_trace(
-          prefix.equation,
-          satcheck,
-          concrete_model.ns,
-          concrete_counterexample.goto_trace);
+            prefix.equation,
+            satcheck,
+            concrete_model.ns,
+            concrete_counterexample.goto_trace);
 
         return false;
       }
@@ -376,13 +364,13 @@ bool simulator_symext::check_prefix_equation(
       index = left;       /* and restart from left */
 
       get_fail_info(
-        abstract_counterexample,
-        satcheck,
-        prefix,
-        c_it,
-        fail_info);
+          abstract_counterexample,
+          satcheck,
+          prefix,
+          c_it,
+          fail_info);
     }
-    
+
     /* now increase the index and the step interval */
     index = 
       (left + step < right)? (left + step) : (right - 1); 
@@ -396,8 +384,8 @@ bool simulator_symext::check_prefix_equation(
 
   // report the location
   status("Simulation failed at "+
-    fail_info.last_step().pc->location.as_string());
-  
+      fail_info.last_step().pc->location.as_string());
+
   return true;
 }
 
@@ -405,20 +393,20 @@ bool simulator_symext::check_prefix_equation(
 
 Function: simulator_symext::check_full_trace
 
-  Inputs: 
+Inputs: 
 
- Outputs:
+Outputs:
 
- Purpose: Check if path is feasible
+Purpose: Check if path is feasible
 
 \*******************************************************************/
 
 bool simulator_symext::check_full_trace(
-  const abstract_counterexamplet &abstract_counterexample,
-  prefixt &prefix,
-  goto_symex_statet &state,
-  concrete_counterexamplet &concrete_counterexample,
-  fail_infot &fail_info)
+    const abstract_counterexamplet &abstract_counterexample,
+    prefixt &prefix,
+    goto_symex_statet &state,
+    concrete_counterexamplet &concrete_counterexample,
+    fail_infot &fail_info)
 {
   assert(!prefix.equation.SSA_steps.empty());  
   assert(prefix.equation.SSA_steps.back().is_assert());
@@ -435,21 +423,21 @@ bool simulator_symext::check_full_trace(
   {
     // grab counterexample!
     build_goto_trace(
-      prefix.equation,
-      satcheck,
-      concrete_model.ns,
-      concrete_counterexample.goto_trace);
+        prefix.equation,
+        satcheck,
+        concrete_model.ns,
+        concrete_counterexample.goto_trace);
 
     return false;
   }
 
   get_fail_info(
-    abstract_counterexample,
-    satcheck,
-    prefix,
-    c_it,
-    fail_info);
-    
+      abstract_counterexample,
+      satcheck,
+      prefix,
+      c_it,
+      fail_info);
+
   // cannot be simulated, its spurious
   status("Spurious counterexample.");
 
@@ -460,22 +448,22 @@ bool simulator_symext::check_full_trace(
 
 Function: simulator_symext::check_prefix
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: check an abstract counterexample
-          Returns TRUE if the counterexample is spurious,
-          and FALSE otherwise
+Purpose: check an abstract counterexample
+Returns TRUE if the counterexample is spurious,
+and FALSE otherwise
 
 \*******************************************************************/
 
 bool simulator_symext::check_prefix(
-  const predicatest &predicates,
-  const abstract_modelt &abstract_model,
-  abstract_counterexamplet &abstract_counterexample,
-  concrete_counterexamplet &concrete_counterexample,
-  fail_infot &fail_info)
+    const predicatest &predicates,
+    const abstract_modelt &abstract_model,
+    abstract_counterexamplet &abstract_counterexample,
+    concrete_counterexamplet &concrete_counterexample,
+    fail_infot &fail_info)
 {
   assert(abstract_counterexample.steps.size()!=0);
 
@@ -492,7 +480,7 @@ bool simulator_symext::check_prefix(
   std::cout << abstract_counterexample;
   std::cout << "*******************************\n";
 #endif
-  
+
   // turn off constant propagation
   // for the benefit of the refiner
   build_equation_prefix(abstract_counterexample, prefix, state, false);
@@ -502,73 +490,73 @@ bool simulator_symext::check_prefix(
   std::cout << prefix.equation;
   std::cout << "*******************************\n";
 #endif
-  
+
   // run decision procedure
   if(shortest_prefix)
     return check_prefix_equation(
-      abstract_counterexample,
-      prefix,
-      state,
-      concrete_counterexample,
-      fail_info);
+        abstract_counterexample,
+        prefix,
+        state,
+        concrete_counterexample,
+        fail_info);
   else
     return check_full_trace(
-      abstract_counterexample,
-      prefix,
-      state,
-      concrete_counterexample,
-      fail_info);  
+        abstract_counterexample,
+        prefix,
+        state,
+        concrete_counterexample,
+        fail_info);  
 }
 
 /*******************************************************************\
 
 Function: simulator_symext::is_spurious
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool simulator_symext::is_spurious(
-  const predicatest &predicates,
-  const abstract_modelt &abstract_model,
-  abstract_counterexamplet &abstract_counterexample,
-  concrete_counterexamplet &concrete_counterexample,
-  fail_infot &fail_info)
+    const predicatest &predicates,
+    const abstract_modelt &abstract_model,
+    abstract_counterexamplet &abstract_counterexample,
+    concrete_counterexamplet &concrete_counterexample,
+    fail_infot &fail_info)
 {
   status("Simulating abstract counterexample on concrete program");
 
-  #if 0
+#if 0
   std::cout << "***********************************" << std::endl;
   std::cout << abstract_counterexample << std::endl;
-  #endif
-  
+#endif
+
   if(path_slicing)
   {
-    #if 0 // buggy right now
+#if 0 // buggy right now
     status("Path slicing");
     path_slicer(
-      ns,
-      abstract_model.goto_functions,
-      abstract_counterexample);
-    #endif
+        ns,
+        abstract_model.goto_functions,
+        abstract_counterexample);
+#endif
   }
 
-  #if 0
+#if 0
   std::cout << "***********************************" << std::endl;
   std::cout << abstract_counterexample << std::endl;
   std::cout << "***********************************" << std::endl;
-  #endif
-  
+#endif
+
   if(!check_prefix(
-    predicates,
-    abstract_model,
-    abstract_counterexample,
-    concrete_counterexample,
-    fail_info))
+        predicates,
+        abstract_model,
+        abstract_counterexample,
+        concrete_counterexample,
+        fail_info))
   {
     status("Simulation successful");
     return false;

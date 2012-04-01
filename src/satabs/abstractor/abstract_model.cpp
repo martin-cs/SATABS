@@ -14,17 +14,17 @@ Author: Daniel Kroening, kroening@kroening.com
 
 Function: abstract_modelt::get_abstract_location
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: given a concrete location, returns the appropriate
-          abstract one
+Purpose: given a concrete location, returns the appropriate
+abstract one
 
 \*******************************************************************/
 
 abstract_programt::targett abstract_modelt::get_abstract_location(
-  goto_programt::const_targett concrete_location)
+    goto_programt::const_targett concrete_location)
 {
   for(abstract_functionst::function_mapt::iterator 
       f_it=goto_functions.function_map.begin();

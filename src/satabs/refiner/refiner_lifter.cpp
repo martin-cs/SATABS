@@ -1,11 +1,11 @@
 /*******************************************************************\
-  
+
 Module: Predicate Refinement for CEGAR
 
 Author: Daniel Kroening
 
 Date: September 2005
- 
+
 \*******************************************************************/
 
 #include <assert.h>
@@ -21,18 +21,18 @@ Date: September 2005
 
 Function: refiner_liftert::refine_prefix
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: generate a new set of predicates given a spurious counterexample
+Purpose: generate a new set of predicates given a spurious counterexample
 
 \*******************************************************************/
 
 bool refiner_liftert::refine_prefix(
-  predicatest &predicates, 
-  abstract_modelt &abstract_model,
-  const fail_infot &fail_info)
+    predicatest &predicates, 
+    abstract_modelt &abstract_model,
+    const fail_infot &fail_info)
 {
   status("Refining set of predicates according to counterexample");
 

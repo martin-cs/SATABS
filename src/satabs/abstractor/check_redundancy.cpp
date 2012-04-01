@@ -21,14 +21,14 @@ static std::auto_ptr<std::map<exprt, bool> > is_unsatisfiable_cache;
 
 Function: is_equivalent
 
-  Inputs: expression e1, expression e2, and namespace ns
+Inputs: expression e1, expression e2, and namespace ns
 
- Outputs: returns true if e1 and e2 are  equivalent, i.e. under all
-          valuations their values equal. The other implication might
-          not hold (for speed purposes we employ some heuristics)
+Outputs: returns true if e1 and e2 are  equivalent, i.e. under all
+valuations their values equal. The other implication might
+not hold (for speed purposes we employ some heuristics)
 
- Purpose: decides (using SAT) whether expression e1 is equivalent
-          to expression e2
+Purpose: decides (using SAT) whether expression e1 is equivalent
+to expression e2
 
 \*******************************************************************/
 
@@ -40,11 +40,11 @@ bool is_equivalent(const exprt& e1, const exprt& e2, const namespacet& ns)
   //for speedup do some quick checks that mostly imply non-equivalence
   if (i1 == ID_equal &&
       (i2 == ID_lt || i2 == ID_gt || i2==ID_le || i2==ID_ge))
-	return false;
+    return false;
 
   if (i2 == ID_equal &&
       (i1 == ID_lt || i1 == ID_gt || i1==ID_le || i1==ID_ge))
-	return false;
+    return false;
 
   return is_valid(equal_exprt(e1,e2), ns);
 }
@@ -53,11 +53,11 @@ bool is_equivalent(const exprt& e1, const exprt& e2, const namespacet& ns)
 
 Function: is_valid
 
-  Inputs: expression e, and namespace ns
+Inputs: expression e, and namespace ns
 
- Outputs: returns true iff e is valid
+Outputs: returns true iff e is valid
 
- Purpose: decides (using SAT) whether expression e is valid
+Purpose: decides (using SAT) whether expression e is valid
 
 \*******************************************************************/
 
@@ -70,11 +70,11 @@ bool is_valid(const exprt& e, const namespacet& ns)
 
 Function: is_unsatisfiable
 
-  Inputs: expression e, and namespace ns
+Inputs: expression e, and namespace ns
 
- Outputs: returns true iff e is unsatisfiable
+Outputs: returns true iff e is unsatisfiable
 
- Purpose: decides (using SAT) whether expression e is unsatisfiable
+Purpose: decides (using SAT) whether expression e is unsatisfiable
 
 \*******************************************************************/
 
@@ -102,12 +102,12 @@ bool is_unsatisfiable(const exprt& e, const namespacet& ns)
       return true;
 
     case decision_proceduret::D_SATISFIABLE:
-        (*is_unsatisfiable_cache)[e] = false;
+      (*is_unsatisfiable_cache)[e] = false;
       return false;
 
     default:
       throw "unexpected result from dec_solve()";
-    }
+  }
 }
 
 
@@ -115,13 +115,13 @@ bool is_unsatisfiable(const exprt& e, const namespacet& ns)
 
 Function: is_redundant
 
-  Inputs: expression predicate, and namespace ns
+Inputs: expression predicate, and namespace ns
 
- Outputs: returns true iff e is either valid or unsatisfiable
+Outputs: returns true iff e is either valid or unsatisfiable
 
- Purpose: decides (using SAT) whether expression is worth adding as
-          a predicate.  It is not worth adding (i.e., it is redundant)
-          if it is either valid, or unsatisfiable
+Purpose: decides (using SAT) whether expression is worth adding as
+a predicate.  It is not worth adding (i.e., it is redundant)
+if it is either valid, or unsatisfiable
 
 \*******************************************************************/
 

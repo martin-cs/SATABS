@@ -3,7 +3,7 @@
 Module: Refiner Selection
 
 Authors: Daniel Kroening, kroening@cs.cmu.edu
-         Karen Yorav
+Karen Yorav
 
 Date: June 2003
 
@@ -18,7 +18,7 @@ class optionst;
 class refinert;
 
 refinert *select_refiner(
-  const optionst &options,
-  const loop_componentt::argst &args);
+    const optionst &options,
+    const loop_componentt::argst &args);
 
 #endif

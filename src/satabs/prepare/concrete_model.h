@@ -15,18 +15,18 @@ Date: June 2003
 
 class concrete_modelt
 {
-public:
-  // the namespace
-  const namespacet &ns;
-  
-  // the program
-  const goto_functionst &goto_functions;
-  
-  concrete_modelt(
-    const namespacet &_ns,
-    const goto_functionst &_goto_functions):
-    ns(_ns),
-    goto_functions(_goto_functions)
+  public:
+    // the namespace
+    const namespacet &ns;
+
+    // the program
+    const goto_functionst &goto_functions;
+
+    concrete_modelt(
+        const namespacet &_ns,
+        const goto_functionst &_goto_functions):
+      ns(_ns),
+      goto_functions(_goto_functions)
   {
   }
 };

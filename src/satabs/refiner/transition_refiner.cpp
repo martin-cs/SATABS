@@ -1,11 +1,11 @@
 /*******************************************************************\
-  
+
 Module: Predicate Refinement for CEGAR
 
 Author: Daniel Kroening
 
 Date: June 2003
- 
+
 \*******************************************************************/
 
 #include <cassert>
@@ -34,72 +34,72 @@ Date: June 2003
 
 Function: transition_refinert::refine
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void transition_refinert::refine(
-  predicatest &predicates, 
-  abstract_modelt &abstract_model,
-  const fail_infot &fail_info)
+    predicatest &predicates, 
+    abstract_modelt &abstract_model,
+    const fail_infot &fail_info)
 {
   bool error;
 
   if(prefix_first)
   {
     error=refine_prefix(
-      predicates,
-      abstract_model,
-      fail_info);
-
-    if(error)
-      error=check_transitions(
         predicates,
         abstract_model,
         fail_info);
+
+    if(error)
+      error=check_transitions(
+          predicates,
+          abstract_model,
+          fail_info);
   }
   else
   {  
     error=check_transitions(
-      predicates,
-      abstract_model,
-      fail_info);
-
-    if(error)
-      error=refine_prefix(
         predicates,
         abstract_model,
         fail_info);
+
+    if(error)
+      error=refine_prefix(
+          predicates,
+          abstract_model,
+          fail_info);
   }
-  
+
   if(error)
   {
     // dump the CE
-    
+
     for(abstract_counterexamplet::stepst::const_iterator
         it=fail_info.steps.begin();
         it!=fail_info.steps.end();
         it++)
       std::cout << *it;
-    
+
     std::cout << std::endl;
-    
+
     // dump the predicates
     std::cout << "Predicates:" << std::endl;
-    
+
     for(unsigned p=0; p<predicates.size(); p++)
     {
       std::cout << "P" << p << ": "
-                << from_expr(concrete_model.ns, "", predicates[p])
-                << std::endl;
+        << from_expr(concrete_model.ns, "", predicates[p])
+        << std::endl;
       //std::cout << "      " << predicates[p] << std::endl;
     }
     std::cout << std::endl;
-    
+
     throw "refinement failure";
   }
 }
@@ -108,26 +108,26 @@ void transition_refinert::refine(
 
 Function: transition_refinert::check_transitions
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: fix spurious transition
+Purpose: fix spurious transition
 
 \*******************************************************************/
 
 bool transition_refinert::check_transitions(
-  const predicatest &predicates, 
-  abstract_modelt &abstract_model,
-  const fail_infot &fail_info)
+    const predicatest &predicates, 
+    abstract_modelt &abstract_model,
+    const fail_infot &fail_info)
 {
 
   status("Checking transitions");
 
   bool error=true;
-  
+
   abstract_counterexamplet::stepst::const_iterator previous;
-    
+
   bool first_state=true;
   bool first_check=true;
 
@@ -144,18 +144,18 @@ bool transition_refinert::check_transitions(
     else
     {
       if(check_transition(
-        predicates,
-        *previous, *it, first_check))
+            predicates,
+            *previous, *it, first_check))
         error=false;
     }
 
     // skip transition if path slicer tells us so
     if(!it->relevant)
     {
-      #ifdef DEBUG
+#ifdef DEBUG
       std::cout << "Skipping L" << it->label_nr << std::endl;
       it->output (std::cout);
-      #endif
+#endif
 
       do
       { 
@@ -166,10 +166,10 @@ bool transition_refinert::check_transitions(
 
     if(it==fail_info.steps.end())
       break;
-    
+
     previous=it;
   }
-  
+
   if(error)
     status("Transitions are not spurious");
   else
@@ -179,7 +179,7 @@ bool transition_refinert::check_transitions(
     assert(stats.find(opt)!=stats.end());
     ++(stats[opt].val);
   }
-  
+
   return error;
 }
 
@@ -187,45 +187,45 @@ bool transition_refinert::check_transitions(
 
 Function: transition_refinert::check_transition
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool transition_refinert::check_transition(
-  const predicatest &predicates,
-  const abstract_stept &abstract_state_from,
-  const abstract_stept &abstract_state_to,
-  bool &first_check)
+    const predicatest &predicates,
+    const abstract_stept &abstract_state_from,
+    const abstract_stept &abstract_state_to,
+    bool &first_check)
 {
 
   // get the concrete basic block
   const goto_programt::instructiont &c_instruction=
     *abstract_state_from.pc->code.concrete_pc;
 
-  #ifdef DEBUG
+#ifdef DEBUG
   std::cout << "transition_refinert::check_transition_async: "
-            << c_instruction.location << std::endl;
-  #endif
+    << c_instruction.location << std::endl;
+#endif
 
-  #ifdef DEBUG
+#ifdef DEBUG
   std::cout << "checking transition from label L" << 
     abstract_state_from.label_nr << " to label L" << 
     abstract_state_to.label_nr << std::endl;
-  #endif
-  #ifdef DEBUG
+#endif
+#ifdef DEBUG
   ::std::cout << abstract_state_from << ::std::endl;
   goto_programt tmp;
   tmp.output_instruction(concrete_model.ns, "", std::cout, abstract_state_from.pc->code.concrete_pc);
   ::std::cout << abstract_state_to << ::std::endl;
-  #endif
+#endif
 
   if(c_instruction.is_skip() ||
-     c_instruction.is_location() ||
-     c_instruction.is_end_function())
+      c_instruction.is_location() ||
+      c_instruction.is_end_function())
     return false; // ok
 
   if(c_instruction.is_other() && c_instruction.code.is_nil())
@@ -241,17 +241,17 @@ bool transition_refinert::check_transition(
       !c_instruction.is_assume() &&
       !c_instruction.is_assert())
   {
-  if(!abstract_transition_relation.has_predicates())
-  {
-    print(9, "no predicates to check");
-    return false; // ok
-  }
+    if(!abstract_transition_relation.has_predicates())
+    {
+      print(9, "no predicates to check");
+      return false; // ok
+    }
 
-  if(abstract_transition_relation.is_skip())
-  {
-    print(9, "Transition is skip");
-    return false; // ok
-  }
+    if(abstract_transition_relation.is_skip())
+    {
+      print(9, "Transition is skip");
+      return false; // ok
+    }
   }
 
   {
@@ -311,7 +311,7 @@ bool transition_refinert::check_transition(
       {
         abstract_stept::thread_to_predicate_valuest::const_iterator
           from_predicates_for_active_thread =
-            abstract_state_from.thread_states.find(passive_id),
+          abstract_state_from.thread_states.find(passive_id),
           to_predicates_for_active_thread =
             abstract_state_to.thread_states.find(passive_id);
         assert(abstract_state_from.thread_states.end() != from_predicates_for_active_thread);
@@ -359,19 +359,19 @@ bool transition_refinert::check_transition(
 
 Function: transition_refinert::check_assignment_transitions
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: fix spurious assignment transition
+Purpose: fix spurious assignment transition
 
 \*******************************************************************/
 
 bool transition_refinert::check_assignment_transition(
-  const predicatest &predicates,
-  const abstract_stept &abstract_state_from,
-  const abstract_stept &abstract_state_to,
-  unsigned passive_id)
+    const predicatest &predicates,
+    const abstract_stept &abstract_state_from,
+    const abstract_stept &abstract_state_to,
+    unsigned passive_id)
 {
   // Note that we take "thread_nr" from "abstract_state_from", not from "abstract_state_to", as the "from" state determines which thread is executing
   const unsigned active_id=abstract_state_from.thread_nr;
@@ -399,11 +399,11 @@ bool transition_refinert::check_assignment_transition(
 
     std::list<exprt> constraints_t;
     build_equation(
-      concrete_model.ns,
-      active_passive_preds[t],
-      abstract_state_from.pc->code.concrete_pc,
-      constraints_t,
-      predicates_wp[t]);
+        concrete_model.ns,
+        active_passive_preds[t],
+        abstract_state_from.pc->code.concrete_pc,
+        constraints_t,
+        predicates_wp[t]);
 
     constraints.splice(constraints.end(), constraints_t);
   }
@@ -412,7 +412,7 @@ bool transition_refinert::check_assignment_transition(
   satcheckt satcheck;
   bv_pointerst solver(concrete_model.ns, satcheck);
   solver.unbounded_array=boolbvt::U_NONE;
-  
+
   // convert constraints
   for(std::list<exprt>::const_iterator
       it=constraints.begin();
@@ -429,7 +429,7 @@ bool transition_refinert::check_assignment_transition(
   std::vector<std::vector<literalt> >
     predicate_variables_from(num_threads, std::vector<literalt>(predicates.size(), literalt())),
     predicate_variables_to(num_threads, std::vector<literalt>(predicates.size(), literalt()));
-    
+
   bvt assumptions;
 
   std::vector<abstract_stept::thread_to_predicate_valuest::const_iterator>
@@ -465,7 +465,7 @@ bool transition_refinert::check_assignment_transition(
         continue;
       // not sure whether we really want the following check
       if(active_id!=t &&
-        active_passive_preds[t][i]==predicates[i])
+          active_passive_preds[t][i]==predicates[i])
         continue;
 
       literalt li=make_pos(concrete_model.ns, solver, active_passive_preds[t][i]);
@@ -474,14 +474,14 @@ bool transition_refinert::check_assignment_transition(
       assumptions.push_back(li.cond_negation(
             !from_predicates[t]->second[i]));
 
-      #ifdef DEBUG
+#ifdef DEBUG
       const std::string predname=
         (active_id==t?"P#":"PP"+i2string(t)+"#")+i2string(i);
       std::cerr
         << "F: " << predname << ": "
         << (from_predicates[t]->second[i]?"":"!") << "("
         << from_expr(concrete_model.ns, "", active_passive_preds[t][i]) << ")" << std::endl;
-      #endif
+#endif
 
       literalt lo=make_pos(concrete_model.ns, solver, predicates_wp[t][i]);
       predicate_variables_to[t][i]=lo;
@@ -489,29 +489,29 @@ bool transition_refinert::check_assignment_transition(
       assumptions.push_back(lo.cond_negation(
             !to_predicates[t]->second[i]));
 
-      #ifdef DEBUG
+#ifdef DEBUG
       std::cerr
         << "T: " << predname << ": "
         << (to_predicates[t]->second[i]?"":"!") << "("
         << from_expr(concrete_model.ns, "", predicates_wp[t][i]) << ")" << std::endl;
-      #endif
+#endif
     }
   }
-  
+
   satcheck.set_assumptions(assumptions);
 
   // solve it
   if(is_satisfiable(solver))
   {
     print(9, "Transition is OK");
-    #ifdef DEBUG
+#ifdef DEBUG
     std::cout << "********\n";
     solver.print_assignment(std::cout);
     std::cout << "********\n";
-    #endif
+#endif
     return false; // ok
   }
-  
+
   if(passive_id >= num_threads)
   {
     const std::string opt="Spurious assignment transitions requiring more than 1 passive thread";
@@ -590,7 +590,7 @@ bool transition_refinert::check_assignment_transition(
     constraint.make_false(); // this can happen if
   else                       // the invariants are inconsistent
     gen_or(constraint);
-  
+
   abstract_transition_relation.constraints.push_back(constraint);
 
   // spurious!
@@ -601,19 +601,19 @@ bool transition_refinert::check_assignment_transition(
 
 Function: transition_refinert::check_guarded_transitions
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: fix spurious guarded transition
+Purpose: fix spurious guarded transition
 
 \*******************************************************************/
 
 bool transition_refinert::check_guarded_transition(
-  const predicatest &predicates,
-  const abstract_stept &abstract_state_from,
-  unsigned passive_id,
-  bool &inconsistent_initial_state)
+    const predicatest &predicates,
+    const abstract_stept &abstract_state_from,
+    unsigned passive_id,
+    bool &inconsistent_initial_state)
 {
   // get the concrete basic block
   const goto_programt::instructiont &c_instruction=
@@ -637,11 +637,11 @@ bool transition_refinert::check_guarded_transition(
   abstract_transition_relationt &abstract_transition_relation=
     abstract_state_from.pc->code.get_transition_relation();
 
-  #ifdef SATCHECK_MINISAT2
+#ifdef SATCHECK_MINISAT2
   satcheck_minisat_no_simplifiert satcheck;
-  #else
+#else
   satcheckt satcheck;
-  #endif
+#endif
   bv_pointerst solver(concrete_model.ns, satcheck);
   solver.unbounded_array=boolbvt::U_NONE;
 
@@ -669,7 +669,7 @@ bool transition_refinert::check_guarded_transition(
 
   std::vector<std::vector<literalt> >
     predicate_variables_from(num_threads, std::vector<literalt>(predicates.size(), literalt()));
-    
+
   bvt assumptions;
 
   std::vector<abstract_stept::thread_to_predicate_valuest::const_iterator>
@@ -692,7 +692,7 @@ bool transition_refinert::check_guarded_transition(
         continue;
       // not sure whether we really want the following check
       if(active_id!=t &&
-        active_passive_preds[t][i]==predicates[i])
+          active_passive_preds[t][i]==predicates[i])
         continue;
 
       literalt li=make_pos(concrete_model.ns, solver, active_passive_preds[t][i]);
@@ -701,17 +701,17 @@ bool transition_refinert::check_guarded_transition(
       assumptions.push_back(li.cond_negation(
             !from_predicates[t]->second[i]));
 
-      #ifdef DEBUG
+#ifdef DEBUG
       const std::string predname=
         (active_id==t?"P#":"PP"+i2string(t)+"#")+i2string(i);
       std::cerr
         << "G-F: " << predname << ": "
         << (from_predicates[t]->second[i]?"":"!") << "("
         << from_expr(concrete_model.ns, "", active_passive_preds[t][i]) << ")" << std::endl;
-      #endif
+#endif
     }
   }
-  
+
   satcheck.set_assumptions(assumptions);
 
   if(!is_satisfiable(solver))
@@ -734,11 +734,11 @@ bool transition_refinert::check_guarded_transition(
   if(is_satisfiable(solver))
   {
     print(9, "Transition is OK");
-    #ifdef DEBUG
+#ifdef DEBUG
     std::cout << "********\n";
     solver.print_assignment(std::cout);
     std::cout << "********\n";
-    #endif
+#endif
     return false; // ok
   }
 
@@ -763,9 +763,9 @@ bool transition_refinert::check_guarded_transition(
       e=exprt(ID_predicate_symbol, bool_typet());
       e.set(ID_identifier, i);
       if(!from_predicates[active_id]->second[i]) e.make_not();
-      #ifdef DEBUG
+#ifdef DEBUG
       std::cout << "G-C: " << from_expr(concrete_model.ns, "", e) << std::endl;
-      #endif
+#endif
     }
 
     if(passive_id!=active_id &&
@@ -803,18 +803,18 @@ bool transition_refinert::check_guarded_transition(
 
 Function: transition_refinert::constrain_goto_transition
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: add a constraint to a goto transition
+Purpose: add a constraint to a goto transition
 
 \*******************************************************************/
 
 void transition_refinert::constrain_goto_transition(
-  abstract_transition_relationt &abstract_transition_relation,
-  const exprt &condition,
-  bool negated)
+    abstract_transition_relationt &abstract_transition_relation,
+    const exprt &condition,
+    bool negated)
 {
   if(abstract_transition_relation.constraints.size()==0)
   { 
@@ -830,7 +830,7 @@ void transition_refinert::constrain_goto_transition(
     abstract_transition_relation.constraints.front();
 
   exprt &constraint=negated?(schoose.op1()):(schoose.op0()); 
-  
+
   if(constraint.is_false())
   {
     constraint.id(ID_or);
@@ -844,17 +844,17 @@ void transition_refinert::constrain_goto_transition(
 
 Function: transition_refinert::constrain_goto_transition
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: add a constraint to an assume transition
+Purpose: add a constraint to an assume transition
 
 \*******************************************************************/
 
 void transition_refinert::constrain_assume_transition(
-  abstract_transition_relationt &abstract_transition_relation,
-  const exprt &condition)
+    abstract_transition_relationt &abstract_transition_relation,
+    const exprt &condition)
 {
   exprt negation=condition;
   negation.make_not();

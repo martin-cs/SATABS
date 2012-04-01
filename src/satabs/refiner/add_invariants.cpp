@@ -17,24 +17,24 @@ Date: February 2006
 
 Function: add_invariants
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void add_invariants(
-  const concrete_modelt &concrete_model,
-  abstract_programt::targett pc,
-  const predicatest &predicates)
+    const concrete_modelt &concrete_model,
+    abstract_programt::targett pc,
+    const predicatest &predicates)
 {
-  #if 0
+#if 0
   // see if an invariant is also a predicate
   const invariant_sett::invariantst &invariants=
     concrete_model.invariant_propagation.lookup(pc->code.concrete_pc).invariants;
-  
+
   for(invariant_sett::invariantst::expr_sett::const_iterator
       it=invariants.expr_set().begin();
       it!=invariants.expr_set().end();
@@ -47,5 +47,5 @@ void add_invariants(
       pc->code.transition_relation.to_predicates.insert(nr);
     }
   }
-  #endif
+#endif
 }

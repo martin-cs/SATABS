@@ -26,17 +26,17 @@ Date: September 2005
 
 Function: select_refiner
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 refinert *select_refiner(
-  const optionst &options,
-  const loop_componentt::argst &args)
+    const optionst &options,
+    const loop_componentt::argst &args)
 {
   const std::string name=options.get_option("refiner");
 
@@ -46,11 +46,11 @@ refinert *select_refiner(
     return new refiner_wpt(options, args);
   else if(name=="ipp")
   {
-    #ifdef HAVE_IPP
+#ifdef HAVE_IPP
     return new refiner_ippt(options, args);
-    #else
+#else
     throw "support for IPP not linked in";
-    #endif
+#endif
   }
   else if(name=="lifter")
     return new refiner_liftert(options, args);

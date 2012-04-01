@@ -4,7 +4,7 @@ Module: Interface to Model Checkers that use Boolean Programs
 
 Author: Daniel Kroening
 
-  Date: October 2004
+Date: October 2004
 
 \*******************************************************************/
 
@@ -33,19 +33,19 @@ Author: Daniel Kroening
 
 Function: modelchecker_boolean_programt::read_result_boppo_boom
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool modelchecker_boolean_programt::read_result_boppo_boom(
-  std::istream &out1,
-  std::istream &out2,
-  abstract_modelt &abstract_model,
-  abstract_counterexamplet &counterexample)
+    std::istream &out1,
+    std::istream &out2,
+    abstract_modelt &abstract_model,
+    abstract_counterexamplet &counterexample)
 {
   std::list<std::string> file;
 
@@ -55,9 +55,9 @@ bool modelchecker_boolean_programt::read_result_boppo_boom(
     if(!std::getline(out1, line)) break;
     file.push_back(line);
   }
-  
+
   // first get result
-  
+
   bool unknown=true, success=false;
   for(std::list<std::string>::const_iterator 
       it=file.begin(); it!=file.end(); it++)
@@ -118,28 +118,28 @@ bool modelchecker_boolean_programt::read_result_boppo_boom(
 
 Function: modelchecker_boolean_programt::read_counterexample_boppo_boom
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_boolean_programt::read_counterexample_boppo_boom(
-  const std::string &line,
-  std::list<std::pair<std::string, std::string> > &assignments,
-  std::list<std::string> &labels)
+    const std::string &line,
+    std::list<std::pair<std::string, std::string> > &assignments,
+    std::list<std::string> &labels)
 {
   for(std::string::size_type p=0; p<line.size();)
   {
     // skip spaces
     while(p<line.size() && line[p]==' ') p++;
-    
+
     if(p>=line.size()) break;
 
     std::string::size_type p2=p;
-    
+
     // get to next space or '='
     while(p2<line.size() && line[p2]!=' ' && line[p2]!='=')
       p2++;
@@ -154,17 +154,17 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
     {
       // it's an assignment
       std::string variable(line, p, p2-p);
-      
+
       p=p2+1;
 
       // get to next space
       while(p2<line.size() && line[p2]!=' ') p2++;
-      
+
       std::string value(line, p, p2-p);
       p=p2;
-      
+
       assignments.push_back(std::pair<std::string, std::string>(
-        variable, value));
+            variable, value));
     }
   }
 }
@@ -174,18 +174,18 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
 
 Function: modelchecker_boolean_programt::read_counterexample_boppo_boom
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_boolean_programt::read_counterexample_boppo_boom(
-  const std::list<std::string> &file,
-  abstract_modelt &abstract_model,
-  abstract_counterexamplet &counterexample)
+    const std::list<std::string> &file,
+    abstract_modelt &abstract_model,
+    abstract_counterexamplet &counterexample)
 {
   unsigned thread_count=1;
   unsigned threadbound=max_threads;
@@ -196,7 +196,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
       it++)
   {
     const std::string &line=*it;
-  
+
     if(std::string(line, 0, 12)=="threadbound=")
     {
       // std::cerr << "THREAD LIMIT line: " << line << std::endl;
@@ -214,14 +214,14 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
 
       // for gotos
       abstract_state.branch_taken=true;
-      
+
       std::list<std::pair<std::string, std::string> > assignments;
       std::list<std::string> labels;
 
       // parse      
       read_counterexample_boppo_boom(
-        std::string(line, 6, std::string::npos), assignments, labels);
-      
+          std::string(line, 6, std::string::npos), assignments, labels);
+
       for(std::list<std::string>::const_iterator
           l_it=labels.begin();
           l_it!=labels.end();
@@ -247,7 +247,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
       }
 
       if(!abstract_state.has_pc) continue;
-      
+
       for(std::list<std::pair<std::string, std::string> >::const_iterator
           a_it=assignments.begin();
           a_it!=assignments.end();
@@ -256,7 +256,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
         std::string variable=a_it->first;
         const std::string &value=a_it->second;
 
-        
+
         // strip function name from variable name
         {
           std::string::size_type pos=variable.find("::");
@@ -274,14 +274,14 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
               variable;
 
           if(abstract_model.variables[nr].is_shared_global()) {
-        	  shared_predicate_values[nr] = safe_str2int(value.c_str());
+            shared_predicate_values[nr] = safe_str2int(value.c_str());
           } else {
-        	  std::map<unsigned, unsigned>::iterator it = number_of_times_predicate_has_been_seen.insert(std::make_pair(nr, 0)).first;
-        	  abstract_stept::thread_to_predicate_valuest::iterator it2 =
-        			  abstract_state.thread_states.insert(
-        					  std::make_pair(it->second, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
-        	  it2->second[nr] = safe_str2int(value.c_str());
-        	  it->second++;
+            std::map<unsigned, unsigned>::iterator it = number_of_times_predicate_has_been_seen.insert(std::make_pair(nr, 0)).first;
+            abstract_stept::thread_to_predicate_valuest::iterator it2 =
+              abstract_state.thread_states.insert(
+                  std::make_pair(it->second, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
+            it2->second[nr] = safe_str2int(value.c_str());
+            it->second++;
           }
         }
         else if(std::string(variable, 0, 3)=="t")
@@ -292,7 +292,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
           abstract_state.branch_taken=safe_str2int(value.c_str());
         else
           throw "unknown variable in abstract counterexample: `"+
-                variable+"'";
+            variable+"'";
       }
 
       assert(abstract_state.thread_states.empty() ||
@@ -305,13 +305,13 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
         abstract_stept::thread_to_predicate_valuest::iterator it2 =
           abstract_state.thread_states.insert(
               std::make_pair(tc, abstract_stept::predicate_valuest(abstract_model.variables.size(), false))).first;
-    	  for(unsigned i = 0; i < shared_predicate_values.size(); i++)
-    	  {
-    		  if(abstract_model.variables[i].is_shared_global())
-    		  {
-    			  it2->second[i] = shared_predicate_values[i];
-    		  }
-    	  }
+        for(unsigned i = 0; i < shared_predicate_values.size(); i++)
+        {
+          if(abstract_model.variables[i].is_shared_global())
+          {
+            it2->second[i] = shared_predicate_values[i];
+          }
+        }
       }
 
       assert(abstract_state.thread_states.size() == thread_count ||
@@ -338,23 +338,23 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
 
 Function: modelchecker_boolean_programt::build_boolean_program_file
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_boolean_programt::build_boolean_program_file(
-  abstract_modelt &abstract_model,
-  std::ostream &out,
-  tts_buildert &tts_builder)
+    abstract_modelt &abstract_model,
+    std::ostream &out,
+    tts_buildert &tts_builder)
 {
   // start printing Boolean program
 
   out << "// automatically generated by CPROVER/SATABS\n"
-         "\n";
+    "\n";
 
   build_boolean_program_file_global_variables(abstract_model, out);
   build_boolean_program_file_functions(abstract_model, out, tts_builder);
@@ -364,19 +364,19 @@ void modelchecker_boolean_programt::build_boolean_program_file(
 
 Function: modelchecker_boolean_programt::build_boolean_program_file_local_variables
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_boolean_programt::build_boolean_program_file_local_variables(
-  const abstract_modelt &abstract_model,
-  std::ostream &out)
+    const abstract_modelt &abstract_model,
+    std::ostream &out)
 {
-  #if 0
+#if 0
   //
   // Events
   //
@@ -384,45 +384,45 @@ void modelchecker_boolean_programt::build_boolean_program_file_local_variables(
   if(!events.empty())
   {
     out << "-- events\n"
-           "\n";
+      "\n";
 
     for(eventst::const_iterator it=events_waited_for.begin();
         it!=events_waited_for.end();
         it++)
     {
       out << "VAR " << "sticky_" << *it
-          << ": boolean;" << std::endl;
+        << ": boolean;" << std::endl;
       out << "ASSIGN init(sticky_" << *it << "):=0;"
-          << std::endl;
+        << std::endl;
     }
 
     out << std::endl;
   }
-  #endif
+#endif
 }
 
 /*******************************************************************\
 
 Function: modelchecker_boolean_programt::build_boolean_program_file_global_variables
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_boolean_programt::build_boolean_program_file_global_variables(
-  const abstract_modelt &abstract_model,
-  std::ostream &out)
+    const abstract_modelt &abstract_model,
+    std::ostream &out)
 {
   //
   // Global program variables
   //
 
   out << "// variables with procedure-global scope\n"
-         "\n";
+    "\n";
 
   size_t max_len=0;
 
@@ -430,14 +430,14 @@ void modelchecker_boolean_programt::build_boolean_program_file_global_variables(
       i<abstract_model.variables.size();
       i++)
     if(abstract_model.variables[i].is_shared_global() ||
-       abstract_model.variables[i].is_thread_local())
+        abstract_model.variables[i].is_thread_local())
       max_len=std::max(max_len, variable_names[i].size());
 
   for(unsigned i=0;
       i<abstract_model.variables.size();
       i++)
     if(abstract_model.variables[i].is_shared_global() ||
-       abstract_model.variables[i].is_thread_local())
+        abstract_model.variables[i].is_thread_local())
     {
       out << "decl ";
 
@@ -458,44 +458,44 @@ void modelchecker_boolean_programt::build_boolean_program_file_global_variables(
     }
 
   out << std::endl;
-  
+
   //
   // Events
   //
 
-  #if 0
+#if 0
   if(!events.empty())
   {
     out << "-- events\n"
-           "\n";
+      "\n";
 
     for(eventst::const_iterator it=events.begin();
         it!=events.end();
         it++)
       out << "VAR " << "event_" << *it
-          << ": boolean;" << std::endl;
+        << ": boolean;" << std::endl;
 
     out << std::endl;
   }
-  #endif
+#endif
 }
 
 /*******************************************************************\
 
 Function: modelchecker_boolean_programt::build_boolean_program_file_functions
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_boolean_programt::build_boolean_program_file_functions(
-  abstract_modelt &abstract_model,
-  std::ostream &out,
-  tts_buildert &tts_builder)
+    abstract_modelt &abstract_model,
+    std::ostream &out,
+    tts_buildert &tts_builder)
 {
   PC_map.clear();
 
@@ -510,25 +510,25 @@ void modelchecker_boolean_programt::build_boolean_program_file_functions(
 
 Function: modelchecker_boolean_programt::build_boolean_program_file_function
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void modelchecker_boolean_programt::build_boolean_program_file_function(
-  abstract_modelt &abstract_model,
-  abstract_functionst::function_mapt::iterator f_it,
-  std::ostream &out,
-  tts_buildert &tts_builder)
+    abstract_modelt &abstract_model,
+    abstract_functionst::function_mapt::iterator f_it,
+    std::ostream &out,
+    tts_buildert &tts_builder)
 {
   // header
   out << "// " << f_it->first << std::endl;
   out << "void " << convert_function_name(f_it->first)
-      << "() begin\n"
-         "\n";
+    << "() begin\n"
+    "\n";
 
   const bool tts_do=build_tts && f_it->first=="main";
 
@@ -541,21 +541,21 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     for(unsigned i=0;
         i<abstract_model.variables.size();
         i++) {
-        if(abstract_model.variables[i].is_procedure_local() || abstract_model.variables[i].is_mixed())
-        {
-          max_len=std::max(max_len, variable_names[i].size());
-          has_procedure_local_variables=true;
-          if(tts_do) tts_builder.add_local_var(i);
-        }
-        else
-          if(tts_do) tts_builder.add_shared_var(i);
+      if(abstract_model.variables[i].is_procedure_local() || abstract_model.variables[i].is_mixed())
+      {
+        max_len=std::max(max_len, variable_names[i].size());
+        has_procedure_local_variables=true;
+        if(tts_do) tts_builder.add_local_var(i);
+      }
+      else
+        if(tts_do) tts_builder.add_shared_var(i);
     }
 
     if(has_procedure_local_variables)
     {
       out << "      // the procedure-local variables\n"
-             "\n";
-        
+        "\n";
+
       for(unsigned i=0;
           i<abstract_model.variables.size();
           i++)
@@ -570,17 +570,17 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
 
             out << "// ";
 
-			if(concurrency_aware)
-			{
-				if(abstract_model.variables[i].is_procedure_local())
-				{
-					out << "LOCAL --";
-				} else {
-					assert(abstract_model.variables[i].is_mixed());
-					out << "MIXED --";
-				}
-				out << " ";
-			}
+            if(concurrency_aware)
+            {
+              if(abstract_model.variables[i].is_procedure_local())
+              {
+                out << "LOCAL --";
+              } else {
+                assert(abstract_model.variables[i].is_mixed());
+                out << "MIXED --";
+              }
+              out << " ";
+            }
 
             out << abstract_model.variables[i].description;
           }
@@ -599,13 +599,13 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
   if(f_it->first=="main")
   {
     out << "      // initialization of the shared-global and thread-local variables\n"
-           "\n";
+      "\n";
 
     for(unsigned i=0;
         i<abstract_model.variables.size();
         i++)
       if(abstract_model.variables[i].is_shared_global() ||
-         abstract_model.variables[i].is_thread_local())
+          abstract_model.variables[i].is_thread_local())
       {
         out << "      " << variable_names[i] << ":=*; ";
         out << std::endl;
@@ -617,9 +617,9 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
   abstract_programt &abstract_program=f_it->second.body;
 
   if(tts_do) tts_builder.build_prologue(abstract_program);
-  
+
   // control flow
-  
+
   locationt previous_location;
 
   for(abstract_programt::instructionst::iterator
@@ -631,12 +631,12 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     PC_map.push_back(it);
 
     if(!it->location.is_nil() &&
-       it->location!=previous_location)
+        it->location!=previous_location)
     {
       out << "    // " << it->location << std::endl;
       previous_location=it->location;
     }
-      
+
     if(!it->code.get_transition_relation().from_predicates.empty())
     {
       out << "    // FROM Predicates:";
@@ -679,9 +679,9 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
         }
         out << " then ";
       }
-      
+
       out << "goto ";
-      
+
       for(abstract_programt::instructiont::targetst::const_iterator
           gt_it=it->targets.begin();
           gt_it!=it->targets.end();
@@ -690,7 +690,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
         if(gt_it!=it->targets.begin()) out << ", ";
         out << "l" << (*gt_it)->target_number;
       }
-      
+
       out << ";";
 
       if(!it->guard.is_true())
@@ -708,7 +708,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
         if(gt_it!=it->targets.begin()) out << ", ";
         out << "l" << (*gt_it)->target_number;
       }
-      
+
       out << ";";
     }
     else if(it->is_end_thread())
@@ -748,8 +748,8 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
       out << "atomic_end;";
     }
     else if(it->is_other() ||
-            it->is_assign() ||
-            it->is_decl())
+        it->is_assign() ||
+        it->is_decl())
     {
       bool first=true;
 
@@ -766,13 +766,13 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
         {
           concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
           assert(NULL != trans_rel);
-    		  if(trans_rel->passive_values.count(i)!=0)
+          if(trans_rel->passive_values.count(i)!=0)
           {
             assert(!abstract_model.variables[i].is_thread_local());
             assert(abstract_model.variables[i].is_procedure_local() || abstract_model.variables[i].is_mixed());
-    			
+
             assert(!first);
-    			  out << ",";
+            out << ",";
             exprt tmp=exprt(ID_predicate_passive_symbol, bool_typet());
             tmp.set(ID_identifier, i);
             out << expr_string(tmp);
@@ -794,7 +794,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
         {
           abstract_transition_relationt::valuest::const_iterator
             v_it=it->code.get_transition_relation().values.find(i);
-          
+
           if(v_it!=it->code.get_transition_relation().values.end())
           {
             const exprt &value=v_it->second;
@@ -832,16 +832,16 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
             }
           }
         }
-        
+
         // constraints
-        
+
         const std::list<exprt> &constraints=
           it->code.get_transition_relation().constraints;
-        
+
         if(!constraints.empty())
         {
           out << " constrain";
-          
+
           for(std::list<exprt>::const_iterator
               it=constraints.begin();
               it!=constraints.end();
@@ -849,10 +849,10 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
           {
             if(it!=constraints.begin()) out << " &";
             out << std::endl << "    "
-                << '(' << expr_string(*it) << ')';
+              << '(' << expr_string(*it) << ')';
           }
         }
-          
+
         out << ";";
       }
     }
@@ -870,7 +870,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
       const irep_idt &id=symbol.get_identifier();
 
       out << convert_function_name(id)
-          << "();";
+        << "();";
     }
     else if(it->is_return())
     {
@@ -911,7 +911,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
 
     if(tts_do) tts_builder.build_instruction(it, PC);
   }
-  
+
   out << "end\n\n";
 
   if(tts_do) tts_builder.finalize();
@@ -921,11 +921,11 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
 
 Function: modelchecker_boolean_programt::expr_string
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -963,7 +963,7 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
   else if(expr.id()==ID_implies)
   {
     return "!("+expr_string(expr.op0())+") | ("
-               +expr_string(expr.op1())+")";
+      +expr_string(expr.op1())+")";
   }
   else if(expr.id()=="bool-vector")
   {
@@ -985,19 +985,19 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
       return "0";
   }
   else if(expr.id()==ID_equal ||
-          expr.id()==ID_and ||
-          expr.id()==ID_or) // binary
+      expr.id()==ID_and ||
+      expr.id()==ID_or) // binary
   {
     bool first=true;
     std::string symbol;
-    
+
     if(expr.id()==ID_equal)
       symbol="="; // boolean!
     else if(expr.id()==ID_and)
       symbol="&";
     else if(expr.id()==ID_or)
       symbol="|";
-      
+
     std::string dest;
 
     forall_operands(it, expr)
@@ -1010,7 +1010,7 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
         dest+=symbol;
         dest+=' ';
       }
-      
+
       bool use_paren=
         (expr.id()!=ID_and || expr.id()!=ID_or || expr.id()!=it->id()) &&
         it->id()!=ID_symbol &&
@@ -1022,7 +1022,7 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
       dest+=expr_string(*it);
       if(use_paren) dest+=')';
     }
-    
+
     return dest;
   }
   else if(expr.id()==ID_not)
@@ -1038,7 +1038,7 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
     if(use_paren) dest+='(';
     dest+=expr_string(expr.op0());
     if(use_paren) dest+=')';
-    
+
     return dest;
   }
   else if(expr.id()=="bp_unused")
@@ -1054,20 +1054,20 @@ std::string modelchecker_boolean_programt::expr_string(const exprt &expr)
 
 Function: modelchecker_boolean_programt::check
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: model check an abstract program using SMV, return
-          counterexample if failed
-          Return value of TRUE means the program is correct,
-          if FALSE is returned, ce will contain the counterexample
+Purpose: model check an abstract program using SMV, return
+counterexample if failed
+Return value of TRUE means the program is correct,
+if FALSE is returned, ce will contain the counterexample
 
 \*******************************************************************/
 
 bool modelchecker_boolean_programt::check(
-  abstract_modelt &abstract_model,
-  abstract_counterexamplet &counterexample)
+    abstract_modelt &abstract_model,
+    abstract_counterexamplet &counterexample)
 {
   std::string temp_base="cegar_tmp";
 
@@ -1082,41 +1082,41 @@ bool modelchecker_boolean_programt::check(
 
     switch(engine)
     {
-    case BOPPO:
-      status(std::string("Running BOPPO"));
-      command="boppo --compact-trace --por";
-      if(loop_detection)
-        command+=" --loop-detection";
-      break;
-      
-    case BOOM:
-      status(std::string("Running BOOM"));
-      command="boom --stats -t";
-      
-      // boom has a default of 2, which we override
-      // with a more reasonable number
-      if(max_threads!=0)
-        command+=" --threadbound "+i2string(max_threads);
-      else
-        command+=" --threadbound 5";
-      break;
-      
-    case BEBOP:
-      status(std::string("Running BEBOP"));
-      throw "Support for Bebop not yet implemented";
-      break;
-    
-    case MOPED:
-      status(std::string("Running MOPED"));
-      throw "Support for Moped not yet implemented";
-      break;
-    
-    default:
-      assert(false);
+      case BOPPO:
+        status(std::string("Running BOPPO"));
+        command="boppo --compact-trace --por";
+        if(loop_detection)
+          command+=" --loop-detection";
+        break;
+
+      case BOOM:
+        status(std::string("Running BOOM"));
+        command="boom --stats -t";
+
+        // boom has a default of 2, which we override
+        // with a more reasonable number
+        if(max_threads!=0)
+          command+=" --threadbound "+i2string(max_threads);
+        else
+          command+=" --threadbound 5";
+        break;
+
+      case BEBOP:
+        status(std::string("Running BEBOP"));
+        throw "Support for Bebop not yet implemented";
+        break;
+
+      case MOPED:
+        status(std::string("Running MOPED"));
+        throw "Support for Moped not yet implemented";
+        break;
+
+      default:
+        assert(false);
     }
 
     command+=" "+temp_boolean_program_bn+".bp >"+temp_boolean_program_out1+
-             " 2>"+temp_boolean_program_out2;
+      " 2>"+temp_boolean_program_out2;
 
     status(command);
 
@@ -1125,18 +1125,30 @@ bool modelchecker_boolean_programt::check(
 
   {
     std::ifstream out1(temp_boolean_program_out1.c_str()),
-                  out2(temp_boolean_program_out2.c_str());
+      out2(temp_boolean_program_out2.c_str());
 
     switch(engine)
     {
-    case BOPPO:
-    case BOOM:
-      return read_result_boppo_boom(
-        out1, out2, abstract_model, counterexample);
-      break;
-    
-    default:
-      assert(false);
+      <<<<<<< HEAD
+      case BOPPO:
+      case BOOM:
+        return read_result_boppo_boom(
+            out1, out2, abstract_model, counterexample);
+        break;
+
+      default:
+        assert(false);
+        =======
+      case BOPPO:
+      case BOOM:
+          return read_result_boppo_boom(
+              out1, out2, abstract_model, counterexample);
+          break;
+
+      case BEBOP:
+      case MOPED:
+          assert(false);
+          >>>>>>> 9aa4a7c... Whitespace cleanup ONLY
     }
   }
 
@@ -1147,16 +1159,16 @@ bool modelchecker_boolean_programt::check(
 
 Function: modelchecker_boolean_programt::convert_function_name
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: 
+Purpose: 
 
 \*******************************************************************/
 
 std::string modelchecker_boolean_programt::convert_function_name(
-  const irep_idt &name)
+    const irep_idt &name)
 {
   std::string result=name.as_string();
 
@@ -1179,17 +1191,17 @@ std::string modelchecker_boolean_programt::convert_function_name(
 
 Function: modelchecker_boolean_programt::build
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: 
+Purpose: 
 
 \*******************************************************************/
 
 void modelchecker_boolean_programt::build(
-  abstract_modelt &abstract_model,
-  const std::string &out_file_base_name)
+    abstract_modelt &abstract_model,
+    const std::string &out_file_base_name)
 {
   get_variable_names(abstract_model);
   //get_nondet_symbols(abstract_model);
@@ -1206,17 +1218,17 @@ void modelchecker_boolean_programt::build(
 
 Function: modelchecker_boolean_programt::save
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose: 
+Purpose: 
 
 \*******************************************************************/
 
 void modelchecker_boolean_programt::save(
-  abstract_modelt &abstract_model,
-  unsigned sequence)
+    abstract_modelt &abstract_model,
+    unsigned sequence)
 {
   build(abstract_model, "satabs."+i2string(sequence));
 }
@@ -1225,40 +1237,40 @@ void modelchecker_boolean_programt::save(
 
 Function: modelchecker_boolean_programt::get_variable_names
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 /*
-void modelchecker_boolean_programt::get_variable_names(
-  const abstract_modelt &abstract_model)
-{
-  modelcheckert::get_variable_names(abstract_model);
+   void modelchecker_boolean_programt::get_variable_names(
+   const abstract_modelt &abstract_model)
+   {
+   modelcheckert::get_variable_names(abstract_model);
 
-  if(concurrency_aware)
-  {
-	  passive_variable_names.clear();
+   if(concurrency_aware)
+   {
+   passive_variable_names.clear();
 
-	  for(unsigned i=0;
-		  i<abstract_model.variables.size();
-		  i++)
-	  {
-		  assert(!abstract_model.variables[i].is_thread_local());
-		  if(abstract_model.variables[i].is_procedure_local() || abstract_model.variables[i].is_mixed())
-		  {
-			  passive_variable_names.push_back(variable_names[i] + "$");
-		  }
-	  }
+   for(unsigned i=0;
+   i<abstract_model.variables.size();
+   i++)
+   {
+   assert(!abstract_model.variables[i].is_thread_local());
+   if(abstract_model.variables[i].is_procedure_local() || abstract_model.variables[i].is_mixed())
+   {
+   passive_variable_names.push_back(variable_names[i] + "$");
+   }
+   }
 
-  }
+   }
 
 
 
-}
-*/
+   }
+   */
 
 

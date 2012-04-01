@@ -21,13 +21,13 @@ class namespacet;
 class abstract_transition_relationt;
 
 void predicate_image_satqe(
-  message_handlert &message_handler,
-  const std::vector<exprt> &deref_curr_predicates,
-  const std::vector<exprt> &deref_next_predicates,
-  const std::list<exprt> &constaints,
-  symex_target_equationt &equation,
-  const namespacet &ns,
-  abstract_transition_relationt &
-  abstract_transition_relation);
+    message_handlert &message_handler,
+    const std::vector<exprt> &deref_curr_predicates,
+    const std::vector<exprt> &deref_next_predicates,
+    const std::list<exprt> &constaints,
+    symex_target_equationt &equation,
+    const namespacet &ns,
+    abstract_transition_relationt &
+    abstract_transition_relation);
 
 #endif

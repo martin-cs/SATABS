@@ -3,7 +3,7 @@
 Module: Path Slicer
 
 Author: Daniel Kroening
-    
+
 Date: September 2006
 
 Purpose:
@@ -28,112 +28,112 @@ Purpose:
 
 class path_slicert
 {
-public:
-  path_slicert(const namespacet &_ns):ns(_ns)
+  public:
+    path_slicert(const namespacet &_ns):ns(_ns)
   {
   }
 
-  void operator() (
-    const abstract_functionst &abstract_functions,
-    abstract_counterexamplet &abstract_counterexample);
+    void operator() (
+        const abstract_functionst &abstract_functions,
+        abstract_counterexamplet &abstract_counterexample);
 
-protected:
-  const namespacet &ns;
-  
-  typedef std::map<abstract_programt::const_targett,
-                   abstract_functionst::function_mapt::const_iterator>
-    function_mapt;
-  function_mapt function_map;
+  protected:
+    const namespacet &ns;
 
-  // dependency set
-  typedef hash_set_cont<irep_idt, irep_id_hash> string_sett;
+    typedef std::map<abstract_programt::const_targett,
+            abstract_functionst::function_mapt::const_iterator>
+              function_mapt;
+    function_mapt function_map;
 
-  friend std::ostream & operator<< (
-    std::ostream &out,
-    const string_sett &string_set)
-  {
-    for(string_sett::const_iterator it=string_set.begin();
-        it!=string_set.end();
-        it++)
-      out << *it << std::endl;
+    // dependency set
+    typedef hash_set_cont<irep_idt, irep_id_hash> string_sett;
 
-    return out;
-  }
+    friend std::ostream & operator<< (
+        std::ostream &out,
+        const string_sett &string_set)
+    {
+      for(string_sett::const_iterator it=string_set.begin();
+          it!=string_set.end();
+          it++)
+        out << *it << std::endl;
 
-  void get_suffixes(
-    const std::string &base,
-    const typet &type,
-    string_sett &s);
+      return out;
+    }
 
-  static void get_symbols(
-    const exprt &expr,
-    string_sett &s);
+    void get_suffixes(
+        const std::string &base,
+        const typet &type,
+        string_sett &s);
 
-  void do_step(
-    const abstract_functionst &abstract_functions,
-    string_sett &dependencies,
-    abstract_stept &step);
-  
-  void add_dependencies(const exprt &expr, string_sett &dest)
-  {
-    get_symbols(expr, dest);
-  }
-  
-  bool depends_lhs(const exprt &expr, string_sett &dependencies);
+    static void get_symbols(
+        const exprt &expr,
+        string_sett &s);
 
-  bool depends_lhs_rec(
-    const exprt &expr,
-    const string_sett &suffixes_r,
-    const string_sett &suffixes_w,
-    string_sett &dependencies,
-    string_sett &new_dependencies);
+    void do_step(
+        const abstract_functionst &abstract_functions,
+        string_sett &dependencies,
+        abstract_stept &step);
 
-  static bool depends(const string_sett &s, const string_sett &dependencies)
-  {
-    for(string_sett::const_iterator it=s.begin();
-        it!=s.end();
-        it++)
-      if(dependencies.find(*it)!=dependencies.end())
-        return true;
+    void add_dependencies(const exprt &expr, string_sett &dest)
+    {
+      get_symbols(expr, dest);
+    }
 
-    return false;
-  }
-  
-  static bool depends(const exprt &expr, const string_sett &dependencies)
-  {
-    string_sett tmp;
-    get_symbols(expr, tmp);
-    return depends(tmp, dependencies);
-  }
-  
-  bool all_merge_to(
-    const abstract_functionst &abstract_functions,
-    const string_sett &dependencies,
-    abstract_programt::const_targett src,
-    abstract_programt::const_targett dest);
+    bool depends_lhs(const exprt &expr, string_sett &dependencies);
+
+    bool depends_lhs_rec(
+        const exprt &expr,
+        const string_sett &suffixes_r,
+        const string_sett &suffixes_w,
+        string_sett &dependencies,
+        string_sett &new_dependencies);
+
+    static bool depends(const string_sett &s, const string_sett &dependencies)
+    {
+      for(string_sett::const_iterator it=s.begin();
+          it!=s.end();
+          it++)
+        if(dependencies.find(*it)!=dependencies.end())
+          return true;
+
+      return false;
+    }
+
+    static bool depends(const exprt &expr, const string_sett &dependencies)
+    {
+      string_sett tmp;
+      get_symbols(expr, tmp);
+      return depends(tmp, dependencies);
+    }
+
+    bool all_merge_to(
+        const abstract_functionst &abstract_functions,
+        const string_sett &dependencies,
+        abstract_programt::const_targett src,
+        abstract_programt::const_targett dest);
 };
 
 std::ostream & operator<< (
-  std::ostream &out,
-  const path_slicert::string_sett &string_set);
+    std::ostream &out,
+    const path_slicert::string_sett &string_set);
 
 /*******************************************************************\
 
 Function: path_slicert::all_merge_to
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool path_slicert::all_merge_to(
-  const abstract_functionst &abstract_functions,
-  const string_sett &dependencies,
-  abstract_programt::const_targett src,
-  abstract_programt::const_targett dest)
+    const abstract_functionst &abstract_functions,
+    const string_sett &dependencies,
+    abstract_programt::const_targett src,
+    abstract_programt::const_targett dest)
 {
   // get the function we are in
   function_mapt::const_iterator f_it=function_map.find(src);
@@ -143,10 +143,10 @@ bool path_slicert::all_merge_to(
 
   std::set<abstract_programt::const_targett> seen;
   std::list<abstract_programt::const_targett> working_list;
-  
+
   seen.insert(dest);
   working_list.push_back(src);
-  
+
   while(!working_list.empty())
   {
     abstract_programt::const_targett t=working_list.back();
@@ -160,7 +160,7 @@ bool path_slicert::all_merge_to(
       *t->code.concrete_pc;
 
     if(c_instruction.is_other() ||
-       c_instruction.is_assign())
+        c_instruction.is_assign())
     {
       const irep_idt &statement=
         c_instruction.code.get_statement();
@@ -171,17 +171,17 @@ bool path_slicert::all_merge_to(
         assert(c_instruction.code.operands().size()==2);
 
         const exprt &lhs=c_instruction.code.op0();
-        
+
         string_sett tmp_dep(dependencies);
         if(depends_lhs(lhs, tmp_dep))
           return false;
       }
     }
-  
+
     abstract_programt::const_targetst successors;
-    
+
     abstract_program.get_successors(t, successors);
-    
+
     if(successors.empty()) // termination!
       return false;
 
@@ -191,12 +191,12 @@ bool path_slicert::all_merge_to(
         it++)
     {
       abstract_programt::const_targett s=*it;
-      
+
       if(seen.insert(s).second)
         working_list.push_back(s);
     }
   }
-  
+
   return true;
 }
 
@@ -204,17 +204,17 @@ bool path_slicert::all_merge_to(
 
 Function: path_slicert::depends_lhs
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool path_slicert::depends_lhs(
-  const exprt &expr,
-  string_sett &dependencies)
+    const exprt &expr,
+    string_sett &dependencies)
 {
   string_sett suffixes;
   get_suffixes("", expr.type(), suffixes);
@@ -223,16 +223,16 @@ bool path_slicert::depends_lhs(
 
   bool result=
     depends_lhs_rec(
-      expr,
-      suffixes, // R
-      suffixes, // W
-      dependencies,
-      new_dependencies);
+        expr,
+        suffixes, // R
+        suffixes, // W
+        dependencies,
+        new_dependencies);
 
   if(result) 
     dependencies.insert(
-      new_dependencies.begin(),
-      new_dependencies.end());
+        new_dependencies.begin(),
+        new_dependencies.end());
 
   return result;
 }
@@ -241,20 +241,20 @@ bool path_slicert::depends_lhs(
 
 Function: path_slicert::depends_lhs_rec
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 bool path_slicert::depends_lhs_rec(
-  const exprt &expr,
-  const string_sett &suffixes_r,
-  const string_sett &suffixes_w,
-  string_sett &dependencies,
-  string_sett &new_dependencies)
+    const exprt &expr,
+    const string_sett &suffixes_r,
+    const string_sett &suffixes_w,
+    string_sett &dependencies,
+    string_sett &new_dependencies)
 {
   if(expr.id()==ID_symbol)
   {
@@ -274,24 +274,24 @@ bool path_slicert::depends_lhs_rec(
         it++)
     {
       tmp_r.insert(id2string(id)+id2string(*it));
-      #ifdef DEBUG
+#ifdef DEBUG
       std::cout << "tmp_r: " << id2string(id)+id2string(*it) << std::endl;
-      #endif
+#endif
     }
-      
+
     // do we depend on it?
     if(!depends(tmp_r, dependencies))
     {
-      #ifdef DEBUG
+#ifdef DEBUG
       std::cout << "NO DEPN\n";
-      #endif
+#endif
       return false; // no!
     }
-    
-    #ifdef DEBUG
+
+#ifdef DEBUG
     std::cout << "DEP!\n";
-    #endif
-    
+#endif
+
     // yes! but we no longer do.
     for(string_sett::const_iterator it=tmp_w.begin();
         it!=tmp_w.end();
@@ -350,11 +350,11 @@ bool path_slicert::depends_lhs_rec(
 
 Function: path_slicert::get_symbols
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
@@ -402,18 +402,18 @@ void path_slicert::get_symbols(const exprt &expr, string_sett &s)
 
 Function: path_slicert::get_suffixes
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void path_slicert::get_suffixes(
-  const std::string &base,
-  const typet &type,
-  string_sett &s)
+    const std::string &base,
+    const typet &type,
+    string_sett &s)
 {
   const irep_idt &type_id=ns.follow(type).id();
 
@@ -422,7 +422,7 @@ void path_slicert::get_suffixes(
     s.insert(base);
 
     const struct_typet &struct_type=to_struct_type(ns.follow(type));
-    
+
     for(struct_typet::componentst::const_iterator
         c_it=struct_type.components().begin();
         c_it!=struct_type.components().end();
@@ -449,22 +449,22 @@ void path_slicert::get_suffixes(
 
 Function: path_slicert::operator()
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void path_slicert::operator()(
-  const abstract_functionst &abstract_functions,
-  abstract_counterexamplet &abstract_counterexample)
+    const abstract_functionst &abstract_functions,
+    abstract_counterexamplet &abstract_counterexample)
 {
-  #ifdef DEBUG
+#ifdef DEBUG
   std::cout << "Path slicer START" << std::endl;
-  #endif 
-  
+#endif 
+
   // build function map
   for(abstract_functionst::function_mapt::const_iterator
       f_it=abstract_functions.function_map.begin();
@@ -484,22 +484,22 @@ void path_slicert::operator()(
     // last one must be assertion
     assert(!abstract_counterexample.steps.empty());
     assert(abstract_counterexample.steps.back().has_pc);
-  
+
     // get concrete statement
     const goto_programt::instructiont &instruction=
       *abstract_counterexample.steps.back().pc->code.concrete_pc;
 
     assert(instruction.is_assert());
-  
+
     // fill up dependencies
     add_dependencies(instruction.guard, dependencies);
   }
-  
-  #ifdef DEBUG
+
+#ifdef DEBUG
   std::cout << "***********\n";
   std::cout << dependencies;
   std::cout << "***********\n";
-  #endif
+#endif
 
   // go backwards
 
@@ -514,25 +514,25 @@ void path_slicert::operator()(
 
 Function: path_slicert::do_step
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void path_slicert::do_step(
-  const abstract_functionst &abstract_functions,
-  string_sett &dependencies,
-  abstract_stept &step)
+    const abstract_functionst &abstract_functions,
+    string_sett &dependencies,
+    abstract_stept &step)
 {
   if(!step.has_pc) return;
 
   // get abstract statement
   const abstract_programt::instructiont &a_instruction=
     *step.pc;
-  
+
   // get concrete statement
   const goto_programt::instructiont &c_instruction=
     *a_instruction.code.concrete_pc;
@@ -543,7 +543,7 @@ void path_slicert::do_step(
 
     const exprt &lhs=c_instruction.code.op0();
     const exprt &rhs=c_instruction.code.op1();
-    
+
     if(depends_lhs(lhs, dependencies))
       add_dependencies(rhs, dependencies);
     else
@@ -561,7 +561,7 @@ void path_slicert::do_step(
 
       const exprt &lhs=c_instruction.code.op0();
       const exprt &rhs=c_instruction.code.op1();
-      
+
       if(depends_lhs(lhs, dependencies))
         add_dependencies(rhs, dependencies);
       else
@@ -613,12 +613,12 @@ void path_slicert::do_step(
     {
       // the abstract one must be the same goto
       assert(a_instruction.is_goto());
-      
+
       // find out if we merge back to this on all paths
       assert(a_instruction.targets.size()==1);
-      
+
       abstract_programt::const_targett dest;
-      
+
       if(step.branch_taken)
         dest=a_instruction.targets.front();
       else
@@ -626,28 +626,28 @@ void path_slicert::do_step(
         dest=step.pc;
         dest++;
       }
-      
+
       if(all_merge_to(abstract_functions, dependencies, step.pc, dest))
       {
         step.relevant=false;
-        #ifdef DEBUG
+#ifdef DEBUG
         std::cout << "GOTO is not relevant\n";
-        #endif
+#endif
       }
       else
       {
-        #ifdef DEBUG
+#ifdef DEBUG
         std::cout << "GOTO is relevant\n";
-        #endif
+#endif
         add_dependencies(c_instruction.guard, dependencies);
       }
     }
   }
   else if(c_instruction.is_location() ||
-          c_instruction.is_end_function())
+      c_instruction.is_end_function())
     step.relevant=false;
 
-  #ifdef DEBUG
+#ifdef DEBUG
   if(step.relevant)
     std::cout << "RELEVANT\n";
   else
@@ -656,29 +656,29 @@ void path_slicert::do_step(
   std::cout << "*******\n";
   std::cout << dependencies;
   std::cout << "*******\n";
-  #endif
+#endif
 }
 
 /*******************************************************************\
 
 Function: path_slicer
 
-  Inputs:
+Inputs:
 
- Outputs:
+Outputs:
 
- Purpose:
+Purpose:
 
 \*******************************************************************/
 
 void path_slicer(
-  const namespacet &ns,
-  const abstract_functionst &abstract_functions,
-  abstract_counterexamplet &abstract_counterexample)
+    const namespacet &ns,
+    const abstract_functionst &abstract_functions,
+    abstract_counterexamplet &abstract_counterexample)
 {
   path_slicert path_slicer(ns);
 
   path_slicer(
-    abstract_functions,
-    abstract_counterexample);
+      abstract_functions,
+      abstract_counterexample);
 }

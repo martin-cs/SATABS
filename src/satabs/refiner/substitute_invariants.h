@@ -17,8 +17,8 @@ class concrete_modelt;
 class exprt;
 
 void substitute_invariants(
-  const concrete_modelt &concrete_model,
-  abstract_programt::targett pc,
-  exprt &predicate);
+    const concrete_modelt &concrete_model,
+    abstract_programt::targett pc,
+    exprt &predicate);
 
 #endif

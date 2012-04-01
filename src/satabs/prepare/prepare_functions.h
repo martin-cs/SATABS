@@ -19,8 +19,8 @@ class contextt;
 class message_handlert;
 
 void prepare_functions(
-  contextt &context,
-  goto_functionst &goto_functions,
-  message_handlert &message_handler);
+    contextt &context,
+    goto_functionst &goto_functions,
+    message_handlert &message_handler);
 
 #endif
