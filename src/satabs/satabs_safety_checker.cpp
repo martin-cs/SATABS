@@ -410,64 +410,6 @@ void satabs_safety_checkert::do_refinement(
   refiner_time+=current_time()-start_time;
 }
 
-
-/*******************************************************************\
-
-Function: satabs_safety_checkert::add_passive_symbols_to_namespace()
-
-  Inputs:
-
- Outputs:
-
- Purpose: put passive versionso of all symbol into namespace, for
-          CAV'11 concurrent predicate abstraction
-
-\*******************************************************************/
-
-void satabs_safety_checkert::add_passive_symbols_to_namespace()
-{
-
-  // This is nasty for two reasons.  First, we add "$" to the end of lots of
-  // things that are not local variables.
-  // Second, we have to cast the context to a non const reference to add symbols
-  // Should be fixed eventually
-
-	std::list<symbolt> new_symbols;
-
-	forall_symbols(s_it, ns.get_context().symbols)
-	{
-		const symbolt &symbol = s_it->second;
-		if(symbol.lvalue && is_procedure_local(symbol))
-		{
-			symbolt new_symbol = symbol;
-			{
-				std::ostringstream stream;
-				stream << new_symbol.base_name << "$";
-				new_symbol.base_name = stream.str();
-			}
-			{
-				std::ostringstream stream;
-				stream << new_symbol.pretty_name << "$";
-				new_symbol.pretty_name = stream.str();
-			}
-			{
-				std::ostringstream stream;
-				stream << new_symbol.name << "$";
-				new_symbol.name = stream.str();
-			}
-			new_symbols.push_back(new_symbol);
-		}
-	}
-
-	for(std::list<symbolt>::iterator it = new_symbols.begin(); it != new_symbols.end(); it++)
-	{
-		((contextt&)ns.get_context()).add(*it);
-	}
-
-}
-
-
-
 /*******************************************************************\
 
 Function: satabs_safety_checkert::operator()
@@ -494,12 +436,6 @@ safety_checkert::resultt satabs_safety_checkert::operator()(
   iteration=0;
   
   concrete_modelt concrete_model(ns, goto_functions);
-
-  if(concurrency_aware)
-  {
-	  // add_passive_symbols_to_namespace();
-  }
-
 
   {
     // Create initial abstraction

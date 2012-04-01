@@ -100,8 +100,6 @@ protected:
     concrete_counterexamplet &concrete_counterexample,
     fail_infot &fail_info);
 
-  void add_passive_symbols_to_namespace();
-
   void csv_stats(
       std::ofstream &of,
       const namespacet &ns);
