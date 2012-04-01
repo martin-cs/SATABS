@@ -134,6 +134,7 @@ void satabs_safety_checkert::show_statistics(const namespacet &ns)
 	  {
 		  switch(abstractort::get_var_class(predicates[i], ns))
 		  {
+        case abstract_modelt::variablet::THREAD_LOCAL:
 		  case abstract_modelt::variablet::PROCEDURE_LOCAL:
 			  local_count++;
 			  break;
@@ -143,8 +144,8 @@ void satabs_safety_checkert::show_statistics(const namespacet &ns)
 		  case abstract_modelt::variablet::MIXED:
 			  mixed_count++;
 			  break;
-		  default:
-			  assert(false);
+        case abstract_modelt::variablet::NONE:
+          assert(false);
 		  }
 	  }
 	  std::ostringstream str;
@@ -229,6 +230,7 @@ void satabs_safety_checkert::csv_stats(
 	  {
 		  switch(abstractort::get_var_class(predicates[i], ns))
 		  {
+        case abstract_modelt::variablet::THREAD_LOCAL:
 		  case abstract_modelt::variablet::PROCEDURE_LOCAL:
 			  local_count++;
 			  break;
@@ -238,8 +240,8 @@ void satabs_safety_checkert::csv_stats(
 		  case abstract_modelt::variablet::MIXED:
 			  mixed_count++;
 			  break;
-		  default:
-			  assert(false);
+        case abstract_modelt::variablet::NONE:
+          assert(false);
 		  }
 	  }
 
