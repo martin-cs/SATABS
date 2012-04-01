@@ -8,7 +8,7 @@ Date: June 2003
  
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 #include <sstream>
 
@@ -16,16 +16,17 @@ Date: June 2003
 #include <std_expr.h>
 #include <arith_tools.h>
 #include <i2string.h>
+#include <simplify_expr.h>
 
 #include <goto-programs/wp.h>
 #include <goto-symex/basic_symex.h>
 #include <goto-symex/goto_symex_state.h>
 
-#include <simplify_expr.h>
 #include <solvers/sat/satcheck.h>
 #include <solvers/flattening/bv_pointers.h>
 #include "../abstractor/predabs_aux.h"
 #include "../abstractor/predicates.h"
+#include "../prepare/concrete_model.h"
 
 #include "refiner_wp.h"
 

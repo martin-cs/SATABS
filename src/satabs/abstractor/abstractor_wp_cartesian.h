@@ -13,10 +13,8 @@ Author: Alastair Donaldson
 #define CPROVER_CEGAR_ABSTRACTOR_WP_CARTESIAN_H_
 
 #include <pointer-analysis/value_set_analysis.h>
-#include <std_expr.h>
 
 #include "abstractor_wp.h"
-#include "../prepare/concrete_model.h"
 
 class abstractor_wp_cartesiant:public abstractor_wpt
 {
@@ -26,15 +24,7 @@ public:
 
 	abstractor_wp_cartesiant(const argst &args,
 			                 const unsigned int max_cube_length,
-			                 const goto_functionst &functions):
-			                	 abstractor_wpt(args),
-			                	 max_cube_length(max_cube_length),
-			                	 pointer_info(args.concrete_model.ns)
-	{
-		status("Performing pointer analysis for Cartesian abstraction");
-		pointer_info(functions);
-		status("Pointer analysis complete");
-	}
+			                 const goto_functionst &functions);
 
 protected:
 

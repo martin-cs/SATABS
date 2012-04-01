@@ -16,13 +16,13 @@ to determmine whether it is spurious.
 #define CPROVER_SATABS_SIMULATOR_SYMEX_H
 
 #include <options.h>
+#include <decision_procedure.h>
 
-#include <solvers/prop/prop_conv.h>
 #include <goto-symex/goto_symex_state.h>
 #include <goto-symex/symex_target_equation.h>
 
 #include "simulator.h"
-#include "path_slicer.h"
+#include "../modelchecker/abstract_counterexample.h"
 
 class simulator_symext:public simulatort
 {

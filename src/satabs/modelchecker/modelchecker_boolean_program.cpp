@@ -8,9 +8,9 @@ Author: Daniel Kroening
 
 \*******************************************************************/
 
-#include <assert.h>
-#include <stdlib.h>
-#include <ctype.h>
+#include <cassert>
+#include <cstdlib>
+#include <cctype>
 
 #include <fstream>
 #include <list>
@@ -23,6 +23,8 @@ Author: Daniel Kroening
 #include <string2int.h>
 
 #include "../abstractor/concurrency_aware_abstract_transition_relation.h"
+#include "../abstractor/abstract_model.h"
+#include "abstract_counterexample.h"
 
 #include "modelchecker_boolean_program.h"
 #include "tts_builder.h"
@@ -197,9 +199,9 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
   
     if(std::string(line, 0, 12)=="threadbound=")
     {
-      std::cerr << "THREAD LIMIT line: " << line << std::endl;
+      // std::cerr << "THREAD LIMIT line: " << line << std::endl;
       threadbound=safe_str2unsigned(line.c_str()+12);
-      std::cerr << "THREAD LIMIT found: " << threadbound << std::endl;
+      // std::cerr << "THREAD LIMIT found: " << threadbound << std::endl;
     }
     else if(std::string(line, 0, 6)=="TRACE ")
     {

@@ -11,8 +11,6 @@ Author: Daniel Kroening
 #ifndef CPROVER_CEGAR_MODELCHECKER_SPIN_H
 #define CPROVER_CEGAR_MODELCHECKER_SPIN_H
 
-#include <iostream>
-
 #include "modelchecker.h"
 
 class modelchecker_spint:public modelcheckert

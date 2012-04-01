@@ -10,13 +10,18 @@ Purpose:
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 
 #include <std_expr.h>
 #include <std_types.h>
 #include <hash_cont.h>
 #include <prefix.h>
+#include <namespace.h>
 
+#include <goto-programs/goto_program.h>
+
+#include "../abstractor/abstract_program.h"
+#include "../modelchecker/abstract_counterexample.h"
 #include "path_slicer.h"
 
 //#define DEBUG

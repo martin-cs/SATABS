@@ -18,9 +18,12 @@ Purpose: Calculate predicates for predicate abstraction.
 
 #include <message.h>
 
-#include "../prepare/concrete_model.h"
+#include <goto-programs/goto_functions.h>
+
 #include "predicates.h"
 #include "abstract_model.h"
+
+class concrete_modelt;
 
 class initial_abstractiont:public messaget
 {
@@ -51,13 +54,7 @@ public:
   void build(
     const concrete_modelt &concrete_model,
     abstract_modelt &abstract_model,
-    bool concurrency_aware)
-  {
-    build_control_flow(
-      concrete_model.goto_functions,
-      abstract_model.goto_functions,
-      concurrency_aware);
-  }
+    bool concurrency_aware);
 
 protected:
   const bool no_mixed_predicates;

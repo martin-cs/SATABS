@@ -9,8 +9,10 @@ Author: Alastair Donaldson
 
 \*******************************************************************/
 
-#ifndef LOCATIONS_OF_EXPRESSIONS_H
-#define LOCATIONS_OF_EXPRESSIONS_H
+#ifndef CPROVER_SATABS_LOCATIONS_OF_EXPRESSIONS_H
+#define CPROVER_SATABS_LOCATIONS_OF_EXPRESSIONS_H
+
+#include <set>
 
 #include <std_expr.h>
 

@@ -11,8 +11,8 @@ Author: Daniel Kroening
 #ifndef CPROVER_CEGAR_MODELCHECKER_BOOLEAN_PROGRAM_H
 #define CPROVER_CEGAR_MODELCHECKER_BOOLEAN_PROGRAM_H
 
-#include <iostream>
 #include <map>
+#include <string>
 
 #include "modelchecker.h"
 

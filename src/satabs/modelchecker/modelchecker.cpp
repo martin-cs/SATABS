@@ -11,10 +11,10 @@ Date: June 2003
 
 #include <i2string.h>
 #include <substitute.h>
-
 #include <std_expr.h>
 
 #include "modelchecker.h"
+#include "../abstractor/abstract_model.h"
 
 /*******************************************************************\
 

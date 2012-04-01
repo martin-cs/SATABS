@@ -14,6 +14,13 @@ Author: Daniel Kroening, kroening@kroening.com
 #include "abstractor/initial_abstraction.h"
 #include "modelchecker/modelchecker_boolean_program.h"
 #include "satabs_safety_checker.h"
+#include "abstractor/abstractor.h"
+#include "modelchecker/modelchecker.h"
+#include "refiner/refiner.h"
+#include "simulator/simulator.h"
+#include "simulator/fail_info.h"
+#include "prepare/concrete_model.h"
+#include "simulator/concrete_counterexample.h"
 
 /*******************************************************************\
 

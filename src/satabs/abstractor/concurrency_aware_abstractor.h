@@ -5,8 +5,8 @@
  *      Author: alad
  */
 
-#ifndef CONCURRENCY_AWARE_ABSTRACTOR_H_
-#define CONCURRENCY_AWARE_ABSTRACTOR_H_
+#ifndef CPROVER_SATABS_CONCURRENCY_AWARE_ABSTRACTOR_H
+#define CPROVER_SATABS_CONCURRENCY_AWARE_ABSTRACTOR_H
 
 #include <memory>
 
@@ -16,7 +16,6 @@
 #include <pointer-analysis/value_set_analysis.h>
 
 #include "abstractor.h"
-#include "../prepare/concrete_model.h"
 
 class concurrency_aware_abstractort : public abstractort {
 public:
@@ -25,16 +24,7 @@ public:
       const argst &args,
       std::auto_ptr<abstractort> specific_abstractor,
       const goto_functionst &functions,
-      const bool _passive_nondet) :
-		abstractort(args),
-		specific_abstractor(specific_abstractor),
-		pointer_info(args.concrete_model.ns),
-    passive_nondet(_passive_nondet)
-	{
-		status("Performing pointer analysis for concurrency-aware abstraction");
-		pointer_info(functions);
-		status("Pointer analysis complete");
-	}
+      const bool _passive_nondet);
 
 	virtual ~concurrency_aware_abstractort()
 	{
@@ -69,4 +59,4 @@ private:
 
 };
 
-#endif /* CONCURRENCY_AWARE_ABSTRACTOR_H_ */
+#endif /* CPROVER_SATABS_CONCURRENCY_AWARE_ABSTRACTOR_H */

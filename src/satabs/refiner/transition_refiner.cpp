@@ -10,6 +10,7 @@ Date: June 2003
 
 #include <cassert>
 #include <algorithm>
+#include <iostream>
 
 #include <expr_util.h>
 #include <std_types.h>
@@ -23,6 +24,7 @@ Date: June 2003
 #include "../simulator/simulator_sat_dec.h"
 #include "../simulator/fail_info.h"
 #include "../abstractor/predicates.h"
+#include "../prepare/concrete_model.h"
 
 #include "transition_refiner.h"
 

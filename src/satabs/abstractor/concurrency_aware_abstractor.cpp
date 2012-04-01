@@ -9,18 +9,16 @@
 #include <algorithm>
 #include <iterator>
 
-#include "concurrency_aware_abstractor.h"
-
-#include "concurrency_aware_abstract_transition_relation.h"
-
-#include "locations_of_expressions.h"
-
-#include "predabs_aux.h"
-
 #include <ansi-c/c_types.h>
 
 #include <arith_tools.h>
 #include <string2int.h>
+
+#include "concurrency_aware_abstractor.h"
+#include "concurrency_aware_abstract_transition_relation.h"
+#include "locations_of_expressions.h"
+#include "predabs_aux.h"
+#include "../prepare/concrete_model.h"
 
 static void adjust_pred_index(exprt& expr,
     const predicatest& all_preds,
@@ -41,6 +39,22 @@ static void adjust_pred_index(exprt& expr,
     }
   }
 }
+
+concurrency_aware_abstractort::concurrency_aware_abstractort(
+      const argst &args,
+      std::auto_ptr<abstractort> specific_abstractor,
+      const goto_functionst &functions,
+      const bool _passive_nondet) :
+		abstractort(args),
+		specific_abstractor(specific_abstractor),
+		pointer_info(args.concrete_model.ns),
+    passive_nondet(_passive_nondet)
+	{
+		status("Performing pointer analysis for concurrency-aware abstraction");
+		pointer_info(functions);
+		status("Pointer analysis complete");
+	}
+
 
 void concurrency_aware_abstractort::pred_abstract_block(
 			goto_programt::const_targett target,

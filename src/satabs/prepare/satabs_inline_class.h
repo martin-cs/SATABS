@@ -10,8 +10,8 @@
  *      Author: alad
  */
 
-#ifndef SATABS_INLINE_CLASS_H_
-#define SATABS_INLINE_CLASS_H_
+#ifndef CPROVER_SATABS_SATABS_INLINE_CLASS_H
+#define CPROVER_SATABS_SATABS_INLINE_CLASS_H
 
 #include <message_stream.h>
 
@@ -88,4 +88,4 @@ protected:
 };
 
 
-#endif /* SATABS_INLINE_CLASS_H_ */
+#endif /* CPROVER_SATABS_SATABS_INLINE_CLASS_H */

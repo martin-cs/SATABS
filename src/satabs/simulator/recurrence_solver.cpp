@@ -21,6 +21,7 @@ Purpose:
 #include <arith_tools.h>
 
 #include <goto-symex/goto_symex.h>
+#include <goto-symex/symex_target_equation.h>
 
 #include "recurrence_solver.h"
 

@@ -12,7 +12,6 @@ Date: June 2003
 #ifndef CPROVER_CEGAR_ABSTRACT_STATE_H
 #define CPROVER_CEGAR_ABSTRACT_STATE_H
 
-#include <iostream>
 #include <list>
 
 #include "../abstractor/abstract_model.h"

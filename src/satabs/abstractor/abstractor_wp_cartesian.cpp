@@ -15,11 +15,24 @@ Author: Alastair Donaldson
 #include <ansi-c/c_types.h>
 #include <solvers/flattening/bv_pointers.h>
 #include <solvers/sat/satcheck.h>
-#include <util/arith_tools.h>
+#include <arith_tools.h>
 
 #include "check_redundancy.h"
 #include "abstractor_wp_cartesian.h"
 #include "locations_of_expressions.h"
+#include "../prepare/concrete_model.h"
+
+abstractor_wp_cartesiant::abstractor_wp_cartesiant(const argst &args,
+    const unsigned int max_cube_length,
+    const goto_functionst &functions):
+  abstractor_wpt(args),
+  max_cube_length(max_cube_length),
+  pointer_info(args.concrete_model.ns)
+{
+  status("Performing pointer analysis for Cartesian abstraction");
+  pointer_info(functions);
+  status("Pointer analysis complete");
+}
 
 exprt abstractor_wp_cartesiant::get_value(
 	    unsigned p_nr,

@@ -13,8 +13,9 @@ Purpose:
 #ifndef CPROVER_SATABS_FAIL_INFO_H
 #define CPROVER_SATABS_FAIL_INFO_H
 
-#include <assert.h>
+#include <cassert>
 #include <list>
+#include <map>
 
 #include "../modelchecker/abstract_counterexample.h"
 

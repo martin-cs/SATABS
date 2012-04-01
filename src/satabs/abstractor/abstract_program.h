@@ -13,10 +13,9 @@ Date: January 2004
 
 #include <memory>
 
-#include <goto-programs/goto_program_template.h>
+#include <goto-programs/goto_program.h>
 #include <goto-programs/goto_functions_template.h>
 
-#include "../prepare/concrete_program.h"
 #include "abstract_transition_relation.h"
 
 // A basic abstract instruction holds both the equation, and the resulting cubes 

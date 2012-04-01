@@ -13,12 +13,15 @@ Purpose: Solve recurrences
 #ifndef CPROVER_SATABS_SIMULATOR_RECURRENCE_SOLVER_H
 #define CPROVER_SATABS_SIMULATOR_RECURRENCE_SOLVER_H
 
+#include <map>
+#include <list>
+
 #include <expr.h>
 
-#include <goto-symex/goto_symex_state.h>
 #include <solvers/flattening/sat_minimizer.h>
 
-#include "simulator_symex.h"
+class goto_symex_statet;
+class symex_target_equationt;
 
 class recurrence_solver
 {

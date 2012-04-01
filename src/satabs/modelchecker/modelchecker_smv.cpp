@@ -8,10 +8,10 @@ Author: Daniel Kroening
 
 \*******************************************************************/
 
-#include <assert.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdlib>
+#include <cctype>
+#include <cstdio>
 
 #include <fstream>
 #include <list>
@@ -23,6 +23,8 @@ Author: Daniel Kroening
 #include <std_expr.h>
 #include <string2int.h>
 
+#include "../abstractor/abstract_model.h"
+#include "abstract_counterexample.h"
 #include "modelchecker_smv.h"
 
 /*******************************************************************\
@@ -74,7 +76,7 @@ bool modelchecker_smvt::read_result(
     {
       std::string line;
       if(!std::getline(out2, line)) break;
-      std::cerr << "SMV error output: " << line << std::endl;
+      warning("SMV error output: "+line);
       file.push_back(line);
     }
 
@@ -103,7 +105,7 @@ bool modelchecker_smvt::read_result(
     
     if(file.empty())
     {
-      std::cerr << "No output from SMV" << std::endl;
+      error("No output from SMV");
       throw "SMV error - SMV produced no output";
     }
 

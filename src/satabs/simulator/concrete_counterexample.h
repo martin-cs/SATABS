@@ -12,10 +12,6 @@ Date: June 2003
 #ifndef CPROVER_CEGAR_COUNTEREXAMPLE_H
 #define CPROVER_CEGAR_COUNTEREXAMPLE_H
 
-#include <iostream>
-#include <vector>
-
-#include <goto-programs/goto_program.h>
 #include <goto-symex/goto_trace.h>
 
 /* A concrete conterexample */

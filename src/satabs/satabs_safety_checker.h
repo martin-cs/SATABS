@@ -15,10 +15,17 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <langapi/language_ui.h>
 
-#include "modelchecker/modelchecker.h"
-#include "simulator/simulator.h"
-#include "abstractor/abstractor.h"
-#include "refiner/refiner.h"
+#include "abstractor/predicates.h"
+
+class abstractort;
+class refinert;
+class modelcheckert;
+class simulatort;
+class abstract_counterexamplet;
+class concrete_counterexamplet;
+class concrete_modelt;
+class fail_infot;
+class loop_componentt;
 
 class satabs_safety_checkert:public safety_checkert
 {

@@ -13,9 +13,10 @@ Purpose:
 #ifndef CPROVER_SATABS_PATH_SLICER_H
 #define CPROVER_SATABS_PATH_SLICER_H
 
-#include <namespace.h>
+#include "../abstractor/abstract_program.h"
 
-#include "../modelchecker/abstract_counterexample.h"
+class namespacet;
+class abstract_counterexamplet;
 
 void path_slicer(
   const namespacet &ns,

@@ -9,6 +9,9 @@ Author: Daniel Kroening, kroening@kroening.com
 #ifndef CPROVER_CEGAR_PREDICATES_H
 #define CPROVER_CEGAR_PREDICATES_H
 
+#include <map>
+#include <vector>
+
 #include <expr.h>
 
 typedef exprt predicatet;
@@ -67,11 +70,6 @@ protected:
   predicate_vectort predicate_vector;
   
   friend bool operator== (const predicatest &p1, const predicatest &p2);
-
-  friend bool operator!= (const predicatest &p1, const predicatest &p2)
-  {
-    return !(p1==p2);
-  }
 	
   static void make_expr_passive_rec(
       exprt& phi,
@@ -81,5 +79,10 @@ protected:
 
 std::ostream& operator<< (std::ostream& out,
                           const predicatest &predicates);
+
+inline bool operator!= (const predicatest &p1, const predicatest &p2)
+{
+  return !(p1==p2);
+}
 
 #endif

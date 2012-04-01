@@ -15,6 +15,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <goto-programs/wp.h>
 #include <langapi/language_util.h>
 #include <solvers/prop/prop.h>
+#include <solvers/prop/prop_conv.h>
 
 #include "predabs_aux.h"
 #include "canonicalize.h"

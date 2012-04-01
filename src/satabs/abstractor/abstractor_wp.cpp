@@ -10,6 +10,7 @@ Author: Daniel Kroening
 
 #include "abstractor_wp.h"
 #include "predabs_aux.h"
+#include "../prepare/concrete_model.h"
 
 /*******************************************************************\
 

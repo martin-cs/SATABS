@@ -11,9 +11,9 @@ Author: Daniel Kroening
 #ifndef CPROVER_CEGAR_MODELCHECKER_SMV_H
 #define CPROVER_CEGAR_MODELCHECKER_SMV_H
 
-#include <iostream>
-
 #include "modelchecker.h"
+
+class abstract_stept;
 
 class modelchecker_smvt:public modelcheckert
 {

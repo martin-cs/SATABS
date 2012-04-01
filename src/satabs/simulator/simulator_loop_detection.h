@@ -18,10 +18,10 @@ Purpose: Simulate an abstract counterexample on the concrete program
 
 #include <mp_arith.h>
 
-#include <goto-symex/goto_symex_state.h>
+#include <goto-programs/goto_program.h>
 
-#include "simulator_sat_dec.h"
 #include "simulator_symex.h"
+#include "fail_info.h"
 #include "../prepare/concrete_model.h"
 
 class simulator_loop_detectiont:public simulator_symext

@@ -16,10 +16,12 @@ to determmine whether it is spurious.
 #define CPROVER_CEGAR_SIMULATOR_H
 
 #include "../loop_component.h"
-#include "../modelchecker/abstract_counterexample.h"
-#include "../simulator/concrete_counterexample.h"
-#include "../abstractor/predicates.h"
-#include "fail_info.h"
+
+class predicatest;
+class abstract_modelt;
+class abstract_counterexamplet;
+class concrete_counterexamplet;
+class fail_infot;
 
 class simulatort:public loop_componentt
 {

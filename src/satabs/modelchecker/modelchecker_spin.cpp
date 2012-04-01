@@ -21,6 +21,7 @@ Author: Daniel Kroening
 
 #include <ansi-c/expr2c.h>
 
+#include "../abstractor/abstract_model.h"
 #include "../prepare/concrete_model.h"
 #include "modelchecker_spin.h"
 

@@ -32,7 +32,7 @@ Purpose:
 #include <goto-symex/build_goto_trace.h>
 
 #include "simulator_loop_detection.h"
-//#include "simulator_sat_dec.h"
+#include "concrete_counterexample.h"
 #include "recurrence_solver.h"
 
 /*******************************************************************\

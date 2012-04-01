@@ -5,8 +5,8 @@
  *      Author: alad
  */
 
-#ifndef SATABS_INLINE_H_
-#define SATABS_INLINE_H_
+#ifndef CPROVER_SATABS_SATABS_INLINE_H
+#define CPROVER_SATABS_SATABS_INLINE_H
 
 #include <goto-programs/goto_functions.h>
 

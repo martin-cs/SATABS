@@ -15,6 +15,7 @@ Date: June 2003
 #include <message.h>
 #include <string2int.h>
 #include <options.h>
+#include <config.h>
 
 #include <goto-symex/xml_goto_trace.h>
 
@@ -30,6 +31,10 @@ Date: June 2003
 #include "prepare/prepare.h"
 #include "abstractor/select_abstractor.h"
 #include "prepare/concrete_model.h"
+#include "abstractor/abstractor.h"
+#include "modelchecker/modelchecker.h"
+#include "refiner/refiner.h"
+#include "simulator/simulator.h"
 
 /*******************************************************************\
 

@@ -9,8 +9,8 @@
  *      Author: ally
  */
 
-#ifndef REFINER_WP_ONLY_H_
-#define REFINER_WP_ONLY_H_
+#ifndef CPROVER_SATABS_REFINER_WP_ONLY_H
+#define CPROVER_SATABS_REFINER_WP_ONLY_H
 
 #include "refiner_wp.h"
 
@@ -37,4 +37,4 @@ protected:
 
 };
 
-#endif /* REFINER_WP_ONLY_H_ */
+#endif /* CPROVER_SATABS_REFINER_WP_ONLY_H */

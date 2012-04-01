@@ -8,7 +8,7 @@ Date: June 2003
  
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 #include <sstream>
 
 #include "initial_abstraction.h"
@@ -16,6 +16,30 @@ Date: June 2003
 #include "canonicalize.h"
 #include "concurrency_aware_abstract_transition_relation.h"
 #include "check_redundancy.h"
+#include "../prepare/concrete_model.h"
+
+/*******************************************************************\
+
+Function: initial_abstractiont::build
+
+Inputs:
+
+Outputs:
+
+Purpose:
+
+\*******************************************************************/
+
+void initial_abstractiont::build(
+    const concrete_modelt &concrete_model,
+    abstract_modelt &abstract_model,
+    bool concurrency_aware)
+{
+  build_control_flow(
+      concrete_model.goto_functions,
+      abstract_model.goto_functions,
+      concurrency_aware);
+}
 
 /*******************************************************************\
 

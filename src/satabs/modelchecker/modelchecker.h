@@ -12,8 +12,13 @@ Date: June 2003
 #ifndef CPROVER_CEGAR_MODELCHECKER_H
 #define CPROVER_CEGAR_MODELCHECKER_H
 
+#include <set>
+
 #include "../loop_component.h"
-#include "abstract_counterexample.h"
+#include "../abstractor/abstract_program.h"
+
+class abstract_counterexamplet;
+class abstract_modelt;
 
 /* A general purpose model checker */
 class modelcheckert:public loop_componentt

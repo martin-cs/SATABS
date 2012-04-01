@@ -8,8 +8,8 @@
  *      Author: Alastair Donaldson
  */
 
-#ifndef CPROVER_CHECK_REDUNDANCY_H_
-#define CPROVER_CHECK_REDUNDANCY_H_
+#ifndef CPROVER_SATABS_CHECK_REDUNDANCY_H
+#define CPROVER_SATABS_CHECK_REDUNDANCY_H
 
 class exprt;
 class namespacet;
@@ -24,4 +24,4 @@ bool is_redundant(const exprt& predicate, const namespacet& ns);
 
 void delete_unsatisfiable_cache();
 
-#endif /* CPROVER_CHECK_REDUNDANCY_H_ */
+#endif /* CPROVER_SATABS_CHECK_REDUNDANCY_H */

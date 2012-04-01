@@ -12,7 +12,8 @@ Date: June 2003
 #ifndef CPROVER_CEGAR_ABSTRACT_MODEL_H
 #define CPROVER_CEGAR_ABSTRACT_MODEL_H
 
-#include "abstract_transition_relation.h"
+#include <goto-programs/goto_program.h>
+
 #include "abstract_program.h"
 
 class abstract_modelt
