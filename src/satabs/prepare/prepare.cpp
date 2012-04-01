@@ -15,6 +15,7 @@ Date: June 2003
 #include <xml.h>
 #include <xml_irep.h>
 #include <context.h>
+#include <cmdline.h>
 
 #include <ansi-c/ansi_c_language.h>
 

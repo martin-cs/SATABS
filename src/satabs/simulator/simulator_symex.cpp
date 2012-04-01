@@ -25,6 +25,7 @@ Purpose: Simulate an abstract counterexample on the concrete program
 
 #include "simulator_symex.h"
 #include "simulator_sat_dec.h"
+#include "../prepare/concrete_model.h"
 
 /*******************************************************************\
 

@@ -18,8 +18,10 @@ Purpose: Do nothing.
 class no_refinert:public refinert
 {
 public:
-  no_refinert(const argst &args):
-    refinert(args, -1, false, false, false)
+  no_refinert(
+      const optionst& options,
+      const argst &args):
+    refinert(options, args)
   {
   }
 

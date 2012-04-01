@@ -16,8 +16,10 @@ Purpose:
 #include <string>
 #include <vector>
 
-#include <message.h>
-#include <namespace.h>
+#include <expr.h>
+
+class message_handlert;
+class namespacet;
 
 void get_predicates(
   const std::string &file,

@@ -25,6 +25,7 @@ Date: June 2003
 #include <solvers/sat/satcheck.h>
 #include <solvers/flattening/bv_pointers.h>
 #include "../abstractor/predabs_aux.h"
+#include "../abstractor/predicates.h"
 
 #include "refiner_wp.h"
 

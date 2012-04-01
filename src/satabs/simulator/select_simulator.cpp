@@ -9,6 +9,8 @@ Date: June 2003
 
 \*******************************************************************/
 
+#include <options.h>
+
 #include "select_simulator.h"
 #include "simulator_symex.h"
 #include "simulator_loop_detection.h"
@@ -26,26 +28,18 @@ Function: select_simulator
 \*******************************************************************/
 
 simulatort *select_simulator(
-  const cmdlinet &cmdline,
+  const optionst &options,
   const loop_componentt::argst &args,
   contextt &_shadow_context)
 {
-  std::string name=
-    cmdline.isset("simulator")?cmdline.getval("simulator"):"sat";
-    
-  bool path_slicing=
-    !cmdline.isset("no-path-slicing");
-
-  bool shortest_prefix=
-    cmdline.isset("shortest-prefix");
+  const std::string name=options.get_option("simulator");
 
   if(name=="sat")
   {
-    if(cmdline.isset("loop-detection"))
-      return new simulator_loop_detectiont(args, _shadow_context,
-                                           path_slicing, shortest_prefix);
+    if(options.get_bool_option("loop-detection"))
+      return new simulator_loop_detectiont(options, args, _shadow_context);
 
-    return new simulator_symext(args, path_slicing, shortest_prefix);
+    return new simulator_symext(options, args);
   }
   else
     throw "unknown simulator: "+name;

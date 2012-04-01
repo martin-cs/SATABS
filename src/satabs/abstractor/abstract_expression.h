@@ -9,9 +9,9 @@ Author: Daniel Kroening, kroening@kroening.com
 #ifndef CPROVER_CEGAR_ABSTRACT_EXPRESSION_H
 #define CPROVER_CEGAR_ABSTRACT_EXPRESSION_H
 
-#include <namespace.h>
-
-#include "predicates.h"
+class exprt;
+class predicatest;
+class namespacet;
 
 void abstract_expression(
   const predicatest &predicates,

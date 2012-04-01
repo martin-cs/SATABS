@@ -15,16 +15,12 @@ Purpose: Preprocess the C program and convert it into a GOTO
 #ifndef CPROVER_CEGAR_PREPARE_H
 #define CPROVER_CEGAR_PREPARE_H
 
-#include <cstdlib>
-
-#include <ui_message.h>
-#include <options.h>
-#include <cmdline.h>
-#include <string2int.h>
-
 #include <langapi/language_ui.h>
 
 #include <goto-programs/goto_functions.h>
+
+class cmdlinet;
+class optionst;
 
 class preparet:public language_uit
 {
@@ -40,14 +36,6 @@ public:
   contextt &shadow_context;
   goto_functionst goto_functions;
   std::vector<exprt> user_provided_predicates;
-  
-  unsigned max_iterations()
-  {
-    if(cmdline.isset("iterations"))
-      return safe_str2unsigned(cmdline.getval("iterations"));
-
-    return 100; // default iterations
-  }
   
 private:
   const cmdlinet &cmdline;

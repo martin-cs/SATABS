@@ -8,7 +8,7 @@ Date: September 2005
 
 \*******************************************************************/
 
-#include <cstdlib>
+#include <options.h>
 
 #include "select_abstractor.h"
 #include "abstractor_wp.h"
@@ -16,8 +16,6 @@ Date: September 2005
 #include "abstractor_prover.h"
 #include "abstractor_wp_cartesian.h"
 #include "concurrency_aware_abstractor.h"
-
-#include <string2int.h>
 
 /*******************************************************************\
 
@@ -32,14 +30,13 @@ Function: select_abstractor
 \*******************************************************************/
 
 abstractort *select_abstractor(
-  const cmdlinet &cmdline,
+  const optionst &options,
   const loop_componentt::argst &args,
   const goto_functionst &functions)
 {
-  std::string name=
-    cmdline.isset("abstractor")?cmdline.getval("abstractor"):"wp";
+  const std::string name=options.get_option("abstractor");
 
-  abstractort *specific_abstractor=NULL;
+  abstractort *specific_abstractor=0;
 
   if(name=="wp")
     specific_abstractor = new abstractor_wpt(args);
@@ -56,22 +53,19 @@ abstractort *select_abstractor(
     throw "support for satqe not linked in";
     #endif
   else if(name=="cartesian")
-  {
-    const unsigned int max_cube_length =
-      cmdline.isset("max-cube-length")?safe_str2unsigned(cmdline.getval("max-cube-length")):3;
     specific_abstractor =
-      new abstractor_wp_cartesiant(args, max_cube_length, functions);
-  }
+      new abstractor_wp_cartesiant(args,
+          options.get_int_option("max-cube-length"), functions);
   else
     throw "unknown abstractor: "+name;
 
-  if(cmdline.isset("concurrency"))
+  if(options.get_bool_option("concurrency"))
   {
     return new concurrency_aware_abstractort(
       args,
       std::auto_ptr<abstractort>(specific_abstractor),
       functions,
-      cmdline.isset("passive-nondet"));
+      options.get_bool_option("passive-nondet"));
   }
   else
     return specific_abstractor;

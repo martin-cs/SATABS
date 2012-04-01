@@ -12,12 +12,13 @@ Date: June 2003
 #ifndef CPROVER_SATABS_SELECT_REFINER_H
 #define CPROVER_SATABS_SELECT_REFINER_H
 
-#include <cmdline.h>
+#include "../loop_component.h"
 
-#include "refiner.h"
+class optionst;
+class refinert;
 
 refinert *select_refiner(
-  const cmdlinet &cmdline,
+  const optionst &options,
   const loop_componentt::argst &args);
 
 #endif

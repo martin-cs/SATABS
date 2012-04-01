@@ -13,9 +13,10 @@ Author: Alastair Donaldson
 #define CPROVER_CEGAR_ABSTRACTOR_WP_CARTESIAN_H_
 
 #include <pointer-analysis/value_set_analysis.h>
-#include <util/std_expr.h>
+#include <std_expr.h>
 
 #include "abstractor_wp.h"
+#include "../prepare/concrete_model.h"
 
 class abstractor_wp_cartesiant:public abstractor_wpt
 {

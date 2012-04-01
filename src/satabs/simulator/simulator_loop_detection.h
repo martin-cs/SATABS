@@ -21,18 +21,17 @@ Purpose: Simulate an abstract counterexample on the concrete program
 #include <goto-symex/goto_symex_state.h>
 
 #include "simulator_sat_dec.h"
-
 #include "simulator_symex.h"
+#include "../prepare/concrete_model.h"
 
 class simulator_loop_detectiont:public simulator_symext
 {
 public:
   simulator_loop_detectiont(
+      const optionst &options,
     const argst &args,
-    contextt &_shadow_context,
-    bool _path_slicing,
-    bool _shortest_prefix):
-    simulator_symext(args, _path_slicing, _shortest_prefix),
+    contextt &_shadow_context) :
+    simulator_symext(options, args),
     parameter_index(0),
     shadow_context(_shadow_context)
   {

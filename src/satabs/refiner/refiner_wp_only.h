@@ -12,21 +12,15 @@
 #ifndef REFINER_WP_ONLY_H_
 #define REFINER_WP_ONLY_H_
 
+#include "refiner_wp.h"
+
 class refiner_wp_onlyt:public refiner_wpt
 {
 public:
   refiner_wp_onlyt(
-      const argst &args,
-      bool _prefix_first,
-      unsigned max_predicates_to_add,
-      bool prefer_non_pointer_predicates,
-      bool remove_equivalent_predicates,
-      bool no_mixed_predicates,
-      bool passive_constrain):
-    refiner_wpt(args, _prefix_first,
-        max_predicates_to_add, prefer_non_pointer_predicates,
-        remove_equivalent_predicates,
-        no_mixed_predicates, passive_constrain)
+      const optionst &options,
+      const argst &args) :
+    refiner_wpt(options, args)
   {
   }
 

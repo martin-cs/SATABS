@@ -12,11 +12,14 @@ Author: Alastair Donaldson
 #ifndef LOCATIONS_OF_EXPRESSIONS_H
 #define LOCATIONS_OF_EXPRESSIONS_H
 
-#include "predicates.h"
+#include <std_expr.h>
 
 #include <goto-programs/goto_program.h>
-#include <pointer-analysis/value_set_analysis.h>
-#include <util/std_expr.h>
+
+#include "predicates.h"
+
+class value_set_analysist;
+
 
 bool locations_intersect(const predicatet& phi,
 						 const predicatet& psi,

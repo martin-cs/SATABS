@@ -11,6 +11,7 @@ Date:   September 2009
 #include <std_code.h>
 #include <std_expr.h>
 #include <context.h>
+#include <message.h>
 
 #include "prepare_functions.h"
 

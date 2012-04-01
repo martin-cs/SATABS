@@ -18,6 +18,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include "predabs_aux.h"
 #include "canonicalize.h"
+#include "predicates.h"
 
 /*******************************************************************\
 

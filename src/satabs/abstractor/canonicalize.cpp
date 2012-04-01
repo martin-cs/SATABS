@@ -7,6 +7,8 @@ Author: Daniel Kroening, kroening@kroening.com
 \*******************************************************************/
 
 #include <simplify_expr.h>
+#include <expr.h>
+#include <namespace.h>
 
 #include "canonicalize.h"
 

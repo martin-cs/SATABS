@@ -10,14 +10,15 @@ Author: Daniel Kroening, kroening@kroening.com
 #define CPROVER_CEGAR_PREDABS_AUX
 
 #include <set>
+#include <list>
+#include <vector>
 #include <string>
-
-#include <namespace.h>
 
 #include <solvers/prop/prop_conv.h>
 
 #include "../prepare/concrete_model.h"
-#include "predicates.h"
+
+class predicatest;
 
 #if 0
 void get_final_predicates(

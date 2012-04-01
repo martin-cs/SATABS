@@ -8,9 +8,9 @@ Author: Daniel Kroening
 
 \*******************************************************************/
 
-#include <assert.h>
-#include <stdlib.h>
-#include <ctype.h>
+#include <cassert>
+#include <cstdlib>
+#include <cctype>
 
 #include <fstream>
 #include <list>
@@ -21,6 +21,7 @@ Author: Daniel Kroening
 
 #include <ansi-c/expr2c.h>
 
+#include "../prepare/concrete_model.h"
 #include "modelchecker_spin.h"
 
 /*******************************************************************\

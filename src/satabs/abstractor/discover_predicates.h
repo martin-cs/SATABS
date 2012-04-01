@@ -11,9 +11,9 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <set>
 
-#include <namespace.h>
-
 #include "predicates.h"
+
+class namespacet;
 
 void discover_predicates(
   const exprt &expr,

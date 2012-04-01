@@ -9,11 +9,14 @@ Author: Daniel Kroening, kroening@kroening.com
 #ifndef CPROVER_CEGAR_PREDICATE_IMAGE_SATQE_H
 #define CPROVER_CEGAR_PREDICATE_IMAGE_SATQE_H
 
-#include <message.h>
+#include <vector>
+#include <list>
 
-#include <goto-symex/symex_target_equation.h>
+class message_handlert;
+class symex_target_equationt;
+class namespacet;
 
-#include "abstract_transition_relation.h"
+class abstract_transition_relationt;
 
 void predicate_image_satqe(
   message_handlert &message_handler,

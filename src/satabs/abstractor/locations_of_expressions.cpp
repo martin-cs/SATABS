@@ -11,7 +11,9 @@
 #include "locations_of_expressions.h"
 
 #include <ansi-c/c_types.h>
+#include <pointer-analysis/value_set_analysis.h>
 #include <util/arith_tools.h>
+
 
 bool locations_intersect(const predicatet& phi, const predicatet& psi, const goto_programt::const_targett program_location, value_set_analysist& pointer_info, const namespacet& ns)
 {

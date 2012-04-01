@@ -14,6 +14,7 @@ Date: June 2003
 
 #include <message.h>
 #include <string2int.h>
+#include <options.h>
 
 #include <goto-symex/xml_goto_trace.h>
 
@@ -28,6 +29,7 @@ Date: June 2003
 #include "refiner/select_refiner.h"
 #include "prepare/prepare.h"
 #include "abstractor/select_abstractor.h"
+#include "prepare/concrete_model.h"
 
 /*******************************************************************\
 
@@ -55,6 +57,87 @@ void cmdline_optionst::get_command_line_options(optionst &options)
 
   if(cmdline.isset("error-label"))
     options.set_option("error-label", cmdline.getval("error-label"));
+
+  if(cmdline.isset("iterations"))
+    options.set_option("iterations", cmdline.getval("iterations"));
+  else
+    options.set_option("iterations", 100);
+
+  options.set_option("concurrency", cmdline.isset("concurrency"));
+  options.set_option("passive-nondet",
+      cmdline.isset("passive-nondet"));
+
+  // refiner
+  if(cmdline.isset("refiner"))
+    options.set_option("refiner", cmdline.getval("refiner"));
+  else
+    options.set_option("refiner", "wp");
+
+  if(cmdline.isset("max-new-predicates"))
+    options.set_option("max-new-predicates",
+        cmdline.getval("max-new-predicates"));
+  else
+    options.set_option("max-new-predicates", -1);
+
+  options.set_option("prefer-non-pointer-predicates",
+      cmdline.isset("prefer-non-pointer-predicates"));
+
+  options.set_option("remove-equivalent-predicates",
+      cmdline.isset("remove-equivalent-predicates"));
+
+  options.set_option("prefix-first", cmdline.isset("prefix-first"));
+
+  options.set_option("no-mixed-predicates",
+      cmdline.isset("no-mixed-predicates"));
+
+  // -1 means use unsplit prover
+  if(cmdline.isset("ipplimit"))
+    options.set_option("ipplimit",
+        cmdline.getval("ipplimit"));
+  else
+    options.set_option("ipplimit", -1);
+
+
+  // abstractor
+  if(cmdline.isset("abstractor"))
+    options.set_option("abstractor", cmdline.getval("abstractor"));
+  else
+    options.set_option("abstractor", "wp");
+
+  if(cmdline.isset("max-cube-length"))
+    options.set_option("max-cube-length", cmdline.getval("max-cube-length"));
+  else
+    options.set_option("max-cube-length", 3);
+
+
+  // model checker
+  if(cmdline.isset("modelchecker"))
+    options.set_option("modelchecker", cmdline.getval("modelchecker"));
+  else
+    options.set_option("modelchecker", "boom");
+
+  // boom's default thread bound of 2 is too small
+  if(cmdline.isset("max-threads"))
+    options.set_option("max-threads", cmdline.getval("max-threads"));
+  else
+    options.set_option("max-threads", 5);
+
+  options.set_option("build-tts", cmdline.isset("build-tts"));
+
+  options.set_option("full-inlining", cmdline.isset("full-inlining"));
+
+  options.set_option("loop-detection", cmdline.isset("loop-detection"));
+
+
+  // simulator
+  if(cmdline.isset("simulator"))
+    options.set_option("simulator", cmdline.getval("simulator"));
+  else
+    options.set_option("simulator", "sat");
+
+  options.set_option("no-path-slicing", cmdline.isset("no-path-slicing"));
+
+  options.set_option("shortest-prefix", cmdline.isset("shortest-prefix"));
 }
 
 /*******************************************************************\
@@ -119,19 +202,19 @@ int cmdline_optionst::doit()
 
     // finds predicates
     std::auto_ptr<refinert> refiner(
-      select_refiner(cmdline, args));
+      select_refiner(options, args));
 
     // calculates abstract program
     std::auto_ptr<abstractort> abstractor(
-      select_abstractor(cmdline, args, prepare.goto_functions));
+      select_abstractor(options, args, prepare.goto_functions));
 
     // model checking engine
     std::auto_ptr<modelcheckert> modelchecker(
-      select_modelchecker(cmdline, args));
+      select_modelchecker(options, args));
 
     // simulator
     std::auto_ptr<simulatort> simulator(
-      select_simulator(cmdline, args, prepare.shadow_context));
+      select_simulator(options, args, prepare.shadow_context));
     
     // set their verbosity -- all the same for now
     refiner->set_verbosity(verbosity);
@@ -152,7 +235,7 @@ int cmdline_optionst::doit()
       
     satabs_safety_checker.set_message_handler(message_handler);
     satabs_safety_checker.ui=prepare.get_ui();    
-    satabs_safety_checker.max_iterations=prepare.max_iterations();
+    satabs_safety_checker.max_iterations=options.get_int_option("iterations");
     satabs_safety_checker.save_bps=cmdline.isset("save-bps");    
     satabs_safety_checker.build_tts=cmdline.isset("build-tts");    
     satabs_safety_checker.concurrency_aware=cmdline.isset("concurrency");

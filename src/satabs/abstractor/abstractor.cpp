@@ -13,15 +13,14 @@ Author: Daniel Kroening
 
 #include <simplify_expr.h>
 #include <find_symbols.h>
+#include <std_expr.h>
 
 #include <langapi/language_util.h>
 
 #include "check_redundancy.h"
-
-#include <util/std_expr.h>
-
 #include "abstractor.h"
 #include "abstract_expression.h"
+#include "../prepare/concrete_model.h"
 
 /*******************************************************************\
 

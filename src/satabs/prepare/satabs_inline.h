@@ -8,9 +8,10 @@
 #ifndef SATABS_INLINE_H_
 #define SATABS_INLINE_H_
 
-#include <message_stream.h>
-
 #include <goto-programs/goto_functions.h>
+
+class message_handlert;
+class namespacet;
 
 // do a full inlining
 void satabs_inline(

@@ -13,9 +13,10 @@ Purpose:
 #ifndef CPROVER_SATABS_PREPARE_FUNCTIONS_H
 #define CPROVER_SATABS_PREPARE_FUNCTION_H
 
-#include <message.h>
-
 #include <goto-programs/goto_functions.h>
+
+class contextt;
+class message_handlert;
 
 void prepare_functions(
   contextt &context,

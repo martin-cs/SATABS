@@ -14,8 +14,9 @@ Purpose: Calculate predicates for predicate abstraction.
 #ifndef CPROVER_SATABS_INITIAL_ABSTRACTION_H
 #define CPROVER_SATABS_INITIAL_ABSTRACTION_H
 
+#include <vector>
+
 #include <message.h>
-#include <context.h>
 
 #include "../prepare/concrete_model.h"
 #include "predicates.h"

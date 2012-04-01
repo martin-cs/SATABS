@@ -11,8 +11,8 @@
 #ifndef CPROVER_CHECK_REDUNDANCY_H_
 #define CPROVER_CHECK_REDUNDANCY_H_
 
-#include <expr.h>
-#include <namespace.h>
+class exprt;
+class namespacet;
 
 bool is_equivalent(const exprt& e1, const exprt& e2, const namespacet& ns);
 

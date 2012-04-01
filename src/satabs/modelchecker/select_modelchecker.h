@@ -12,12 +12,13 @@ Date: June 2003
 #ifndef CPROVER_CEGAR_SELECT_MODELCHECKER_H
 #define CPROVER_CEGAR_SELECT_MODELCHECKER_H
 
-#include <cmdline.h>
+#include "../loop_component.h"
 
-#include "modelchecker.h"
+class optionst;
+class modelcheckert;
 
 modelcheckert *select_modelchecker(
-  const cmdlinet &cmdline,
+  const optionst &options,
   const loop_componentt::argst &args);
 
 #endif

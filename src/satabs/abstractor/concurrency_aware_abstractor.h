@@ -10,13 +10,13 @@
 
 #include <memory>
 
-#include "abstractor.h"
-
-#include <util/std_expr.h>
-#include <util/location.h>
+#include <std_expr.h>
+#include <location.h>
 
 #include <pointer-analysis/value_set_analysis.h>
 
+#include "abstractor.h"
+#include "../prepare/concrete_model.h"
 
 class concurrency_aware_abstractort : public abstractort {
 public:

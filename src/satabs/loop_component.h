@@ -14,9 +14,8 @@ Purpose:
 #define CPROVER_SATABS_LOOP_COMPONENT_H
 
 #include <message.h>
-#include <namespace.h>
 
-#include "prepare/concrete_model.h"
+class concrete_modelt;
 
 class loop_componentt:public messaget
 {

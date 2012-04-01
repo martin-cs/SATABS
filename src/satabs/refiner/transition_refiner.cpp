@@ -8,7 +8,7 @@ Date: June 2003
  
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 #include <algorithm>
 
 #include <expr_util.h>
@@ -21,6 +21,9 @@ Date: June 2003
 
 #include "../abstractor/predabs_aux.h"
 #include "../simulator/simulator_sat_dec.h"
+#include "../simulator/fail_info.h"
+#include "../abstractor/predicates.h"
+
 #include "transition_refiner.h"
 
 //#define DEBUG

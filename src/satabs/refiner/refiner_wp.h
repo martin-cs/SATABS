@@ -16,27 +16,21 @@ Purpose: Calculate predicates for predicate abstraction.
 
 #include <map>
 #include <set>
+#include <list>
+
 #include "transition_refiner.h"
+#include "../simulator/fail_info.h"
 
 class refiner_wpt:public transition_refinert
 {
 public:
   refiner_wpt(
-      const argst &args,
-      bool _prefix_first,
-      unsigned max_predicates_to_add,
-      bool prefer_non_pointer_predicates,
-      bool remove_equivalent_predicates,
-      bool no_mixed_predicates,
-      bool passive_constrain):
+      const optionst &options,
+      const argst &args) :
     transition_refinert(
+        options,
         args,
-        _prefix_first,
-        max_predicates_to_add,
-        prefer_non_pointer_predicates,
-        remove_equivalent_predicates,
-        no_mixed_predicates,
-        passive_constrain)
+        false)
   {
   }
 

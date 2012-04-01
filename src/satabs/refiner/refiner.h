@@ -15,25 +15,26 @@ Purpose: Calculate predicates for predicate abstraction.
 #define CPROVER_CEGAR_REFINER_H
 
 #include <decision_procedure.h>
+#include <options.h>
 
 #include "../loop_component.h"
-#include "../abstractor/predicates.h"
-#include "../simulator/fail_info.h"
+#include "../abstractor/abstract_program.h"
+
+class fail_infot;
+class predicatest;
+class abstract_modelt;
 
 class refinert:public loop_componentt
 {
 public:
   refinert(
-      const argst &args,
-      const unsigned _max_predicates_to_add,
-      const bool _prefer_non_pointer_predicates,
-      const bool _remove_equivalent_predicates,
-      const bool _no_mixed_predicates) :
+      const optionst &options,
+      const argst &args) :
     loop_componentt(args),
-    max_predicates_to_add(_max_predicates_to_add),
-    prefer_non_pointer_predicates(_prefer_non_pointer_predicates),
-    remove_equivalent_predicates(_remove_equivalent_predicates),
-    no_mixed_predicates(_no_mixed_predicates)
+    max_predicates_to_add(options.get_int_option("max-new-predicates")),
+    prefer_non_pointer_predicates(options.get_bool_option("prefer-non-pointer-predicates")),
+    remove_equivalent_predicates(options.get_bool_option("remove-equivalent-predicates")),
+    no_mixed_predicates(options.get_bool_option("no-mixed-predicates"))
   {
 	  reset_num_predicates_added();
   }

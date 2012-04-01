@@ -8,9 +8,12 @@ Date: June 2003
  
 \*******************************************************************/
 
+#include <sstream>
+
 #include "refiner.h"
 #include "../abstractor/discover_predicates.h"
 #include "../abstractor/check_redundancy.h"
+#include "../prepare/concrete_model.h"
 
 static bool is_pointer_predicate(const exprt& p)
 {
@@ -55,15 +58,17 @@ void refinert::add_predicates(
 	  {
 		  const exprt &p=*p_it;
 
-		  std::cout << "Considering " << from_expr(concrete_model.ns, "", p) << "\n";
+      std::ostringstream os;
+		  os << "Considering " << from_expr(concrete_model.ns, "", p) << "\n";
 
 		  if(is_pointer_predicate(p))
 		  {
-			  std::cout << "It is a pointer pred\n";
+			  os << "It is a pointer pred\n";
 		  } else
 		  {
-			  std::cout << "It is not a pointer pred\n";
+			  os << "It is not a pointer pred\n";
 		  }
+      debug(os.str());
 
 		  if(!predicates.find(p))
 		  	continue;

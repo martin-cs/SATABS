@@ -20,19 +20,15 @@ class transition_refinert:public refinert
 {
 public:
   transition_refinert(
+      const optionst &options,
       const argst &args,
-      bool _prefix_first,
-      unsigned max_predicates_to_add,
-      bool prefer_non_pointer_predicates,
-      bool remove_equivalent_predicates,
-      bool no_mixed_predicates,
-      bool _passive_constrain):
-    refinert(args, max_predicates_to_add,
-        prefer_non_pointer_predicates,
-        remove_equivalent_predicates,
-        no_mixed_predicates),
-    prefix_first(_prefix_first),
-    passive_constrain(_passive_constrain)
+      const bool transitions_only) :
+    refinert(options, args),
+    prefix_first(!transitions_only &&
+        options.get_bool_option("prefix-first")),
+    passive_constrain(!options.get_bool_option("concurrency") ||
+        !options.get_bool_option("passive-nondet"))
+
   {
     stats.insert(std::make_pair(
           "Total transition refinements",

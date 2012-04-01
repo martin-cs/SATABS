@@ -15,7 +15,7 @@ to determmine whether it is spurious.
 #ifndef CPROVER_SATABS_SIMULATOR_SYMEX_H
 #define CPROVER_SATABS_SIMULATOR_SYMEX_H
 
-#include <namespace.h>
+#include <options.h>
 
 #include <solvers/prop/prop_conv.h>
 #include <goto-symex/goto_symex_state.h>
@@ -28,12 +28,11 @@ class simulator_symext:public simulatort
 {
 public:
   simulator_symext(
-    const argst &args,
-    bool _path_slicing,
-    bool _shortest_prefix):
+      const optionst &options,
+    const argst &args) :
     simulatort(args),
-    path_slicing(_path_slicing),
-    shortest_prefix(_shortest_prefix)
+    path_slicing(!options.get_bool_option("no-path-slicing")),
+    shortest_prefix(options.get_bool_option("shortest-prefix"))
   {
   }
 
