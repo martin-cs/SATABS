@@ -63,7 +63,7 @@ void concurrency_aware_abstractort::pred_abstract_block(
     abstract_transition_relation)
 {
   concurrency_aware_abstract_transition_relationt* concurrency_aware_abstract_transition_relation = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&abstract_transition_relation);
-  assert(NULL != concurrency_aware_abstract_transition_relation);
+  assert(concurrency_aware_abstract_transition_relation);
 
   // Do standard PA on the assignment
   this->specific_abstractor->pred_abstract_block(target, predicates, abstract_transition_relation);

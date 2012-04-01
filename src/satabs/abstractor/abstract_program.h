@@ -33,15 +33,15 @@ class abstract_codet
     bool re_abstract;
 
     abstract_codet():
-      transition_relation(std::auto_ptr<abstract_transition_relationt>(NULL)),
+      transition_relation(std::auto_ptr<abstract_transition_relationt>(0)),
       re_abstract(false)
   {
   }
 
     abstract_codet(const abstract_codet &other):
       transition_relation(
-          other.transition_relation.get() == NULL ? 
-          std::auto_ptr<abstract_transition_relationt>(NULL) : 
+          !other.transition_relation.get() ?
+          std::auto_ptr<abstract_transition_relationt>(0) :
           std::auto_ptr<abstract_transition_relationt>(new abstract_transition_relationt(*(other.transition_relation)))),
       concrete_pc(other.concrete_pc),
       re_abstract(other.re_abstract)
@@ -52,8 +52,8 @@ class abstract_codet
     abstract_codet & operator = (const abstract_codet &other)
     {
       transition_relation=
-        other.transition_relation.get() == NULL ? 
-        std::auto_ptr<abstract_transition_relationt>(NULL) : 
+        !other.transition_relation.get() ?
+        std::auto_ptr<abstract_transition_relationt>(0) :
         std::auto_ptr<abstract_transition_relationt>(new abstract_transition_relationt(*(other.transition_relation)));
       concrete_pc = other.concrete_pc;
       re_abstract = other.re_abstract;

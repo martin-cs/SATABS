@@ -80,7 +80,7 @@ Purpose: decides (using SAT) whether expression e is unsatisfiable
 
 bool is_unsatisfiable(const exprt& e, const namespacet& ns)
 {
-  if(NULL == is_unsatisfiable_cache.get())
+  if(!is_unsatisfiable_cache.get())
   {
     is_unsatisfiable_cache = std::auto_ptr<std::map<exprt, bool> >(new std::map<exprt, bool>);
   }
@@ -132,8 +132,8 @@ bool is_redundant(const exprt& predicate, const namespacet& ns)
 
 void delete_unsatisfiable_cache()
 {
-  if(NULL != is_unsatisfiable_cache.get())
+  if(is_unsatisfiable_cache.get())
   {
-    is_unsatisfiable_cache = std::auto_ptr<std::map<exprt, bool> >(NULL);
+    is_unsatisfiable_cache = std::auto_ptr<std::map<exprt, bool> >(0);
   }
 }

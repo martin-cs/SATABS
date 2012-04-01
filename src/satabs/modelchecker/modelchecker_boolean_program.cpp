@@ -765,7 +765,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
         for(unsigned i=0; i<abstract_model.variables.size(); i++)
         {
           concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
-          assert(NULL != trans_rel);
+          assert(trans_rel);
           if(trans_rel->passive_values.count(i)!=0)
           {
             assert(!abstract_model.variables[i].is_thread_local());
@@ -811,7 +811,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
         if(concurrency_aware)
         {
           concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
-          assert(NULL != trans_rel);
+          assert(trans_rel);
 
           for(unsigned i=0; i<abstract_model.variables.size(); i++)
           {
