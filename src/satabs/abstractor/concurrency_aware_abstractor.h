@@ -38,6 +38,12 @@ class concurrency_aware_abstractort : public abstractort {
         abstract_transition_relationt &
         abstract_transition_relation);
 
+    virtual void abstract_expression(
+        const predicatest &predicates,
+        exprt &expr,
+        const namespacet &ns,
+        goto_programt::const_targett program_location);
+
     virtual void abstract_assume_guard(
         const predicatest &predicates,
         exprt &expr,

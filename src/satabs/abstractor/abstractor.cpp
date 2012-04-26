@@ -19,7 +19,6 @@ Date: June 2003
 
 #include "check_redundancy.h"
 #include "abstractor.h"
-#include "abstract_expression.h"
 #include "../prepare/concrete_model.h"
 
 /*******************************************************************\
@@ -200,7 +199,7 @@ void abstractort::build_abstraction(
       case ASSERT:
         // if it's a goto or assert, abstract the guard
         a_it->guard=c_it->guard;
-        abstract_expression(predicates, a_it->guard, concrete_model.ns);
+        abstract_expression(predicates, a_it->guard, concrete_model.ns, c_it);
         break;
 
       case ASSUME:

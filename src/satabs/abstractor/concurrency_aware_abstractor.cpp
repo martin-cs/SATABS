@@ -150,6 +150,15 @@ void concurrency_aware_abstractort::pred_abstract_block(
 
 }
 
+void concurrency_aware_abstractort::abstract_expression(
+    const predicatest &predicates,
+    exprt &expr,
+    const namespacet &ns,
+    goto_programt::const_targett program_location)
+{
+  this->specific_abstractor->abstract_expression(predicates, expr, ns, program_location);
+}
+
 void concurrency_aware_abstractort::abstract_assume_guard(
     const predicatest &predicates,
     exprt &expr,

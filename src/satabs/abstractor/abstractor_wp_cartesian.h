@@ -35,6 +35,12 @@ class abstractor_wp_cartesiant:public abstractor_wpt
         const namespacet& ns,
         goto_programt::const_targett program_location);
 
+    virtual void abstract_expression(
+        const predicatest &predicates,
+        exprt &expr,
+        const namespacet &ns,
+        goto_programt::const_targett program_location);
+
     virtual void abstract_assume_guard(
         const predicatest &predicates,
         exprt &expr,

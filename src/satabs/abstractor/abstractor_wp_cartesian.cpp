@@ -453,6 +453,31 @@ bool abstractor_wp_cartesiant::contains_subcube(std::set<cubet> cube_set, cubet 
   return false;
 }
 
+void abstractor_wp_cartesiant::abstract_expression(
+    const predicatest &predicates,
+    exprt &expr,
+    const namespacet &ns,
+    goto_programt::const_targett program_location)
+{
+  // Do cube enumeration
+  exprt phi = expr;
+  exprt not_phi = not_exprt(phi);
+
+  // try base first
+  abstractort::abstract_expression(predicates, expr, ns, program_location);
+  if(expr.id()!=ID_nondet_symbol)
+    return;
+
+  // Note that we reverse phi and not_phi here, as we want F(not_phi)
+  std::set<cubet> implies_not_phi = compute_largest_disjunction_of_cubes(predicates, not_phi, phi, program_location);
+
+  exprt new_expr = not_exprt(disjunction_of_cubes_using_predicate_variables(implies_not_phi, predicates));
+  expr.swap(new_expr);
+
+  // TODO: Note: in practice, it may help to add functionality to eliminate unsatisfiable conjunctions of predicates
+
+}
+
 
 void abstractor_wp_cartesiant::abstract_assume_guard(
     const predicatest &predicates,
@@ -460,36 +485,6 @@ void abstractor_wp_cartesiant::abstract_assume_guard(
     const namespacet &ns,
     goto_programt::const_targett target)
 {
-
-  if(expr.type().id()!=ID_bool)
-    throw "abstract_expression expects expression of type Boolean";
-
-  else if(expr.is_constant())
-  {
-    return; // leave it as is
-  }
-
-  if(is_valid(expr, ns)) {
-    expr.make_true();
-    return;
-  }
-
-  if(is_unsatisfiable(expr, ns)) {
-    expr.make_false();
-    return;
-  }
-
-  // Do cube enumeration
-  exprt phi = expr;
-  exprt not_phi = not_exprt(phi);
-
-  // Note that we reverse phi and not_phi here, as we want F(not_phi)
-  std::set<cubet> implies_not_phi = compute_largest_disjunction_of_cubes(predicates, not_phi, phi, target);
-
-  exprt new_expr = not_exprt(disjunction_of_cubes_using_predicate_variables(implies_not_phi, predicates));
-  expr.swap(new_expr);
-
-  // TODO: Note: in practice, it may help to add functionality to eliminate unsatisfiable conjunctions of predicates
-
+  abstract_expression(predicates, expr, ns, target);
 }
 

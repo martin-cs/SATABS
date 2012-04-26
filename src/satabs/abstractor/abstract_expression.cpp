@@ -6,14 +6,13 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 
 #include <i2string.h>
 #include <expr_util.h>
 #include <simplify_expr.h>
 
 #include "check_redundancy.h"
-#include "abstract_expression.h"
 #include "abstractor.h"
 #include "canonicalize.h"
 #include "lift_if.h"
@@ -70,7 +69,7 @@ void make_it_a_predicate(
 
 /*******************************************************************\
 
-Function: abstract_expression
+Function: abstractort::abstract_expression
 
 Inputs:
 
@@ -80,10 +79,11 @@ Purpose:
 
 \*******************************************************************/
 
-void abstract_expression(
+void abstractort::abstract_expression(
     const predicatest &predicates,
     exprt &expr,
-    const namespacet &ns)
+    const namespacet &ns,
+    goto_programt::const_targett program_location)
 {
   if(expr.type().id()!=ID_bool)
     throw "abstract_expression expects expression of type Boolean";
@@ -102,13 +102,13 @@ void abstract_expression(
       expr.id()==ID_implies || expr.id()==ID_xor)
   {
     Forall_operands(it, expr)
-      abstract_expression(predicates, *it, ns);
+      abstract_expression(predicates, *it, ns, program_location);
   }
   else if(expr.id()==ID_not)
   {
     assert(expr.operands().size()==1);
 
-    abstract_expression(predicates, expr.op0(), ns);
+    abstract_expression(predicates, expr.op0(), ns, program_location);
 
     // remove double negation
     if(expr.op0().id()==ID_not &&
@@ -124,7 +124,7 @@ void abstract_expression(
     assert(expr.operands().size()==3);
 
     Forall_operands(it, expr)
-      abstract_expression(predicates, *it, ns);
+      abstract_expression(predicates, *it, ns, program_location);
 
     exprt true_expr(ID_and, bool_typet());
     true_expr.copy_to_operands(expr.op0(), expr.op1());
@@ -150,14 +150,14 @@ void abstract_expression(
       // leave it in
 
       Forall_operands(it, expr)
-        abstract_expression(predicates, *it, ns);
+        abstract_expression(predicates, *it, ns, program_location);
     }
     else // other types, make it a predicate
     {
       if(has_non_boolean_if(expr))
       {
         lift_if(expr);
-        abstract_expression(predicates, expr, ns);
+        abstract_expression(predicates, expr, ns, program_location);
       }
       else
         make_it_a_predicate(predicates, expr, ns);
@@ -170,7 +170,7 @@ void abstract_expression(
   else if(has_non_boolean_if(expr))
   {
     lift_if(expr);
-    abstract_expression(predicates, expr, ns);
+    abstract_expression(predicates, expr, ns, program_location);
   }
   else
   {
@@ -181,7 +181,7 @@ void abstract_expression(
 
 /*******************************************************************\
 
-Function: abstract_assume_guard
+Function: abstractort::abstract_assume_guard
 
 Inputs:
 
@@ -198,7 +198,7 @@ void abstractort::abstract_assume_guard(
     goto_programt::const_targett program_location)
 {
   /* By default, this behaves identically to 'abstract_expression' */
-  abstract_expression(predicates, expr, ns);
+  abstract_expression(predicates, expr, ns, program_location);
 }
 
 
