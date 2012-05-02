@@ -1605,7 +1605,7 @@ void tts_buildert::make_passive_assign(
   to_cnf(constraints_passive, cnf);
 
   std::map<mp_integer, std::set<mp_integer> > p_P;
-  std::map<mp_integer, mp_integer> on_hold;
+  std::map<mp_integer, mp_integer> no_hold;
 #ifdef COMMENTS
   std::map<mp_integer, std::string> state_text;
 #endif
@@ -1628,7 +1628,7 @@ void tts_buildert::make_passive_assign(
       get_local_state_num(PC, false, states, false, num_l1);
       get_local_state_num(PC, true, states, true, num_l2);
       get_local_state_num(PC, false, states, true, num_l2_nh);
-      on_hold[num_l2_nh]=num_l2;
+      no_hold[num_l2]=num_l2_nh;
 #ifdef COMMENTS
       std::pair<std::map<mp_integer, std::string>::iterator, bool> entry=
         state_text.insert(std::make_pair(num_l1, ""));
@@ -1658,24 +1658,27 @@ void tts_buildert::make_passive_assign(
     }
   }
 
-  ::std::vector<const mp_integer*> L_reduced;
-  L_reduced.reserve(p_P.size());
+  ::std::set<mp_integer> L_reduced;
   for(std::map<mp_integer, std::set<mp_integer> >::const_iterator iter=p_P.begin();
       iter!=p_P.end();
       ++iter)
   {
     const mp_integer &p=iter->first;
     assert(!iter->second.empty());
-    // skip no-op only
-    if(iter->second.size()==1 && on_hold[p]==*(iter->second.begin()))
-      continue;
-    L_reduced.push_back(&p);
-
     const mp_integer &x=*(iter->second.begin());
+    assert(no_hold.find(x)!=no_hold.end());
+    // skip no-op only
+    if(iter->second.size()==1 && p==no_hold[x])
+      continue;
+
+    L_reduced.insert(x);
     for(std::set<mp_integer>::const_iterator y=++(iter->second.begin());
         y!=iter->second.end();
         ++y)
     {
+      assert(no_hold.find(*y)!=no_hold.end());
+      L_reduced.insert(*y);
+
 #ifdef COMMENTS
       out_tts << "#";
       out_tts << " *";
@@ -1704,21 +1707,22 @@ void tts_buildert::make_passive_assign(
   }
 
   assert(!L_reduced.empty());
-  for(std::vector<const mp_integer*>::const_iterator l=L_reduced.begin();
-      l+1!=L_reduced.end();
+  std::set<mp_integer>::const_iterator last=--L_reduced.end();
+  for(std::set<mp_integer>::const_iterator l=L_reduced.begin();
+      l!=last;
       ++l)
   {
 #ifdef COMMENTS
     out_tts << "#";
     out_tts << " *'";
-    out_tts << " " << state_text[on_hold[**l]];
+    out_tts << " " << state_text[*l];
     out_tts << " ~>";
     out_tts << " *''";
-    out_tts << " " << state_text[**l];
+    out_tts << " " << state_text[no_hold[*l]];
     out_tts << std::endl;
 #endif
-    out_tts << shared_passive_next << " " << on_hold[**l] << " ~> "
-      << (shared_passive_next+1) << " " << **l << std::endl;
+    out_tts << shared_passive_next << " " << *l << " ~> "
+      << (shared_passive_next+1) << " " << no_hold[*l] << std::endl;
 
     ++shared_passive_next;
   }
@@ -1726,16 +1730,16 @@ void tts_buildert::make_passive_assign(
 #ifdef COMMENTS
   out_tts << "#";
   out_tts << " *'";
-  out_tts << " " << state_text[on_hold[*L_reduced.back()]];
+  out_tts << " " << state_text[*(--L_reduced.end())];
   out_tts << " ~>";
   out_tts << " s'";
-  out_tts << " " << state_text[*L_reduced.back()];
+  out_tts << " " << state_text[no_hold[*(--L_reduced.end())]];
   out_tts << std::endl;
 #endif
   mp_integer target_s;
   get_shared_state_num(in_atomic_sect, false, act_states, true, target_s);
-  out_tts << shared_passive_next << " " << on_hold[*L_reduced.back()] << " ~> "
-    << target_s << " " << *L_reduced.back() << std::endl;
+  out_tts << shared_passive_next << " " << *(--L_reduced.end()) << " ~> "
+    << target_s << " " << no_hold[*(--L_reduced.end())] << std::endl;
 
   ++shared_passive_next;
 
