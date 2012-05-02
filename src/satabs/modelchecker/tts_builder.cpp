@@ -1667,11 +1667,8 @@ void tts_buildert::make_passive_assign(
     const mp_integer &p=iter->first;
     assert(!iter->second.empty());
     // skip no-op only
-    if(iter->second.size()==1)
-    {
-      assert(on_hold[p]==*(iter->second.begin()));
+    if(iter->second.size()==1 && on_hold[p]==*(iter->second.begin()))
       continue;
-    }
     L_reduced.push_back(&p);
 
     const mp_integer &x=*(iter->second.begin());
