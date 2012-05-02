@@ -16,6 +16,7 @@ Date: April 2010
 #include <solvers/flattening/bv_pointers.h>
 #include <solvers/sat/satcheck.h>
 #include <arith_tools.h>
+#include <simplify_expr.h>
 
 #include "check_redundancy.h"
 #include "abstractor_wp_cartesian.h"
@@ -468,14 +469,37 @@ void abstractor_wp_cartesiant::abstract_expression(
   if(expr.id()!=ID_nondet_symbol)
     return;
 
-  // Note that we reverse phi and not_phi here, as we want F(not_phi)
-  std::set<cubet> implies_not_phi = compute_largest_disjunction_of_cubes(predicates, not_phi, phi, program_location);
+  if(program_location->is_assume())
+  {
+    // Note that we reverse phi and not_phi here, as we want F(not_phi)
+    std::set<cubet> implies_not_phi = compute_largest_disjunction_of_cubes(predicates, not_phi, phi, program_location);
 
-  exprt new_expr = not_exprt(disjunction_of_cubes_using_predicate_variables(implies_not_phi, predicates));
-  expr.swap(new_expr);
+    exprt new_expr = not_exprt(disjunction_of_cubes_using_predicate_variables(implies_not_phi, predicates));
+    expr.swap(new_expr);
 
-  // TODO: Note: in practice, it may help to add functionality to eliminate unsatisfiable conjunctions of predicates
+    // TODO: Note: in practice, it may help to add functionality to eliminate unsatisfiable conjunctions of predicates
+  }
+  else
+  {
+    assert(program_location->is_goto() || program_location->is_assert());
 
+    std::set<cubet> implies_phi = compute_largest_disjunction_of_cubes(predicates, phi, not_phi, program_location);
+    std::set<cubet> implies_not_phi = compute_largest_disjunction_of_cubes(predicates, not_phi, phi, program_location);
+
+    exprt true_condition = disjunction_of_cubes_using_predicate_variables(implies_phi, predicates);
+    exprt false_condition = disjunction_of_cubes_using_predicate_variables(implies_not_phi, predicates);
+
+    // a simple case first
+    if(true_condition.is_false() && false_condition.is_false())
+      return;
+
+    // we would need schoose[a,b]; to avoid schoose (the bp output can't cope
+    // with schoose in expressions), we use the equivalent *|a and !b|a
+    and_exprt schoose(or_exprt(expr, true_condition),
+        or_exprt(not_exprt(false_condition), true_condition));
+    simplify(schoose, ns);
+    expr.swap(schoose);
+  }
 }
 
 
