@@ -51,7 +51,8 @@ class cmdline_optionst:
       "(save-bps)(max-threads):(max-new-predicates):(prefer-non-pointer-predicates)"
       "(remove-equivalent-predicates)"
       "(no-mixed-predicates)"
-      "(max-cube-length):(concurrency)(passive-nondet)(csv-stats)(build-tts)",
+      "(max-cube-length):(concurrency)(passive-nondet)(csv-stats)(build-tts)"
+      "(no-passive-constrain)",
       argc, argv),
       xml_interfacet(cmdline)
   {

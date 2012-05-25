@@ -95,6 +95,10 @@ void cmdline_optionst::get_command_line_options(optionst &options)
   options.set_option("no-mixed-predicates",
       cmdline.isset("no-mixed-predicates"));
 
+  options.set_option("no-passive-constrain",
+      cmdline.isset("no-passive-constrain") ||
+      cmdline.isset("passive-nondet"));
+
   // -1 means use unsplit prover
   if(cmdline.isset("ipplimit"))
     options.set_option("ipplimit",
@@ -426,8 +430,9 @@ void cmdline_optionst::help()
     " --concurrency                use CAV'11 method to handle concurrency\n"
     " --max-threads #              when \"concurrency\" is on, specifies maximum\n"
     "                                 number of threads to spawn (default: 2)\n"
+    " --no-passive-constrain       when \"concurrency\" is on, do not constrain broadcasts\n"
     " --passive-nondet             when \"concurrency\" is on, always force passive\n"
-    "                                 predicates to nondet on broadcast and don't constrain\n"
+    "                                 predicates to nondet on broadcast; implies --no-passive-constrain\n"
     " --no-mixed-predicates        don't add predicates involving shared and local variables\n"
 #ifdef HAVE_IPP
     " --ipplimit                   limit for interpolating prover\n"

@@ -27,7 +27,7 @@ class transition_refinert:public refinert
       prefix_first(!transitions_only &&
           options.get_bool_option("prefix-first")),
       passive_constrain(!options.get_bool_option("concurrency") ||
-          !options.get_bool_option("passive-nondet"))
+          !options.get_bool_option("no-passive-constrain"))
 
   {
     stats.insert(std::make_pair(
