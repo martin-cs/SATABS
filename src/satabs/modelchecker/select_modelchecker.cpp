@@ -29,8 +29,8 @@ Purpose:
 \*******************************************************************/
 
 modelcheckert *select_modelchecker(
-    const optionst &options,
-    const loop_componentt::argst &args)
+  const optionst &options,
+  const loop_componentt::argst &args)
 {
   const std::string name=options.get_option("modelchecker");
 
@@ -39,6 +39,7 @@ modelcheckert *select_modelchecker(
   const bool concurrency=options.get_bool_option("concurrency");
   const unsigned max_threads=options.get_int_option("max-threads");
   const bool build_tts=options.get_bool_option("build-tts");
+
   assert(!build_tts ||
       (name=="boppo" && options.get_bool_option("full-inlining"))
       || name=="boom");
