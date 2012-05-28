@@ -1608,6 +1608,10 @@ std::string modelchecker_smvt::expr_string(const exprt &expr)
     else if(expr.is_false())
       return "FALSE";
   }
+  else if(expr.id()==ID_predicate_passive_symbol)
+  {
+    throw "SMV cannot do passive predicate symbols";
+  }
 
   // results in parse error in SMV
   return "??"+expr.id_string()+"??";
