@@ -18,6 +18,7 @@ Date: March 2004
 
 #include <i2string.h>
 #include <string2int.h>
+#include <tempdir.h>
 
 #include <ansi-c/expr2c.h>
 

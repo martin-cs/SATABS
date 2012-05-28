@@ -22,6 +22,7 @@ Date: June 2003
 #include <prefix.h>
 #include <std_expr.h>
 #include <string2int.h>
+#include <tempdir.h>
 
 #include "../abstractor/abstract_model.h"
 #include "abstract_counterexample.h"
