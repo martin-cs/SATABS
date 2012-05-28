@@ -57,28 +57,30 @@ void simulator_symext::convert(
 
     switch(it->type)
     {
-      case goto_trace_stept::ASSIGNMENT:
-      case goto_trace_stept::ASSUME:
-        {
-          exprt tmp=it->cond_expr;
-          prop_conv.set_to_true(tmp);
-          it->cond_literal=const_literal(true);
+    case goto_trace_stept::ASSIGNMENT:
+    case goto_trace_stept::ASSUME:
+      {
+        exprt tmp=it->cond_expr;
+        prop_conv.set_to_true(tmp);
+        it->cond_literal=const_literal(true);
 #if 0
-          std::cout << "CONSTRAINT: " << from_expr(ns, "", tmp) << std::endl;
+        std::cout << "CONSTRAINT: " << from_expr(ns, "", tmp) << std::endl;
 #endif
-        }
-        break;
+      }
+      break;
 
-      case goto_trace_stept::LOCATION:
-      case goto_trace_stept::OUTPUT:
-      case goto_trace_stept::INPUT:
-      case goto_trace_stept::DECL:
-      case goto_trace_stept::FUNCTION_CALL:
-      case goto_trace_stept::FUNCTION_RETURN:
-        break;
+    case goto_trace_stept::LOCATION:
+    case goto_trace_stept::OUTPUT:
+    case goto_trace_stept::INPUT:
+    case goto_trace_stept::DECL:
+    case goto_trace_stept::FUNCTION_CALL:
+    case goto_trace_stept::FUNCTION_RETURN:
+    case goto_trace_stept::ASSERT:
+    case goto_trace_stept::DEAD:
+      break;
 
-      default:
-        assert(false);
+    default:
+      assert(false);
     }
   }
 }
