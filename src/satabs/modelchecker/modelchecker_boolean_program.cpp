@@ -21,6 +21,7 @@ Date: October 2004
 #include <substitute.h>
 #include <std_expr.h>
 #include <string2int.h>
+#include <tempdir.h>
 
 #include "../abstractor/concurrency_aware_abstract_transition_relation.h"
 #include "../abstractor/abstract_model.h"
@@ -1069,6 +1070,9 @@ bool modelchecker_boolean_programt::check(
     abstract_modelt &abstract_model,
     abstract_counterexamplet &counterexample)
 {
+  // we use a temporary directory
+  temp_working_dirt tempdir("/tmp/satabs.XXXXXX");
+
   std::string temp_base="cegar_tmp";
 
   std::string temp_boolean_program_bn=temp_base+"_abstract";
@@ -1104,12 +1108,10 @@ bool modelchecker_boolean_programt::check(
       case BEBOP:
         status(std::string("Running BEBOP"));
         throw "Support for Bebop not yet implemented";
-        break;
 
       case MOPED:
         status(std::string("Running MOPED"));
         throw "Support for Moped not yet implemented";
-        break;
 
       default:
         assert(false);
@@ -1125,7 +1127,7 @@ bool modelchecker_boolean_programt::check(
 
   {
     std::ifstream out1(temp_boolean_program_out1.c_str()),
-      out2(temp_boolean_program_out2.c_str());
+                  out2(temp_boolean_program_out2.c_str());
 
     switch(engine)
     {

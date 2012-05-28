@@ -715,6 +715,9 @@ bool modelchecker_spint::check(
     abstract_modelt &abstract_model,
     abstract_counterexamplet &counterexample)
 {
+  // we use a temporary directory
+  temp_working_dirt tempdir("/tmp/satabs.XXXXXX");
+
   std::string temp_base="cegar_tmp";
 
   std::string temp_spin=temp_base+"_abstract.promela";
