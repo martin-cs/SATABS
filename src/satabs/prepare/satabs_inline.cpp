@@ -473,10 +473,13 @@ void satabs_inlinet::expand_function_call(
       {
         Forall_goto_program_instructions(it, tmp)
         {
-          satabs_replace_location(it->location, new_location);
-          satabs_replace_location(it->guard, new_location);
-          satabs_replace_location(it->code, new_location);
-          it->function=target->function;
+          if(it->function==identifier)
+          {
+            satabs_replace_location(it->location, new_location);
+            satabs_replace_location(it->guard, new_location);
+            satabs_replace_location(it->code, new_location);
+            it->function=target->function;
+          }
         }
       }
     }
