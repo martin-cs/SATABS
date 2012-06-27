@@ -124,6 +124,8 @@ endif
 satabs$(EXEEXT): $(OBJ)
 	$(LINKBIN)
 
+.PHONY: satabs-mac-signed
+
 satabs-mac-signed: satabs$(EXEEXT)
 	codesign -v -s $(OSX_IDENTITY) satabs$(EXEEXT)
 	
