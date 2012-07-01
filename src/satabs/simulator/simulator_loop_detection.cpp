@@ -96,7 +96,7 @@ bool simulator_loop_detectiont::check_phase_I_equation(
 
     bv_minimizing_dect satcheck(concrete_model.ns);
 
-    convert(satcheck, equation, c_it);
+    convert(satcheck, equation, c_it, concrete_model.ns);
 
     // solve it
     if(!is_satisfiable(satcheck))

@@ -44,7 +44,8 @@ Purpose:
 void simulator_symext::convert(
     prop_convt &prop_conv,
     symex_target_equationt &equation,
-    symex_target_equationt::SSA_stepst::const_iterator last)
+    symex_target_equationt::SSA_stepst::const_iterator last,
+    const namespacet &ns)
 {
   last++;
 
@@ -69,13 +70,24 @@ void simulator_symext::convert(
       }
       break;
 
+    case goto_trace_stept::ASSERT:
+      {
+        // must negate!
+        exprt tmp=it->cond_expr;
+        prop_conv.set_to_false(tmp);
+        it->cond_literal=const_literal(true);
+#if 0
+        std::cout << "CONSTRAINT: " << from_expr(ns, "", gen_not(tmp)) << std::endl;
+#endif
+      }
+      break;
+
     case goto_trace_stept::LOCATION:
     case goto_trace_stept::OUTPUT:
     case goto_trace_stept::INPUT:
     case goto_trace_stept::DECL:
     case goto_trace_stept::FUNCTION_CALL:
     case goto_trace_stept::FUNCTION_RETURN:
-    case goto_trace_stept::ASSERT:
     case goto_trace_stept::DEAD:
       break;
 
@@ -105,6 +117,7 @@ void simulator_symext::build_equation_prefix(
 {
   contextt new_context;
   namespacet new_ns(concrete_model.ns.get_context(), new_context);
+
   goto_symext symex_simulator(new_ns, new_context, prefix.equation);
   symex_simulator.constant_propagation=constant_propagation;
   symex_simulator.options.set_option("assertions", true);
@@ -186,6 +199,7 @@ void simulator_symext::build_equation_prefix(
           }
         }
         break;
+
       case END_THREAD:
         break;
 
@@ -342,7 +356,7 @@ bool simulator_symext::check_prefix_equation(
     c_it=state_array[index];
 
     simulator_sat_dect satcheck(concrete_model.ns);
-    convert(satcheck, prefix.equation, c_it);
+    convert(satcheck, prefix.equation, c_it, concrete_model.ns);
 
     if(is_satisfiable(satcheck))
     {
@@ -421,7 +435,7 @@ bool simulator_symext::check_full_trace(
     --prefix.equation.SSA_steps.end();
 
   simulator_sat_dect satcheck(concrete_model.ns);
-  convert(satcheck, prefix.equation, c_it);
+  convert(satcheck, prefix.equation, c_it, concrete_model.ns);
 
   if(is_satisfiable(satcheck))
   {
@@ -457,8 +471,8 @@ Inputs:
 Outputs:
 
 Purpose: check an abstract counterexample
-Returns TRUE if the counterexample is spurious,
-and FALSE otherwise
+         Returns TRUE if the counterexample is spurious,
+         and FALSE otherwise
 
 \*******************************************************************/
 

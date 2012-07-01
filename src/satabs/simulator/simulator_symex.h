@@ -61,7 +61,8 @@ class simulator_symext:public simulatort
     void convert(
         prop_convt &prop_conv,
         symex_target_equationt &equation,
-        symex_target_equationt::SSA_stepst::const_iterator last);
+        symex_target_equationt::SSA_stepst::const_iterator last,
+        const namespacet &ns);
 
     struct prefixt
     {
