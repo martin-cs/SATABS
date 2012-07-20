@@ -377,6 +377,9 @@ int preparet::get_async_modules()
         goto_functions);
 #endif
 
+  // label claims
+  label_claims(goto_functions);
+
   // set claim
   if(cmdline.isset("claim"))
     set_claims(
