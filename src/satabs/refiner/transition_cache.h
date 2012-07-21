@@ -49,7 +49,7 @@ class transition_cachet
     {
       size_t operator()(const entryt &e) const
       {
-        return ((unsigned long)&(*e.pc))^e.from.size()^e.to.size()
+        return ((unsigned long long)&(*e.pc))^e.from.size()^e.to.size()
           ^e.from_passive.size()^e.to_passive.size();
       }
     };
