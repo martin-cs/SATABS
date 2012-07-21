@@ -40,7 +40,7 @@ extern inline bool operator<(
     abstract_counterexamplet::stepst::const_iterator a,
     abstract_counterexamplet::stepst::const_iterator b)
 {
-  return (unsigned long int)&(*a)<(unsigned long int)&(*b);
+  return &(*a)<&(*b);
 }
 
 std::ostream& operator<< (std::ostream& out,
