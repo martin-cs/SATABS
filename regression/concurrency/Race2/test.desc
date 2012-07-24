@@ -1,4 +1,4 @@
-CORE
+KNOWNBUG
 main.c
 --iterations 3 --max-threads 3 --data-race-check
 ^EXIT=10$

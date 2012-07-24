@@ -1,6 +1,6 @@
 CORE
 main.c
---iterations 100 --bounds-check --pointer-check
+--iterations 200 --bounds-check --pointer-check
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$
