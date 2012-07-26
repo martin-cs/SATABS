@@ -587,9 +587,7 @@ void simulator_loop_detectiont::build_parameterized_equation(
   symex_simulator.constant_propagation=false;
 
   // for ignoring nested ones
-  bool ignore=false;
-
-
+  //bool ignore=false;
 
   for(abstract_counterexamplet::stepst::const_iterator
       it=abstract_counterexample.steps.begin();
@@ -658,7 +656,7 @@ void simulator_loop_detectiont::build_parameterized_equation(
       loop_stack.top().state_nr=equation.SSA_steps.size();
       loop_stack.top().state=state;
       loop_stack.top().c_it = it;
-      ignore=false;
+      //ignore=false;
     }
     else if(it->is_loop_end())
     {
@@ -687,7 +685,7 @@ void simulator_loop_detectiont::build_parameterized_equation(
         fail_info.induction_infos.push_back (induction_info);
 
       loop_stack.pop();
-      ignore=true;
+      //ignore=true;
     }
     else
       assert(false);
