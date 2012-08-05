@@ -304,7 +304,6 @@ void prepare_functionst::do_function_arguments(
     function_symbol.type=f_it->second.type;
   }  
 
-  const irep_idt function_id=f_it->first;
   goto_programt &goto_program=f_it->second.body;
 
   Forall_goto_program_instructions(i_it, goto_program)
