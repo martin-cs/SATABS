@@ -1,4 +1,4 @@
-CORE
+THOROUGH
 main.c
 --full-inlining --concurrency --max-threads 2 --abstractor cartesian --iterations 10
 ^EXIT=0$
