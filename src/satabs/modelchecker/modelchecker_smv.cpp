@@ -671,7 +671,7 @@ void modelchecker_smvt::build_smv_file(
 
     out << "VAR atomic: boolean;" << std::endl << std::endl;
 
-    out << "ASSIGN init(atomic):=0;" << std::endl << std::endl;
+    out << "ASSIGN init(atomic):=FALSE;" << std::endl << std::endl;
     out << "ASSIGN next(atomic):=case" << std::endl;
 
     for(unsigned thread_nr=0; thread_nr<threads.size(); thread_nr++)
@@ -703,6 +703,7 @@ void modelchecker_smvt::build_smv_file(
       out << std::endl;
     }
 
+    out << "    TRUE: FALSE;" << std::endl;
     out << "  esac;" << std::endl;
 
     out << std::endl;
@@ -724,9 +725,9 @@ void modelchecker_smvt::build_smv_file(
       out << "ASSIGN init(t" << thread_nr << ".started):=";
 
       if(thread_nr==0)
-        out << "1";
+        out << "TRUE";
       else
-        out << "0";
+        out << "FALSE";
 
       out << ";" << std::endl;
 
@@ -751,11 +752,11 @@ void modelchecker_smvt::build_smv_file(
 
         for(unsigned thread_nr2=0; thread_nr2<threads.size(); thread_nr2++)
         {
-          if(first) first=false; else out << "+";
+          if(first) first=false; else out << "|";
           out << "t" << thread_nr2 << ".start_thread_" << thread_nr;
         }
 
-        out << ">=1;" << std::endl;
+        out << ";" << std::endl;
 
         out << "  esac";
       }
@@ -765,19 +766,35 @@ void modelchecker_smvt::build_smv_file(
 
     out << std::endl;
 
-    out << "-- exactly one thread runs at a time" << std::endl;
+    out << "-- at least one thread runs" << std::endl;
 
     out << "INVAR ";
 
     for(unsigned thread_nr=0; thread_nr<threads.size(); thread_nr++)
     {
-      if(thread_nr!=0) out << "+";
+      if(thread_nr!=0) out << "|";
       out << "t" << thread_nr << ".runs";
     }
 
-    out << "=1";
-
     out << std::endl;
+
+    out << "-- at most one thread runs" << std::endl;
+
+    for(unsigned thread_nr=0; thread_nr<threads.size(); thread_nr++)
+    {
+      out << "INVAR t" << thread_nr << ".runs -> ";
+
+      bool first=true;
+      for(unsigned thread_nr2=0; thread_nr2<threads.size(); thread_nr2++)
+      {
+        if(thread_nr2==thread_nr) continue;
+        if(first) first=false; else out << "&";
+        out << "!t" << thread_nr2 << ".runs";
+      }
+
+      out << std::endl;
+    }
+    
     out << std::endl;
 
     // the thread module
