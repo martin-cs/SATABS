@@ -22,7 +22,7 @@ Purpose:
 #include <std_expr.h>
 #include <context.h>
 
-#include <solvers/flattening/sat_minimizer.h>
+#include <solvers/flattening/bv_minimize.h>
 #include <solvers/sat/pbs_dimacs_cnf.h>
 
 #include <ansi-c/c_types.h>
@@ -109,8 +109,7 @@ bool simulator_loop_detectiont::check_phase_I_equation(
         std::cout << from_expr (concrete_model.ns, "", *m_it) << ", ";
       std::cout << std::endl;
 
-      if(!satcheck.minimize (symbols))
-        status("Unable to minimize parameters.");
+      satcheck.minimize(symbols);
 
       build_goto_trace(
           equation,
