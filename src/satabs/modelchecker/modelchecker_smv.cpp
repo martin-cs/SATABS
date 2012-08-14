@@ -1695,7 +1695,7 @@ bool modelchecker_smvt::check(
     abstract_counterexamplet &counterexample)
 {
   // we use a temporary directory
-  temp_working_dirt tempdir("/tmp/satabs.XXXXXX");
+  temp_working_dirt tempdir("satabs.XXXXXX");
 
   std::string temp_base="cegar_tmp";
 
