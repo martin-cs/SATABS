@@ -188,7 +188,7 @@ void simulator_symext::build_equation_prefix(
 
             unsigned const next_thread=state.source.thread_nr+1;
             l1_name=state.level0(l1_name, ns, next_thread);
-            l1_name=state.top().level1(l1_name);
+            l1_name=state.level1(l1_name);
             symbol_exprt sl(l1_name, sym.type);
             symbol_exprt sr(*itn, sym.type);
             state.rename(sr, ns, goto_symex_statet::L2);
