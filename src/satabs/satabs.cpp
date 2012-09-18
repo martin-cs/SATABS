@@ -3,7 +3,7 @@
 Module: CEGAR Main Module 
 
 Authors: Daniel Kroening, kroening@kroening.com
-Karen Yorav
+         Karen Yorav
 
 Date: June 2003
 
@@ -18,6 +18,8 @@ Date: June 2003
 Purpose: Main Module
 
 */
+
+#include <unicode.h>
 
 #include "cmdline_options.h"
 
@@ -47,12 +49,21 @@ Purpose:
 
 \*******************************************************************/
 
+#ifdef _MSC_VER
+int wmain(int argc, const wchar_t **argv_wide)
+{
+  const char **argv=narrow_argv(argc, argv_wide);
+  cmdline_optionst cmdline_options(argc, argv); 
+  return cmdline_options.main();
+}
+#else
 int main(int argc, const char **argv) 
 {
-#ifndef _WIN32
+  #ifndef _WIN32
   signal(SIGXCPU, &xcpu_termination_handler);
-#endif
+  #endif
 
   cmdline_optionst cmdline_options(argc, argv); 
   return cmdline_options.main();
 }
+#endif
