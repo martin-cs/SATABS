@@ -20,6 +20,7 @@ Date: June 2003
 #include <goto-symex/xml_goto_trace.h>
 
 #include <cbmc/xml_interface.h>
+#include <cbmc/version.h>
 
 #include "cmdline_options.h"
 #include "satabs_safety_checker.h"
@@ -329,6 +330,7 @@ void cmdline_optionst::help()
   std::cout <<
     "\n"
     "* *          SATABS " SATABS_VERSION " - Copyright (C) 2003-2012           * *\n"
+    "* *                     based on CBMC " CBMC_VERSION "                   * *\n"
     "* *              Daniel Kroening, Edmund Clarke             * *\n"
     "* *                  Oxford University, CMU                 * *\n"
     "* *                  kroening@kroening.com                  * *\n"
