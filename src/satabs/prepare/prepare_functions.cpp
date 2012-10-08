@@ -78,9 +78,9 @@ void prepare_functionst::adjust_function_arguments(
 
     symbolt &symbol=s_it->second;
 
-    symbol.thread_local=true;
-    symbol.file_local=false;
-    symbol.static_lifetime=true;
+    symbol.is_thread_local=true;
+    symbol.is_file_local=false;
+    symbol.is_static_lifetime=true;
   } 
 }
 
@@ -120,11 +120,11 @@ void prepare_functionst::do_return_value(
 
   // add symbol to context
   symbolt new_symbol;
-  new_symbol.lvalue=true;
-  new_symbol.is_statevar=true;
-  new_symbol.thread_local=true;
-  new_symbol.file_local=true;
-  new_symbol.static_lifetime=true;
+  new_symbol.is_lvalue=true;
+  new_symbol.is_state_var=true;
+  new_symbol.is_thread_local=true;
+  new_symbol.is_file_local=true;
+  new_symbol.is_static_lifetime=true;
   new_symbol.module=function_symbol.module;
   new_symbol.value.make_nil();
   new_symbol.base_name=id2string(function_symbol.base_name)+"#return_value";
