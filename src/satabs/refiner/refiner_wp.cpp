@@ -19,7 +19,6 @@ Date: June 2003
 #include <simplify_expr.h>
 
 #include <goto-programs/wp.h>
-#include <goto-symex/basic_symex.h>
 #include <goto-symex/goto_symex_state.h>
 
 #include <solvers/sat/satcheck.h>

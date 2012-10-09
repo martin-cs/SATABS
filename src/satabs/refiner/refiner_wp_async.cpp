@@ -18,7 +18,6 @@ Date: June 2003
 
 #include <goto-symex/precondition.h>
 #include <goto-symex/postcondition.h>
-#include <goto-symex/basic_symex.h>
 
 #include <simplify_expr.h>
 
