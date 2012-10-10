@@ -89,14 +89,19 @@ abstract_modelt::variablet::var_classt abstractort::get_var_class(
       it++)
   {
     const symbolt &symbol=ns.lookup(*it);
-    if(is_global(symbol))
+
+    if(symbol.is_shared())
     {
       found_shared_global=true;
-    } else if(is_thread_local(symbol)) {
+    }
+    else if(symbol.is_thread_local)
+    {
       found_thread_local=true;
-    } else {
-      assert(is_procedure_local(symbol));
-      found_procedure_local = true;
+    }
+    else
+    {
+      assert(symbol.is_procedure_local());
+      found_procedure_local=true;
     }
   }
 

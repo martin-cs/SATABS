@@ -298,9 +298,12 @@ bool concurrency_aware_abstractort::broadcast_required(
 #endif
 
   bool require_broadcast = false;
-  for(std::set<symbol_exprt>::iterator it = intersection_of_targets_and_locations.begin(); it != intersection_of_targets_and_locations.end(); it++)
+  for(std::set<symbol_exprt>::iterator
+      it=intersection_of_targets_and_locations.begin();
+      it!=intersection_of_targets_and_locations.end();
+      it++)
   {
-    if(is_global(concrete_model.ns.lookup(it->get(ID_identifier))))
+    if(concrete_model.ns.lookup(it->get(ID_identifier)).is_shared())
     {
       require_broadcast = true;
       break;

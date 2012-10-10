@@ -184,7 +184,7 @@ void simulator_symext::build_equation_prefix(
           {
             irep_idt l1_name=state.get_original_name(*itn);
             const symbolt &sym=ns.lookup(l1_name);
-            if(!is_procedure_local(sym)) continue;
+            if(!sym.is_procedure_local()) continue;
 
             unsigned const next_thread=state.source.thread_nr+1;
             l1_name=state.level0(l1_name, ns, next_thread);
