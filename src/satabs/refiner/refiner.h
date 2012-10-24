@@ -17,6 +17,8 @@ Purpose: Calculate predicates for predicate abstraction.
 #include <decision_procedure.h>
 #include <options.h>
 
+#include <solvers/prop/prop.h>
+
 #include "../loop_component.h"
 #include "../abstractor/abstract_program.h"
 
@@ -75,6 +77,25 @@ class refinert:public loop_componentt
 
         default:
           throw "unexpected result from dec_solve()";
+      }
+    }
+
+    bool is_satisfiable(propt &prop)
+    {
+      prop.set_message_handler(get_message_handler());
+      prop.set_verbosity(get_verbosity());
+
+      // solve it
+      switch(prop.prop_solve())
+      {
+        case propt::P_UNSATISFIABLE:
+          return false;
+
+        case propt::P_SATISFIABLE:
+          return true;
+
+        default:
+          throw "unexpected result from prop_solve()";
       }
     }
 
