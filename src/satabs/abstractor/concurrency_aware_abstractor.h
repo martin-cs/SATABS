@@ -54,8 +54,7 @@ class concurrency_aware_abstractort : public abstractort {
 
     bool broadcast_required(
         goto_programt::const_targett target,
-        const predicatet &predicate,
-        goto_programt::const_targett program_location);
+        const predicatet &predicate);
 
   private:
     std::auto_ptr<abstractort> specific_abstractor;

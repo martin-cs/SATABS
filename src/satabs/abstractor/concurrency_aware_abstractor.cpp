@@ -99,10 +99,20 @@ void concurrency_aware_abstractort::pred_abstract_block(
       passive_constraints,
       passive_predicates_wp);
 
+  bool enforce_broadcast = false;
+  // __CPROVER_passive_broadcast label enforces broadcast
+  for(goto_programt::instructiont::labelst::const_iterator
+      l=target->labels.begin();
+      !enforce_broadcast && l!=target->labels.end();
+      ++l)
+    enforce_broadcast = *l=="__CPROVER_passive_broadcast";
+
   for(unsigned int i = 0; i < predicates.size(); i++)
   {
-    if(passive_predicates_wp[i]==passive_predicates[i] ||
-        predicates[i]==predicatest::make_expr_passive(predicates[i], concrete_model.ns, 0))
+    if((passive_predicates_wp[i]==passive_predicates[i] ||
+        predicates[i]==predicatest::make_expr_passive(predicates[i], concrete_model.ns, 0)) &&
+        (!enforce_broadcast ||
+         abstract_transition_relation.values.find(i)==abstract_transition_relation.values.end()))
     {
       concurrency_aware_abstract_transition_relation->passive_values.erase(i);
 #ifdef DEBUG
@@ -117,7 +127,7 @@ void concurrency_aware_abstractort::pred_abstract_block(
       std::cout << "P:  " << from_expr(concrete_model.ns, "", passive_predicates[i]) << std::endl;
 #endif
 
-      if(broadcast_required(target, passive_predicates[i], target))
+      if(enforce_broadcast || broadcast_required(target, passive_predicates[i]))
       {
         exprt new_value = passive_nondet ?
           nil_exprt() :
@@ -242,12 +252,11 @@ std::set<symbol_exprt> concurrency_aware_abstractort::targets_of_lvalue(const ex
 
 bool concurrency_aware_abstractort::broadcast_required(
     goto_programt::const_targett target,
-    const predicatet &predicate,
-    goto_programt::const_targett program_location)
+    const predicatet &predicate)
 {
   // Get targets of assignment
   std::set<symbol_exprt> targets = targets_of_lvalue(target->code.op0(), target);
-  std::set<symbol_exprt> locations = locations_of_expression(predicate, program_location, pointer_info, concrete_model.ns);
+  std::set<symbol_exprt> locations = locations_of_expression(predicate, target, pointer_info, concrete_model.ns);
 #ifdef DEBUG_BROADCAST
   std::cout << "Targets of lvalue " << from_expr(concrete_model.ns, "", target->code.op0()) << ":" << std::endl;
   for(std::set<symbol_exprt>::iterator it = targets.begin(); it != targets.end(); it++)
@@ -300,15 +309,9 @@ bool concurrency_aware_abstractort::broadcast_required(
   bool require_broadcast = false;
   for(std::set<symbol_exprt>::iterator
       it=intersection_of_targets_and_locations.begin();
-      it!=intersection_of_targets_and_locations.end();
+      !require_broadcast && it!=intersection_of_targets_and_locations.end();
       it++)
-  {
-    if(concrete_model.ns.lookup(it->get(ID_identifier)).is_shared())
-    {
-      require_broadcast = true;
-      break;
-    }
-  }
+    require_broadcast = concrete_model.ns.lookup(it->get(ID_identifier)).is_shared();
 
   if(require_broadcast)
   {
