@@ -27,7 +27,9 @@ class transition_refinert:public refinert
       prefix_first(!transitions_only &&
           options.get_bool_option("prefix-first")),
       passive_constrain(!options.get_bool_option("concurrency") ||
-          !options.get_bool_option("no-passive-constrain"))
+          !options.get_bool_option("no-passive-constrain")),
+      monotone_constrain(options.get_bool_option("concurrency") &&
+          options.get_bool_option("monotone-constrain"))
 
   {
     stats.insert(std::make_pair(
@@ -55,6 +57,7 @@ class transition_refinert:public refinert
   protected:
     const bool prefix_first;
     const bool passive_constrain;
+    const bool monotone_constrain;
 
     // Updates the set of predicates for the same program according to
     // the counterexample. 

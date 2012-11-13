@@ -52,7 +52,7 @@ class cmdline_optionst:
       "(remove-equivalent-predicates)"
       "(no-mixed-predicates)"
       "(max-cube-length):(concurrency)(passive-nondet)(csv-stats)(build-tts)"
-      "(no-passive-constrain)",
+      "(no-passive-constrain)(monotone-constrain)",
       argc, argv),
       xml_interfacet(cmdline)
   {

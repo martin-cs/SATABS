@@ -100,6 +100,8 @@ void cmdline_optionst::get_command_line_options(optionst &options)
       cmdline.isset("no-passive-constrain") ||
       cmdline.isset("passive-nondet"));
 
+  options.set_option("monotone-constrain", cmdline.isset("montone-constrain"));
+
   // -1 means use unsplit prover
   if(cmdline.isset("ipplimit"))
     options.set_option("ipplimit",
@@ -436,6 +438,7 @@ void cmdline_optionst::help()
     " --passive-nondet             when \"concurrency\" is on, always force passive\n"
     "                                 predicates to nondet on broadcast; implies --no-passive-constrain\n"
     " --no-mixed-predicates        don't add predicates involving shared and local variables\n"
+    " --monotone-constrain         when \"concurrency\" is on, ensure monotonicity in transition refinement\n"
 #ifdef HAVE_IPP
     " --ipplimit                   limit for interpolating prover\n"
 #endif

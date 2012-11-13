@@ -17,8 +17,12 @@ Date: June 2003
 #include <std_expr.h>
 #include <simplify_expr.h>
 #include <i2string.h>
+#include <threeval.h>
 
 #include <langapi/language_util.h>
+
+#include <solvers/sat/cnf_clause_list.h>
+#include <solvers/sat/satcheck_minisat2.h>
 
 #include "../abstractor/predabs_aux.h"
 #include "../simulator/simulator_sat_dec.h"
@@ -121,7 +125,6 @@ bool transition_refinert::check_transitions(
     abstract_modelt &abstract_model,
     const fail_infot &fail_info)
 {
-
   status("Checking transitions");
 
   bool error=true;
@@ -409,8 +412,8 @@ bool transition_refinert::check_assignment_transition(
   }
 
   // create SAT solver object
-  satcheckt satcheck;
-  bv_pointerst solver(concrete_model.ns, satcheck);
+  cnf_clause_listt cnf;
+  bv_pointerst solver(concrete_model.ns, cnf);
   solver.unbounded_array=boolbvt::U_NONE;
 
   // convert constraints
@@ -498,10 +501,12 @@ bool transition_refinert::check_assignment_transition(
     }
   }
 
+  satcheckt satcheck;
+  cnf.copy_to(satcheck);
   satcheck.set_assumptions(assumptions);
 
   // solve it
-  if(is_satisfiable(solver))
+  if(is_satisfiable(satcheck))
   {
     print(9, "Transition is OK");
 #ifdef DEBUG
@@ -590,6 +595,207 @@ bool transition_refinert::check_assignment_transition(
     constraint.make_false(); // this can happen if
   else                       // the invariants are inconsistent
     gen_or(constraint);
+
+  // monotonicity-preserving refinement
+  if(monotone_constrain &&
+      !constraint.is_false() &&
+      passive_id!=active_id && passive_id<num_threads)
+  {
+    and_exprt monotone;
+    monotone.reserve_operands(2*2*predicates.size()+2);
+
+    // first enumerate the solutions for the active thread, such that some
+    // consistent transition over the passive threads exists
+    {
+      or_exprt big_or1;
+
+#ifdef SATCHECK_MINISAT2
+      satcheck_minisat_no_simplifiert satcheck2;
+#else
+      satcheckt satcheck2;
+#endif
+      cnf.copy_to(satcheck2);
+
+      while(is_satisfiable(satcheck2))
+      {
+        bvt new_clause;
+        new_clause.reserve(2*predicates.size());
+
+        exprt::operandst new_constraint_ops;
+        new_constraint_ops.reserve(2*predicates.size());
+
+        for(unsigned i=0; i < predicates.size(); ++i)
+        {
+          const literalt &l=predicate_variables_from[active_id][i];
+// #ifdef SATCHECK_MINISAT2
+//           if(satcheck2.is_eliminated(l))
+//             continue;
+// #endif
+          tvt sol=satcheck2.l_get(l);
+          assert(sol.is_known());
+          new_clause.push_back(l.cond_negation(sol.is_true()));
+
+          new_constraint_ops.push_back(exprt());
+          exprt &e=new_constraint_ops.back();
+          e=exprt(ID_predicate_symbol, bool_typet());
+          e.set(ID_identifier, i);
+          if(sol.is_true()==l.sign()) e.make_not();
+        }
+
+        for(unsigned i=0; i < predicates.size(); ++i)
+        {
+          const literalt &l=predicate_variables_to[active_id][i];
+// #ifdef SATCHECK_MINISAT2
+//           if(satcheck2.is_eliminated(l))
+//             continue;
+// #endif
+          tvt sol=satcheck2.l_get(l);
+          assert(sol.is_known());
+          new_clause.push_back(l.cond_negation(sol.is_true()));
+
+          new_constraint_ops.push_back(exprt());
+          exprt &e=new_constraint_ops.back();
+          e=exprt(ID_predicate_next_symbol, bool_typet());
+          e.set(ID_identifier, i);
+          if(sol.is_true()==l.sign()) e.make_not();
+        }
+
+        and_exprt a(new_constraint_ops);
+#ifdef DEBUG
+        std::cout << "solution: " << from_expr(concrete_model.ns, "", a) << std::endl;
+#endif
+        big_or1.move_to_operands(a);
+
+        satcheck2.lcnf(new_clause);
+      }
+
+      // at least one active transition must be possible
+      assert(!big_or1.operands().empty());
+
+      monotone.move_to_operands(big_or1);
+    }
+
+    // all passive predicates unchanged
+    for(unsigned i=0; i < predicates.size(); ++i)
+    {
+      exprt bp(ID_predicate_passive_symbol, bool_typet());
+      bp.set(ID_identifier, i);
+
+      exprt bp_primed(ID_next_symbol, bool_typet());
+      bp_primed.copy_to_operands(exprt(ID_predicate_passive_symbol, bool_typet()));
+      bp_primed.op0().set(ID_identifier, i);
+
+      or_exprt o1(not_exprt(bp), bp_primed);
+      or_exprt o2(bp, not_exprt(bp_primed));
+#ifdef DEBUG
+      std::cout << "passive-eq: " << from_expr(concrete_model.ns, "", o1) << std::endl;
+      std::cout << "passive-eq: " << from_expr(concrete_model.ns, "", o2) << std::endl;
+#endif
+      monotone.move_to_operands(o1);
+      monotone.move_to_operands(o2);
+    }
+
+    // enumerate the solutions such that the passive thread cannot make a
+    // transition
+    {
+      or_exprt big_or2;
+
+#ifdef SATCHECK_MINISAT2
+      satcheck_minisat_no_simplifiert satcheck2;
+#else
+      satcheckt satcheck2;
+#endif
+      cnf.copy_to(satcheck2);
+
+      bvt clause;
+      clause.reserve(3*predicates.size());
+      for(unsigned i=0; i < predicates.size(); ++i)
+      {
+        clause.push_back(predicate_variables_from[active_id][i].negation());
+        clause.push_back(predicate_variables_to[active_id][i].negation());
+        clause.push_back(predicate_variables_from[passive_id][i].negation());
+      }
+      satcheck2.lcnf(clause);
+
+      while(is_satisfiable(satcheck2))
+      {
+        bvt new_clause;
+        new_clause.reserve(3*predicates.size());
+
+        exprt::operandst new_constraint_ops;
+        new_constraint_ops.reserve(3*predicates.size());
+
+        for(unsigned i=0; i < predicates.size(); ++i)
+        {
+          const literalt &l=predicate_variables_from[active_id][i];
+// #ifdef SATCHECK_MINISAT2
+//           if(satcheck2.is_eliminated(l))
+//             continue;
+// #endif
+          tvt sol=satcheck2.l_get(l);
+          assert(sol.is_known());
+          new_clause.push_back(l.cond_negation(sol.is_true()));
+
+          new_constraint_ops.push_back(exprt());
+          exprt &e=new_constraint_ops.back();
+          e=exprt(ID_predicate_symbol, bool_typet());
+          e.set(ID_identifier, i);
+          if(sol.is_true()==l.sign()) e.make_not();
+        }
+
+        for(unsigned i=0; i < predicates.size(); ++i)
+        {
+          const literalt &l=predicate_variables_to[active_id][i];
+// #ifdef SATCHECK_MINISAT2
+//           if(satcheck2.is_eliminated(l))
+//             continue;
+// #endif
+          tvt sol=satcheck2.l_get(l);
+          assert(sol.is_known());
+          new_clause.push_back(l.cond_negation(sol.is_true()));
+
+          new_constraint_ops.push_back(exprt());
+          exprt &e=new_constraint_ops.back();
+          e=exprt(ID_predicate_next_symbol, bool_typet());
+          e.set(ID_identifier, i);
+          if(sol.is_true()==l.sign()) e.make_not();
+        }
+
+        for(unsigned i=0; i < predicates.size(); ++i)
+        {
+          const literalt &l=predicate_variables_from[passive_id][i];
+// #ifdef SATCHECK_MINISAT2
+//           if(satcheck2.is_eliminated(l))
+//             continue;
+// #endif
+          tvt sol=satcheck2.l_get(l);
+          assert(sol.is_known());
+          new_clause.push_back(l.cond_negation(sol.is_true()));
+
+          new_constraint_ops.push_back(exprt());
+          exprt &e=new_constraint_ops.back();
+          e=exprt(ID_predicate_passive_symbol, bool_typet());
+          e.set(ID_identifier, i);
+          if(sol.is_true()==l.sign()) e.make_not();
+        }
+
+        and_exprt a(new_constraint_ops);
+#ifdef DEBUG
+        std::cout << "solution no-passive-succ: " << from_expr(concrete_model.ns, "", a) << std::endl;
+#endif
+        big_or2.move_to_operands(a);
+
+        satcheck2.lcnf(new_clause);
+      }
+
+      if(big_or2.operands().empty())
+        monotone.operands().clear();
+      else
+        monotone.move_to_operands(big_or2);
+    }
+
+    constraint.move_to_operands(monotone);
+  }
 
   abstract_transition_relation.constraints.push_back(constraint);
 
