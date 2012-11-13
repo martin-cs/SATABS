@@ -108,7 +108,7 @@ void satabs_inlinet::parameter_assignments(
               f_acttype.id()==ID_pointer) ||
             (f_argtype.id()==ID_array &&
              f_acttype.id()==ID_pointer &&
-             f_argtype.subtype()==f_acttype.subtype()))
+             base_type_eq(f_argtype.subtype(), f_acttype.subtype(), ns)))
         {
           actual.make_typecast(arg_type);
         }

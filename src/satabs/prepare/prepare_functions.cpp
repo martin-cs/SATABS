@@ -102,7 +102,7 @@ void prepare_functionst::do_return_value(
   typet return_type=f_it->second.type.return_type();
 
   // returns void?
-  if(return_type==empty_typet())
+  if(return_type.id()==ID_empty)
     return;
 
   // look up the function symbol
@@ -115,7 +115,6 @@ void prepare_functionst::do_return_value(
   symbolt &function_symbol=s_it->second;
 
   // make the return type 'void'
-  f_it->second.type.return_type()==empty_typet();
   function_symbol.type=f_it->second.type;
 
   // add symbol to context
