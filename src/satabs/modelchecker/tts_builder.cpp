@@ -157,12 +157,11 @@ void tts_buildert::build_prologue(
   PC_max=PC_map.size()+offset-1;
 
   mp_integer n_local=PC_max+1;
-  pc_multiplier=power(2, ldim.size()+1); // on-hold
+  pc_multiplier=power(2, ldim.size());
   n_local*=pc_multiplier;
   local_error_num=n_local;
   ++n_local; // error state
-
-  shared_passive_next=power(2, sdim.size()+2); // in-atomic-sect, thread-spawn
+  shared_error_num=power(2, sdim.size()+2); // in-atomic-sect, thread-spawn
 
 #ifdef COMMENTS
   out_tts << "# error state is shared num $#E"
@@ -191,11 +190,11 @@ void tts_buildert::build_prologue(
       out_tts << std::endl;
     }
 
-    get_local_state_num(0, false, states, false, num);
+    get_local_state_num(0, states, false, num);
     if(locals_seen.insert(num).second)
     {
       out_tts << "# local state " << num << ":";
-      print_local_state(0, false, states, false);
+      print_local_state(0, states, false);
       out_tts << std::endl;
     }
   }
@@ -265,9 +264,9 @@ void tts_buildert::finalize()
         *(c+1)=='#' && (*(c+2)=='E' || *(c+2)=='S'))
     {
       if(*(c+2)=='E')
-        ofs << shared_passive_next; // shared error state
+        ofs << shared_error_num; // shared error state
       else
-        ofs << (shared_passive_next+1);
+        ofs << (shared_error_num+1);
 
       c+=2;
       continue;
@@ -574,7 +573,6 @@ Purpose:
 
 void tts_buildert::get_local_state_num(
     const unsigned PC,
-    const bool on_hold,
     const std::vector<bool> &state,
     const bool post_state,
     mp_integer &dest) const
@@ -583,7 +581,7 @@ void tts_buildert::get_local_state_num(
   if(post_state)
     st_it+=sdim.size()+ldim.size();
 
-  dest=on_hold?1:0;
+  dest=0;
   for(std::vector<unsigned>::const_iterator s_it=ldim.begin();
       s_it!=ldim.end(); ++s_it, ++st_it)
   {
@@ -636,7 +634,6 @@ Purpose:
 
 void tts_buildert::local_state_string(
     const unsigned PC,
-    const bool on_hold,
     const std::vector<bool> &state,
     const bool is_post,
     std::ostream &os)
@@ -645,7 +642,7 @@ void tts_buildert::local_state_string(
   if(is_post)
     st_it+=sdim.size()+ldim.size();
 
-  os << " tts-pc=" << PC << " on-hold=" << (on_hold?1:0);
+  os << " tts-pc=" << PC;
   for(std::vector<unsigned>::const_iterator s_it=ldim.begin();
       s_it!=ldim.end(); ++s_it, ++st_it)
     os << " b"<< *s_it << "=" << *st_it;
@@ -665,11 +662,10 @@ Purpose:
 
 void tts_buildert::print_local_state(
     const unsigned PC,
-    const bool on_hold,
     const std::vector<bool> &state,
     const bool is_post)
 {
-  local_state_string(PC, on_hold, state, is_post, out_tts);
+  local_state_string(PC, state, is_post, out_tts);
 }
 
 /*******************************************************************\
@@ -689,18 +685,16 @@ void tts_buildert::print_tuples(
     const bool m1,
     const bool ts1,
     const unsigned PC1,
-    const bool oh1,
     const bool m2,
     const bool ts2,
-    const unsigned PC2,
-    const bool oh2)
+    const unsigned PC2)
 {
   out_tts << "#";
   print_shared_state(m1, ts1, state, false);
-  print_local_state(PC1, oh1, state, false);
+  print_local_state(PC1, state, false);
   out_tts << " -->";
   print_shared_state(m2, ts2, state, true);
-  print_local_state(PC2, oh2, state, true);
+  print_local_state(PC2, state, true);
   out_tts << std::endl;
 }
 
@@ -728,12 +722,12 @@ void tts_buildert::make_skip(
   {
 #ifdef COMMENTS
     print_tuples(states, in_atomic_sect, false,
-        PC, false, in_atomic_sect, false, PC+1, false);
+        PC, in_atomic_sect, false, PC+1);
 #endif
     mp_integer num_s, num_l1, num_l2;
     get_shared_state_num(in_atomic_sect, false, states, false, num_s);
-    get_local_state_num(PC, false, states, false, num_l1);
-    get_local_state_num(PC+1, false, states, true, num_l2);
+    get_local_state_num(PC, states, false, num_l1);
+    get_local_state_num(PC+1, states, true, num_l2);
     out_tts << num_s << " " << num_l1 << " -> "
       << num_s << " " << num_l2 << std::endl;
   }
@@ -770,13 +764,13 @@ void tts_buildert::make_atomic(
   {
 #ifdef COMMENTS
     print_tuples(states, is_end, false,
-        PC, false, !is_end, false, PC+1, false);
+        PC, !is_end, false, PC+1);
 #endif
     mp_integer num_s1, num_s2, num_l1, num_l2;
     get_shared_state_num(is_end, false, states, false, num_s1);
-    get_local_state_num(PC, false, states, false, num_l1);
+    get_local_state_num(PC, states, false, num_l1);
     get_shared_state_num(!is_end, false, states, true, num_s2);
-    get_local_state_num(PC+1, false, states, true, num_l2);
+    get_local_state_num(PC+1, states, true, num_l2);
     out_tts << num_s1 << " " << num_l1 << " -> "
       << num_s2 << " " << num_l2 << std::endl;
   }
@@ -1214,17 +1208,17 @@ void tts_buildert::make_assert(
     {
       out_tts << "#";
       print_shared_state(in_atomic_sect, false, states, false);
-      print_local_state(PC, false, states, false);
+      print_local_state(PC, states, false);
       out_tts << " --> error error";
       out_tts << std::endl;
     }
     else
       print_tuples(states, in_atomic_sect, false,
-          PC, false, in_atomic_sect, false, PC+1, false);
+          PC, in_atomic_sect, false, PC+1);
 #endif
     mp_integer num_s, num_l;
     get_shared_state_num(in_atomic_sect, false, states, false, num_s);
-    get_local_state_num(PC, false, states, false, num_l);
+    get_local_state_num(PC, states, false, num_l);
     out_tts << num_s << " " << num_l << " -> ";
     if(!sat)
     {
@@ -1234,7 +1228,7 @@ void tts_buildert::make_assert(
     else
     {
       mp_integer num_l2;
-      get_local_state_num(PC+1, false, states, true, num_l2);
+      get_local_state_num(PC+1, states, true, num_l2);
       out_tts << num_s << " " << num_l2 << std::endl;
     }
 
@@ -1244,7 +1238,7 @@ void tts_buildert::make_assert(
       {
         out_tts << "#";
         print_shared_state(in_atomic_sect, false, states, false);
-        print_local_state(PC, false, states, false);
+        print_local_state(PC, states, false);
         out_tts << " --> error error";
         out_tts << std::endl;
       }
@@ -1292,12 +1286,12 @@ void tts_buildert::make_assume(
 
 #ifdef COMMENTS
     print_tuples(states, in_atomic_sect, false,
-        PC, false, in_atomic_sect, false, PC+1, false);
+        PC, in_atomic_sect, false, PC+1);
 #endif
     mp_integer num_s, num_l1, num_l2;
     get_shared_state_num(in_atomic_sect, false, states, false, num_s);
-    get_local_state_num(PC, false, states, false, num_l1);
-    get_local_state_num(PC+1, false, states, true, num_l2);
+    get_local_state_num(PC, states, false, num_l1);
+    get_local_state_num(PC+1, states, true, num_l2);
     out_tts << num_s << " " << num_l1 << " -> "
       << num_s << " " << num_l2 << std::endl;
 
@@ -1306,7 +1300,7 @@ void tts_buildert::make_assume(
       // stay in this state
 #ifdef COMMENTS
       print_tuples(states, in_atomic_sect, false,
-          PC, false, in_atomic_sect, false, PC, false);
+          PC, in_atomic_sect, false, PC);
 #endif
       out_tts << num_s << " " << num_l1 << " -> "
         << num_s << " " << num_l1 << std::endl;
@@ -1350,30 +1344,30 @@ void tts_buildert::make_goto(
 #ifdef COMMENTS
     if(sat)
       print_tuples(states, in_atomic_sect, false,
-          PC, false, in_atomic_sect, false, target, false);
+          PC, in_atomic_sect, false, target);
     else
       print_tuples(states, in_atomic_sect, false,
-          PC, false, in_atomic_sect, false, PC+1, false);
+          PC, in_atomic_sect, false, PC+1);
 #endif
     mp_integer num_s, num_l1, num_l2;
     get_shared_state_num(in_atomic_sect, false, states, false, num_s);
-    get_local_state_num(PC, false, states, false, num_l1);
-    get_local_state_num(PC+1, false, states, true, num_l2);
+    get_local_state_num(PC, states, false, num_l1);
+    get_local_state_num(PC+1, states, true, num_l2);
     out_tts << num_s << " " << num_l1 << " -> "
       << num_s << " ";
     if(sat)
-      get_local_state_num(target, false, states, true, num_l2);
+      get_local_state_num(target, states, true, num_l2);
     else
-      get_local_state_num(PC+1, false, states, true, num_l2);
+      get_local_state_num(PC+1, states, true, num_l2);
     out_tts << num_l2 << std::endl;
 
     if(nondet)
     {
 #ifdef COMMENTS
       print_tuples(states, in_atomic_sect, false,
-          PC, false, in_atomic_sect, false, PC+1, false);
+          PC, in_atomic_sect, false, PC+1);
 #endif
-      get_local_state_num(PC+1, false, states, true, num_l2);
+      get_local_state_num(PC+1, states, true, num_l2);
       out_tts << num_s << " " << num_l1 << " -> "
         << num_s << " " << num_l2 << std::endl;
     }
@@ -1408,21 +1402,21 @@ void tts_buildert::make_start_thread(
   {
 #ifdef COMMENTS
     print_tuples(states, in_atomic_sect, false,
-        PC, false, in_atomic_sect, true, PC+1, false);
+        PC, in_atomic_sect, true, PC+1);
 #endif
     mp_integer num_s1, num_s2, num_l1, num_l2;
     get_shared_state_num(in_atomic_sect, false, states, false, num_s1);
-    get_local_state_num(PC, false, states, false, num_l1);
+    get_local_state_num(PC, states, false, num_l1);
     get_shared_state_num(in_atomic_sect, true, states, true, num_s2);
-    get_local_state_num(PC+1, false, states, true, num_l2);
+    get_local_state_num(PC+1, states, true, num_l2);
     out_tts << num_s1 << " " << num_l1 << " +> "
       << num_s2 << " " << num_l2 << std::endl;
 
 #ifdef COMMENTS
     print_tuples(states, in_atomic_sect, true,
-        PC, false, in_atomic_sect, false, target, false);
+        PC, in_atomic_sect, false, target);
 #endif
-    get_local_state_num(target, false, states, true, num_l2);
+    get_local_state_num(target, states, true, num_l2);
     out_tts << num_s2 << " " << num_l1 << " -> "
       << num_s1 << " " << num_l2 << std::endl;
   }
@@ -1518,36 +1512,22 @@ void tts_buildert::make_active_passive_assign(
 
     mp_integer num_s1, num_s2, num_l1, num_l2;
     get_shared_state_num(in_atomic_sect, false, states, false, num_s1);
-    get_local_state_num(PC, false, states, false, num_l1);
+    get_local_state_num(PC, states, false, num_l1);
     get_shared_state_num(in_atomic_sect, false, states, true, num_s2);
-    get_local_state_num(PC+1, with_passive, states, true, num_l2);
-    if(!with_passive)
-    {
+    get_local_state_num(PC+1, states, true, num_l2);
 #ifdef COMMENTS
-      print_tuples(states, in_atomic_sect, false,
-          PC, false, in_atomic_sect, false, PC+1, false);
+    print_tuples(states, in_atomic_sect, false,
+        PC, in_atomic_sect, false, PC+1);
 #endif
-      out_tts << num_s1 << " " << num_l1 << " -> "
-        << num_s2 << " " << num_l2 << std::endl;
-    }
-    else
-    {
-#ifdef COMMENTS
-      out_tts << "#";
-      print_shared_state(in_atomic_sect, false, states, false);
-      print_local_state(PC, false, states, false);
-      out_tts << " -->";
-      out_tts << " *";
-      print_local_state(PC+1, true, states, true);
-      out_tts << std::endl;
-#endif
-      out_tts << num_s1 << " " << num_l1 << " -> "
-        << (shared_passive_next+1) << " " << num_l2 << std::endl;
-      ++shared_passive_next;
 
+    std::ostringstream passive_trans_string;
+    if(with_passive)
       make_passive_assign(PC, states,
-          assigned_passive, constraints_passive);
-    }
+          assigned_passive, constraints_passive,
+          passive_trans_string);
+
+    out_tts << num_s1 << " " << num_l1 << " -> "
+      << num_s2 << " " << num_l2 << passive_trans_string.str() << std::endl;
   }
 #ifdef DEBUG
   ::std::cerr << "make_assign done" << std::endl;
@@ -1596,7 +1576,8 @@ void tts_buildert::make_passive_assign(
     const unsigned PC,
     const std::vector<bool> &act_states,
     const std::vector<bool> &assigned_passive,
-    const std::list<exprt> &constraints_passive)
+    const std::list<exprt> &constraints_passive,
+    std::ostringstream &trans_os)
 {
 #ifdef DEBUG
   ::std::cerr << "make_passive_assign" << std::endl;
@@ -1605,7 +1586,6 @@ void tts_buildert::make_passive_assign(
   to_cnf(constraints_passive, cnf);
 
   std::map<mp_integer, std::set<mp_integer> > p_P;
-  std::map<mp_integer, mp_integer> no_hold;
 #ifdef COMMENTS
   std::map<mp_integer, std::string> state_text;
 #endif
@@ -1624,32 +1604,23 @@ void tts_buildert::make_passive_assign(
 
     for(unsigned PC=PC_min; PC<=PC_max; ++PC)
     {
-      mp_integer num_l1, num_l2, num_l2_nh;
-      get_local_state_num(PC, false, states, false, num_l1);
-      get_local_state_num(PC, true, states, true, num_l2);
-      get_local_state_num(PC, false, states, true, num_l2_nh);
-      no_hold[num_l2]=num_l2_nh;
+      mp_integer num_l1, num_l2;
+      get_local_state_num(PC, states, false, num_l1);
+      get_local_state_num(PC, states, true, num_l2);
 #ifdef COMMENTS
       std::pair<std::map<mp_integer, std::string>::iterator, bool> entry=
         state_text.insert(std::make_pair(num_l1, ""));
       if(entry.second)
       {
         std::ostringstream oss;
-        local_state_string(PC, false, states, false, oss);
+        local_state_string(PC, states, false, oss);
         entry.first->second=oss.str();
       }
       entry=state_text.insert(std::make_pair(num_l2, ""));
       if(entry.second)
       {
         std::ostringstream oss;
-        local_state_string(PC, true, states, true, oss);
-        entry.first->second=oss.str();
-      }
-      entry=state_text.insert(std::make_pair(num_l2_nh, ""));
-      if(entry.second)
-      {
-        std::ostringstream oss;
-        local_state_string(PC, false, states, true, oss);
+        local_state_string(PC, states, true, oss);
         entry.first->second=oss.str();
       }
 #endif
@@ -1658,91 +1629,32 @@ void tts_buildert::make_passive_assign(
     }
   }
 
-  ::std::set<mp_integer> L_reduced;
   for(std::map<mp_integer, std::set<mp_integer> >::const_iterator iter=p_P.begin();
       iter!=p_P.end();
       ++iter)
   {
     const mp_integer &p=iter->first;
     assert(!iter->second.empty());
-    const mp_integer &x=*(iter->second.begin());
-    assert(no_hold.find(x)!=no_hold.end());
     // skip no-op only
-    // -- optimisation disabled as it may yield an empty L_reduced
-    // if(iter->second.size()==1 && p==no_hold[x])
-    //   continue;
+    if(iter->second.size()==1 && p==*(iter->second.begin()))
+      continue;
 
-    L_reduced.insert(x);
-    for(std::set<mp_integer>::const_iterator y=++(iter->second.begin());
-        y!=iter->second.end();
-        ++y)
+    for(std::set<mp_integer>::const_iterator pp=iter->second.begin();
+        pp!=iter->second.end();
+        ++pp)
     {
-      assert(no_hold.find(*y)!=no_hold.end());
-      L_reduced.insert(*y);
-
 #ifdef COMMENTS
       out_tts << "#";
       out_tts << " *";
       out_tts << " " << state_text[p];
-      out_tts << " -->";
+      out_tts << " ~>";
       out_tts << " *";
-      out_tts << " " << state_text[*y];
+      out_tts << " " << state_text[*pp];
       out_tts << std::endl;
 #endif
-      out_tts << shared_passive_next << " " << p << " -> "
-        << shared_passive_next << " " << *y << std::endl;
+      trans_os << " " << p << " ~> " << *pp;
     }
-#ifdef COMMENTS
-    out_tts << "#";
-    out_tts << " *";
-    out_tts << " " << state_text[p];
-    out_tts << " ~>";
-    out_tts << " *'";
-    out_tts << " " << state_text[x];
-    out_tts << std::endl;
-#endif
-    out_tts << shared_passive_next << " " << p << " ~> "
-      << (shared_passive_next+1) << " " << x << std::endl;
-
-    ++shared_passive_next;
   }
-
-  assert(!L_reduced.empty());
-  std::set<mp_integer>::const_iterator last=--L_reduced.end();
-  for(std::set<mp_integer>::const_iterator l=L_reduced.begin();
-      l!=last;
-      ++l)
-  {
-#ifdef COMMENTS
-    out_tts << "#";
-    out_tts << " *'";
-    out_tts << " " << state_text[*l];
-    out_tts << " ~>";
-    out_tts << " *''";
-    out_tts << " " << state_text[no_hold[*l]];
-    out_tts << std::endl;
-#endif
-    out_tts << shared_passive_next << " " << *l << " ~> "
-      << (shared_passive_next+1) << " " << no_hold[*l] << std::endl;
-
-    ++shared_passive_next;
-  }
-
-#ifdef COMMENTS
-  out_tts << "#";
-  out_tts << " *'";
-  out_tts << " " << state_text[*(--L_reduced.end())];
-  out_tts << " ~>";
-  out_tts << " s'";
-  out_tts << " " << state_text[no_hold[*(--L_reduced.end())]];
-  out_tts << std::endl;
-#endif
-  mp_integer target_s;
-  get_shared_state_num(in_atomic_sect, false, act_states, true, target_s);
-  out_tts << shared_passive_next << " " << *(--L_reduced.end()) << " ~> "
-    << target_s << " " << no_hold[*(--L_reduced.end())] << std::endl;
-
-  ++shared_passive_next;
 
 #ifdef DEBUG
   ::std::cerr << "make_passive_assign done" << std::endl;

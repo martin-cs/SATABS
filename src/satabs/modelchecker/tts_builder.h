@@ -51,8 +51,8 @@ class tts_buildert
     std::map< abstract_programt::instructionst::const_iterator,
       unsigned > PC_map;
     mp_integer local_error_num;
+    mp_integer shared_error_num;
     mp_integer pc_multiplier;
-    mp_integer shared_passive_next;
     unsigned PC_min, PC_max;
 
     static void inc_state(std::vector<bool> &states);
@@ -65,7 +65,6 @@ class tts_buildert
         mp_integer &dest) const;
     void get_local_state_num(
         const unsigned PC,
-        const bool on_hold,
         const std::vector<bool> &state,
         const bool post_state,
         mp_integer &dest) const;
@@ -97,13 +96,11 @@ class tts_buildert
         const bool is_post);
     void local_state_string(
         const unsigned PC,
-        const bool on_hold,
         const std::vector<bool> &state,
         const bool is_post,
         std::ostream &os);
     void print_local_state(
         const unsigned PC,
-        const bool on_hold,
         const std::vector<bool> &state,
         const bool is_post);
     void print_tuples(
@@ -111,11 +108,9 @@ class tts_buildert
         const bool m1,
         const bool ts1,
         const unsigned PC1,
-        const bool oh1,
         const bool m2,
         const bool ts2,
-        const unsigned PC2,
-        const bool oh2);
+        const unsigned PC2);
 
     bool skip_make_assign(
         const std::vector<bool> &state,
@@ -157,7 +152,8 @@ class tts_buildert
         const unsigned PC,
         const std::vector<bool> &act_states,
         const std::vector<bool> &assigned_passive,
-        const std::list<exprt> &constraints_passive);
+        const std::list<exprt> &constraints_passive,
+        std::ostringstream &trans_os);
 };
 
 #endif
