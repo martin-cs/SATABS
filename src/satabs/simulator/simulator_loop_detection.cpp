@@ -77,7 +77,7 @@ bool simulator_loop_detectiont::check_phase_I_equation(
   minimization_listt symbols;
 
   // run SAT
-  symex_target_equationt::SSA_stepst::const_iterator c_it;
+  symex_target_equationt::SSA_stepst::iterator c_it;
 
   for(c_it=equation.SSA_steps.begin();
       c_it!=equation.SSA_steps.end();
@@ -96,7 +96,14 @@ bool simulator_loop_detectiont::check_phase_I_equation(
 
     bv_minimizing_dect satcheck(concrete_model.ns);
 
-    convert(satcheck, equation, c_it, concrete_model.ns);
+    symex_target_equationt::SSA_stepst SSA_steps;
+    SSA_steps.splice(SSA_steps.end(),
+        equation.SSA_steps, equation.SSA_steps.begin(), ++c_it);
+    equation.SSA_steps.swap(SSA_steps);
+    equation.convert(satcheck);
+    equation.SSA_steps.splice(equation.SSA_steps.end(),
+        SSA_steps, SSA_steps.begin(), SSA_steps.end());
+    --c_it;
 
     // solve it
     if(!is_satisfiable(satcheck))

@@ -31,74 +31,6 @@ to determmine whether it is spurious.
 
 /*******************************************************************\
 
-Function: simulator_symext::convert
-
-Inputs:
-
-Outputs:
-
-Purpose:
-
-\*******************************************************************/
-
-void simulator_symext::convert(
-    prop_convt &prop_conv,
-    symex_target_equationt &equation,
-    symex_target_equationt::SSA_stepst::const_iterator last,
-    const namespacet &ns)
-{
-  last++;
-
-  for(symex_target_equationt::SSA_stepst::iterator
-      it=equation.SSA_steps.begin();
-      it!=last;
-      it++)
-  {
-    it->guard_literal=const_literal(true);
-
-    switch(it->type)
-    {
-    case goto_trace_stept::ASSIGNMENT:
-    case goto_trace_stept::ASSUME:
-      {
-        exprt tmp=it->cond_expr;
-        prop_conv.set_to_true(tmp);
-        it->cond_literal=const_literal(true);
-#if 0
-        std::cout << "CONSTRAINT: " << from_expr(ns, "", tmp) << std::endl;
-#endif
-      }
-      break;
-
-    case goto_trace_stept::ASSERT:
-      {
-        // must negate!
-        exprt tmp=it->cond_expr;
-        prop_conv.set_to_false(tmp);
-        it->cond_literal=const_literal(true);
-#if 0
-        std::cout << "CONSTRAINT: " << from_expr(ns, "", gen_not(tmp)) << std::endl;
-#endif
-      }
-      break;
-
-    case goto_trace_stept::LOCATION:
-    case goto_trace_stept::OUTPUT:
-    case goto_trace_stept::INPUT:
-    case goto_trace_stept::DECL:
-    case goto_trace_stept::FUNCTION_CALL:
-    case goto_trace_stept::FUNCTION_RETURN:
-    case goto_trace_stept::DEAD:
-      break;
-
-    default:
-      assert(false);
-    }
-  }
-}
-
-/*******************************************************************\
-
 Function: simulator_symext::build_equation_prefix
 
 Inputs:
@@ -282,10 +214,10 @@ bool simulator_symext::check_prefix_equation(
 
   status("Unprocessed prefix of size "+ i2string (prefix.equation.SSA_steps.size ()));
 
-  symex_target_equationt::SSA_stepst::const_iterator c_it;
+  symex_target_equationt::SSA_stepst::iterator c_it;
 
   /* construct an array of iterators (for binary search) */
-  std::vector<symex_target_equationt::SSA_stepst::const_iterator> state_array;
+  std::vector<symex_target_equationt::SSA_stepst::iterator> state_array;
 
   for(c_it=prefix.equation.SSA_steps.begin();
       c_it!=prefix.equation.SSA_steps.end(); 
@@ -324,7 +256,14 @@ bool simulator_symext::check_prefix_equation(
     c_it=state_array[index];
 
     simulator_sat_dect satcheck(concrete_model.ns);
-    convert(satcheck, prefix.equation, c_it, concrete_model.ns);
+    symex_target_equationt::SSA_stepst SSA_steps;
+    SSA_steps.splice(SSA_steps.end(),
+        prefix.equation.SSA_steps, prefix.equation.SSA_steps.begin(), ++c_it);
+    prefix.equation.SSA_steps.swap(SSA_steps);
+    prefix.equation.convert(satcheck);
+    prefix.equation.SSA_steps.splice(prefix.equation.SSA_steps.end(),
+        SSA_steps, SSA_steps.begin(), SSA_steps.end());
+    --c_it;
 
     if(is_satisfiable(satcheck))
     {
@@ -403,7 +342,7 @@ bool simulator_symext::check_full_trace(
     --prefix.equation.SSA_steps.end();
 
   simulator_sat_dect satcheck(concrete_model.ns);
-  convert(satcheck, prefix.equation, c_it, concrete_model.ns);
+  prefix.equation.convert(satcheck);
 
   if(is_satisfiable(satcheck))
   {
