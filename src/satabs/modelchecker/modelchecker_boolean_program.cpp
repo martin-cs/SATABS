@@ -1160,7 +1160,7 @@ Purpose:
 std::string modelchecker_boolean_programt::convert_function_name(
     const irep_idt &name)
 {
-  std::string result=name.as_string();
+  std::string result=id2string(name);
 
   for(unsigned i=0; i<result.size(); i++)
   {

@@ -232,7 +232,7 @@ void modelcheckert::inlinedt::build(
 
   if(recursion_stack.find(f_id)!=recursion_stack.end())
   {
-    message.warning("Ignoring recursive call to `" + f_id.as_string() + "'.");
+    message.warning("Ignoring recursive call to `" + id2string(f_id) + "'.");
     return;
   }
   else

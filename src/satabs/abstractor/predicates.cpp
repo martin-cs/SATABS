@@ -111,7 +111,7 @@ void predicatest::make_expr_passive_rec(
   {
     symbol_exprt &phi_sym=to_symbol_expr(phi);
     const irep_idt &identifier=phi_sym.get_identifier();
-    assert(identifier.as_string().find('#')==std::string::npos);
+    assert(id2string(identifier).find('#')==std::string::npos);
 
     if(ns.lookup(identifier).is_procedure_local())
     {
