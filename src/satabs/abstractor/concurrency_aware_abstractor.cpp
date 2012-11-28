@@ -98,20 +98,20 @@ void concurrency_aware_abstractort::pred_abstract_block(
       target,
       passive_constraints,
       passive_predicates_wp);
-
-  bool enforce_broadcast = false;
+  
+  bool passive_broadcast_only = false;
   // __CPROVER_passive_broadcast label enforces broadcast
   for(goto_programt::instructiont::labelst::const_iterator
       l=target->labels.begin();
-      !enforce_broadcast && l!=target->labels.end();
+      !passive_broadcast_only && l!=target->labels.end();
       ++l)
-    enforce_broadcast = *l=="__CPROVER_passive_broadcast";
+    passive_broadcast_only = *l=="__CPROVER_passive_broadcast";
 
   for(unsigned int i = 0; i < predicates.size(); i++)
   {
     if((passive_predicates_wp[i]==passive_predicates[i] ||
         predicates[i]==predicatest::make_expr_passive(predicates[i], concrete_model.ns, 0)) &&
-        (!enforce_broadcast ||
+        (!passive_broadcast_only ||
          abstract_transition_relation.values.find(i)==abstract_transition_relation.values.end()))
     {
       concurrency_aware_abstract_transition_relation->passive_values.erase(i);
@@ -127,11 +127,14 @@ void concurrency_aware_abstractort::pred_abstract_block(
       std::cout << "P:  " << from_expr(concrete_model.ns, "", passive_predicates[i]) << std::endl;
 #endif
 
-      if(enforce_broadcast || broadcast_required(target, passive_predicates[i]))
+      const bool bc_req=broadcast_required(target, passive_predicates[i]);
+      if(passive_broadcast_only || bc_req)
       {
         exprt new_value = passive_nondet ?
           nil_exprt() :
-          specific_abstractor->get_value(-1 /* not used */ , all_predicates, passive_predicates_wp[i], concrete_model.ns, target);
+          (bc_req ?
+            specific_abstractor->get_value(-1 /* not used */ , all_predicates, passive_predicates_wp[i], concrete_model.ns, target) :
+            abstract_transition_relation.values[i]);
 
 #ifdef DEBUG
         std::cout << "New value: ";
@@ -156,8 +159,14 @@ void concurrency_aware_abstractort::pred_abstract_block(
 
       }
     }
+       
+    if(passive_broadcast_only && 
+        abstract_transition_relation.values.find(i)!=abstract_transition_relation.values.end())
+    {
+      abstract_transition_relation.values[i]=exprt(ID_predicate_symbol, typet(ID_bool));
+      abstract_transition_relation.values[i].set(ID_identifier, i);
+    }
   }
-
 }
 
 void concurrency_aware_abstractort::abstract_expression(
