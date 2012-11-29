@@ -76,6 +76,7 @@ void simulator_symext::build_equation_prefix(
     {
       if(!c_target->is_assert())
         throw "expected assertion at end of abstract trace";
+      assert(!state.guard.is_false());
     }
 
     state.source.pc=c_target;
@@ -94,7 +95,7 @@ void simulator_symext::build_equation_prefix(
         if(last_state && it->relevant)
         {
           symex_simulator.symex_step(concrete_model.goto_functions, state);
-          assert(prefix.equation.SSA_steps.size()==s+1);
+          assert(prefix.equation.SSA_steps.size()>s);
         }
         break;
 
@@ -107,6 +108,37 @@ void simulator_symext::build_equation_prefix(
         // the usual RETURN branches to the END_FUNCTION
         if(it->relevant)
           symex_simulator.symex_step_return(state);
+        break;
+
+      case ASSIGN:
+        if(it->relevant)
+        {
+          bool passive_broadcast_only = false;
+          for(goto_programt::instructiont::labelst::const_iterator
+              l=c_target->labels.begin();
+              !passive_broadcast_only && l!=c_target->labels.end();
+              ++l)
+            passive_broadcast_only = *l=="__CPROVER_passive_broadcast";
+
+          for(unsigned t=0; t!=state.threads.size(); ++t)
+          {
+            if(passive_broadcast_only && t==it->thread_nr)
+              continue;
+            else if(!passive_broadcast_only && t!=it->thread_nr)
+              continue;
+
+            state.source.pc=c_target;
+            state.source.thread_nr=t;
+            symex_simulator.symex_step(concrete_model.goto_functions, state);
+          }
+    
+          state.source.thread_nr=it->thread_nr;
+        }
+        break;
+
+      case END_THREAD:
+        // ignore until simulator is properly fixed
+        // TODO
         break;
 
       case END_FUNCTION:
