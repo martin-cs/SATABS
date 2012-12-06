@@ -10,6 +10,8 @@ Author: CM Wintersteiger
 #include <sstream>
 #include <fstream>
 #include <map>
+#include <algorithm>
+#include <cstdlib>
 
 #include <cmdline.h>
 #include <prefix.h>

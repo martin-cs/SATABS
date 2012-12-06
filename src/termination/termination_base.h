@@ -9,6 +9,8 @@ Author: CM Wintersteiger
 #ifndef _CPROVER_TERMINATION_BASE_H_
 #define _CPROVER_TERMINATION_BASE_H_
 
+#include <cstdlib>
+
 #include <cmdline.h>
 #include <ui_message.h>
 #include <replace_expr.h>

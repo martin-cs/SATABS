@@ -8,11 +8,14 @@
 
 #include <sys/time.h>
 #include <sys/stat.h>
+
 #ifndef _WIN32
 #include <sys/resource.h>
 #else
 #include <io.h>
 #endif
+
+#include <cstdlib>
 
 #include <config.h>
 #include <time_stopping.h>

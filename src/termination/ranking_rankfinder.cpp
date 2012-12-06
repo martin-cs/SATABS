@@ -11,10 +11,7 @@ Date: May 2009
 #include <memory>
 #include <fstream>
 #include <iostream>
-
-#ifndef _WIN32
-#include <unistd.h>
-#endif
+#include <cstdlib>
 
 #include <std_expr.h>
 #include <arith_tools.h>

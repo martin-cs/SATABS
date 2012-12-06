@@ -12,6 +12,7 @@ Date: May 2009
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <cstdlib>
 
 #include <std_expr.h>
 #include <simplify_expr.h>

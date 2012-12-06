@@ -6,6 +6,7 @@ Author: CM Wintersteiger
 
 \*******************************************************************/
 
+#include <cstdlib>
 #include <signal.h>
 
 #include "tan.h"
