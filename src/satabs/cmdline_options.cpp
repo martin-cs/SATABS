@@ -239,8 +239,7 @@ int cmdline_optionst::doit()
         *abstractor,
         *refiner,
         *modelchecker,
-        *simulator,
-        cmdline.isset("csv-stats"));
+        *simulator);
 
     satabs_safety_checker.initial_predicates=
       prepare.user_provided_predicates;
@@ -251,6 +250,7 @@ int cmdline_optionst::doit()
     satabs_safety_checker.save_bps=cmdline.isset("save-bps");    
     satabs_safety_checker.build_tts=cmdline.isset("build-tts");    
     satabs_safety_checker.concurrency_aware=cmdline.isset("concurrency");
+    satabs_safety_checker.write_csv_stats=cmdline.isset("csv-stats");
     satabs_safety_checker.set_verbosity(verbosity);
 
     switch(satabs_safety_checker(prepare.goto_functions))

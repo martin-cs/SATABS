@@ -35,8 +35,7 @@ class satabs_safety_checkert:public safety_checkert
         abstractort &abstractor,
         refinert &refiner,
         modelcheckert &modelchecker,
-        simulatort &simulator,
-        bool csv_stats);
+        simulatort &simulator);
 
     // you can add some predicates that are there right
     // from the beginning
@@ -57,6 +56,9 @@ class satabs_safety_checkert:public safety_checkert
     // handle concurrency using CAV'11 technique?
     bool concurrency_aware;
 
+    // write statistics?
+    bool write_csv_stats;
+
     virtual resultt operator()(
         const goto_functionst &goto_functions);
 
@@ -70,7 +72,6 @@ class satabs_safety_checkert:public safety_checkert
     simulatort &simulator;
 
     // collecting statistics
-    const bool write_csv_stats;
     fine_timet total_time;
     fine_timet total_start_time;
     fine_timet abstractor_time;

@@ -39,18 +39,17 @@ satabs_safety_checkert::satabs_safety_checkert(
     abstractort &_abstractor,
     refinert &_refiner,
     modelcheckert &_modelchecker,
-    simulatort &_simulator,
-    bool csv_stats):
+    simulatort &_simulator):
   safety_checkert(_ns),
   max_iterations(0),
   save_bps(false),
   build_tts(false),
   concurrency_aware(false),
+  write_csv_stats(false),
   abstractor(_abstractor),
   refiner(_refiner),
   modelchecker(_modelchecker),
-  simulator(_simulator),
-  write_csv_stats(csv_stats)
+  simulator(_simulator)
 {
 }
 
