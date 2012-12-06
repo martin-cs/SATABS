@@ -10,13 +10,13 @@ Date: September 2005
 
 #include <cstdlib>
 
+#include <string2int.h>
+
 #include "select_refiner.h"
 #include "refiner_wp.h"
 #include "refiner_lifter.h"
 #include "no_refiner.h"
 #include "refiner_wp_only.h"
-
-#include <string2int.h>
 
 #ifdef HAVE_IPP
 #include "refiner_ipp.h"
