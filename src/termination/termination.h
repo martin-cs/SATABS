@@ -21,10 +21,10 @@ Date: August 2008
 /* Termination proving method */
 
 typedef enum { TP_BINARY_REACHABILITY, /* Traditional Binary Reachability */
-               TP_DIRECT, /* Direct termination proofs (Biere et al.) */
+               TP_DIRECT,        /* Direct termination proofs (Biere et al.) */
                TP_COMPOSITIONAL, /* Compositional Termination Analysis */
                TP_PATH_ENUMERATION,
-               TP_INTERPOLATING, /* Interpolating Termination Analysis */
+               TP_INTERPOLATING  /* Interpolating Termination Analysis */
              } termination_prover_modet;
 
              
