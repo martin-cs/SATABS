@@ -932,7 +932,7 @@ goto_programt::targett termination_slicert::get_required_functions()
   targett dit=dest.body.instructions.begin();
   targett dend=dest.body.instructions.end();
   targett res=dend;
-  bool found=false;
+  //bool found=false;
 
   std::stack<std::pair<const_targett, targett> > recstack;
   recstack.push(std::make_pair(end, dend));
@@ -944,7 +944,7 @@ goto_programt::targett termination_slicert::get_required_functions()
     if(it==goal)
     {
       res=dit; // found it!
-      found=true;
+      //found=true;
     }
 
     switch(it->type)
