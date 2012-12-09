@@ -870,16 +870,10 @@ bool termination_baset::cegar(
   
   loop_componentt::argst args(mh, model);
   
-  optionst options;
-
   std::auto_ptr<refinert> refiner(select_refiner(options, args));
-
   std::auto_ptr<abstractort> abstractor(select_abstractor(options, args, model.goto_functions));
-
   std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options, args));
-
-  std::auto_ptr<simulatort> simulator(select_simulator(options, args,
-                                                       shadow_context));
+  std::auto_ptr<simulatort> simulator(select_simulator(options, args, shadow_context));
 
   unsigned this_verb = get_verbosity()-2;
 
@@ -968,4 +962,42 @@ bool termination_baset::cegar(
 {
   goto_tracet goto_trace;
   return cegar(model, goto_trace, modelchecker_time, unsafe_time, safe_time);
+}
+
+
+/********************************************************************\
+
+ Function: termination_baset::set_options
+
+ Inputs:
+
+ Outputs:
+
+ Purpose:
+
+\********************************************************************/
+
+void termination_baset::set_options(void)
+{
+
+  if(cmdline.isset("refiner"))
+    options.set_option("refiner", cmdline.getval("refiner"));
+  else
+    options.set_option("refiner", "wp");
+
+  if(cmdline.isset("abstractort"))
+    options.set_option("abstractor", cmdline.getval("abstractor"));
+  else
+    options.set_option("abstractor", "wp");
+
+  if(cmdline.isset("modelchecker"))
+    options.set_option("modelchecker", cmdline.getval("modelchecker"));
+  else
+    options.set_option("modelchecker", "cadence-smv");
+
+  if(cmdline.isset("simulator"))
+    options.set_option("simulator", cmdline.getval("simulator"));
+  else
+    options.set_option("simulator", "sat");
+
 }

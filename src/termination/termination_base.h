@@ -16,6 +16,7 @@ Author: CM Wintersteiger
 #include <replace_expr.h>
 #include <find_symbols.h>
 #include <time_stopping.h>
+#include <options.h>
 
 #include <goto-symex/goto_trace.h>
 
@@ -64,6 +65,7 @@ public:
     set_verbosity(6);
     if(cmdline.isset("v"))
       set_verbosity(atoi(cmdline.getval("v")));    
+    set_options();
   }
 
   virtual termination_resultt operator()()=0;  
@@ -74,6 +76,7 @@ protected:
   const cmdlinet &cmdline;
   namespacet ns;
   ui_message_handlert::uit ui;
+  optionst options;
   
   const goto_functionst &goto_functions;
   value_set_analysist &value_set_analysis;
@@ -163,6 +166,8 @@ protected:
     fine_timet &modelchecker_time,
     fine_timet &unsafe_time,
     fine_timet &safe_time);
+
+  void set_options(void);
 };
 
 #endif

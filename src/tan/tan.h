@@ -51,7 +51,8 @@ private:
   contextt context;
   namespacet ns;
   goto_functionst goto_functions;
-  
+  optionst satabs_options;
+
   // some stats
   unsigned loops_nonterminating;
   

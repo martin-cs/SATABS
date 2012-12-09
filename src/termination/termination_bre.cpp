@@ -107,8 +107,6 @@ termination_resultt termination_bret::bre_loop(concrete_modelt &model)
   message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
   loop_componentt::argst args(mh, model);
 
-  optionst options;
-
   std::auto_ptr<refinert> refiner(select_refiner(options, args));
   std::auto_ptr<abstractort> abstractor(select_abstractor(options, args, model.goto_functions));
   std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options, args));
