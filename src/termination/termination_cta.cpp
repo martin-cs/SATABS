@@ -69,7 +69,11 @@ termination_resultt termination_ctat::terminates(
   while(!sliced_backjump->is_backwards_goto()) sliced_backjump++;
 
   goto_programt::const_targett loop_end, loop_begin, copy_goto;
-  get_loop_extent(sliced_assertion, loop_begin, loop_end, copy_goto);
+  if (!get_loop_extent(sliced_assertion, loop_begin, loop_end, copy_goto))
+	{
+		status("Copy-goto was sliced away; this loop must be terminating.");
+		return T_TERMINATING;
+	}
 
   // get a mapping between pre and post variables
   replace_idt premap;

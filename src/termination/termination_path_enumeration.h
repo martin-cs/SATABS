@@ -79,7 +79,7 @@ protected:
     goto_programt::const_targett &loop_end,
     class replace_idt &premap) const;
   
-  void get_loop_extent(
+  bool get_loop_extent(
     goto_programt::targett &assertion,
     goto_programt::const_targett &begin,
     goto_programt::const_targett &end,

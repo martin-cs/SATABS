@@ -201,8 +201,8 @@ bodyt termination_baset::get_body(
   {
     last_path.push_back(step->pc);
 
-    required_stepst::const_iterator fit=required_steps.find(&(*step));
-    if(fit==required_steps.end()) continue;
+    // required_stepst::const_iterator fit=required_steps.find(&(*step));
+    // if(fit==required_steps.end()) continue;
 
     switch(step->pc->type)
     {
@@ -229,7 +229,7 @@ bodyt termination_baset::get_body(
             result_body.variable_map[post_id]=pre_id;
 
             // the RHS gets a #0 id
-            irep_idt new_id=id2string(post_id)+"#0";
+            irep_idt new_id=id2string(post_id)+"!0";
             replace_id.insert(post_id, new_id);
             equality.rhs().set(ID_identifier, new_id);
           }
@@ -239,7 +239,7 @@ bodyt termination_baset::get_body(
             unsigned cur=++ssa_counters[old_id]; // 0 is never used
 
             // gets a new ID
-            irep_idt new_id=id2string(old_id)+"#"+i2string(cur);
+            irep_idt new_id=id2string(old_id)+"!"+i2string(cur);
             replace_id.insert(old_id, new_id);
           }
         }
@@ -266,7 +266,7 @@ bodyt termination_baset::get_body(
           {
             if(ssa_counters.find(*it)==ssa_counters.end())
             {
-              irep_idt new_id=id2string(*it)+"#"+i2string(++ssa_counters[*it]);
+              irep_idt new_id=id2string(*it)+"!"+i2string(++ssa_counters[*it]);
               replace_id.insert(*it, new_id);
             }
           }
@@ -295,7 +295,7 @@ bodyt termination_baset::get_body(
             if(ssa_counters.find(*it)==ssa_counters.end())
             {
               ssa_counters[*it]=0;
-              irep_idt new_id=id2string(*it)+"#"+i2string(0);
+              irep_idt new_id=id2string(*it)+"!"+i2string(0);
               replace_id.insert(*it, new_id);
             }
           }
@@ -339,7 +339,7 @@ bodyt termination_baset::get_body(
     const irep_idt &id=it->first;
     unsigned last=it->second;
 
-    irep_idt last_name=id2string(id)+"#"+i2string(last);
+    irep_idt last_name=id2string(id)+"!"+i2string(last);
     last_map.insert(last_name, id);
   }
 
@@ -398,7 +398,7 @@ void termination_baset::remove_ssa_ids(exprt &expr) const
   {
     irep_idt ident=expr.get(ID_identifier);
     ident = id2string(ident).substr(0, id2string(ident).rfind('@'));
-    ident = id2string(ident).substr(0, id2string(ident).rfind('#'));
+    ident = id2string(ident).substr(0, id2string(ident).rfind('!'));
     expr.set(ID_identifier, ident);
   }
 

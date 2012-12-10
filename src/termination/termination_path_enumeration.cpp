@@ -61,7 +61,11 @@ termination_resultt termination_path_enumerationt::terminates(
   }
     
   goto_programt::const_targett loop_end, loop_begin, copy_goto;    
-  get_loop_extent(sliced_assertion, loop_begin, loop_end, copy_goto);
+  if (!get_loop_extent(sliced_assertion, loop_begin, loop_end, copy_goto))
+	{
+		status("Copy-goto was sliced away; this loop must be terminating.");
+		return T_TERMINATING;
+	}
 
   // We don't care if the loop is reachable right now.
   
@@ -152,9 +156,9 @@ bool termination_path_enumerationt::get_model(
                                true /* replace malloc */ );
   
   slicing_time+=current_time()-before;
-  
+
   if(!mres) 
-    return false;
+		return false;
   
   #if 0
   std::ofstream f("model");
@@ -162,9 +166,18 @@ bool termination_path_enumerationt::get_model(
   f.close();
       
   f.open("sliced_model");
-  dest_func.output(ns, f);
+  sliced_goto_functions.output(ns, f);
   f.close();
   #endif
+
+	if (verbosity > 10)
+	{
+		std::cout << "Unsliced Program:" << std::endl;
+		goto_functions.output(ns, std::cout);
+
+		std::cout << "Sliced Program:" << std::endl;
+		sliced_goto_functions.output(ns, std::cout);
+	}
   
   assert(sliced_assertion->type==ASSERT);
   
@@ -473,7 +486,7 @@ void termination_path_enumerationt::get_pre_post_mapping(
          has_prefix(code.lhs().get_string(ID_identifier), 
                     termination_prefix))
       {
-        irep_idt badid=code.rhs().get_string(ID_identifier)+ "#0";       
+        irep_idt badid=code.rhs().get_string(ID_identifier)+ "!0";       
         premap.insert(badid, code.lhs().get(ID_identifier));
       }
     }
@@ -778,7 +791,7 @@ bodyt termination_path_enumerationt::extract_path(
             result.variable_map[post_id]=pre_id;            
             
             // the RHS gets a #0 id
-            irep_idt new_id=id2string(post_id)+"#0";
+            irep_idt new_id=id2string(post_id)+"!0";
             replace_id.insert(post_id, new_id);
             equality.rhs().set("identifier", new_id);
           }
@@ -788,7 +801,7 @@ bodyt termination_path_enumerationt::extract_path(
             unsigned cur=++ssa_counters[old_id]; // 0 is never used
             
             // gets a new ID            
-            irep_idt new_id=id2string(old_id)+"#"+i2string(cur);
+            irep_idt new_id=id2string(old_id)+"!"+i2string(cur);
             replace_id.insert(old_id, new_id);
           }
         }
@@ -916,21 +929,21 @@ bodyt termination_path_enumerationt::extract_path(
     if(sit->second==0) continue;
     
     irep_idt id=sit->first;
-    irep_idt pre_id=id2string(id)+"#"+i2string(0);
+    irep_idt pre_id=id2string(id)+"!"+i2string(0);
     
     const symbolt &symbol=ns.lookup(id);            
     
     for(unsigned i=0; i<sit->second; i++)
     {
       symbolt newsym;
-      newsym.name=id2string(id)+"#"+i2string(i);
+      newsym.name=id2string(id)+"!"+i2string(i);
       newsym.base_name=newsym.name;
       newsym.type=symbol.type;
       
       shadow_context.move(newsym); // we don't care if it's already there.
     }
     
-    vri.insert(id2string(id)+"#"+i2string(sit->second), id);    
+    vri.insert(id2string(id)+"!"+i2string(sit->second), id);    
     
     result.variable_map[id]=pre_id;
   }
@@ -1030,7 +1043,7 @@ void termination_path_enumerationt::ssa_replace(
     if(ssa_counters.find(*sit)==ssa_counters.end())
     {              
       ssa_counters[*sit]=0;
-      irep_idt new_id=id2string(*sit)+"#"+i2string(0);
+      irep_idt new_id=id2string(*sit)+"!"+i2string(0);
       replace_id.insert(*sit, new_id);
     }
   }
@@ -1050,7 +1063,7 @@ void termination_path_enumerationt::ssa_replace(
 
 \********************************************************************/
 
-void termination_path_enumerationt::get_loop_extent(
+bool termination_path_enumerationt::get_loop_extent(
   goto_programt::targett &assertion,
   goto_programt::const_targett &begin,
   goto_programt::const_targett &end,
@@ -1072,11 +1085,21 @@ void termination_path_enumerationt::get_loop_extent(
     it++;   
   }
   
-  assert(copy_goto->type==GOTO);  
-  assert(it->targets.size()==1);
-     
-  end=it;
-  begin=it->targets.front();  
+  if (copy_goto->type!=GOTO) 
+	{
+		// No termination copy-goto was found. This means that the slicer
+		// got rid of it because nothing depended on it; i.e. this 
+		// loop terminates
+		begin = end = assertion;
+		return false;
+	}
+	else 
+	{
+		assert(it->targets.size()==1);	
+		end=it;
+		begin=it->targets.front();  
+		return true;
+	}
 }
 
 /********************************************************************\
