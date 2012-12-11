@@ -33,6 +33,7 @@
 #include <termination/instrumentation.h>
 #include <termination/termination.h>
 #include <termination/termination_slicer.h>
+#include <termination/transform_loops.h>
 
 #include "tan.h"
 #include "version.h"
@@ -275,6 +276,9 @@ bool tant::preprocess(void)
 
   status("Removing unused functions");
   remove_unused_functions(goto_functions, mh);
+
+  status("Transforming loops");
+  transform_loops(goto_functions, context, mh);
   
   status("Partial inlining");
   goto_partial_inline(goto_functions, ns, mh);

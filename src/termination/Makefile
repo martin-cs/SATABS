@@ -9,7 +9,7 @@ SRC = find_symbols_rw.cpp instrumentation.cpp rankfunction_typecheck.cpp \
       termination_main.cpp termination_cta.cpp termination_slicer.cpp \
       ranking_relation_cache.cpp termination_direct.cpp \
       termination_path_enumeration.cpp ranking_smt.cpp \
-      expr2seneschal.cpp 
+      expr2seneschal.cpp transform_loops.cpp
 
 ifdef MODULE_INTERPOLATION
 SRC += termination_ita.cpp
