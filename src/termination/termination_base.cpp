@@ -12,6 +12,7 @@ Author: CM Wintersteiger
 #include <map>
 #include <algorithm>
 #include <cstdlib>
+#include <string.h>
 
 #include <cmdline.h>
 #include <prefix.h>
@@ -883,12 +884,10 @@ bool termination_baset::cegar(
   modelchecker->set_verbosity(this_verb);
   simulator->set_verbosity(this_verb);
 
-
-  satabs_safety_checkert safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
-  safety_checker.set_message_handler(mh);
-  safety_checker.set_verbosity(this_verb);
-
   try {
+		satabs_safety_checkert safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+		safety_checker.set_message_handler(mh);
+		safety_checker.set_verbosity(this_verb);
     fine_timet before=current_time();
     safety_checkert::resultt result=safety_checker(model.goto_functions);
     fine_timet diff=current_time()-before;
@@ -929,6 +928,11 @@ bool termination_baset::cegar(
   catch (const char *s)
   {
     status(std::string("CEGAR Loop Exception: ") + s);
+		if (strcmp(s, "refinement failure") == 0)
+		{
+			status("Dumping failure.o");
+			write_goto_binary("failure.o", ns.get_context(), model.goto_functions, mh);
+		}
   }
   catch (unsigned u)
   {

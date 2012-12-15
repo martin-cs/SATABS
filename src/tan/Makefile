@@ -19,6 +19,9 @@ OBJ = $(SRC:.cpp=.o) \
       $(CBMC)/src/cpp/cpp$(LIBEXT) \
       $(CBMC)/src/linking/linking$(LIBEXT) \
       \
+      $(CBMC)/src/goto-instrument/natural_loops.o \
+      $(CBMC)/src/goto-instrument/cfg_dominators.o \
+      \
       ../satabs/cmdline_options.o \
       ../satabs/satabs_safety_checker.o \
       ../satabs/prepare/*.o \

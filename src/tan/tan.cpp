@@ -28,6 +28,7 @@
 #include <goto-programs/string_abstraction.h>
 #include <goto-programs/set_claims.h>
 #include <goto-programs/show_claims.h>
+#include <goto-instrument/natural_loops.h>
 
 #include <satabs/prepare/prepare_functions.h>
 #include <termination/instrumentation.h>
@@ -296,7 +297,15 @@ bool tant::preprocess(void)
   }
     
   goto_functions.compute_location_numbers();
-  
+
+	std::cout << "NATURAL LOOPS:" << std::endl;
+	Forall_goto_functions(it, goto_functions)
+	{
+		natural_loopst nl;
+		nl(it->second.body);		
+		nl.output(std::cout);
+	}
+		
   status("Termination instrumentation");
   termination_instrumentert::modet instrumenter_mode=
     termination_instrumentert::T_RANKSYNTH;

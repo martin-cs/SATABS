@@ -262,7 +262,7 @@ void termination_ctat::rename_main(const irep_idt &main_backup_id)
   ns.name=main_backup_id;
   ns.base_name=ns.name;
   ns.type=sit->second.type;
-  shadow_context.move(ns);
+  const_cast<contextt*>(&context)->move(ns);
 }
 
 /********************************************************************\
