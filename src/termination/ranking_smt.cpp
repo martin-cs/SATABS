@@ -53,7 +53,7 @@ void ranking_synthesis_smtt::quantify_variables(exprt &formula)
     const exprt post=symbol_exprt(it->first, ns.lookup(it->first).type);
 
     // we assume that x' is determined by R(x,x')
-    exprt q("forall", bool_typet());
+    exprt q(ID_forall, bool_typet());
     q.copy_to_operands(post);
     q.move_to_operands(formula);
     formula = q;
@@ -74,7 +74,7 @@ void ranking_synthesis_smtt::quantify_variables(exprt &formula)
     {
       orig_ident=*it;
       sym=symbol_exprt(*it, ns.lookup(orig_ident).type);
-      sym.id("nondet_symbol");
+      sym.id(ID_nondet_symbol);
     }
     else
     {
@@ -83,7 +83,7 @@ void ranking_synthesis_smtt::quantify_variables(exprt &formula)
       sym=symbol_exprt(*it, ns.lookup(orig_ident).type);
     }
 
-    exprt q("forall", bool_typet());
+    exprt q(ID_forall, bool_typet());
     q.copy_to_operands(sym);
     q.move_to_operands(formula);
     formula = q;
@@ -98,7 +98,7 @@ void ranking_synthesis_smtt::quantify_variables(exprt &formula)
 
     const exprt pre=symbol_exprt(it->second, ns.lookup(it->second).type);
 
-    exprt q("forall", bool_typet());
+    exprt q(ID_forall, bool_typet());
     q.copy_to_operands(pre);
     q.move_to_operands(formula);
     formula = q;
@@ -112,10 +112,10 @@ void ranking_synthesis_smtt::quantify_variables(exprt &formula)
     const exprt &c = it->second;
 
     const exprt *sym=&c;
-    while(sym->id()=="typecast")
+    while(sym->id()==ID_typecast)
       sym=&sym->op0();
 
-    exprt q("exists", bool_typet());
+    exprt q(ID_exists, bool_typet());
     q.copy_to_operands(*sym);
     q.move_to_operands(formula);
     formula = q;
@@ -142,7 +142,7 @@ exprt ranking_synthesis_smtt::instantiate(void)
   std::cout << "Largest constant width: " << largest_constant_width << std::endl;
   #endif
 
-  binary_relation_exprt implication("=>");
+  binary_relation_exprt implication(ID_implies);
   implication.lhs() = body.body_relation; // that's R(x,x')
 
   exprt poly=instantiate_polynomial();
@@ -159,8 +159,8 @@ exprt ranking_synthesis_smtt::instantiate(void)
     {
       constraints.copy_to_operands(
         or_exprt(
-          binary_relation_exprt(it->second, ">=", from_integer(-1, it->second.type())),
-          binary_relation_exprt(it->second, "<=", from_integer(+1, it->second.type()))
+          binary_relation_exprt(it->second, ID_ge, from_integer(-1, it->second.type())),
+          binary_relation_exprt(it->second, ID_le, from_integer(+1, it->second.type()))
         )
       );
     }
@@ -207,7 +207,7 @@ exprt ranking_synthesis_smtt::instantiate_polynomial(void)
 
     exprt coef=coefficient(var);
 
-    exprt term("*", typet(""));
+    exprt term(ID_mult, typet(""));
     term.copy_to_operands(coef, var);
 
     if(it==body.variable_map.begin())
@@ -215,7 +215,7 @@ exprt ranking_synthesis_smtt::instantiate_polynomial(void)
     else
     {
 //      cast_up(function, term);
-      exprt t("+", typet(""));
+      exprt t(ID_plus, typet(""));
       t.move_to_operands(function, term);
       function = t;
     }
@@ -246,7 +246,7 @@ exprt ranking_synthesis_smtt::instantiate_polynomial(void)
   exprt pre_function = function;
   replace_expr(pre_replace_map, pre_function);
 
-  return binary_relation_exprt(function, "<", pre_function);
+  return binary_relation_exprt(function, ID_lt, pre_function);
 }
 
 /*******************************************************************\
@@ -272,8 +272,8 @@ exprt ranking_synthesis_smtt::coefficient(const exprt &expr)
     irep_idt ident=expr.get_string(ID_identifier) + "$C";
 
     // set up a new coefficient
-    entry.id("symbol");
-    entry.set("identifier", ident);
+    entry.id(ID_symbol);
+    entry.set(ID_identifier, ident);
 
     // adjust the coefficient type
     if(constrain_mode==COEFFICIENTS_CONSTRAINED)
@@ -281,9 +281,9 @@ exprt ranking_synthesis_smtt::coefficient(const exprt &expr)
     else
       entry.type()=signedbv_typet(safe_width(expr, ns)); //expr.type();
 
-    assert(expr.type().id()=="signedbv" ||
-           expr.type().id()=="unsignedbv" ||
-           expr.type().id()=="bool");
+    assert(expr.type().id()==ID_signedbv ||
+           expr.type().id()==ID_unsignedbv ||
+           expr.type().id()==ID_bool);
 
 //    if(entry.type()!=expr.type())
 //    {
@@ -382,7 +382,7 @@ bool ranking_synthesis_smtt::extract_ranking_relation(boolbvt &converter)
       it++)
   {
     const exprt *sym=&it->second;
-    while(sym->id()=="typecast")
+    while(sym->id()==ID_typecast)
       sym=&sym->op0();
 
     exprt value = converter.get(*sym); // this returns a constant.
@@ -390,7 +390,7 @@ bool ranking_synthesis_smtt::extract_ranking_relation(boolbvt &converter)
     std::cout << from_expr(ns, "", it->second) << " = " << from_expr(ns, "", value) << std::endl;
   }
 
-  if(const_coefficient.id()!="nil")
+  if(const_coefficient.id()!=ID_nil)
   {
     exprt value=converter.get(const_coefficient);
     std::cout << from_expr(ns, "", const_coefficient) << " = " << from_expr(ns, "", value) << std::endl;
@@ -417,9 +417,9 @@ bool ranking_synthesis_smtt::extract_ranking_relation(boolbvt &converter)
 
 void ranking_synthesis_smtt::adjust_type(typet &type) const
 {
-  if(type.id()=="bool")
+  if(type.id()==ID_bool)
   {
     type=uint_type();
-    type.set("width", 1);
+    type.set(ID_width, 1);
   }
 }

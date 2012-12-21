@@ -68,7 +68,7 @@ void ranking_synthesis_qbf_bitwiset::quantify_variables(
 
     for(unsigned i=0; i<bitwise_width; i++)
     {
-      if(i!=0) nsym.set("identifier", original_id + "@" + i2string(i));
+      if(i!=0) nsym.set(ID_identifier, original_id + "@" + i2string(i));
       quantify_variable(converter, solver, nsym, false);
     }
   }
@@ -138,7 +138,7 @@ exprt ranking_synthesis_qbf_bitwiset::instantiate(void)
 {
   find_largest_constant(body.body_relation);
 
-  binary_relation_exprt implication("=>");
+  binary_relation_exprt implication(ID_implies);
   implication.lhs() = body.body_relation; // that's R(x,x')
 
   implication.rhs() =
@@ -190,10 +190,10 @@ exprt ranking_synthesis_qbf_bitwiset::instantiate_projections(void)
   if(bitwise_width<=1)
   {
     dlt.second.negate();
-    return binary_relation_exprt(dlt.second, "and", dlt.first);
+    return binary_relation_exprt(dlt.second, ID_and, dlt.first);
   }
   else
-    return binary_relation_exprt(dlt.second, "<", dlt.first);
+    return binary_relation_exprt(dlt.second, ID_lt, dlt.first);
 }
 
 /********************************************************************\
@@ -210,16 +210,16 @@ exprt ranking_synthesis_qbf_bitwiset::instantiate_projections(void)
 
 exprt ranking_synthesis_qbf_bitwiset::instantiate_affine(void)
 {
-  std::pair<exprt,exprt> dlt = duplicate(affine_template("notequal", "and"),
+  std::pair<exprt,exprt> dlt = duplicate(affine_template(ID_notequal, ID_and),
                                          bitwise_width);
 
   if(bitwise_width<=1)
   {
     dlt.second.negate();
-    return binary_relation_exprt(dlt.second, "and", dlt.first);
+    return binary_relation_exprt(dlt.second, ID_and, dlt.first);
   }
   else
-    return binary_relation_exprt(dlt.second, "<", dlt.first);
+    return binary_relation_exprt(dlt.second, ID_lt, dlt.first);
 }
 
 /********************************************************************\
@@ -236,16 +236,16 @@ exprt ranking_synthesis_qbf_bitwiset::instantiate_affine(void)
 
 exprt ranking_synthesis_qbf_bitwiset::instantiate_disjunctive(void)
 {
-  std::pair<exprt,exprt> dlt = duplicate(affine_template("or", "and"),
+  std::pair<exprt,exprt> dlt = duplicate(affine_template(ID_or, ID_and),
                                          bitwise_width);
 
   if(bitwise_width<=1)
   {
     dlt.second.negate();
-    return binary_relation_exprt(dlt.second, "and", dlt.first);
+    return binary_relation_exprt(dlt.second, ID_and, dlt.first);
   }
   else
-    return binary_relation_exprt(dlt.second, "<", dlt.first);
+    return binary_relation_exprt(dlt.second, ID_lt, dlt.first);
 }
 
 /********************************************************************\
@@ -262,16 +262,16 @@ exprt ranking_synthesis_qbf_bitwiset::instantiate_disjunctive(void)
 
 exprt ranking_synthesis_qbf_bitwiset::instantiate_conjunctive(void)
 {
-  std::pair<exprt,exprt> dlt = duplicate(affine_template("and", "or"),
+  std::pair<exprt,exprt> dlt = duplicate(affine_template(ID_and, ID_or),
                                          bitwise_width);
 
   if(bitwise_width<=1)
   {
     dlt.second.negate();
-    return binary_relation_exprt(dlt.second, "and", dlt.first);
+    return binary_relation_exprt(dlt.second, ID_and, dlt.first);
   }
   else
-    return binary_relation_exprt(dlt.second, "<", dlt.first);
+    return binary_relation_exprt(dlt.second, ID_lt, dlt.first);
 }
 
 /*******************************************************************\
@@ -417,7 +417,7 @@ bool ranking_synthesis_qbf_bitwiset::extract_ranking_relation(boolbvt &converter
       it++)
   {
     const exprt *sym=&it->second;
-    while(sym->id()=="typecast")
+    while(sym->id()==ID_typecast)
       sym=&sym->op0();
 
     if(bitwise_width<=1)
@@ -436,7 +436,7 @@ bool ranking_synthesis_qbf_bitwiset::extract_ranking_relation(boolbvt &converter
 
       for(unsigned i=0; i<bitwise_width; i++)
       {
-        if(i!=0) nsym.set("identifier", original_id + "@" + i2string(i));
+        if(i!=0) nsym.set(ID_identifier, original_id + "@" + i2string(i));
         exprt value = converter.get(nsym);
         replace_map[nsym] = value; // bit i
         std::cout << from_expr(ns, "", nsym) << " = " << from_expr(ns, "", value) << std::endl;
@@ -444,7 +444,7 @@ bool ranking_synthesis_qbf_bitwiset::extract_ranking_relation(boolbvt &converter
     }
   }
 
-  if(const_coefficient.id()!="nil")
+  if(const_coefficient.id()!=ID_nil)
   {
     exprt value=converter.get(const_coefficient);
     std::cout << from_expr(ns, "", const_coefficient) << " = " << from_expr(ns, "", value) << std::endl;
@@ -481,7 +481,7 @@ exprt ranking_synthesis_qbf_bitwiset::bitwise_chain(
   {
     if(expr.type()!=bool_typet())
     {
-      typecast_exprt t(typet("bool"));
+      typecast_exprt t(typet(ID_bool));
       t.op() = expr;
       return t;
     }
@@ -491,26 +491,26 @@ exprt ranking_synthesis_qbf_bitwiset::bitwise_chain(
 
   exprt res;
 
-  exprt e("extractbit", bool_typet());
+  exprt e(ID_extractbit, bool_typet());
   e.copy_to_operands(expr);
 
   res = e;
-  res.copy_to_operands(from_integer(0, typet("natural")));
+  res.copy_to_operands(from_integer(0, typet(ID_natural)));
 
   for(unsigned i=1; i<width; i++)
   {
-    if(termOp=="notequal")
+    if(termOp==ID_notequal)
     {
-      exprt t("=", bool_typet());
+      exprt t(ID_equal, bool_typet());
       t.copy_to_operands(res, e);
-      t.op1().copy_to_operands(from_integer(i, typet("natural")));
+      t.op1().copy_to_operands(from_integer(i, typet(ID_natural)));
       res=not_exprt(t);
     }
     else
     {
       exprt t(termOp, bool_typet());
       t.copy_to_operands(res, e);
-      t.op1().copy_to_operands(from_integer(i, typet("natural")));
+      t.op1().copy_to_operands(from_integer(i, typet(ID_natural)));
       res=t;
     }
   }
@@ -552,10 +552,10 @@ std::pair<exprt,exprt> ranking_synthesis_qbf_bitwiset::affine_template(
     adjust_type(var.type());
 
     exprt co = coefficient(var);
-    irep_idt bitop = (coefOp=="and")      ? "bitand" :
-                     (coefOp=="or")       ? "bitor"  :
-                     (coefOp=="notequal") ? "bitxor" : 
-                                            "";
+    irep_idt bitop = (coefOp==ID_and)      ? ID_bitand :
+                     (coefOp==ID_or)       ? ID_bitor  :
+                     (coefOp==ID_notequal) ? ID_bitxor : 
+                                             "";
 
     exprt varblock(bitop, var.type());
     varblock.copy_to_operands(var, co);
@@ -566,9 +566,9 @@ std::pair<exprt,exprt> ranking_synthesis_qbf_bitwiset::affine_template(
       function=bchain;
     else
     {
-      if(termOp=="notequal")
+      if(termOp==ID_notequal)
       {
-        exprt t("=", bool_typet());
+        exprt t(ID_equal, bool_typet());
         t.move_to_operands(function);
         t.move_to_operands(bchain);
         function=not_exprt(t);
@@ -588,9 +588,9 @@ std::pair<exprt,exprt> ranking_synthesis_qbf_bitwiset::affine_template(
   const_coefficient=coefficient(const_sym);
 
   
-  if(termOp=="notequal")
+  if(termOp==ID_notequal)
   {
-    exprt t("=", bool_typet());
+    exprt t(ID_equal, bool_typet());
     t.move_to_operands(function);
     t.copy_to_operands(const_coefficient);
     function = not_exprt(t);
@@ -650,9 +650,9 @@ std::pair<exprt,exprt> ranking_synthesis_qbf_bitwiset::ite_template()
     unsigned vwidth = safe_width(var, ns);
     for(unsigned i=0; i<vwidth; i++)
     {
-      exprt t("extractbit", bool_typet());
+      exprt t(ID_extractbit, bool_typet());
       t.copy_to_operands(var);
-      t.copy_to_operands(from_integer(i, typet("natural")));
+      t.copy_to_operands(from_integer(i, typet(ID_natural)));
       
       if(it==body.variable_map.begin() && i==0)
         function = t;
@@ -694,8 +694,8 @@ std::pair<exprt,exprt> ranking_synthesis_qbf_bitwiset::duplicate(
   if(bits<=1) return pp;
 
   std::pair<exprt,exprt> res;
-  res.first.id("concatenation"); res.first.type() = unsignedbv_typet(bits);
-  res.second.id("concatenation"); res.second.type() = unsignedbv_typet(bits);
+  res.first.id(ID_concatenation); res.first.type() = unsignedbv_typet(bits);
+  res.second.id(ID_concatenation); res.second.type() = unsignedbv_typet(bits);
 
   std::vector<replace_mapt> replace_maps(bits);
 

@@ -74,7 +74,7 @@ exprt ranking_synthesis_qbf_completet::extract_ranking_relation(void)
         
     binary_relation_exprt bin(
       rank_function_map[presym],   // input ...
-      ">",                    // ... greater than ...
+      ID_gt,                       // ... greater than ...
       rank_function_map[postsym]); // ... output
 
     termination_relation.move_to_operands(bin);
@@ -124,8 +124,8 @@ bool ranking_synthesis_qbf_completet::extract_functions(
 
       exprt &rank_function=rank_function_map[(toggle==0)?presym:postsym];
 
-      std::cout << "Extracting function for " << from_expr(ns, "", val_var_sym) <<
-        std::endl;
+      std::cout << "Extracting function for " 
+                << from_expr(ns, "", val_var_sym) << std::endl;
 
       literalt l;
 
@@ -153,7 +153,7 @@ bool ranking_synthesis_qbf_completet::extract_functions(
 
         // cast the current function to unsigned
         typet rf_type=uint_type();
-        rf_type.set("width", value_width);
+        rf_type.set(ID_width, value_width);
 
         typecast_exprt cast(rf_type);
         cast.op()=this_func;
@@ -161,12 +161,12 @@ bool ranking_synthesis_qbf_completet::extract_functions(
         if(i>0)
         {
           // shift it to the left
-          exprt shift("shl", rf_type);
+          exprt shift(ID_shl, rf_type);
           shift.move_to_operands(cast);
           shift.copy_to_operands(from_integer(i, rf_type));
 
           // bitwise-or it with the old one.
-          exprt bitwise("bitor", rf_type);
+          exprt bitwise(ID_bitor, rf_type);
           bitwise.move_to_operands(shift);
           bitwise.move_to_operands(rank_function);
 
@@ -204,8 +204,8 @@ exprt ranking_synthesis_qbf_completet::instantiate(void)
 {
   // build res == (R(x,x') -> rx>rx') && (x=x' -> rx=rx')
 
-  exprt res("and", typet("bool"));
-  binary_relation_exprt implication("=>");
+  exprt res(ID_and, typet(ID_bool));
+  binary_relation_exprt implication(ID_implies);
 
   implication.lhs() = body.body_relation; // that's R(x,x')
   and_exprt rhs; // this is rx>rx'
@@ -220,7 +220,7 @@ exprt ranking_synthesis_qbf_completet::instantiate(void)
     exprt r_in=value_variable(presym);
     exprt r_out=value_variable(postsym);
 
-    binary_relation_exprt bin(r_in, ">", r_out);
+    binary_relation_exprt bin(r_in, ID_gt, r_out);
     rhs.operands().push_back(bin);
   }
 
@@ -250,7 +250,7 @@ exprt ranking_synthesis_qbf_completet::instantiate(void)
     exprt eq_values=equal_exprt(value_variable(presym),
                                    value_variable(postsym));
 
-    binary_relation_exprt bin(eq_orig, "=>", eq_values);
+    binary_relation_exprt bin(eq_orig, ID_implies, eq_values);
     mono_constraint.move_to_operands(bin);
   }
 
@@ -454,7 +454,7 @@ bool ranking_synthesis_qbf_completet::skolem_equality(void)
   // the negation is
   // \exists x,x' x==x' && f(x)!=f(x')
 
-  binary_relation_exprt implication("=>");
+  binary_relation_exprt implication(ID_implies);
   implication.lhs() = and_exprt();
   implication.rhs() = or_exprt();
 
@@ -467,7 +467,7 @@ bool ranking_synthesis_qbf_completet::skolem_equality(void)
     
     implication.lhs().copy_to_operands(equal_exprt(postsym, presym));
 
-    binary_relation_exprt diseq("notequal");
+    binary_relation_exprt diseq(ID_notequal);
     diseq.lhs()=rank_function_map[postsym];
     diseq.rhs()=rank_function_map[presym];
 
@@ -507,12 +507,12 @@ bool ranking_synthesis_qbf_completet::skolem_equality(void)
       exprt postsym=symbol_exprt(it->first, ns.lookup(it->first).type);
       exprt presym=symbol_exprt(it->second, ns.lookup(it->second).type);
           
-      binary_relation_exprt diseq_pre("notequal");
+      binary_relation_exprt diseq_pre(ID_notequal);
       diseq_pre.lhs() = value_variable(presym);
       diseq_pre.rhs() = rank_function_map[presym];
       next_step.move_to_operands(diseq_pre);
 
-      binary_relation_exprt diseq_post("notequal");
+      binary_relation_exprt diseq_post(ID_notequal);
       diseq_post.lhs() = value_variable(postsym);
       diseq_post.rhs() = rank_function_map[postsym];
       next_step.move_to_operands(diseq_post);
