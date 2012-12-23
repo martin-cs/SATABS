@@ -14,7 +14,7 @@ Author: CM Wintersteiger
 
 /*******************************************************************\
 
- Function: expr2seneschalt::convert
+ Function: expr2seneschalt::convert_rec
 
  Inputs:
 
@@ -24,7 +24,7 @@ Author: CM Wintersteiger
 
 \********************************************************************/
 
-std::string expr2seneschalt::convert(
+std::string expr2seneschalt::convert_rec(
   const exprt &e, 
   bool negated, 
   bool bool_context)
@@ -53,9 +53,9 @@ std::string expr2seneschalt::convert(
     else
       return integer2string(mi);
   }
-  else if(e.id()=="=" || e.id()==ID_notequal ||
-          e.id()=="<" || e.id()==">" ||
-          e.id()=="<=" || e.id()==">=")
+  else if(e.id()==ID_equal || e.id()==ID_notequal ||
+          e.id()==ID_lt || e.id()==ID_gt ||
+          e.id()==ID_le || e.id()==ID_ge)
   {
     assert(e.operands().size()==2);
     std::string op = e.id()==ID_notequal ? "!=" : e.id_string();
@@ -74,14 +74,14 @@ std::string expr2seneschalt::convert(
     if(!bool_context)
     {
       if(op=="=")
-        return "equals("+convert(e.op0())+", "+convert(e.op1())+")";
+        return "equals("+convert_rec(e.op0())+", "+convert_rec(e.op1())+")";
       if(op=="!=")
-        return "not(equals("+convert(e.op0())+", "+convert(e.op1())+"))";
+        return "not(equals("+convert_rec(e.op0())+", "+convert_rec(e.op1())+"))";
       else
-        throw (std::string("Missing Arith-1 Function: ") + op);
+        throw std::string("Missing Arith-1 Function: ") + op;
     }
     else
-      return "(" + convert(e.op0()) + " " + op + " " + convert(e.op1())+")";
+      return "(" + convert_rec(e.op0()) + " " + op + " " + convert_rec(e.op1())+")";
   }
   else if(e.id()==ID_not)
   {
@@ -89,15 +89,15 @@ std::string expr2seneschalt::convert(
     unsigned w=safe_width(e, ns);
     
     if(bool_context || w==1)
-      return std::string("(") + convert(e.op0(), !negated, true) + ")";
+      return std::string("(") + convert_rec(e.op0(), !negated, true) + ")";
     else
     {
       std::string res("bitneg"); 
 
-      if(e.type().id()=="unsignedbv" || e.type().id()=="bool")
+      if(e.type().id()==ID_unsignedbv || e.type().id()==ID_bool)
         res+="U";
       
-      res += i2string(w) + "(" + convert(e.op0()) + ")";
+      res += i2string(w) + "(" + convert_rec(e.op0()) + ")";
       return res;
     }
   }
@@ -105,27 +105,27 @@ std::string expr2seneschalt::convert(
   {
     assert(e.operands().size()==3);
         
-    return std::string("((") + convert(e.op0(), false, true) + " & " + 
-                               convert(e.op1(), negated, true) + ") | (" +
-                               convert(e.op0(), true, true) + " & " + 
-                               convert(e.op2(), negated, true) + "))";
+    return std::string("((") + convert_rec(e.op0(), false, true) + " & " + 
+                               convert_rec(e.op1(), negated, true) + ") | (" +
+                               convert_rec(e.op0(), true, true) + " & " + 
+                               convert_rec(e.op2(), negated, true) + "))";
   }
-  else if(e.id()=="+" || e.id()=="-" || e.id()=="*" || 
-          e.id()=="/" || e.id()==ID_mod ||
+  else if(e.id()==ID_plus || e.id()==ID_minus || e.id()==ID_mult || 
+          e.id()==ID_div || e.id()==ID_mod ||
           e.id()==ID_bitand || e.id()==ID_bitor || e.id()==ID_bitxor)
   {
     assert(e.operands().size()>=2);
     assert(!bool_context);
 
     unsigned w=safe_width(e, ns);
-    std::string op = e.id()=="+"      ? "add" :
-                     e.id()=="-"      ? "sub" :
-                     e.id()=="*"      ? "mul" :
-                     e.id()=="/"      ? "div" :
-                     e.id()=="mod"    ? "mod" :
-                     e.id()=="bitand" ? "and" : 
-                     e.id()=="bitor"  ? "or"  : 
-                                        "xor";
+    std::string op = e.id()==ID_plus   ? "add" :
+                     e.id()==ID_minus  ? "sub" :
+                     e.id()==ID_mult   ? "mul" :
+                     e.id()==ID_div    ? "div" :
+                     e.id()==ID_mod    ? "mod" :
+                     e.id()==ID_bitand ? "and" : 
+                     e.id()==ID_bitor  ? "or"  : 
+                                         "xor";
     
     if(op=="add" || op=="sub" || op=="mul" || op=="div")
     {
@@ -143,26 +143,26 @@ std::string expr2seneschalt::convert(
         exprt::operandst::const_iterator last_it = it;
         it++;
         
-        last = op + "(" + convert(*last_it, negated) + "," + 
-                          convert(*it, negated) + ")";
+        last = op + "(" + convert_rec(*last_it, negated) + "," + 
+                          convert_rec(*it, negated) + ")";
       }
       else
-        last = op + "(" + last + "," + convert(*it, negated) + ")";
+        last = op + "(" + last + "," + convert_rec(*it, negated) + ")";
     }
     
     return last;
   }
-  else if(e.id()=="unary-" || e.id()==ID_bitnot)
+  else if(e.id()==ID_unary_minus || e.id()==ID_bitnot)
   {
     assert(e.operands().size()==1);
     assert(!bool_context);
     
-    std::string op = (e.id()=="unary-") ? "minus" : "bitneg";
+    std::string op = (e.id()==ID_unary_minus) ? "minus" : "bitneg";
     unsigned w=safe_width(e, ns);
     
     return op + 
-           ((e.type().id()=="unsignedbv")?"U":"") + i2string(w) +
-           "(" + convert(e.op0(), negated) + ")";
+           ((e.type().id()==ID_unsignedbv)?"U":"") + i2string(w) +
+           "(" + convert_rec(e.op0(), negated) + ")";
   }
   else if(e.id()==ID_lshr || e.id()==ID_shl)
   {
@@ -172,9 +172,9 @@ std::string expr2seneschalt::convert(
     unsigned w=safe_width(e, ns);
     
     return std::string("shift") + 
-           ((e.type().id()=="unsignedbv")?"U":"") + i2string(w) +
-           "(" + convert(e.op0(), negated) + ", " + 
-           ((e.id()=="lshr")?"-":"") + convert(e.op1(), negated) + ")";
+           ((e.type().id()==ID_unsignedbv)?"U":"") + i2string(w) +
+           "(" + convert_rec(e.op0(), negated) + ", " + 
+           ((e.id()==ID_lshr)?"-":"") + convert_rec(e.op1(), negated) + ")";
   }
   else if(e.id()==ID_and || e.id()==ID_or)
   {
@@ -185,9 +185,9 @@ std::string expr2seneschalt::convert(
     forall_operands(it, e)
     {
       if(it==e.operands().begin())
-        res = "(" + convert(*it, negated, true);
+        res = "(" + convert_rec(*it, negated, true);
       else
-        res += ((e.id()=="and")?" & ":" | ") + convert(*it, negated, true);
+        res += ((e.id()==ID_and)?" & ":" | ") + convert_rec(*it, negated, true);
     }
     return res+")";
   }
@@ -197,18 +197,18 @@ std::string expr2seneschalt::convert(
     unsigned w=safe_width(e, ns);
     
     if(bool_context || w==1)
-      return convert(e.op0()) + ((negated)?"!":"") + "=0";
+      return convert_rec(e.op0()) + ((negated)?"!":"") + "=0";
     else
     {     
       return std::string("cast") + 
               ((e.type().id()==ID_unsignedbv || e.type().id()==ID_bool)?"U":"") + 
-               i2string(w) + "(" + convert(e.op0(), negated, false) + ")";
+               i2string(w) + "(" + convert_rec(e.op0(), negated, false) + ")";
     }
   }
   else if(e.id()=="seneschal-range")
   {
     assert(e.operands().size()==1);
-    return e.type().id_string() + "(" + convert(e.op0(), negated) + ")";
+    return e.type().id_string() + "(" + convert_rec(e.op0(), negated) + ")";
   }
   else
     throw UnhandledException(e);

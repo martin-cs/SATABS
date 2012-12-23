@@ -18,19 +18,27 @@ protected:
   const namespacet &ns;
  
 public:
-  expr2seneschalt(const namespacet &_ns) : ns(_ns) {}
+  explicit expr2seneschalt(const namespacet &_ns) : ns(_ns) {}
   ~expr2seneschalt() {}
 
   class UnhandledException
   {
   public:
     exprt reason;
-    UnhandledException(exprt r) : reason(r) {};
+    explicit UnhandledException(exprt r) : reason(r) {};
   };
 
-  std::string convert(const exprt &e, 
-                      bool negated=false, 
-                      bool bool_context=false);
+  std::string operator()(const exprt &e, 
+                         bool negated=false, 
+                         bool bool_context=false)
+  {
+    return convert_rec(e, negated, bool_context);
+  }
+
+protected:
+  std::string convert_rec(const exprt &e, 
+                          bool negated=false, 
+                          bool bool_context=false);
 };
 
 #endif

@@ -57,6 +57,7 @@ public:
   
   void add_constraint(const exprt &c) 
   { constraint = and_exprt(constraint, c); }
+
   const exprt &get_constraint(void) const { return constraint; }
   
 protected:

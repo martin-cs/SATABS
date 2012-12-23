@@ -24,7 +24,7 @@ public:
     contextt &_sctx,
     message_handlert &_mh):
       ranking_synthesis_baset(_body, _ctx, _sctx, _mh),
-      ranking_function("nil") {}
+      ranking_function(ID_nil) {}
 
   virtual ~ranking_synthesis_seneschalt() {}
 

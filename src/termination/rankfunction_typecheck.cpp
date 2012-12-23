@@ -157,7 +157,7 @@ void rankfunction_typecheckt::typecheck_expr(exprt &expr)
     assert(expr.type().id()==ID_unsignedbv ||
            expr.type().id()==ID_signedbv);
   }
-  else if(expr.id()=="*")
+  else if(expr.id()==ID_mult)
   {
     unsigned total_width=0;
 
@@ -165,15 +165,15 @@ void rankfunction_typecheckt::typecheck_expr(exprt &expr)
     {
       typet type=ext_ns.follow(it->type());
 
-      if(type.id()=="unsignedbv")
+      if(type.id()==ID_unsignedbv)
         total_width += safe_width(*it, ext_ns) + 1; // account for the extra sign bit.
-      else if(type.id()=="signedbv")
+      else if(type.id()==ID_signedbv)
         total_width += safe_width(*it, ext_ns);
-      else if(type.id()=="pointer")
+      else if(type.id()==ID_pointer)
         total_width += config.ansi_c.pointer_width;
-      else if(type.id()=="struct" || type.id()=="union" || type.id()=="c_enum")
+      else if(type.id()==ID_struct || type.id()==ID_union || type.id()==ID_c_enum)
         total_width += safe_width(*it, ext_ns);
-      else if(type.id()=="fixedbv")
+      else if(type.id()==ID_fixedbv)
         total_width += safe_width(*it, ext_ns) + 1;
       else
         throw std::string("Unhandled Type: ") + it->type().to_string();
@@ -191,14 +191,14 @@ void rankfunction_typecheckt::typecheck_expr(exprt &expr)
     expr.operands() = operands;
     expr.type() = ttype;
   }
-  else if(expr.id()=="-" || expr.id()=="+")
+  else if(expr.id()==ID_minus || expr.id()==ID_plus)
   {
     unsigned largest=0;
 
     forall_operands(it, expr)
     {
-      if(it->type().id()=="unsignedbv" ||
-         it->type().id()=="signedbv")
+      if(it->type().id()==ID_unsignedbv ||
+         it->type().id()==ID_signedbv)
         largest = std::max(safe_width(*it, ext_ns), largest);
       else
         throw std::string("Unhandled Type: ") + it->type().to_string();
@@ -216,7 +216,7 @@ void rankfunction_typecheckt::typecheck_expr(exprt &expr)
     expr.operands() = operands;
     expr.type() = ttype;
   }
-  else if(expr.id()=="/")
+  else if(expr.id()==ID_div)
   {
     assert(expr.operands().size()==2);
     expr.type()==expr.op0().type();
@@ -224,13 +224,13 @@ void rankfunction_typecheckt::typecheck_expr(exprt &expr)
     tc.op() = expr.op1();
     expr.op1()=tc;
   }
-  else if(expr.id()=="unary-")
+  else if(expr.id()==ID_unary_minus)
   {
     assert(expr.operands().size()==1);
-    assert(expr.op0().type().id()=="signedbv");
+    assert(expr.op0().type().id()==ID_signedbv);
     expr.type() = expr.op0().type();
   }
-  else if(expr.id()=="mod")
+  else if(expr.id()==ID_mod)
   {
     assert(expr.operands().size()==2);
     expr.type() = expr.op1().type();

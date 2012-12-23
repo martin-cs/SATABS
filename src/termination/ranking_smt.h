@@ -31,7 +31,7 @@ public:
     message_handlert &_mh,
     coef_constraintt _c_mode=COEFFICIENTS_UNCONSTRAINED) :
       ranking_synthesis_baset(_body, _ctx, _sctx, _mh),
-      const_coefficient("nil"),
+      const_coefficient(ID_nil),
       constrain_mode(_c_mode) {}
 
   virtual ~ranking_synthesis_smtt() {}

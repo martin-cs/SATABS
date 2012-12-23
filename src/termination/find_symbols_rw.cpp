@@ -26,11 +26,11 @@ void find_symbols_w(
   const exprt& lhs, 
   find_symbols_sett &l)
 {
-  if(lhs.id()=="symbol")
+  if(lhs.id()==ID_symbol)
   {
-    l.insert(lhs.get("identifier"));    
+    l.insert(to_symbol_expr(lhs).get_identifier());    
   }
-  else if(lhs.id()=="index")
+  else if(lhs.id()==ID_index)
   {
     const index_exprt &ie=to_index_expr(lhs);
     find_symbols_w(ie.array(), l);
@@ -56,11 +56,11 @@ void find_symbols_w(
   const exprt& lhs, 
   std::set<exprt> &l)
 {
-  if(lhs.id()=="symbol")
+  if(lhs.id()==ID_symbol)
   {
     l.insert(lhs);    
   }
-  else if(lhs.id()=="index")
+  else if(lhs.id()==ID_index)
   {
     const index_exprt &ie=to_index_expr(lhs);
     find_symbols_w(ie.array(), l);
@@ -87,11 +87,11 @@ void find_symbols_rw(
   find_symbols_sett &l, 
   find_symbols_sett &r)
 {
-  if(expr.id()=="symbol")
+  if(expr.id()==ID_symbol)
   {
-    l.insert(expr.get("identifier"));
+    l.insert(to_symbol_expr(expr).get_identifier());
   }
-  else if(expr.id()=="index")
+  else if(expr.id()==ID_index)
   {
     const index_exprt &ie=to_index_expr(expr);
     find_symbols_rw(ie.array(), r, l);

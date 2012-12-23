@@ -174,13 +174,13 @@ void ranking_synthesis_baset::show_mapping(
   symbol_exprt sym(ident, type);
   literalt l;
 
-  if(type.id()=="bool" ||
-     type.id()=="unsignedbv" ||
-     type.id()=="signedbv" ||
-     type.id()=="floatbv" ||
-     type.id()=="fixedbv" ||
-     type.id()=="bv" ||
-     type.id()=="verilogbv")
+  if(type.id()==ID_bool ||
+     type.id()==ID_unsignedbv ||
+     type.id()==ID_signedbv ||
+     type.id()==ID_floatbv ||
+     type.id()==ID_fixedbv ||
+     type.id()==ID_bv ||
+     type.id()==ID_verilogbv)
   {
     unsigned width=bv_width(type);
 
@@ -333,9 +333,9 @@ void ranking_synthesis_baset::find_nondet_symbols(
   const exprt &expr,
   find_symbols_sett &set)
 {
-  if(expr.id()=="nondet_symbol")
+  if(expr.id()==ID_nondet_symbol)
   {
-    const irep_idt &ident=expr.get("identifier");
+    const irep_idt &ident=expr.get(ID_identifier);
     set.insert(ident);
     
     // make sure that there is a symbol for this,
@@ -386,7 +386,7 @@ void ranking_synthesis_baset::cast_up(exprt &a, exprt &b) const
   }
   else
   {
-    if(a.type().id()=="signedbv")
+    if(a.type().id()==ID_signedbv)
     {
       typet t = unsignedbv_typet(a_width);
       typecast_exprt tc(t);
@@ -396,7 +396,7 @@ void ranking_synthesis_baset::cast_up(exprt &a, exprt &b) const
     }
     else
     {
-      assert(b.type().id()=="signedbv");
+      assert(b.type().id()==ID_signedbv);
       typet t = unsignedbv_typet(b_width);
       typecast_exprt tc(t);
       tc.op() = b;

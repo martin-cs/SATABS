@@ -63,9 +63,9 @@ public:
     solver_time(0),
     solver_calls(0)
   {
-      typet ctype=typet("unsignedbv");
-      ctype.set("width", 8);
-      largest_constant = from_integer(0, ctype);
+    typet ctype=typet(ID_unsignedbv);
+    ctype.set(ID_width, 8);
+    largest_constant = from_integer(0, ctype);
   }
 
   virtual ~ranking_synthesis_baset() {}

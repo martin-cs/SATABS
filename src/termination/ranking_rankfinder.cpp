@@ -28,7 +28,6 @@ Date: May 2009
 
 #include "ranking_rankfinder.h"
 
-
 class expr2rankfindert
 {
 public:
@@ -42,9 +41,17 @@ public:
     UnhandledException(exprt r) : reason(r) {};
   };
 
-  std::string convert(const exprt &e, 
-                      bool negated=false,
-                      bool bool_context=false) const;
+  std::string operator()(const exprt &e, 
+                         bool negated=false,
+                         bool bool_context=false) const
+  {
+    return convert_rec(e, negated, bool_context);
+  }
+
+protected:                      
+  std::string convert_rec(const exprt &e, 
+                          bool negated=false,
+                          bool bool_context=false) const;
 };
 
 /********************************************************************\
@@ -101,7 +108,7 @@ bool ranking_synthesis_rankfindert::generate_functions(void)
   solver_time += current_time()-before;
   solver_calls++;
 
-  if(!read_output()) throw ("RANKFINDER ERROR");
+  if(!read_output()) throw "RANKFINDER ERROR";
 
 //  remove("rankfinder.input");
   remove("rankfinder.err");
@@ -214,7 +221,7 @@ bool ranking_synthesis_rankfindert::extract_ranking_relation(void)
 
 void ranking_synthesis_rankfindert::propagate_expressions(exprt &e)
 {
-  assert(e.id()=="and" && e.type()==bool_typet());
+  assert(e.id()==ID_and && e.type()==bool_typet());
 
   // first split top-level ands.
   bool progress=true;
@@ -224,7 +231,7 @@ void ranking_synthesis_rankfindert::propagate_expressions(exprt &e)
     and_exprt t;
     forall_operands(it, e)
     {
-      if (it->id()!="and")
+      if (it->id()!=ID_and)
         t.copy_to_operands(*it);
       else
       {
@@ -240,7 +247,7 @@ void ranking_synthesis_rankfindert::propagate_expressions(exprt &e)
 
   forall_operands(it, e)
   {
-    if(it->id()=="=")
+    if(it->id()==ID_equal)
     {
       assert(it->operands().size()==2);
       map[it->op0()] = it->op1();
@@ -249,7 +256,7 @@ void ranking_synthesis_rankfindert::propagate_expressions(exprt &e)
 
   Forall_operands(it, e)
   {
-    if(it->id()=="=")
+    if(it->id()==ID_equal)
     {
       replace_expr(map, it->op1());
     }
@@ -273,7 +280,7 @@ void ranking_synthesis_rankfindert::propagate_expressions(exprt &e)
 
 bool ranking_synthesis_rankfindert::write_input_file(const exprt &e)
 {
-  assert(e.id()=="and" && e.type()==bool_typet());
+  assert(e.id()==ID_and && e.type()==bool_typet());
 
   std::ofstream f("rankfinder.input");
   f << "relation(" << std::endl;
@@ -303,7 +310,7 @@ bool ranking_synthesis_rankfindert::write_input_file(const exprt &e)
 
 /*******************************************************************\
 
- Function: expr2rankfindert::convert
+ Function: expr2rankfindert::convert_rec
 
  Inputs:
 
@@ -313,7 +320,7 @@ bool ranking_synthesis_rankfindert::write_input_file(const exprt &e)
 
 \********************************************************************/
 
-std::string expr2rankfindert::convert(
+std::string expr2rankfindert::convert_rec(
   const exprt &e, 
   bool negated,
   bool bool_context) const
@@ -342,10 +349,10 @@ std::string expr2rankfindert::convert(
         t.operands().back().make_not();
       }
       
-      return convert(t, negated, true);
+      return convert_rec(t, negated, true);
     }
     else
-      return convert(e.op0(), !negated, true);
+      return convert_rec(e.op0(), !negated, true);
   }
   else if(e.id()==ID_and && !negated)
   {
@@ -353,54 +360,54 @@ std::string expr2rankfindert::convert(
     
     forall_operands(it, e)
     {
-      res+=convert(*it, false, true);
+      res+=convert_rec(*it, false, true);
       if(it!=--e.operands().end()) res+=", ";
     }
     
     return res;
   }
-  else if(e.id()=="=" || e.id()=="<" ||
-          e.id()==">" || e.id()==ID_notequal ||
-          e.id()==">=" || e.id()=="<=")
+  else if(e.id()==ID_equal || e.id()==ID_lt ||
+          e.id()==ID_gt || e.id()==ID_notequal ||
+          e.id()==ID_ge || e.id()==ID_le)
   {
     assert(e.operands().size()==2);
-    std::string a = convert(e.op0());
-    std::string b = convert(e.op1());
+    std::string a = convert_rec(e.op0());
+    std::string b = convert_rec(e.op1());
 
-    if((e.id()=="=" && !negated) || (e.id()==ID_notequal && negated))
+    if((e.id()==ID_equal && !negated) || (e.id()==ID_notequal && negated))
       return a + " = " + b;
-    else if((e.id()=="=" && negated) || (e.id()==ID_notequal && !negated))
+    else if((e.id()==ID_equal && negated) || (e.id()==ID_notequal && !negated))
       return a + " =\\= " + b;
-    else if((e.id()=="<=" && !negated) || (e.id()==">" && negated))
+    else if((e.id()==ID_le && !negated) || (e.id()==ID_gt && negated))
       return a + " =< " + b;
-    else if((e.id()=="<" && !negated) || (e.id()==">=" && negated))
+    else if((e.id()==ID_lt && !negated) || (e.id()==ID_ge && negated))
       return a + " < " + b;
-    else if((e.id()==">=" && !negated) || (e.id()=="<" && negated))
+    else if((e.id()==ID_ge && !negated) || (e.id()==ID_lt && negated))
       return a + " >= " + b;
-    else if((e.id()==">" && !negated) || (e.id()=="<=" && negated))
+    else if((e.id()==ID_gt && !negated) || (e.id()==ID_le && negated))
       return a + " > " + b;
     else
-      throw ("NYI:" + e.id_string());
+      throw "NYI:" + e.id_string();
   }
-  else if(e.id()=="+" || e.id()=="*")
+  else if(e.id()==ID_plus || e.id()==ID_mult)
   {
     std::string res;
     forall_operands(it, e)
     {
       if(it!=e.operands().begin()) res += " " + e.id_string() + " ";
-      res += convert(*it);
+      res += convert_rec(*it);
     }
     return res;
   }
-  else if(e.id()=="-")
+  else if(e.id()==ID_minus)
   {
     assert(e.operands().size()==2);
-    return convert(e.op0()) + " - " + convert(e.op1());
+    return convert_rec(e.op0()) + " - " + convert_rec(e.op1());
   }
-  else if(e.id()=="unary-")
+  else if(e.id()==ID_unary_minus)
   {
     assert(e.operands().size()==1);
-    return std::string("-(") + convert(e.op0()) + ")";
+    return std::string("-(") + convert_rec(e.op0()) + ")";
   }
   else if(e.id()==ID_constant)
   {
@@ -411,7 +418,7 @@ std::string expr2rankfindert::convert(
   else if(e.id()==ID_typecast)
   {
     assert(e.operands().size()==1);    
-    return convert(e.op0(), negated, bool_context);    
+    return convert_rec(e.op0(), negated, bool_context);    
   }
   else if(e.id()==ID_nondet_symbol)
   {
@@ -587,12 +594,12 @@ bool ranking_synthesis_rankfindert::write_constraints(
         
         // special cases of division are rewritten...
         // a general method would be preferred, of course.
-        if(t.id()=="=" &&
+        if(t.id()==ID_equal &&
            t.operands().size()==2 &&
-           t.op1().id()=="+" &&
-           t.op1().op1().id()=="unary-" &&
-           t.op1().op1().op0().id()=="/" &&
-           t.op1().op1().op0().op1().id()=="constant")
+           t.op1().id()==ID_plus &&
+           t.op1().op1().id()==ID_unary_minus &&
+           t.op1().op1().op0().id()==ID_div &&
+           t.op1().op1().op0().op1().id()==ID_constant)
         {
             exprt c = t.op1().op1().op0().op1();
             exprt l = t.op1().op1().op0().op0();
@@ -604,10 +611,10 @@ bool ranking_synthesis_rankfindert::write_constraints(
             
             std::cout << "REWRITTEN: " << t << std::endl;
         }
-        else if(t.id()=="=" &&
+        else if(t.id()==ID_equal &&
             t.operands().size()==2 &&
-            t.op1().id()=="/" &&            
-            t.op1().op1().id()=="constant")
+            t.op1().id()==ID_div &&            
+            t.op1().op1().id()==ID_constant)
          {
              exprt c = t.op1().op1();
              exprt l = t.op1().op0();
@@ -617,10 +624,8 @@ bool ranking_synthesis_rankfindert::write_constraints(
              
              std::cout << "REWRITTEN: " << t << std::endl;
          }
-         
           
-        
-        f << expr2rankfinder.convert(t, false, true);
+        f << expr2rankfinder(t, false, true);
         first=false;
       }
       catch (const expr2rankfindert::UnhandledException &ex)
@@ -693,40 +698,40 @@ void ranking_synthesis_rankfindert::collect_variables(
     rmap.insert(ident, symbol_exprt(newi, postsym.type()));
     outputs.insert(newi);
 
-    if(final_type.id()=="unsignedbv")
+    if(final_type.id()==ID_unsignedbv)
     {
       e_ext.copy_to_operands(binary_relation_exprt(
-                    presym, ">=", from_integer(0, final_type)));
+                    presym, ID_ge, from_integer(0, final_type)));
       e_ext.copy_to_operands(binary_relation_exprt(
-                    presym, "<=", from_integer(-1, final_type)));
+                    presym, ID_le, from_integer(-1, final_type)));
     }
-    else if(final_type.id()=="signedbv")
+    else if(final_type.id()==ID_signedbv)
     {
       unsigned w = safe_width(presym, ns);
       assert(w>0);
-      mp_integer limit=power(2,w-1);
+      mp_integer limit=power(2, w-1);
 
       e_ext.copy_to_operands(binary_relation_exprt(
-                    presym, ">=", from_integer(-limit, final_type)));
+                    presym, ID_ge, from_integer(-limit, final_type)));
       e_ext.copy_to_operands(binary_relation_exprt(
-                    presym, "<=", from_integer(limit-1, final_type)));
+                    presym, ID_le, from_integer(limit-1, final_type)));
     }
-    else if(final_type.id()=="bool")
+    else if(final_type.id()==ID_bool)
     {
       e_ext.copy_to_operands(binary_relation_exprt(
-                    presym, ">=", from_integer(0, final_type)));
+                    presym, ID_ge, from_integer(0, final_type)));
       e_ext.copy_to_operands(binary_relation_exprt(
-                    presym, "<=", from_integer(1, final_type)));
+                    presym, ID_le, from_integer(1, final_type)));
     }
-    else if(final_type.id()=="pointer")
+    else if(final_type.id()==ID_pointer)
     {
       unsigned w=config.ansi_c.pointer_width;
-      mp_integer limit=power(2,w-1);
+      mp_integer limit=power(2, w-1);
       
       e_ext.copy_to_operands(binary_relation_exprt(
-                    presym, ">=", from_integer(0, unsignedbv_typet(w))));
+                    presym, ID_ge, from_integer(0, unsignedbv_typet(w))));
       e_ext.copy_to_operands(binary_relation_exprt(
-                    presym, "<=", from_integer(-1, unsignedbv_typet(w))));
+                    presym, ID_le, from_integer(-1, unsignedbv_typet(w))));
     }
     else
     {
@@ -734,9 +739,9 @@ void ranking_synthesis_rankfindert::collect_variables(
       assert(w>0);
 
       e_ext.copy_to_operands(binary_relation_exprt(
-                    presym, ">=", from_integer(0, unsignedbv_typet(w))));
+                    presym, ID_ge, from_integer(0, unsignedbv_typet(w))));
       e_ext.copy_to_operands(binary_relation_exprt(
-                    presym, "<=", from_integer(-1, unsignedbv_typet(w))));
+                    presym, ID_le, from_integer(-1, unsignedbv_typet(w))));
     }
   }
 

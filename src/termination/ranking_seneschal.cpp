@@ -376,7 +376,7 @@ bool ranking_synthesis_seneschalt::write_constraints(
       if(!first) f << " & " << std::endl;
 
       try {
-        f << "  " << expr2seneschal.convert(t, false, true);
+        f << "  " << expr2seneschal(t, false, true);
       }
       catch (const expr2seneschalt::UnhandledException &ex)
       {
