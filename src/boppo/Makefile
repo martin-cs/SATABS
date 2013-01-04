@@ -1,3 +1,6 @@
+include ../config.inc
+include ../common
+
 SRC = main.cpp parseoptions.cpp convert_to_promela.cpp \
       formula.cpp program_formula.cpp convert_to_program_formula.cpp \
       simulator.cpp partial_order_reduction.cpp simulator_base.cpp \
@@ -8,22 +11,22 @@ SRC = main.cpp parseoptions.cpp convert_to_promela.cpp \
       simulator_ct.cpp execute_thread_ct.cpp recurrence_check.cpp \
       simulator_ct_queue.cpp
 
-OBJ+= ../util/util$(LIBEXT) \
-      ../goto-programs/goto-programs$(LIBEXT) \
-      ../pointer-analysis/pointer-analysis$(LIBEXT) \
-      ../langapi/langapi$(LIBEXT) \
-      ../ansi-c/ansi-c$(LIBEXT) \
-      ../solvers/solvers$(LIBEXT) \
-      ../big-int/bigint$(OBJEXT) \
-      ../bplang/bplang$(LIBEXT) \
-      ../linking/linking$(LIBEXT)
+OBJ+= $(CBMC)/src/util/util$(LIBEXT) \
+      $(CBMC)/src/goto-programs/goto-programs$(LIBEXT) \
+      $(CBMC)/src/pointer-analysis/pointer-analysis$(LIBEXT) \
+      $(CBMC)/src/langapi/langapi$(LIBEXT) \
+      $(CBMC)/src/ansi-c/ansi-c$(LIBEXT) \
+      $(CBMC)/src/solvers/solvers$(LIBEXT) \
+      $(CBMC)/src/big-int/bigint$(OBJEXT) \
+      $(CBMC)/src/linking/linking$(LIBEXT) \
+      ../bplang/bplang$(LIBEXT)
 
-INCLUDES= -I .. -I ../util
+INCLUDES= -I $(CBMC)/src -I $(CBMC)/src/util -I ..
 
 LIBS =
 
-include ../config.inc
-include ../common
+include $(CBMC)/src/config.inc
+include $(CBMC)/src/common
 
 all: boppo$(EXEEXT)
 
