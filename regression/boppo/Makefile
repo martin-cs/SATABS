@@ -1,10 +1,10 @@
 default: tests.log
 
 test:
-	@./test.pl
+	@../test.pl -c boppo
 
-tests.log: test.pl ../cbmc
-	@./test.pl
+tests.log:
+	@../test.pl -c boppo
 
 show:
 	@for dir in *; do \

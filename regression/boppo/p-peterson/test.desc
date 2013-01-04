@@ -1,3 +1,4 @@
+CORE
 p-peterson.bp
 -l SLIC_ERROR
 ^EXIT=0$

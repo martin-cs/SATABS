@@ -1,3 +1,4 @@
+CORE
 main.bp
 --compact-trace
 ^EXIT=0$

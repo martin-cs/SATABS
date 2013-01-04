@@ -1,3 +1,4 @@
+CORE
 main.bp
 -l MY_ERROR_LABEL
 ^EXIT=0$

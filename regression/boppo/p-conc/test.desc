@@ -1,3 +1,4 @@
+CORE
 p-conc.bp
 -l SLIC_ERROR
 ^EXIT=0$

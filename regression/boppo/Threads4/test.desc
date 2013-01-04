@@ -1,3 +1,4 @@
+CORE
 main.bp
 --tvs
 ^EXIT=0$

@@ -1,3 +1,4 @@
+CORE
 main.bp
 --por -l SLIC_ERROR
 ^EXIT=0$
