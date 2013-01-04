@@ -1,0 +1,14 @@
+decl g0;
+
+void main() begin
+
+  g0:=F;
+
+  x:
+  g0:=T;
+  goto x;
+
+  assert(F);
+
+end
+

@@ -1,0 +1,10 @@
+decl g0;
+
+void main() begin
+
+  g0:=schoose[F,F];
+
+  assert(!g0);
+
+end
+

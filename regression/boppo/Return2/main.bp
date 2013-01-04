@@ -1,0 +1,17 @@
+decl g;
+
+bool<2> f() begin
+  return g, !g;
+end
+
+bool<2> main() begin
+  decl l1, l2;
+
+  g:=*;
+
+  l1,l2:=f();
+
+  return l1,l2;
+
+  assert(0);
+end

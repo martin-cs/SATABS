@@ -1,0 +1,29 @@
+decl g0;
+
+void g() begin
+  g0:=T;
+end
+
+bool<2> f(a, b) begin
+  a,b:=!a,!b;
+  return a, b;
+end
+
+void main() begin
+
+  decl ma, mb;
+
+  g();
+
+  assert(g0);
+
+  g0:=*;
+
+  _, _ := f(g0, g0);
+  ma, mb := f(g0, g0);
+
+  assert(ma=!g0);
+  assert(mb=!g0);
+
+end
+

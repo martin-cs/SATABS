@@ -1,0 +1,33 @@
+decl g1, g0;
+
+void main() begin
+
+// g1,g0:=*,*;
+
+foo(T);
+foo(F);
+
+// should fail
+assert(0);
+
+end
+
+void foo(y) begin
+
+goto L1, L2;
+
+L1:
+assume(
+       (!y | g1) & (y | !g1)
+      );
+return;
+
+L2:
+assume(
+       (!y | g0 ) & (y | !g0 )
+       );
+return;
+
+
+end
+

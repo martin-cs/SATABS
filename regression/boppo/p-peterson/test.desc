@@ -1,0 +1,7 @@
+p-peterson.bp
+-l SLIC_ERROR
+^EXIT=0$
+^SIGNAL=0$
+^VERIFICATION SUCCESSFUL$
+--
+^warning: ignoring

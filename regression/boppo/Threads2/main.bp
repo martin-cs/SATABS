@@ -1,0 +1,18 @@
+decl g0;
+
+void t1() begin
+  assert(g0);
+end
+
+void t2() begin
+  g0:=F;
+end
+
+void main() begin
+
+  g0:=T;
+
+  ASYNC_1: t1();
+  ASYNC_2: t2();
+end
+

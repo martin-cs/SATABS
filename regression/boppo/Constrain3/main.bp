@@ -1,0 +1,13 @@
+decl g0, g1, g2, g3;
+
+void main() begin
+
+  g2, g3:=*,*;
+
+  g0, g1:=*,*
+    constrain g2=g3;
+
+  assert(g2=g3);
+
+end
+

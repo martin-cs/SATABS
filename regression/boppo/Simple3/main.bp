@@ -1,0 +1,16 @@
+decl g0;
+
+void main() begin
+
+  g0:=schoose[F,F];
+
+  if g0 then
+    goto L1;
+  fi;
+  
+  assert(!g0);
+
+  L1: skip
+
+end
+

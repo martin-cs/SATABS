@@ -1,0 +1,21 @@
+decl g0, g1, g2, g3;
+
+void t1() begin
+  goto l0, l1, l2, l3;
+
+  l0: g0:=F; return;
+  l1: g1:=F; return;
+  l2: g2:=F; return;
+  l3: g3:=F; return;
+end
+
+void main() begin
+  g0, g1, g2, g3:=T,T,T,T;
+
+  loop:
+  ASYNC_1: t1();
+  goto loop, assertion;
+
+  assertion:
+  assert(g0 | g1 | g2 | g3);
+end

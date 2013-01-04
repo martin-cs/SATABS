@@ -1,0 +1,12 @@
+decl g0;
+
+void main() begin
+
+  g0:=*;
+
+  if g0 then
+    MY_ERROR_LABEL: skip;
+  fi;
+
+end
+

@@ -1,0 +1,17 @@
+decl g0;
+
+void main() begin
+
+  g0:=T;
+
+  ASYNC_1: bar_1();
+
+  assume(!(g0));
+  assert(F);
+
+end
+
+void bar_1() begin
+  g0 := F;
+end
+

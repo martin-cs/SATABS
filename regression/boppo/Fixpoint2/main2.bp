@@ -1,0 +1,47 @@
+decl g01, g02, g03, g04, g05, g06, g07, g08, g09, g10,
+     g11, g12, g13, g14, g15, g16, g17, g18, g19, g20,
+     g21, g22, g23, g24, g25, g26, g27, g28, g29, g30;
+
+void main() begin
+
+  x:
+
+  g01:=schoose[F,F];
+  g02:=schoose[F,F];
+  g03:=schoose[F,F];
+  g04:=schoose[F,F];
+  g05:=schoose[F,F];
+  g06:=schoose[F,F];
+  g07:=schoose[F,F];
+  g08:=schoose[F,F];
+  g09:=schoose[F,F];
+  g10:=schoose[F,F];
+
+  g11:=schoose[F,F];
+  g12:=schoose[F,F];
+  g13:=schoose[F,F];
+  g14:=schoose[F,F];
+  g15:=schoose[F,F];
+  g16:=schoose[F,F];
+  g17:=schoose[F,F];
+  g18:=schoose[F,F];
+  g19:=schoose[F,F];
+  g20:=schoose[F,F];
+
+  g21:=schoose[F,F];
+  g22:=schoose[F,F];
+  g23:=schoose[F,F];
+  g24:=schoose[F,F];
+  g25:=schoose[F,F];
+  g26:=schoose[F,F];
+  g27:=schoose[F,F];
+  g28:=schoose[F,F];
+  g29:=schoose[F,F];
+  g30:=schoose[F,F];
+
+  asd:skip;
+  goto x;
+
+
+end
+

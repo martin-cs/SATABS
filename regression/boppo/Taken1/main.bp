@@ -1,0 +1,15 @@
+decl g1;
+
+void main() begin
+
+L0:  g1:=*;
+
+L1:  if g1 then goto l; fi;
+
+L2:  goto endl;
+
+L3:  l: assert(0);
+
+L4:  endl: skip;
+
+end

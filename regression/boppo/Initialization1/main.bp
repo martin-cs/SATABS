@@ -1,0 +1,7 @@
+void main() begin
+
+decl a;
+
+  assert(!a);
+
+end

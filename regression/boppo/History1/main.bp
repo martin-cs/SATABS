@@ -1,0 +1,13 @@
+decl g1;
+
+void main() begin
+
+g1:=*;
+assume(g1);
+
+goto L5, L8;
+
+L8: g1:=* & g1;
+L5: assert(g1);
+
+end

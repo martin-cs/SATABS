@@ -1,0 +1,15 @@
+void f(a) begin
+  decl l;
+
+  if a then
+    assert(l);
+  else
+    l:=1;
+  fi
+end
+
+void main() begin
+  f(0);
+  f(1);
+end
+
