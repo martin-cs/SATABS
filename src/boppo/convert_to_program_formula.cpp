@@ -15,6 +15,7 @@ Author: Daniel Kroening, daniel.kroening@inf.ethz.ch
 
 #include <bplang/bp_util.h>
 #include <goto-programs/goto_inline.h>
+#include <goto-programs/goto_check.h>
 #include <goto-programs/goto_convert_functions.h>
 
 #include "convert_to_program_formula.h"
@@ -358,19 +359,21 @@ void convert_to_program_formulat::convert_main_code(bool inlining)
   goto_functionst goto_functions;
   console_message_handlert message_handler;
 
+  goto_convert(context, goto_functions, message_handler);
+
   // we do want the assertions
   optionst options;
   options.set_option("assertions", true);
   options.set_option("error-label", error_label);
   
-  goto_convert(context, options, goto_functions, message_handler);
+  const namespacet ns(context);
+  goto_check(ns, options, goto_functions);
 
   program_formula.no_locals=0;
 
   if(inlining)
   {
     const contextt context;
-    const namespacet ns(context);
     goto_inline(goto_functions, ns, message_handler);
 
     goto_programt &goto_program=goto_functions.function_map["main"].body;
