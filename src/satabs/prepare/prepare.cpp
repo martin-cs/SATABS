@@ -220,6 +220,7 @@ int preparet::get_async_modules()
 
     goto_convert(
         context,
+        options,
         goto_functions,
         get_message_handler());
   }
@@ -230,7 +231,7 @@ int preparet::get_async_modules()
   // finally add the library
   status("Adding CPROVER library");      
   link_to_library(
-      context, goto_functions, get_message_handler());
+      context, goto_functions, options, get_message_handler());
 
   if(cmdline.isset("show-goto-functions"))
   {

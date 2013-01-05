@@ -145,16 +145,17 @@ int boppo_parseoptionst::doit()
     else if(cmdline.isset("show-goto-functions"))
     {
       goto_functionst goto_functions;
-      
-      goto_convert(
-        context,
-        goto_functions,
-        ui_message_handler);
 
       // we do want the assertions
       optionst options;
       options.set_option("assertions", true);  
       options.set_option("error-label", error_label);
+      
+      goto_convert(
+        context,
+        options,
+        goto_functions,
+        ui_message_handler);
       
       namespacet ns(context);    
       goto_check(ns, options, goto_functions);
