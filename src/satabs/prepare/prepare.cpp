@@ -28,7 +28,6 @@ Date: June 2003
 #include <goto-programs/read_goto_binary.h>
 #include <goto-programs/string_instrumentation.h>
 #include <goto-programs/string_abstraction.h>
-#include <goto-programs/loop_numbers.h>
 #include <goto-programs/remove_unused_functions.h>
 #include <goto-programs/invariant_propagation.h>
 #include <goto-programs/link_to_library.h>
@@ -302,13 +301,6 @@ int preparet::get_async_modules()
   // add loop ids
   goto_functions.compute_loop_numbers();
 
-  // show it?
-  if(cmdline.isset("show-loops"))
-  {
-    show_loop_numbers(get_ui(), goto_functions);
-    return 0;
-  }
-
   add_failed_symbols(context);
 
   // add generic checks
@@ -325,6 +317,8 @@ int preparet::get_async_modules()
 
   goto_functions.compute_location_numbers();
 
+  #if 0
+  // obsoleted by goto_check
   if(cmdline.isset("pointer-check") ||
       cmdline.isset("show-value-sets"))
   {
@@ -348,6 +342,7 @@ int preparet::get_async_modules()
           goto_functions, context, options, value_set_analysis);
     }
   }
+  #endif
 
   goto_functions.compute_location_numbers();
 
