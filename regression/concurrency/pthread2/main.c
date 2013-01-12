@@ -9,6 +9,7 @@ void *t1(void *arg)
   g=1;              
   g=0;        
   pthread_mutex_unlock(&mutex);
+  return 0;
 }
 
 void *t2(void *arg)
@@ -17,6 +18,7 @@ void *t2(void *arg)
   // this holds due to the lock
   assert(g==0);              
   pthread_mutex_unlock(&mutex);
+  return 0;
 }
 
 int main()
@@ -25,4 +27,5 @@ int main()
 
   pthread_create(&id1, NULL, t1, NULL);
   pthread_create(&id2, NULL, t2, NULL);
+  return 0;
 }

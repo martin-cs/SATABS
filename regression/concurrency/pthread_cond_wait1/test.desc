@@ -1,4 +1,4 @@
-CORE
+FUTURE
 main.c
 --iterations 10 --max-threads 3
 ^EXIT=0$

@@ -1,4 +1,4 @@
-CORE
+FUTURE
 main.c
 --iterations 25
 ^EXIT=10$

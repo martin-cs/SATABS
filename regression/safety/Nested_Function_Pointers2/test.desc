@@ -1,6 +1,6 @@
 CORE
 main.c
---iterations 5 --pointer-check
+--iterations 30 --pointer-check
 ^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$

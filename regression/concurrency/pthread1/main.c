@@ -4,7 +4,7 @@ typedef int pthread_t;
 
 int pthread_create(pthread_t *, void *, void *, void *);
 
-int g;
+int global;
 
 void *t1(void *arg)
 {
@@ -15,6 +15,8 @@ void *t1(void *arg)
 
   // this should pass
   assert(a1==10);
+  
+  return 0;
 }
 
 void *t2(void *arg)
@@ -26,6 +28,8 @@ void *t2(void *arg)
 
   // this should pass
   assert(a2==20);
+  
+  return 0;
 }
 
 int main()
@@ -37,5 +41,8 @@ int main()
   pthread_create(&id1, NULL, t1, &arg1);
   pthread_create(&id2, NULL, t2, &arg2);
 
-  assert(g==0);
+  // should pass, did not get touched
+  assert(global==0);
+  
+  return 0;
 }
