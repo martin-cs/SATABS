@@ -1,4 +1,4 @@
-CORE
+KNOWNBUG
 main.c
 --concurrency --full-inlining --modelchecker boom
 ^EXIT=0$

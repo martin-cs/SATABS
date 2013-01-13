@@ -1,4 +1,4 @@
-CORE
+KNOWNBUG
 main.c
 -DSATABS --full-inlining --concurrency
 ^EXIT=0$

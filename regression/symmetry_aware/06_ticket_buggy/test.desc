@@ -1,4 +1,4 @@
-CORE
+KNOWNBUG
 main.c
 -DSATABS --full-inlining --concurrency --max-threads 3 --abstractor cartesian --iterations 30
 ^EXIT=10$
