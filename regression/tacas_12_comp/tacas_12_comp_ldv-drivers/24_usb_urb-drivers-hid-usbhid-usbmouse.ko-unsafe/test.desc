@@ -1,8 +1,8 @@
-CORE
+KNOWNBUG
 main.c
 -DSATABS --full-inlining --error-label ERROR
-^EXIT=10$
+^EXIT=0$
 ^SIGNAL=0$
-^VERIFICATION FAILED$
+^VERIFICATION SUCCESSFUL$
 --
 ^warning: ignoring

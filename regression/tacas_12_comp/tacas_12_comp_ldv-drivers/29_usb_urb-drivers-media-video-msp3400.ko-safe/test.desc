@@ -1,4 +1,4 @@
-CORE
+KNOWNBUG
 main.c
 -DSATABS --full-inlining --error-label ERROR
 ^EXIT=0$

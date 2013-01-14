@@ -1,8 +1,8 @@
-CORE
+KNOWNBUG
 main.c
 --full-inlining --error-label ERROR
-^EXIT=0$
+^EXIT=10$
 ^SIGNAL=0$
-^VERIFICATION SUCCESSFUL$
+^VERIFICATION FAILED$
 --
 ^warning: ignoring
