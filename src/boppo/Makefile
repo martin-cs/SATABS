@@ -13,6 +13,7 @@ SRC = main.cpp parseoptions.cpp convert_to_promela.cpp \
 
 OBJ+= $(CBMC)/src/util/util$(LIBEXT) \
       $(CBMC)/src/goto-programs/goto-programs$(LIBEXT) \
+      $(CBMC)/src/assembler/assembler$(LIBEXT) \
       $(CBMC)/src/pointer-analysis/pointer-analysis$(LIBEXT) \
       $(CBMC)/src/langapi/langapi$(LIBEXT) \
       $(CBMC)/src/ansi-c/ansi-c$(LIBEXT) \
