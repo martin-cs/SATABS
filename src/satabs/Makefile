@@ -71,6 +71,7 @@ OBJ += \
       $(CBMC)/src/pointer-analysis/pointer-analysis$(LIBEXT) \
       $(CBMC)/src/langapi/langapi$(LIBEXT) \
       $(CBMC)/src/xmllang/xmllang$(LIBEXT) \
+      $(CBMC)/src/assembler/assembler$(LIBEXT) \
       $(CBMC)/src/solvers/solvers$(LIBEXT) \
       $(CBMC)/src/util/util$(LIBEXT)
 
