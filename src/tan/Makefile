@@ -8,6 +8,7 @@ SRC = main.cpp \
 OBJ = $(SRC:.cpp=.o) \
       $(CBMC)/src/big-int/bigint.o \
       $(CBMC)/src/goto-programs/goto-programs$(LIBEXT) \
+      $(CBMC)/src/assembler/assembler$(LIBEXT) \
       $(CBMC)/src/goto-symex/goto-symex$(LIBEXT) \
       $(CBMC)/src/pointer-analysis/pointer-analysis$(LIBEXT) \
       $(CBMC)/src/solvers/solvers$(LIBEXT) \
