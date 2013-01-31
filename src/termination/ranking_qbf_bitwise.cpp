@@ -627,7 +627,7 @@ std::pair<exprt,exprt> ranking_synthesis_qbf_bitwiset::ite_template()
   replace_mapt pre_replace_map;
     
   unsigned state_size = get_state_size();
-  unsigned bits = log(state_size)/log(2) + 1;  
+  unsigned bits=log((double)state_size)/log(2.0) + 1;  
   
   symbol_exprt const_sym(CONSTANT_COEFFICIENT_ID, unsignedbv_typet(bits));
   const_coefficient=coefficient(const_sym);
