@@ -29,7 +29,6 @@ Date: June 2003
 #include <goto-programs/string_instrumentation.h>
 #include <goto-programs/string_abstraction.h>
 #include <goto-programs/remove_unused_functions.h>
-#include <goto-programs/invariant_propagation.h>
 #include <goto-programs/link_to_library.h>
 
 #include <langapi/language_util.h>
@@ -345,31 +344,6 @@ int preparet::get_async_modules()
   #endif
 
   goto_functions.compute_location_numbers();
-
-#if 0  
-  // do invariant propagation
-  if(!cmdline.isset("no-invariant-sets"))
-  {
-    status("Invariant Propagation");
-    invariant_propagation(
-        goto_functions);
-  }
-  else
-    invariant_propagation.initialize(
-        goto_functions);
-
-  if(cmdline.isset("show-invariant-sets"))
-  {
-    invariant_propagation.output(
-        goto_functions, std::cout);
-    return 0;
-  }
-
-  // simplify
-  if(!cmdline.isset("no-invariant-sets"))
-    invariant_propagation.simplify(
-        goto_functions);
-#endif
 
   // label claims
   label_claims(goto_functions);

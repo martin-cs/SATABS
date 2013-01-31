@@ -18,13 +18,14 @@ Author: CM Wintersteiger
 #include <simplify_expr.h>
 #include <decision_procedure.h>
 
-#include <pointer-analysis/value_set_analysis.h>
-#include <pointer-analysis/goto_program_dereference.h>
-
-#include <goto-programs/invariant_propagation.h>
 #include <goto-programs/goto_inline_class.h>
 #include <goto-programs/remove_skip.h>
 #include <goto-programs/wp.h>
+
+#include <pointer-analysis/value_set_analysis.h>
+#include <pointer-analysis/goto_program_dereference.h>
+
+#include <analyses/invariant_propagation.h>
 
 #include <solvers/sat/satcheck.h>
 #include <solvers/flattening/bv_pointers.h>

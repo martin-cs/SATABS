@@ -19,7 +19,6 @@ Author: CM Wintersteiger
 #include <simplify_expr.h>
 #include <rename.h>
 
-#include <goto-programs/invariant_propagation.h>
 #include <goto-programs/goto_inline.h>
 #include <goto-programs/remove_skip.h>
 #include <goto-programs/wp.h>

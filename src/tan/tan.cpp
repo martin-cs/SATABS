@@ -28,7 +28,9 @@
 #include <goto-programs/string_abstraction.h>
 #include <goto-programs/set_claims.h>
 #include <goto-programs/show_claims.h>
-#include <goto-instrument/natural_loops.h>
+
+#include <analyses/invariant_propagation.h>
+#include <analyses/natural_loops.h>
 
 #include <satabs/prepare/prepare_functions.h>
 #include <termination/instrumentation.h>

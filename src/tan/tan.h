@@ -20,7 +20,6 @@ Author: CM Wintersteiger
 
 #include <goto-programs/goto_functions.h>
 #include <pointer-analysis/value_set_analysis.h>
-#include <goto-programs/invariant_propagation.h>
 
 #define TAN_OPTIONS \
   "D:I:(16)(32)(64)(v):(version)" \
