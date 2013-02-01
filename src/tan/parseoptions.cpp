@@ -38,13 +38,13 @@
 #include <termination/termination_slicer.h>
 #include <termination/transform_loops.h>
 
-#include "tan.h"
+#include "parseoptions.h"
 #include "version.h"
 #include "languages.h"
 
 /*******************************************************************
 
- Function: tant::tant
+ Function: tan_parseoptionst::tant
 
  Inputs:
 
@@ -54,7 +54,7 @@
 
  \*******************************************************************/
 
-tant::tant(int argc, const char **argv):
+tan_parseoptionst::tan_parseoptionst(int argc, const char **argv):
   parseoptions_baset(TAN_OPTIONS, argc, argv),
   language_uit("TAN" TAN_VERSION, cmdline),
   ns(context),
@@ -64,7 +64,7 @@ tant::tant(int argc, const char **argv):
 
 /*******************************************************************
 
- Function: tant::doit
+ Function: tan_parseoptionst::doit
 
  Inputs:
 
@@ -74,7 +74,7 @@ tant::tant(int argc, const char **argv):
 
  \*******************************************************************/
 
-int tant::doit()
+int tan_parseoptionst::doit()
 {
   register_languages();
 
@@ -87,7 +87,7 @@ int tant::doit()
 
 /*******************************************************************\
   
- Function: tant::help
+ Function: tan_parseoptionst::help
 
  Inputs:
 
@@ -97,7 +97,7 @@ int tant::doit()
 
  \*******************************************************************/
 
-void tant::help()
+void tan_parseoptionst::help()
 {    
   std::cout <<"\n"
     "* * *                 TAN " TAN_VERSION
@@ -152,7 +152,7 @@ void tant::help()
 
 /*******************************************************************\
   
- Function: tant::check_and_set_options
+ Function: tan_parseoptionst::check_and_set_options
 
  Inputs:
 
@@ -162,7 +162,7 @@ void tant::help()
 
  \*******************************************************************/
 
-bool tant::check_and_set_options(void)
+bool tan_parseoptionst::check_and_set_options(void)
 {
   if (config.set(cmdline))
   {
@@ -214,7 +214,7 @@ bool tant::check_and_set_options(void)
 
 /*******************************************************************\
   
- Function: tant::from_file
+ Function: tan_parseoptionst::from_file
 
  Inputs:
 
@@ -224,7 +224,7 @@ bool tant::check_and_set_options(void)
 
  \*******************************************************************/
 
-bool tant::from_file(const std::string &filename)
+bool tan_parseoptionst::from_file(const std::string &filename)
 {  
   std::ifstream infile(filename.c_str());
   if (!infile)
@@ -251,7 +251,7 @@ bool tant::from_file(const std::string &filename)
 
 /*******************************************************************\
   
- Function: tant::preprocess
+ Function: tan_parseoptionst::preprocess
 
  Inputs:
 
@@ -261,7 +261,7 @@ bool tant::from_file(const std::string &filename)
 
  \*******************************************************************/
 
-bool tant::preprocess(void)
+bool tan_parseoptionst::preprocess(void)
 {
   message_handlert &mh=get_message_handler();
   
@@ -387,7 +387,7 @@ bool tant::preprocess(void)
 
 /*******************************************************************\
   
- Function: tant::analyze
+ Function: tan_parseoptionst::analyze
 
  Inputs:
 
@@ -397,7 +397,7 @@ bool tant::preprocess(void)
 
  \*******************************************************************/
 
-tan_resultt tant::analyze(void)
+tan_resultt tan_parseoptionst::analyze(void)
 {  
   contextt shadow_context;
   value_set_analysist value_set_analysis(ns);

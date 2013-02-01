@@ -11,13 +11,12 @@ Author: CM Wintersteiger
 
 #include <fstream>
 
-#include <langapi/language_ui.h>
 #include <ui_message.h>
 #include <parseoptions.h>
-
 #include <options.h>
 #include <context.h>
 
+#include <langapi/language_ui.h>
 #include <goto-programs/goto_functions.h>
 #include <pointer-analysis/value_set_analysis.h>
 
@@ -36,7 +35,7 @@ typedef enum { TAN_UNKNOWN=0,
                TAN_NONTERMINATING=20, 
                TAN_ERROR=30 } tan_resultt;
 
-class tant:
+class tan_parseoptionst:
   public parseoptions_baset,
   public language_uit
 {
@@ -44,7 +43,7 @@ public:
   virtual int doit();
   virtual void help();
 
-  tant(int argc, const char **argv);
+  tan_parseoptionst(int argc, const char **argv);
   
 private:
   contextt context;

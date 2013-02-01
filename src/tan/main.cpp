@@ -9,8 +9,7 @@ Author: CM Wintersteiger
 #include <cstdlib>
 #include <signal.h>
 
-#include "tan.h"
-
+#include "parseoptions.h"
 
 void xcpu_termination_handler(int signum)
 {
@@ -36,23 +35,24 @@ int main(int argc, const char **argv)
   signal(SIGXCPU, &xcpu_termination_handler);
   #endif
 
-  tant tan(argc, argv);
-  int r = 0;
   try
   {
-    r = tan.main();
+    tan_parseoptionst parseoptions(argc, argv);
+    return parseoptions.main();
   }
+
   catch (const char* e)
   {
     std::cout << std::endl << "Caught exception: " << e << std::endl;
   }
+
   catch (const std::string &s)
   {
     std::cout << std::endl << "Caught exception: " << s << std::endl;
   }
+
   catch (const std::bad_alloc &e)
   {
     std::cout << std::endl << "MEMORY LIMIT EXCEEDED" << std::endl;
   }
-  return r;
 }

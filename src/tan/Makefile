@@ -2,7 +2,7 @@ include ../config.inc
 include ../common
 
 SRC = main.cpp \
-      tan.cpp \
+      parseoptions.cpp \
       languages.cpp
 
 OBJ = $(SRC:.cpp=.o) \

@@ -14,10 +14,6 @@ Author: CM Wintersteiger
 #include <cpp/cpp_language.h>
 #endif
 
-#ifdef HAVE_SPECC
-#include <specc/specc_language.h>
-#endif
-
 /*******************************************************************\
 
 Function: register_languages
@@ -36,9 +32,5 @@ void register_languages()
 
   #ifdef HAVE_CPP
   register_language(new_cpp_language);
-  #endif
-
-  #ifdef HAVE_SPECC
-  register_language(new_specc_language);
   #endif
 }
