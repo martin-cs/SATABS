@@ -6,17 +6,6 @@
 
 \*******************************************************************/
 
-#include <sys/time.h>
-#include <sys/stat.h>
-
-#ifndef _WIN32
-#include <sys/resource.h>
-#else
-#include <io.h>
-#endif
-
-#include <cstdlib>
-
 #include <config.h>
 #include <time_stopping.h>
 
@@ -80,7 +69,7 @@ int tan_parseoptionst::doit()
 
   if(check_and_set_options()) return TAN_UNKNOWN;
   if(from_file(cmdline.args[0])) return TAN_UNKNOWN;  
-  if(preprocess()) return TAN_UNKNOWN;
+  if(prepare()) return TAN_UNKNOWN;
   
   return analyze();  
 }
@@ -108,18 +97,20 @@ void tan_parseoptionst::help()
   "\n"
   " tan [-?] [-h] [--help]        show help\n"
   " tan [options] <file>          run on goto-binary `file'\n"
-  "\nDisplay options:\n"
+  "\n"
+  "Display options:\n"
   "--version                      show version information\n"
   "--v <int>                      set verbosity (default: 6)\n"
   "--show-model                   show the model as loaded\n"
-  "--show-preprocessed-model      show the model after preprocessing\n"
+  "--show-prepared-model          show the model after preparation\n"
   "--string-abstraction           enable string abstraction\n"
   "--no-invariant-propagation     disable invariant propagation\n"
   "--no-value-sets                disable value sets (pointer analysis)\n"
   "--function                     set entry point\n"
   "--claim #                      check only claim #\n"
   "--show-claims                  show all available claims\n"  
-  "\nTermination Engine Options:\n"
+  "\n"
+  "Termination Engine Options:\n"
   "--engine <engine>              Select one of the termination engines:\n"
   "          cta                  Compositional Termination Analysis (default)\n"
 #ifdef HAVE_INTERPOLATION
@@ -162,7 +153,7 @@ void tan_parseoptionst::help()
 
  \*******************************************************************/
 
-bool tan_parseoptionst::check_and_set_options(void)
+bool tan_parseoptionst::check_and_set_options()
 {
   if (config.set(cmdline))
   {
@@ -211,7 +202,6 @@ bool tan_parseoptionst::check_and_set_options(void)
   return false;
 }
 
-
 /*******************************************************************\
   
  Function: tan_parseoptionst::from_file
@@ -227,7 +217,8 @@ bool tan_parseoptionst::check_and_set_options(void)
 bool tan_parseoptionst::from_file(const std::string &filename)
 {  
   std::ifstream infile(filename.c_str());
-  if (!infile)
+
+  if(!infile)
   {
     error(std::string("Error opening file `")+filename+"'.");
     return true;
@@ -251,7 +242,7 @@ bool tan_parseoptionst::from_file(const std::string &filename)
 
 /*******************************************************************\
   
- Function: tan_parseoptionst::preprocess
+ Function: tan_parseoptionst::prepare
 
  Inputs:
 
@@ -261,7 +252,7 @@ bool tan_parseoptionst::from_file(const std::string &filename)
 
  \*******************************************************************/
 
-bool tan_parseoptionst::preprocess(void)
+bool tan_parseoptionst::prepare()
 {
   message_handlert &mh=get_message_handler();
   
@@ -300,13 +291,13 @@ bool tan_parseoptionst::preprocess(void)
     
   goto_functions.compute_location_numbers();
 
-	std::cout << "NATURAL LOOPS:" << std::endl;
-	Forall_goto_functions(it, goto_functions)
-	{
-		natural_loopst nl;
-		nl(it->second.body);		
-		nl.output(std::cout);
-	}
+  std::cout << "NATURAL LOOPS:" << std::endl;
+  Forall_goto_functions(it, goto_functions)
+  {
+    natural_loopst nl;
+    nl(it->second.body);		
+    nl.output(std::cout);
+  }
 		
   status("Termination instrumentation");
   termination_instrumentert::modet instrumenter_mode=
@@ -359,6 +350,7 @@ bool tan_parseoptionst::preprocess(void)
       ip.simplify(goto_functions);
       ip.clear();
     }
+
     catch (const std::bad_alloc &e) 
     {
       ip.clear();
@@ -375,8 +367,7 @@ bool tan_parseoptionst::preprocess(void)
   if(cmdline.isset("claim"))
     set_claims(goto_functions, cmdline.get_values("claim"));
   
-  
-  if(cmdline.isset("show-preprocessed-model"))
+  if(cmdline.isset("show-prepared-model"))
   {
     goto_functions.output(ns, std::cout);
     return true;
@@ -397,7 +388,7 @@ bool tan_parseoptionst::preprocess(void)
 
  \*******************************************************************/
 
-tan_resultt tan_parseoptionst::analyze(void)
+tan_resultt tan_parseoptionst::analyze()
 {  
   contextt shadow_context;
   value_set_analysist value_set_analysis(ns);
@@ -419,7 +410,8 @@ tan_resultt tan_parseoptionst::analyze(void)
 #ifdef HAVE_INTERPOLATION
     else if(estr=="ita") engine=TP_INTERPOLATING;
 #endif
-    else throw ("Unknown termination engine selected");
+    else
+      throw ("Unknown termination engine selected");
   }
   
   termination_resultt
@@ -431,8 +423,8 @@ tan_resultt tan_parseoptionst::analyze(void)
   
   switch(res)
   {
-    case T_TERMINATING: return TAN_TERMINATING;
-    case T_NONTERMINATING: return TAN_NONTERMINATING;
-    default: return TAN_ERROR;
+  case T_TERMINATING: return TAN_TERMINATING;
+  case T_NONTERMINATING: return TAN_NONTERMINATING;
+  default: return TAN_ERROR;
   }  
 }

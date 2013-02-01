@@ -13,7 +13,6 @@ Author: CM Wintersteiger
 
 #include <ui_message.h>
 #include <parseoptions.h>
-#include <options.h>
 #include <context.h>
 
 #include <langapi/language_ui.h>
@@ -49,15 +48,14 @@ private:
   contextt context;
   namespacet ns;
   goto_functionst goto_functions;
-  optionst satabs_options;
 
   // some stats
   unsigned loops_nonterminating;
   
-  bool check_and_set_options(void);
+  bool check_and_set_options();
   bool from_file(const std::string &filename);
-  bool preprocess(void);
-  tan_resultt analyze(void);
+  bool prepare();
+  tan_resultt analyze();
   
   bool get_entry_point(
     goto_functionst::function_mapt::const_iterator &func_it,
