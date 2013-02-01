@@ -6,27 +6,21 @@ Author: CM Wintersteiger
 
 \*******************************************************************/
 
-#include <memory>
+#include <string>
 #include <sstream>
-#include <fstream>
-#include <map>
-#include <algorithm>
-#include <cstdlib>
-#include <string.h>
 
-#include <cmdline.h>
-#include <prefix.h>
-#include <std_expr.h>
-#include <expr_util.h>
 #include <find_symbols.h>
-#include <i2string.h>
-#include <base_type.h>
-#include <options.h>
+#include <prefix.h>
+#include <expr_util.h>
 
-#include <langapi/language_util.h>
+#include <solvers/sat/satcheck.h>
+#include <solvers/flattening/bv_pointers.h>
+
 #include <goto-programs/write_goto_binary.h>
 
-#include <satabs/prepare/prepare.h>
+#include <goto-symex/symex_target_equation.h>
+#include <goto-symex/goto_symex.h>
+
 #include <satabs/refiner/select_refiner.h>
 #include <satabs/refiner/refiner.h>
 #include <satabs/abstractor/select_abstractor.h>
@@ -35,32 +29,26 @@ Author: CM Wintersteiger
 #include <satabs/modelchecker/modelchecker.h>
 #include <satabs/simulator/select_simulator.h>
 #include <satabs/simulator/simulator.h>
-#include <satabs/status_values.h>
 #include <satabs/satabs_safety_checker.h>
-
-#include <solvers/sat/satcheck.h>
-#include <solvers/flattening/bv_pointers.h>
-
-#include <goto-symex/symex_target_equation.h>
-#include <goto-symex/goto_symex.h>
-#include <goto-symex/build_goto_trace.h>
-
-#include "termination_base.h"
 
 #include "find_symbols_rw.h"
 #include "replace_identifier.h"
+#include "termination_base.h"
 
 const std::string termination_prefix="termination::pre::";
 
-class custom_symext : public goto_symext
+class custom_symext:
+  public goto_symext
 {
 public:
   custom_symext(const namespacet &_ns,
                 contextt &_new_context,
                 symex_targett &_target):
-                  goto_symext(_ns, _new_context, _target) {};
+    goto_symext(_ns, _new_context, _target)
+  {
+  }
 
-  bool has_remaining_claims(void) const { return remaining_claims!=0; }
+  bool has_remaining_claims() const { return remaining_claims!=0; }
 };
 
 /********************************************************************\
@@ -729,7 +717,7 @@ goto_programt::const_targett termination_baset::find_next_loop(
 
 \********************************************************************/
 
-void termination_baset::show_stats(void)
+void termination_baset::show_stats()
 {
   std::stringstream ss;
 
@@ -789,7 +777,8 @@ bool termination_baset::bmc(
   bv_pointers.set_verbosity(2);
   bv_pointers.set_message_handler(get_message_handler());
 
-  try {
+  try
+  {
     symex(model.goto_functions);
 
     bv_pointerst::resultt satres;
@@ -867,7 +856,7 @@ bool termination_baset::cegar(
   #endif
 
   null_message_handlert nmh;
-  message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
+  message_handlert &mh = (verbosity >= 8) ? get_message_handler() : nmh;
   
   loop_componentt::argst args(mh, model);
   
@@ -876,7 +865,7 @@ bool termination_baset::cegar(
   std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options, args));
   std::auto_ptr<simulatort> simulator(select_simulator(options, args, shadow_context));
 
-  unsigned this_verb = get_verbosity()-2;
+  unsigned this_verb=get_verbosity()-2;
 
   // set their verbosity -- all the same for now
   refiner->set_verbosity(this_verb);
@@ -884,10 +873,12 @@ bool termination_baset::cegar(
   modelchecker->set_verbosity(this_verb);
   simulator->set_verbosity(this_verb);
 
-  try {
-		satabs_safety_checkert safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
-		safety_checker.set_message_handler(mh);
-		safety_checker.set_verbosity(this_verb);
+  try
+  {
+    satabs_safety_checkert safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+    safety_checker.set_message_handler(mh);
+    safety_checker.set_verbosity(this_verb);
+
     fine_timet before=current_time();
     safety_checkert::resultt result=safety_checker(model.goto_functions);
     fine_timet diff=current_time()-before;
@@ -897,16 +888,14 @@ bool termination_baset::cegar(
     {
     case safety_checkert::ERROR:
       unsafe_time+=diff;
-      throw ("CEGAR Error");
+      throw "CEGAR Error";
 
     case safety_checkert::UNSAFE:
-    {
       goto_trace.clear();
       goto_trace.swap(safety_checker.error_trace);
 
       unsafe_time+=diff;
       return false; // not safe
-    }
 
     case safety_checkert::SAFE:
       safe_time+=diff;
@@ -914,31 +903,31 @@ bool termination_baset::cegar(
 
     default:
       unsafe_time+=diff;
-      throw (std::string("CEGAR Result: ") + i2string(result));
+      throw std::string("CEGAR Result: ") + i2string(result);
     }
   }
-  catch (const std::bad_alloc &s)
+  catch(const std::bad_alloc &s)
   {
     status(std::string("CEGAR Loop Exception: Memory exhausted"));
   }
-  catch (const std::string &s)
+  catch(const std::string &s)
   {
     status(std::string("CEGAR Loop Exception: ") + s);
   }
-  catch (const char *s)
+  catch(const char *s)
   {
     status(std::string("CEGAR Loop Exception: ") + s);
-		if (strcmp(s, "refinement failure") == 0)
-		{
-			status("Dumping failure.o");
-			write_goto_binary("failure.o", ns.get_context(), model.goto_functions, mh);
-		}
+    if(std::string(s)=="refinement failure")
+    {
+      status("Dumping failure.o");
+      write_goto_binary("failure.o", ns.get_context(), model.goto_functions, mh);
+    }
   }
-  catch (unsigned u)
+  catch(unsigned u)
   {
     status(std::string("CEGAR Loop Exception: ") + i2string(u));
   }
-  catch (...)
+  catch(...)
   {
     status("UNKNOWN EXCEPTION CAUGHT");
   }
@@ -968,7 +957,6 @@ bool termination_baset::cegar(
   return cegar(model, goto_trace, modelchecker_time, unsafe_time, safe_time);
 }
 
-
 /********************************************************************\
 
  Function: termination_baset::set_options
@@ -981,15 +969,14 @@ bool termination_baset::cegar(
 
 \********************************************************************/
 
-void termination_baset::set_options(void)
+void termination_baset::set_options()
 {
-
   if(cmdline.isset("refiner"))
     options.set_option("refiner", cmdline.getval("refiner"));
   else
     options.set_option("refiner", "wp");
 
-  if(cmdline.isset("abstractort"))
+  if(cmdline.isset("abstractor"))
     options.set_option("abstractor", cmdline.getval("abstractor"));
   else
     options.set_option("abstractor", "wp");
@@ -997,11 +984,10 @@ void termination_baset::set_options(void)
   if(cmdline.isset("modelchecker"))
     options.set_option("modelchecker", cmdline.getval("modelchecker"));
   else
-    options.set_option("modelchecker", "cadence-smv");
+    options.set_option("modelchecker", "boom");
 
   if(cmdline.isset("simulator"))
     options.set_option("simulator", cmdline.getval("simulator"));
   else
     options.set_option("simulator", "sat");
-
 }

@@ -9,8 +9,6 @@ Author: CM Wintersteiger
 #ifndef _CPROVER_TERMINATION_BASE_H_
 #define _CPROVER_TERMINATION_BASE_H_
 
-#include <cstdlib>
-
 #include <cmdline.h>
 #include <ui_message.h>
 #include <replace_expr.h>
@@ -36,13 +34,13 @@ class termination_baset:public messaget
 {
 public:
   termination_baset(const cmdlinet &_cmd,
-               const goto_functionst &_gf,
-               const contextt &_ctxt,
-               class contextt &_sctxt,
-               class value_set_analysist &_vsa,
-               class invariant_propagationt &_ip,
-               message_handlert &_mh,
-               ui_message_handlert::uit _ui):
+                    const goto_functionst &_gf,
+                    const contextt &_ctxt,
+                    class contextt &_sctxt,
+                    class value_set_analysist &_vsa,
+                    class invariant_propagationt &_ip,
+                    message_handlert &_mh,
+                    ui_message_handlert::uit _ui):
     messaget(_mh),    
     context(_ctxt),
     shadow_context(_sctxt),
@@ -83,7 +81,7 @@ protected:
   invariant_propagationt &invariant_propagation;
   
 public:
-  /* Prediacte Abstraction options. */
+  /* Prediacte abstraction options. */
   std::vector<exprt> user_provided_predicates;
   unsigned max_iterations;
   
@@ -116,7 +114,7 @@ protected:
   void adjust_assertion(const exprt &expr, goto_tracet &trace);
   goto_tracet::stepst::const_iterator get_loop(goto_tracet &trace);
   
-  typedef std::set<const goto_trace_stept*> required_stepst;
+  typedef std::set<const goto_trace_stept *> required_stepst;
   
   void find_required_steps(
     const goto_tracet &goto_trace,
@@ -167,7 +165,7 @@ protected:
     fine_timet &unsafe_time,
     fine_timet &safe_time);
 
-  void set_options(void);
+  void set_options();
 };
 
 #endif

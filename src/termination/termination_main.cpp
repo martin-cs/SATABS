@@ -47,51 +47,61 @@ termination_resultt termination(
   unsigned max_iterations)
 {  
   std::auto_ptr<termination_baset> tt;
+  messaget message(message_handler);
   
   switch(mode)
   {
-    case TP_BINARY_REACHABILITY: 
-      tt=std::auto_ptr<termination_baset>(
-            new termination_bret(cmdline, goto_functions, 
-                                 context, shadow_context, 
-                                 value_set_analysis, invariant_propagation,
-                                 message_handler, ui));
-      break;
-    case TP_DIRECT:
-      tt=std::auto_ptr<termination_baset>(
-            new termination_directt(cmdline, goto_functions, 
-                                    context, shadow_context, 
-                                    value_set_analysis, invariant_propagation,
-                                    message_handler, ui));
-      break;
-    case TP_COMPOSITIONAL:
-      tt=std::auto_ptr<termination_baset>(
-            new termination_ctat(cmdline, goto_functions, 
-                                 context, shadow_context, 
-                                 value_set_analysis, invariant_propagation,
-                                 message_handler, ui));
-      break;
-    case TP_PATH_ENUMERATION:
-      tt=std::auto_ptr<termination_baset>(
-            new termination_path_enumerationt(cmdline, goto_functions, 
-                                              context, shadow_context, 
-                                              value_set_analysis, 
-                                              invariant_propagation,
-                                              message_handler, ui));
-      break;
+  case TP_BINARY_REACHABILITY: 
+    message.status("Using binary reachability");
+    tt=std::auto_ptr<termination_baset>(
+          new termination_bret(cmdline, goto_functions, 
+                               context, shadow_context, 
+                               value_set_analysis, invariant_propagation,
+                               message_handler, ui));
+    break;
+
+  case TP_DIRECT:
+    message.status("Using direct method");
+    tt=std::auto_ptr<termination_baset>(
+          new termination_directt(cmdline, goto_functions, 
+                                  context, shadow_context, 
+                                  value_set_analysis, invariant_propagation,
+                                  message_handler, ui));
+    break;
+
+  case TP_COMPOSITIONAL:
+    message.status("Using compositional method");
+    tt=std::auto_ptr<termination_baset>(
+          new termination_ctat(cmdline, goto_functions, 
+                               context, shadow_context, 
+                               value_set_analysis, invariant_propagation,
+                               message_handler, ui));
+    break;
+
+  case TP_PATH_ENUMERATION:
+    message.status("Using path enumeration");
+    tt=std::auto_ptr<termination_baset>(
+          new termination_path_enumerationt(cmdline, goto_functions, 
+                                            context, shadow_context, 
+                                            value_set_analysis, 
+                                            invariant_propagation,
+                                            message_handler, ui));
+    break;
+
 #ifdef HAVE_INTERPOLATION
-    case TP_INTERPOLATING:
-      tt=std::auto_ptr<termination_baset>(
-            new termination_itat(cmdline, goto_functions, 
-                                 context, shadow_context, 
-                                 value_set_analysis, 
-                                 invariant_propagation,
-                                 message_handler, ui));
-      break;
+  case TP_INTERPOLATING:
+    message.status("Using interpolating method");
+    tt=std::auto_ptr<termination_baset>(
+          new termination_itat(cmdline, goto_functions, 
+                               context, shadow_context, 
+                               value_set_analysis, 
+                               invariant_propagation,
+                               message_handler, ui));
+    break;
 #endif
       
-    default:
-      throw ("Unknown termination prover mode.");      
+  default:
+    throw "Unknown termination prover mode.";
   }  
 
   tt->user_provided_predicates=user_provided_predicates;

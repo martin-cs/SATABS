@@ -20,25 +20,26 @@ class value_setst;
 class termination_path_enumerationt : public termination_bret
 {
 public:
-  termination_path_enumerationt(const cmdlinet &_cmd,
-                                const goto_functionst &_gf,
-                                const contextt &_ctxt,
-                                class contextt &_sctxt,
-                                class value_set_analysist &_vsa,
-                                class invariant_propagationt &_ip,
-                                message_handlert &_mh,
-                                ui_message_handlert::uit _ui) :
-                                  termination_bret(_cmd, _gf, _ctxt, _sctxt, 
-                                                   _vsa, _ip, _mh, _ui),                     
-                                  pointer_analysis_time(0),
-                                  wp_ce_extraction_time(0),
-                                  wp_unreachability_time(0),
-                                  path_feasibility_time(0),
-                                  ranking_cache_time(0),
-                                  loop_reachability_time(0),                                  
-                                  paths_analyzed(0),
-                                  paths_infeasible(0),
-                                  ranking_relations(ns, _mh) 
+  termination_path_enumerationt(
+    const cmdlinet &_cmd,
+    const goto_functionst &_gf,
+    const contextt &_ctxt,
+    class contextt &_sctxt,
+    class value_set_analysist &_vsa,
+    class invariant_propagationt &_ip,
+    message_handlert &_mh,
+    ui_message_handlert::uit _ui) :
+      termination_bret(_cmd, _gf, _ctxt, _sctxt, 
+                       _vsa, _ip, _mh, _ui),                     
+      pointer_analysis_time(0),
+      wp_ce_extraction_time(0),
+      wp_unreachability_time(0),
+      path_feasibility_time(0),
+      ranking_cache_time(0),
+      loop_reachability_time(0),                                  
+      paths_analyzed(0),
+      paths_infeasible(0),
+      ranking_relations(ns, _mh) 
   {
     ranking_relations.set_verbosity(verbosity);
     ranking_relations.set_message_handler(get_message_handler());
@@ -154,7 +155,9 @@ protected:
   bool is_local(
     goto_programt::targett loop_begin, 
     goto_programt::targett loop_end);
+
   bool is_feasible(bodyt &body);
+
   bool is_terminating_bre(concrete_modelt &model);
 };
 

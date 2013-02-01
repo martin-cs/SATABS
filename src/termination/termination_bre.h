@@ -11,7 +11,7 @@ Author: CM Wintersteiger
 
 #include "termination_base.h"
 
-class termination_bret : public termination_baset
+class termination_bret: public termination_baset
 {
 public:
   termination_bret(const cmdlinet &_cmd,
@@ -41,17 +41,17 @@ protected:
         const goto_functionst &goto_functions,
         goto_programt::const_targett assertion);
     
-    termination_resultt
-      terminates(const goto_functionst &goto_functions);
+  termination_resultt
+    terminates(const goto_functionst &goto_functions);
     
-    bool process_counterexample(goto_tracet &trace);      
-    bodyt get_body(goto_tracet &trace);
+  bool process_counterexample(goto_tracet &trace);      
+  bodyt get_body(goto_tracet &trace);
     
-    bool path_revisited(
-        const goto_tracet &goto_trace,
-        goto_tracet::stepst::const_iterator &loop_begin);
+  bool path_revisited(
+    const goto_tracet &goto_trace,
+    goto_tracet::stepst::const_iterator &loop_begin);
     
-    termination_resultt bre_loop(concrete_modelt &model);
+  termination_resultt bre_loop(concrete_modelt &model);
 };
 
 #endif

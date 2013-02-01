@@ -17,7 +17,8 @@ Author: CM Wintersteiger
 class concrete_modelt;
 class value_setst;
 
-class termination_ctat : public termination_path_enumerationt
+class termination_ctat:
+  public termination_path_enumerationt
 {
 public:
   termination_ctat(const cmdlinet &_cmd,
@@ -127,7 +128,10 @@ protected:
     goto_programt::targett &loop_assertion,
     concrete_modelt &model,
     replace_idt &premap,
-    ranking_relation_cachet &ranking_relations) { return false; }
+    ranking_relation_cachet &ranking_relations)
+  {
+    return false;
+  }
 };
 
 #endif

@@ -11,7 +11,6 @@ Author: CM Wintersteiger
 
 #include <i2string.h>
 
-#include <satabs/prepare/prepare.h>
 #include <satabs/refiner/select_refiner.h>
 #include <satabs/refiner/refiner.h>
 #include <satabs/abstractor/select_abstractor.h>
@@ -23,7 +22,6 @@ Author: CM Wintersteiger
 #include <satabs/satabs_safety_checker.h>
 
 #include "termination_direct.h"
-
 #include "termination_slicer.h"
 
 /********************************************************************\
@@ -105,14 +103,14 @@ termination_resultt termination_directt::terminates(
   out.close();  
   #endif
       
-  
   satabs_safety_checkert safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
   safety_checker.set_message_handler(mh);
   safety_checker.set_verbosity(this_verb);
                  
   status("Running CEGAR...");
   
-  try {
+  try
+  {
     #if 0
     std::string fname="model_" + i2string(call_counter) + "_" + i2string(++cnt) + ".bin";
     out.open(fname.c_str());
@@ -127,30 +125,31 @@ termination_resultt termination_directt::terminates(
           
     switch(result)
     {
-      case safety_checkert::ERROR: throw ("CEGAR Error");
-      
-      case safety_checkert::UNSAFE:
-        counter_example_extraction_time+=time_diff;
-        return T_NONTERMINATING;
-        break;
-  
-      case safety_checkert::SAFE:
-        final_check_time+=time_diff;        
-        return T_TERMINATING;
-  
-      default:
-        throw (std::string("CEGAR Result: ") + i2string(result));
+    case safety_checkert::ERROR:
+      throw "CEGAR Error";
+    
+    case safety_checkert::UNSAFE:
+      counter_example_extraction_time+=time_diff;
+      return T_NONTERMINATING;
+      break;
+
+    case safety_checkert::SAFE:
+      final_check_time+=time_diff;        
+      return T_TERMINATING;
+
+    default:
+      throw std::string("CEGAR Result: ") + i2string(result);
     }
   }
-  catch (const std::string &s)
+  catch(const std::string &s)
   {
     status(std::string("CEGAR Loop Exception: ") + s);
   }
-  catch (const char *s)
+  catch(const char *s)
   {
     status(std::string("CEGAR Loop Exception: ") + s);
   }
-  catch (unsigned u)
+  catch(unsigned u)
   {
     status(std::string("CEGAR Loop Exception: ") + i2string(u));
   }

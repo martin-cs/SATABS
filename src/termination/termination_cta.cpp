@@ -6,8 +6,6 @@ Author: CM Wintersteiger
 
 \*******************************************************************/
 
-#include "termination_cta.h"
-
 #include <limits.h>
 #include <sstream>
 #include <fstream>

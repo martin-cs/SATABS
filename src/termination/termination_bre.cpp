@@ -112,7 +112,7 @@ termination_resultt termination_bret::bre_loop(concrete_modelt &model)
   std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options, args));
   std::auto_ptr<simulatort> simulator(select_simulator(options, args, 
                                                        shadow_context));
-  
+
   unsigned this_verb=get_verbosity()-2;
   
   // set their verbosity -- all the same for now
@@ -136,7 +136,8 @@ termination_resultt termination_bret::bre_loop(concrete_modelt &model)
                  
   status("Running CEGAR/BRE...");
   
-  try {
+  try
+  {
     #if 0
     unsigned cnt=0;
     #endif
@@ -160,7 +161,7 @@ termination_resultt termination_bret::bre_loop(concrete_modelt &model)
       {
       case safety_checkert::ERROR:
         counter_example_extraction_time+=diff;
-        throw ("CEGAR Error");
+        throw "CEGAR Error";
   
       case safety_checkert::UNSAFE:
       {
@@ -186,23 +187,23 @@ termination_resultt termination_bret::bre_loop(concrete_modelt &model)
   
       default:
         counter_example_extraction_time+=diff;
-        throw (std::string("CEGAR Result: ") + i2string(result));
+        throw std::string("CEGAR Result: ") + i2string(result);
       }
     } 
   }
-  catch (const std::string &s)
+  catch(const std::string &s)
   {
     status(std::string("CEGAR Loop Exception: ") + s);
   }
-  catch (const char *s)
+  catch(const char *s)
   {
     status(std::string("CEGAR Loop Exception: ") + s);
   }
-  catch (unsigned u)
+  catch(unsigned u)
   {
     status(std::string("CEGAR Loop Exception: ") + i2string(u));
   }
-  catch (...)
+  catch(...)
   {
     status("UNKNOWN EXCEPTION CAUGHT");
   }
