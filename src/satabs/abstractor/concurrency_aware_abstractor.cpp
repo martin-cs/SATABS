@@ -43,7 +43,6 @@ static void adjust_pred_index(exprt& expr,
 concurrency_aware_abstractort::concurrency_aware_abstractort(
     const argst &args,
     std::auto_ptr<abstractort> specific_abstractor,
-    const goto_functionst &functions,
     const bool _passive_nondet) :
   abstractort(args),
   specific_abstractor(specific_abstractor),
@@ -51,7 +50,7 @@ concurrency_aware_abstractort::concurrency_aware_abstractort(
   passive_nondet(_passive_nondet)
 {
   status("Performing pointer analysis for concurrency-aware abstraction");
-  pointer_info(functions);
+  pointer_info(args.concrete_model.goto_functions);
   status("Pointer analysis complete");
 }
 

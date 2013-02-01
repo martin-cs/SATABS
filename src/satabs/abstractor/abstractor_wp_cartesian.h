@@ -18,63 +18,61 @@ Date: April 2010
 
 class abstractor_wp_cartesiant:public abstractor_wpt
 {
-  public:
+public:
+  typedef std::set<exprt> cubet;
 
-    typedef std::set<exprt> cubet;
+  abstractor_wp_cartesiant(
+    const argst &args,
+    const unsigned int max_cube_length);
 
-    abstractor_wp_cartesiant(const argst &args,
-        const unsigned int max_cube_length,
-        const goto_functionst &functions);
+protected:
 
-  protected:
+  virtual exprt get_value(
+    unsigned p_nr,
+    const predicatest &predicates,
+    const exprt &value,
+    const namespacet& ns,
+    goto_programt::const_targett program_location);
 
-    virtual exprt get_value(
-        unsigned p_nr,
-        const predicatest &predicates,
-        const exprt &value,
-        const namespacet& ns,
-        goto_programt::const_targett program_location);
+  virtual void abstract_expression(
+    const predicatest &predicates,
+    exprt &expr,
+    const namespacet &ns,
+    goto_programt::const_targett program_location);
 
-    virtual void abstract_expression(
-        const predicatest &predicates,
-        exprt &expr,
-        const namespacet &ns,
-        goto_programt::const_targett program_location);
+  virtual void abstract_assume_guard(
+    const predicatest &predicates,
+    exprt &expr,
+    const namespacet &ns,
+    goto_programt::const_targett target);
 
-    virtual void abstract_assume_guard(
-        const predicatest &predicates,
-        exprt &expr,
-        const namespacet &ns,
-        goto_programt::const_targett target);
+  std::set<cubet> compute_largest_disjunction_of_cubes(
+    const predicatest &predicates,
+    const exprt &value,
+    const exprt &not_value,
+    goto_programt::const_targett program_location);
 
-    std::set<cubet> compute_largest_disjunction_of_cubes(
-        const predicatest &predicates,
-        const exprt &value,
-        const exprt &not_value,
-        goto_programt::const_targett program_location);
+  exprt cube_to_expr(const cubet& cube);
 
-    exprt cube_to_expr(const cubet& cube);
+  exprt disjunction_of_cubes_using_predicate_variables(
+    const std::set<cubet> &cubes,
+    const predicatest &predicates);
 
-    exprt disjunction_of_cubes_using_predicate_variables(
-        const std::set<cubet> &cubes,
-        const predicatest &predicates);
+  bool cube_is_satisfiable(const cubet& cube);
 
-    bool cube_is_satisfiable(const cubet& cube);
+  bool implies(const cubet& cube, const predicatet& phi);
 
-    bool implies(const cubet& cube, const predicatet& phi);
+  bool predicate_locations_intersects_cube_locations(
+    const predicatet& phi,
+    const cubet& cube,
+    goto_programt::const_targett program_location);
 
-    bool predicate_locations_intersects_cube_locations(
-        const predicatet& phi,
-        const cubet& cube,
-        goto_programt::const_targett program_location);
+  bool contains_subcube(std::set<cubet> cube_set, cubet cube);
 
-    bool contains_subcube(std::set<cubet> cube_set, cubet cube);
-
-    const unsigned int max_cube_length;
-    value_set_analysist pointer_info;
-    std::map<cubet, bool> sat_cache;
-    std::map<std::pair<cubet, predicatet>, bool> implies_cache;
-
+  const unsigned int max_cube_length;
+  value_set_analysist pointer_info;
+  std::map<cubet, bool> sat_cache;
+  std::map<std::pair<cubet, predicatet>, bool> implies_cache;
 };
 
 #endif /* CPROVER_CEGAR_ABSTRACTOR_WP_CARTESIAN_H_ */

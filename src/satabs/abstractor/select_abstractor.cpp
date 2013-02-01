@@ -30,9 +30,8 @@ Purpose:
 \*******************************************************************/
 
 abstractort *select_abstractor(
-    const optionst &options,
-    const loop_componentt::argst &args,
-    const goto_functionst &functions)
+  const optionst &options,
+  const loop_componentt::argst &args)
 {
   const std::string name=options.get_option("abstractor");
 
@@ -55,7 +54,7 @@ abstractort *select_abstractor(
   else if(name=="cartesian")
     specific_abstractor =
       new abstractor_wp_cartesiant(args,
-          options.get_int_option("max-cube-length"), functions);
+          options.get_int_option("max-cube-length"));
   else
     throw "unknown abstractor: "+name;
 
@@ -64,7 +63,6 @@ abstractort *select_abstractor(
     return new concurrency_aware_abstractort(
         args,
         std::auto_ptr<abstractort>(specific_abstractor),
-        functions,
         options.get_bool_option("passive-nondet"));
   }
   else

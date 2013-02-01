@@ -20,8 +20,7 @@ class abstractort;
 class optionst;
 
 abstractort *select_abstractor(
-    const optionst &options,
-    const loop_componentt::argst &args,
-    const goto_functionst &functions);
+  const optionst &options,
+  const loop_componentt::argst &args);
 
 #endif

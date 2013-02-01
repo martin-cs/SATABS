@@ -3,7 +3,7 @@
 Module: Counterexamples
 
 Author: Daniel Kroening
-Karen Yorav 
+        Karen Yorav 
 
 Date: June 2003
 
@@ -18,27 +18,27 @@ Date: June 2003
 
 class concrete_counterexamplet
 {
-  public:
-    goto_tracet goto_trace;
+public:
+  goto_tracet goto_trace;
 
-    void clear()
-    {
-      goto_trace.clear();
-    }
+  void clear()
+  {
+    goto_trace.clear();
+  }
 };
 
 void show_counterexample(
-    std::ostream &out,
-    const contextt &context,
-    const concrete_counterexamplet &counterexample);
+  std::ostream &out,
+  const contextt &context,
+  const concrete_counterexamplet &counterexample);
 
 void show_counterexample_gui(
-    std::ostream &out,
-    const contextt &context,
-    const concrete_counterexamplet &counterexample);
+  std::ostream &out,
+  const contextt &context,
+  const concrete_counterexamplet &counterexample);
 
 std::ostream& operator<< (
-    std::ostream& out,
-    const concrete_counterexamplet &counterexample);
+  std::ostream& out,
+  const concrete_counterexamplet &counterexample);
 
 #endif

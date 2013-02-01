@@ -26,115 +26,115 @@ Purpose: Simulate an abstract counterexample on the concrete program
 
 class simulator_loop_detectiont:public simulator_symext
 {
-  public:
-    simulator_loop_detectiont(
-        const optionst &options,
-        const argst &args,
-        contextt &_shadow_context) :
-      simulator_symext(options, args),
-      parameter_index(0),
-      shadow_context(_shadow_context)
+public:
+  simulator_loop_detectiont(
+      const optionst &options,
+      const argst &args,
+      contextt &_shadow_context) :
+    simulator_symext(options, args),
+    parameter_index(0),
+    shadow_context(_shadow_context)
   {
   }
 
-  protected:
-    virtual bool check_prefix(
-        const predicatest &predicates,
-        const abstract_modelt &abstract_model,
-        abstract_counterexamplet &abstract_counterexample,
-        concrete_counterexamplet &concrete_counterexample,
-        fail_infot &fail_info);
+protected:
+  virtual bool check_prefix(
+      const predicatest &predicates,
+      const abstract_modelt &abstract_model,
+      abstract_counterexamplet &abstract_counterexample,
+      concrete_counterexamplet &concrete_counterexample,
+      fail_infot &fail_info);
 
-    // Phase I
+  // Phase I
 
-    struct loop_begint
+  struct loop_begint
+  {
+    unsigned state_nr;
+    goto_symex_statet state;
+    mp_integer unwindings;
+    abstract_counterexamplet::stepst::const_iterator c_it;
+
+    loop_begint():unwindings(0)
     {
-      unsigned state_nr;
-      goto_symex_statet state;
-      mp_integer unwindings;
-      abstract_counterexamplet::stepst::const_iterator c_it;
-
-      loop_begint():unwindings(0)
-      {
-      }
-    };
-
-    typedef std::stack<loop_begint> loop_stackt;
-    typedef std::pair<
-      abstract_counterexamplet::stepst::const_iterator,
-      mp_integer> loop_headt;
-    typedef std::list<loop_headt> loop_headst;
-
-    void build_parameterized_equation(
-        const abstract_counterexamplet &abstract_counterexample,
-        symex_target_equationt &equation,
-        goto_symex_statet &state,
-        fail_infot &fail_info,
-        prefixt::step_mapt &step_map);
-
-    exprt rename(goto_symex_statet &state, const exprt &expr) const
-    {
-      exprt tmp(expr);
-      state.rename(tmp, concrete_model.ns);
-      return tmp;
     }
+  };
 
-    void build_loop_recurrence(
-        symex_target_equationt &equation,
-        goto_symex_statet &state,
-        loop_begint &loop_begin,
-        const exprt &parameter_expr,
-        std::list<exprt> &recurrences,
-        std::map<goto_programt::const_targett,code_assignt> &instructions,
-        std::map<goto_programt::const_targett,exprt> &closed_forms);
+  typedef std::stack<loop_begint> loop_stackt;
+  typedef std::pair<
+    abstract_counterexamplet::stepst::const_iterator,
+    mp_integer> loop_headt;
+  typedef std::list<loop_headt> loop_headst;
 
-    void get_fresh_induction_parameter(
-        exprt &parameter);
+  void build_parameterized_equation(
+      const abstract_counterexamplet &abstract_counterexample,
+      symex_target_equationt &equation,
+      goto_symex_statet &state,
+      fail_infot &fail_info,
+      prefixt::step_mapt &step_map);
 
-    static void check_for_induction_variables(
-        const abstract_counterexamplet::stepst prefix,
-        const abstract_counterexamplet::stepst body,
-        std::set<exprt>& variables);
+  exprt rename(goto_symex_statet &state, const exprt &expr) const
+  {
+    exprt tmp(expr);
+    state.rename(tmp, concrete_model.ns);
+    return tmp;
+  }
 
-    void fill_loop_info(
-        const abstract_counterexamplet &abstract_counterexample,
-        const abstract_counterexamplet::stepst::const_iterator start_it,
-        const abstract_counterexamplet::stepst::const_iterator end_it,
-        fail_infot::induction_infot &induction_info);
+  void build_loop_recurrence(
+      symex_target_equationt &equation,
+      goto_symex_statet &state,
+      loop_begint &loop_begin,
+      const exprt &parameter_expr,
+      std::list<exprt> &recurrences,
+      std::map<goto_programt::const_targett,code_assignt> &instructions,
+      std::map<goto_programt::const_targett,exprt> &closed_forms);
 
-    struct loop_infot
-    {
-      exprt parameter;
-      mp_integer parameter_value;
-    };
+  void get_fresh_induction_parameter(
+      exprt &parameter);
 
-    typedef std::list<loop_infot> loop_infost;
-    loop_infost loop_infos;
+  static void check_for_induction_variables(
+      const abstract_counterexamplet::stepst prefix,
+      const abstract_counterexamplet::stepst body,
+      std::set<exprt>& variables);
 
-    unsigned parameter_index;
+  void fill_loop_info(
+      const abstract_counterexamplet &abstract_counterexample,
+      const abstract_counterexamplet::stepst::const_iterator start_it,
+      const abstract_counterexamplet::stepst::const_iterator end_it,
+      fail_infot::induction_infot &induction_info);
 
-    contextt& shadow_context;
+  struct loop_infot
+  {
+    exprt parameter;
+    mp_integer parameter_value;
+  };
 
-    bool check_phase_I_equation(
-        symex_target_equationt &equation,
-        goto_symex_statet &state,
-        const abstract_counterexamplet &abstract_counterexample,
-        concrete_counterexamplet &phase_I_counterexample,
-        prefixt::step_mapt &step_map,
-        fail_infot &fail_info
-        );
+  typedef std::list<loop_infot> loop_infost;
+  loop_infost loop_infos;
 
-    void minimize_parameters(
-        simulator_sat_dect &satcheck,
-        const symex_target_equationt &equation);
+  unsigned parameter_index;
+
+  contextt& shadow_context;
+
+  bool check_phase_I_equation(
+      symex_target_equationt &equation,
+      goto_symex_statet &state,
+      const abstract_counterexamplet &abstract_counterexample,
+      concrete_counterexamplet &phase_I_counterexample,
+      prefixt::step_mapt &step_map,
+      fail_infot &fail_info
+      );
+
+  void minimize_parameters(
+      simulator_sat_dect &satcheck,
+      const symex_target_equationt &equation);
 
 
-    // Phase II
+  // Phase II
 
-    void unwind_counterexample(
-        const abstract_counterexamplet &abstract_counterexample,
-        const concrete_counterexamplet &phase_I_counterexample,
-        abstract_counterexamplet &unwound_counterexample);
+  void unwind_counterexample(
+      const abstract_counterexamplet &abstract_counterexample,
+      const concrete_counterexamplet &phase_I_counterexample,
+      abstract_counterexamplet &unwound_counterexample);
 };
 
 #endif

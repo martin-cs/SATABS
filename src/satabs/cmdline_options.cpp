@@ -215,7 +215,7 @@ int cmdline_optionst::doit()
 
     // calculates abstract program
     std::auto_ptr<abstractort> abstractor(
-        select_abstractor(options, args, prepare.goto_functions));
+        select_abstractor(options, args));
 
     // model checking engine
     std::auto_ptr<modelcheckert> modelchecker(
@@ -231,7 +231,7 @@ int cmdline_optionst::doit()
     modelchecker->set_verbosity(verbosity);
     simulator->set_verbosity(verbosity);    
 
-    satabs_safety_checkert satabs_safety_checker(
+    satabs_safety_checker_baset satabs_safety_checker(
         prepare.ns,
         *abstractor,
         *refiner,

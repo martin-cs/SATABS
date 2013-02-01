@@ -23,15 +23,15 @@ Date: April 2010
 #include "locations_of_expressions.h"
 #include "../prepare/concrete_model.h"
 
-abstractor_wp_cartesiant::abstractor_wp_cartesiant(const argst &args,
-    const unsigned int max_cube_length,
-    const goto_functionst &functions):
+abstractor_wp_cartesiant::abstractor_wp_cartesiant(
+  const argst &args,
+  const unsigned int max_cube_length):
   abstractor_wpt(args),
   max_cube_length(max_cube_length),
   pointer_info(args.concrete_model.ns)
 {
   status("Performing pointer analysis for Cartesian abstraction");
-  pointer_info(functions);
+  pointer_info(args.concrete_model.goto_functions);
   status("Pointer analysis complete");
 }
 
