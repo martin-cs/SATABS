@@ -109,7 +109,6 @@ void cmdline_optionst::get_command_line_options(optionst &options)
   else
     options.set_option("ipplimit", -1);
 
-
   // abstractor
   if(cmdline.isset("abstractor"))
     options.set_option("abstractor", cmdline.getval("abstractor"));
@@ -120,7 +119,6 @@ void cmdline_optionst::get_command_line_options(optionst &options)
     options.set_option("max-cube-length", cmdline.getval("max-cube-length"));
   else
     options.set_option("max-cube-length", 3);
-
 
   // model checker
   if(cmdline.isset("modelchecker"))
@@ -139,7 +137,6 @@ void cmdline_optionst::get_command_line_options(optionst &options)
   options.set_option("full-inlining", cmdline.isset("full-inlining"));
 
   options.set_option("loop-detection", cmdline.isset("loop-detection"));
-
 
   // simulator
   if(cmdline.isset("simulator"))
