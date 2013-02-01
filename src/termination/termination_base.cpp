@@ -8,6 +8,8 @@ Author: CM Wintersteiger
 
 #include <string>
 #include <sstream>
+#include <cstdlib>
+#include <algorithm>
 
 #include <find_symbols.h>
 #include <prefix.h>
@@ -53,6 +55,52 @@ public:
 
 /********************************************************************\
 
+ Function: termination_baset::termination_baset
+
+ Inputs:
+
+ Outputs:
+
+ Purpose:
+
+\*******************************************************************/
+
+termination_baset::termination_baset(
+  const cmdlinet &_cmd,
+  const goto_functionst &_gf,
+  const contextt &_ctxt,
+  class contextt &_sctxt,
+  class value_set_analysist &_vsa,
+  class invariant_propagationt &_ip,
+  message_handlert &_mh,
+  ui_message_handlert::uit _ui):
+    messaget(_mh),    
+    context(_ctxt),
+    shadow_context(_sctxt),
+    cmdline(_cmd),
+    ns(_ctxt, _sctxt),
+    ui(_ui),
+    goto_functions(_gf),
+    value_set_analysis(_vsa),
+    invariant_propagation(_ip),
+    start_time(current_time()),
+    ranking_time(0),    
+    modelchecker_time(0),
+    counter_example_extraction_time(0),
+    final_check_time(0),
+    ranksynth_calls(0),
+    total_loops(0),
+    nonterminating_loops(0),
+    nondet_counter(0)
+{
+  set_verbosity(6);
+  if(cmdline.isset("v"))
+    set_verbosity(atoi(cmdline.getval("v")));    
+  set_options();
+}
+
+/********************************************************************\
+
  Function: termination_baset::adjust_assertion
 
  Inputs:
@@ -61,7 +109,7 @@ public:
 
  Purpose: Adjust assertion
 
- \*******************************************************************/
+\*******************************************************************/
 
 void termination_baset::adjust_assertion(
   const exprt &expr,
@@ -79,6 +127,7 @@ void termination_baset::adjust_assertion(
   // HACK: nasty cast!
   goto_programt::targett &orig_assertion=
       (*((goto_programt::targett*)(&assertion.pc)));
+
   exprt &guard=orig_assertion->guard;
   assert(guard.id()=="=>" && guard.operands().size()==2);
 

@@ -40,31 +40,7 @@ public:
                     class value_set_analysist &_vsa,
                     class invariant_propagationt &_ip,
                     message_handlert &_mh,
-                    ui_message_handlert::uit _ui):
-    messaget(_mh),    
-    context(_ctxt),
-    shadow_context(_sctxt),
-    cmdline(_cmd),
-    ns(_ctxt, _sctxt),
-    ui(_ui),
-    goto_functions(_gf),
-    value_set_analysis(_vsa),
-    invariant_propagation(_ip),
-    start_time(current_time()),
-    ranking_time(0),    
-    modelchecker_time(0),
-    counter_example_extraction_time(0),
-    final_check_time(0),
-    ranksynth_calls(0),
-    total_loops(0),
-    nonterminating_loops(0),
-    nondet_counter(0)
-  {
-    set_verbosity(6);
-    if(cmdline.isset("v"))
-      set_verbosity(atoi(cmdline.getval("v")));    
-    set_options();
-  }
+                    ui_message_handlert::uit _ui);
 
   virtual termination_resultt operator()()=0;  
 
