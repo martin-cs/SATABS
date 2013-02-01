@@ -291,13 +291,16 @@ bool tan_parseoptionst::prepare()
     
   goto_functions.compute_location_numbers();
 
-  std::cout << "NATURAL LOOPS:" << std::endl;
-  Forall_goto_functions(it, goto_functions)
+  #if 0
+  status("Natural loops:");
+
+  forall_goto_functions(it, goto_functions)
   {
     natural_loopst nl;
     nl(it->second.body);		
     nl.output(std::cout);
   }
+  #endif
 		
   status("Termination instrumentation");
   termination_instrumentert::modet instrumenter_mode=
@@ -315,14 +318,16 @@ bool tan_parseoptionst::prepare()
   termination_instrumentert termination(goto_functions, context, mh, instrumenter_mode);
   termination.set_verbosity(verbosity);
   unsigned loopcount=termination.instrument();
+
   goto_functions.update();
+  label_claims(goto_functions);
     
   if(cmdline.isset("show-claims"))
   {
     if(loopcount==0)
-      std::cout << "No claims." << std::endl; 
+      status("No claims.");
     else
-      show_claims(ns, ui_message_handlert::PLAIN, goto_functions);
+      show_claims(ns, get_ui(), goto_functions);
     
     return true;
   }
@@ -418,7 +423,7 @@ tan_resultt tan_parseoptionst::analyze()
     res=termination(engine,
                     cmdline, goto_functions, context, shadow_context, 
                     value_set_analysis, invariant_propagation, *message_handler,
-                    ui_message_handlert::PLAIN,
+                    get_ui(),
                     up_predicates, max_iterations);
   
   switch(res)

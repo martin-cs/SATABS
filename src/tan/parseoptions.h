@@ -20,8 +20,8 @@ Author: CM Wintersteiger
 #include <pointer-analysis/value_set_analysis.h>
 
 #define TAN_OPTIONS \
-  "D:I:(16)(32)(64)(v):(version)" \
-  "(show-model)(show-preprocessed-model)" \
+  "(v):(version)(xml-ui)" \
+  "(show-model)(show-prepared-model)" \
   "(function)(claim):(show-claims)" \
   "(string-abstraction)(no-invariant-propagation)(no-value-sets)" \
   "(no-loop-slicing)" \
