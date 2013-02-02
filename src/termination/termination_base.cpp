@@ -910,7 +910,7 @@ bool termination_baset::cegar(
   loop_componentt::argst args(mh, model);
   
   std::auto_ptr<refinert> refiner(select_refiner(options, args));
-  std::auto_ptr<abstractort> abstractor(select_abstractor(options, args, model.goto_functions));
+  std::auto_ptr<abstractort> abstractor(select_abstractor(options, args));
   std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options, args));
   std::auto_ptr<simulatort> simulator(select_simulator(options, args, shadow_context));
 
@@ -924,7 +924,7 @@ bool termination_baset::cegar(
 
   try
   {
-    satabs_safety_checkert safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+    satabs_safety_checker_baset safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
     safety_checker.set_message_handler(mh);
     safety_checker.set_verbosity(this_verb);
 

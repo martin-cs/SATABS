@@ -108,7 +108,7 @@ termination_resultt termination_bret::bre_loop(concrete_modelt &model)
   loop_componentt::argst args(mh, model);
 
   std::auto_ptr<refinert> refiner(select_refiner(options, args));
-  std::auto_ptr<abstractort> abstractor(select_abstractor(options, args, model.goto_functions));
+  std::auto_ptr<abstractort> abstractor(select_abstractor(options, args));
   std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options, args));
   std::auto_ptr<simulatort> simulator(select_simulator(options, args, 
                                                        shadow_context));
@@ -130,7 +130,7 @@ termination_resultt termination_bret::bre_loop(concrete_modelt &model)
   out.close();
   #endif
     
-  satabs_safety_checkert safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+  satabs_safety_checker_baset safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
   safety_checker.set_message_handler(mh);
   safety_checker.set_verbosity(this_verb);
                  
@@ -244,10 +244,8 @@ termination_resultt termination_bret::terminates(
   message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
   loop_componentt::argst args(mh, model);  
 
-  optionst options;
-
   std::auto_ptr<refinert> refiner(select_refiner(options, args));
-  std::auto_ptr<abstractort> abstractor(select_abstractor(options, args, model.goto_functions));
+  std::auto_ptr<abstractort> abstractor(select_abstractor(options, args));
   std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options, args));
   std::auto_ptr<simulatort> simulator(select_simulator(options, args, 
                                                        shadow_context));
@@ -266,7 +264,7 @@ termination_resultt termination_bret::terminates(
   out.close();
   #endif
   
-  satabs_safety_checkert safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+  satabs_safety_checker_baset safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
   safety_checker.set_verbosity(this_verb);
   
   status("Running CEGAR/BRE...");

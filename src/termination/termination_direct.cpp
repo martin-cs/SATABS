@@ -82,7 +82,7 @@ termination_resultt termination_directt::terminates(
   loop_componentt::argst args(get_message_handler(), model);
 
   std::auto_ptr<refinert> refiner(select_refiner(options, args));
-  std::auto_ptr<abstractort> abstractor(select_abstractor(options, args, model.goto_functions));
+  std::auto_ptr<abstractort> abstractor(select_abstractor(options, args));
   std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options, args));
   std::auto_ptr<simulatort> simulator(select_simulator(options, args, 
                                                        shadow_context));
@@ -103,7 +103,7 @@ termination_resultt termination_directt::terminates(
   out.close();  
   #endif
       
-  satabs_safety_checkert safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+  satabs_safety_checker_baset safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
   safety_checker.set_message_handler(mh);
   safety_checker.set_verbosity(this_verb);
                  
@@ -190,15 +190,13 @@ termination_resultt termination_directt::terminates(
   message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
   loop_componentt::argst args(get_message_handler(), model);  
 
-  optionst options;
-
   // finds predicates
   std::auto_ptr<refinert> refiner(
     select_refiner(options, args));
 
   // calculates abstract program
   std::auto_ptr<abstractort> abstractor(
-    select_abstractor(options, args, model.goto_functions));
+    select_abstractor(options, args));
 
   // model checking engine
   std::auto_ptr<modelcheckert> modelchecker(
@@ -222,25 +220,27 @@ termination_resultt termination_directt::terminates(
   out.close();
   #endif
   
-  satabs_safety_checkert safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+  satabs_safety_checker_baset safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
   safety_checker.set_message_handler(mh);
   safety_checker.set_verbosity(this_verb);
                
   status("Running CEGAR...");
   
-  try {
+  try
+  {
     switch(safety_checkert::resultt result=safety_checker(model.goto_functions))
     {
-      case safety_checkert::ERROR: throw ("CEGAR Error");
-  
-      case safety_checkert::UNSAFE:
-        return T_NONTERMINATING;
-      
-      case safety_checkert::SAFE:
-        return T_TERMINATING;
-  
-      default:
-        throw (std::string("CEGAR Result: ") + i2string(result));      
+    case safety_checkert::ERROR:
+      throw "CEGAR Error";
+
+    case safety_checkert::UNSAFE:
+      return T_NONTERMINATING;
+    
+    case safety_checkert::SAFE:
+      return T_TERMINATING;
+
+    default:
+      throw std::string("CEGAR Result: ") + i2string(result);
     } 
   }
   catch (const std::string &s)
