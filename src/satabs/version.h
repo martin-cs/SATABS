@@ -1,1 +1,1 @@
-#define SATABS_VERSION "3.1"
+#define SATABS_VERSION "3.2"
