@@ -1,0 +1,16 @@
+COMPILATION INSTRUCTIONS FOR SATABS
+-----------------------------------
+
+1. SatAbs relies on infrastructure provided by CBMC. As first step,
+   obtain the source code of CBMC release 4.3 as follows:
+
+   svn co http://www.cprover.org/svn/cbmc/releases/cbmc-4.3
+
+
+2. Follow the configuration and compilation instructions provided
+   with CBMC. SatAbs won't compile unless you first compile CBMC.
+
+3. Then adjust src/config.inc to point to the location of CBMC.
+
+4. Do (cd src; make) -- that should do it.
+
