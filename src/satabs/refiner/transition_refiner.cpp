@@ -97,7 +97,7 @@ void transition_refinert::refine(
 
     for(unsigned p=0; p<predicates.size(); p++)
     {
-      std::cout << "P" << p << ": "
+      std::cout << "  P" << p << ": "
         << from_expr(concrete_model->ns, "", predicates[p])
         << std::endl;
       //std::cout << "      " << predicates[p] << std::endl;
@@ -204,7 +204,6 @@ bool transition_refinert::check_transition(
     const abstract_stept &abstract_state_to,
     bool &first_check)
 {
-
   // get the concrete basic block
   const goto_programt::instructiont &c_instruction=
     *abstract_state_from.pc->code.concrete_pc;
@@ -227,8 +226,8 @@ bool transition_refinert::check_transition(
 #endif
 
   if(c_instruction.is_skip() ||
-      c_instruction.is_location() ||
-      c_instruction.is_end_function())
+     c_instruction.is_location() ||
+     c_instruction.is_end_function())
     return false; // ok
 
   if(c_instruction.is_other() && c_instruction.code.is_nil())
@@ -241,8 +240,8 @@ bool transition_refinert::check_transition(
     abstract_state_from.pc->code.get_transition_relation();
 
   if(!c_instruction.is_goto() &&
-      !c_instruction.is_assume() &&
-      !c_instruction.is_assert())
+     !c_instruction.is_assume() &&
+     !c_instruction.is_assert())
   {
     if(!abstract_transition_relation.has_predicates())
     {
@@ -279,12 +278,12 @@ bool transition_refinert::check_transition(
       passive_id++)
   {
     if(!passive_constrain &&
-        passive_id != abstract_state_from.thread_nr)
+       passive_id != abstract_state_from.thread_nr)
       continue;
 
     // only check all passive threads if we have more than 1
     if(passive_id == abstract_state_from.thread_states.size() &&
-        passive_id <= 2)
+      passive_id <= 2)
       continue;
 
     transition_cachet::entryt transition_cache_entry;
@@ -305,10 +304,10 @@ bool transition_refinert::check_transition(
 
     bool inconsistent_initial_state=false;
     if(!c_instruction.is_other() &&
-        !c_instruction.is_function_call() &&
-        !c_instruction.is_return() &&
-        !c_instruction.is_assign() &&
-        !c_instruction.is_decl())
+       !c_instruction.is_function_call() &&
+       !c_instruction.is_return() &&
+       !c_instruction.is_assign() &&
+       !c_instruction.is_decl())
     {
       if(passive_id < abstract_state_from.thread_states.size())
       {
@@ -338,9 +337,9 @@ bool transition_refinert::check_transition(
     else
     {
       if(check_assignment_transition(predicates,
-            abstract_state_from,
-            abstract_state_to,
-            passive_id))
+                                     abstract_state_from,
+                                     abstract_state_to,
+                                     passive_id))
       {
         const std::string opt="Total transition refinements";
         assert(stats.find(opt)!=stats.end());
@@ -355,7 +354,6 @@ bool transition_refinert::check_transition(
   }
 
   return false;
-
 }
 
 /*******************************************************************\

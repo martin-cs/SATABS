@@ -161,7 +161,7 @@ bool refiner_wpt::refine_prefix(
           wp.op1().swap(predicate);
           predicate.swap(wp);
         }
-        else if (it->is_loop_end())
+        else if(it->is_loop_end())
         {
           push_induction_info(fail_info, it, loops);
           invariant.make_true();
@@ -196,6 +196,7 @@ bool refiner_wpt::refine_prefix(
       if(!it->relevant) continue;
 
       exprt pred_bak=predicate;
+      
 #ifdef DEBUG
       goto_programt tmp;
       tmp.output_instruction(concrete_model->ns, "", std::cerr, concrete_pc);
@@ -229,14 +230,16 @@ bool refiner_wpt::refine_prefix(
           break;
 
         case OTHER:
-          /* Ignore if user-specified predicate, otherwise treat like assign */
-          if(it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_predicate || it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_parameter_predicates || it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_return_predicates)
-            break;
         case DECL:
         case ASSIGN:
 #ifdef DEBUG
           std::cout << "OTHER/ASSIGN/DECL\n";
 #endif
+          /* Ignore if user-specified predicate, otherwise treat like assign */
+          if(it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_predicate ||
+             it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_parameter_predicates ||
+             it->pc->code.concrete_pc->code.get_statement()==ID_user_specified_return_predicates)
+            break;
 
           {
             codet tid_tmp_code;
@@ -274,7 +277,7 @@ bool refiner_wpt::refine_prefix(
       std::cout << "B P to-check:  " << from_expr(concrete_model->ns, "", predicate) << std::endl;
 #endif
 
-      if(pred_bak != predicate)
+      if(pred_bak!=predicate)
       {
         satcheckt satcheck;
         bv_pointerst solver(concrete_model->ns, satcheck);
@@ -299,7 +302,7 @@ bool refiner_wpt::refine_prefix(
               if(code.get_statement()==ID_assign)
               {
                 equal_exprt pred_new(to_code_assign(code).lhs(),
-                    to_code_assign(code).rhs());
+                                     to_code_assign(code).rhs());
                 simplify(pred_new, concrete_model->ns);
 #ifdef DEBUG
                 std::cout << "Adding new predicate as we arrived at TRUE: "
@@ -335,10 +338,11 @@ bool refiner_wpt::refine_prefix(
       add_predicates(abstract_pc, predicates, no_tid_predicate, found_new, FROM);
     }
 
-    if(!predicate.is_true() && fail_info.warn_on_failure)
+    if(!predicate.is_true() &&
+       fail_info.warn_on_failure)
     {
       warning("Failed to refute spurious trace with WPs (got "+
-          from_expr(concrete_model->ns, "", predicate)+")");
+        from_expr(concrete_model->ns, "", predicate)+")");
     }
   }
 
@@ -349,7 +353,7 @@ bool refiner_wpt::refine_prefix(
         abstract_model,
         predicates);
   }
-
+  
   // make sure we have progress
   return !found_new;
 }

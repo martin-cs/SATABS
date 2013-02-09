@@ -42,7 +42,6 @@ void refinert::add_predicates(
     bool &found_new,
     wheret where)
 {
-
   std::set<predicatet> new_predicates;
   discover_predicates(expr, new_predicates, concrete_model->ns, no_mixed_predicates);
 
@@ -64,7 +63,8 @@ void refinert::add_predicates(
       if(is_pointer_predicate(p))
       {
         os << "It is a pointer pred\n";
-      } else
+      }
+      else
       {
         os << "It is not a pointer pred\n";
       }
@@ -79,7 +79,7 @@ void refinert::add_predicates(
         continue;
       }
 
-      if (remove_equivalent_predicates)
+      if(remove_equivalent_predicates)
       {
         //check if the predicate to be added is equivalent to some other
         //predicate which was considered already, if yes, skip it.
@@ -182,8 +182,8 @@ void refinert::add_predicates(
       if (is_eq_to_added)
         continue;
 
-      //check if the predicate to be added is equivalent to some
-      //predicate that was added during previous cegar loops.
+      // check if the predicate to be added is equivalent to some
+      // predicate that was added during previous cegar loops.
       bool is_eq_to_old = false;
       for(unsigned i = 0; i < predicates.size(); i++)
       {
@@ -210,7 +210,6 @@ void refinert::add_predicates(
     num_predicates_added++;
 
     new_predicates_no.insert(predicates.lookup(*p_it));
-
   }
 
   std::set<unsigned> &trans_predicates=
@@ -225,12 +224,11 @@ void refinert::add_predicates(
       p_it!=new_predicates_no.end();
       p_it++)
     trans_predicates.insert(*p_it);
-
+    
   if(trans_predicates.size()>old)
   {
     found_new=true;
     pc->code.re_abstract=true;
   }
-
 }
 

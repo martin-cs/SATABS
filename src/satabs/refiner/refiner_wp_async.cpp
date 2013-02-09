@@ -43,8 +43,7 @@ the stack
 void refiner_wpt::push_induction_info(
     const fail_infot &fail_info,
     abstract_counterexamplet::stepst::const_iterator c_it,
-    std::list<fail_infot::induction_infot> &info_stack
-    )
+    std::list<fail_infot::induction_infot> &info_stack)
 {
   assert (fail_info.use_invariants);
   assert (c_it->is_loop_end());
@@ -56,7 +55,7 @@ void refiner_wpt::push_induction_info(
 
   std::list<fail_infot::induction_infot>::const_iterator r_it;
 
-  for (r_it = fail_info.induction_infos.begin();
+  for(r_it = fail_info.induction_infos.begin();
       r_it != fail_info.induction_infos.end ();
       r_it++)
   {
@@ -96,7 +95,7 @@ bool refiner_wpt::get_recurrence(
     const std::list<fail_infot::induction_infot> &info_stack,
     exprt &recurrence)
 {
-  if (info_stack.size())
+  if(info_stack.size())
   {
     const fail_infot::induction_infot 
       &induction_info=info_stack.back();
@@ -111,6 +110,7 @@ bool refiner_wpt::get_recurrence(
       return true;
     }
   }
+
   return false;
 }
 
@@ -137,7 +137,7 @@ bool refiner_wpt::get_instruction(
 {
   exprt recurrence;
 
-  if (get_recurrence(concrete_pc, info_stack, recurrence))
+  if(get_recurrence(concrete_pc, info_stack, recurrence))
   {
     const fail_infot::induction_infot 
       &induction_info=info_stack.back();
@@ -168,6 +168,7 @@ bool refiner_wpt::get_instruction(
 
     return true;
   }
+
   return false;
 }
 
@@ -189,26 +190,26 @@ void refiner_wpt::initialize_from_to_predicates(
     const abstract_programt::targett head,
     const abstract_programt::targett exit)
 {
-  if (from_predicates.find (head) ==
-      from_predicates.end())
+  if(from_predicates.find(head) ==
+     from_predicates.end())
   {
     from_predicates[head] = std::set<exprt>();
   }
 
-  if (from_predicates.find (exit) ==
-      from_predicates.end())
+  if(from_predicates.find(exit) ==
+     from_predicates.end())
   {
     from_predicates[exit] = std::set<exprt>();
   }
 
-  if (to_predicates.find (head) ==
-      to_predicates.end())
+  if(to_predicates.find(head) ==
+     to_predicates.end())
   {
     to_predicates[head] = std::set<exprt>();
   }
 
-  if (to_predicates.find (exit) ==
-      to_predicates.end())
+  if(to_predicates.find(exit) ==
+     to_predicates.end())
   {
     to_predicates[exit] = std::set<exprt>();
   }
@@ -250,14 +251,14 @@ void refiner_wpt::add_induction_predicates(
     const exprt &parameter = induction_info.parameter;
 
     // initialize from_ and to_predicates, if necessary
-    initialize_from_to_predicates (
+    initialize_from_to_predicates(
         induction_info.loop_head,
         induction_info.loop_exit);
 
     // we'll treat the predicates as huge conjunction
     exprt predicate = exprt (ID_and, typet(ID_bool));
 
-    for (std::list<exprt>::const_iterator p_it = 
+    for(std::list<exprt>::const_iterator p_it = 
         induction_preds.begin();
         p_it != induction_preds.end(); p_it++)
     {
@@ -319,7 +320,6 @@ void refiner_wpt::add_induction_predicates(
   // now add the corresponding induction instructions
   add_induction_transitions(fail_info, abstract_model, predicates);
 }
-
 
 /*******************************************************************\
 
