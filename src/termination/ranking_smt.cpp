@@ -419,7 +419,7 @@ void ranking_synthesis_smtt::adjust_type(typet &type) const
 {
   if(type.id()==ID_bool)
   {
-    type=uint_type();
+    type=unsigned_int_type();
     type.set(ID_width, 1);
   }
 }

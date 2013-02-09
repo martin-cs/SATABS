@@ -42,7 +42,7 @@ exprt ranking_synthesis_qbf_completet::value_variable(const exprt &expr)
 //    entry.type()=expr.type();
 
     // adjust the value type
-    entry.type()=uint_type();
+    entry.type()=unsigned_int_type();
     entry.type().set(ID_width, value_width);
   }
 
@@ -152,7 +152,7 @@ bool ranking_synthesis_qbf_completet::extract_functions(
         }
 
         // cast the current function to unsigned
-        typet rf_type=uint_type();
+        typet rf_type=unsigned_int_type();
         rf_type.set(ID_width, value_width);
 
         typecast_exprt cast(rf_type);

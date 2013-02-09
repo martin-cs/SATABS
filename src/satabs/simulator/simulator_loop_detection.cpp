@@ -532,7 +532,7 @@ parameter for the loop recurrence
 void simulator_loop_detectiont::get_fresh_induction_parameter(
     exprt &parameter)
 {
-  symbol_exprt parameter_expr(uint_type());
+  symbol_exprt parameter_expr(unsigned_int_type());
 
   bool found;
   do 

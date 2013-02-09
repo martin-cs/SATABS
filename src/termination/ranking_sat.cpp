@@ -474,9 +474,9 @@ exprt ranking_synthesis_satt::coefficient(const exprt &expr)
 
 void ranking_synthesis_satt::adjust_type(typet &type) const
 {
-  if(type.id()=="bool")
+  if(type.id()==ID_bool)
   {
-    type=uint_type();
-    type.set("width", 1);
+    type=unsigned_int_type();
+    type.set(ID_width, 1);
   }
 }

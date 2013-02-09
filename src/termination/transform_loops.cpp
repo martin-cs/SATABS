@@ -772,7 +772,7 @@ exprt loop_transformt::get_new_variable(void)
   symbolt newsym;
   newsym.name = ident;
   newsym.base_name = "loopvar$" + i2string(trans_counter);
-  newsym.type = uint_type();
+  newsym.type = unsigned_int_type();
 
   exprt res("symbol", newsym.type);
   res.set("identifier", ident);
@@ -877,7 +877,7 @@ void loop_transformt::transform_entries(
       pre_entry.function=entry->function;
       pre_entry.code=code_assignt(loop_symbol,
                          from_integer(block_numbers.get(entry->targets.front()),
-                                    uint_type()));
+                                    unsigned_int_type()));
 
       unsigned ln = entry->location_number; // gets swapped away
       program.insert_before_swap(entry, pre_entry);
@@ -923,7 +923,7 @@ void loop_transformt::transform_entries(
       post_entry->location_number=entry->location_number;
       post_entry->code=code_assignt(loop_symbol,
                                     from_integer(block_numbers.get(begin),
-                                                 uint_type()));
+                                                 unsigned_int_type()));
     }
   }
 
@@ -936,7 +936,7 @@ void loop_transformt::transform_entries(
     {
       goto_programt::targett newt = program.insert_before(begin);
       newt->type=GOTO;
-      equal_exprt guard(loop_symbol, from_integer(it->second, uint_type()));
+      equal_exprt guard(loop_symbol, from_integer(it->second, unsigned_int_type()));
       newt->guard=guard;
       newt->targets.push_back(it->first);
       newt->location_number = begin->location_number;      
@@ -1006,7 +1006,7 @@ void loop_transformt::transform_exits(
     ass.location_number=exit->location_number;
     ass.code=code_assignt(loop_symbol,
                            from_integer(exit_numbers.get(exit->targets.front()),
-                                        uint_type()));
+                                        unsigned_int_type()));
 
     unsigned ln = exit->location_number; // doesn't get swapped
     program.insert_before_swap(exit, ass);
@@ -1030,7 +1030,7 @@ void loop_transformt::transform_exits(
     {
       goto_programt::targett newt=program.insert_before(next);
       newt->type=GOTO;
-      equal_exprt guard(loop_symbol, from_integer(it->second, uint_type()));
+      equal_exprt guard(loop_symbol, from_integer(it->second, unsigned_int_type()));
       newt->guard=guard;
       newt->location_number=next->location_number;
       newt->location=end->location;
