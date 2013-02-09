@@ -204,8 +204,7 @@ int cmdline_optionst::doit()
 
     concrete_modelt concrete_model(ns, prepare.goto_functions);
 
-    loop_componentt::argst args(
-        message_handler, concrete_model);
+    loop_componentt::argst args(concrete_model);
 
     // The tools we need
 

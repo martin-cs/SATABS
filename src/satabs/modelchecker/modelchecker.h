@@ -68,8 +68,6 @@ protected:
   class inlinedt
   {
   public:
-    inlinedt(message_handlert &_mh) : message(_mh) {}
-
     struct instructiont
     {
       abstract_programt::targett original;
@@ -80,16 +78,17 @@ protected:
     typedef std::vector<instructiont> PC_mapt;
     PC_mapt PC_map;
 
-    void build(abstract_modelt &abstract_model);
+    void build(
+      abstract_modelt &abstract_model,
+      message_handlert &_message_handler);
 
     bool has_assertion() const;
 
   protected:
-    messaget message;
-
     void build(abstract_modelt &abstract_model,
-        const irep_idt f_id,
-        std::set<irep_idt> &recursion_stack);
+               const irep_idt f_id,
+               std::set<irep_idt> &recursion_stack,
+               message_handlert &message_handler);
   };
 };
 

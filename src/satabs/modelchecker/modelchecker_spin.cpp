@@ -772,7 +772,7 @@ void modelchecker_spint::build(
   get_variable_names(abstract_model);
   get_nondet_symbols(abstract_model);
 
-  inlined.build(abstract_model);
+  inlined.build(abstract_model, get_message_handler());
 
   std::ofstream out(out_file_name.c_str());
   build_promela_file(abstract_model, out);

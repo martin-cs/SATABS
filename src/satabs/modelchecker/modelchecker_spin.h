@@ -19,8 +19,7 @@ class modelchecker_spint:public modelcheckert
     modelchecker_spint(
         const loop_componentt::argst &args,
         const bool concurrency_aware):
-      modelcheckert(args, concurrency_aware),
-      inlined(args.message_handler)
+      modelcheckert(args, concurrency_aware)
   {
     if(concurrency_aware)
     {

@@ -177,13 +177,15 @@ Purpose:
 
 \*******************************************************************/
 
-void modelcheckert::inlinedt::build(abstract_modelt &abstract_model)
+void modelcheckert::inlinedt::build(
+  abstract_modelt &abstract_model,
+  message_handlert &message_handler)
 {
   PC_map.clear();
 
   // start with "main"
   std::set<irep_idt> recursion_stack;
-  build(abstract_model, "main", recursion_stack);
+  build(abstract_model, "main", recursion_stack, message_handler);
 }
 
 /*******************************************************************\
@@ -222,7 +224,8 @@ Purpose:
 void modelcheckert::inlinedt::build(
     abstract_modelt &abstract_model,
     const irep_idt f_id,
-    std::set<irep_idt> &recursion_stack)
+    std::set<irep_idt> &recursion_stack,
+    message_handlert &message_handler)
 {
   abstract_functionst::function_mapt::iterator f_it=
     abstract_model.goto_functions.function_map.find(f_id);
@@ -232,6 +235,7 @@ void modelcheckert::inlinedt::build(
 
   if(recursion_stack.find(f_id)!=recursion_stack.end())
   {
+    messaget message(message_handler);
     message.warning("Ignoring recursive call to `" + id2string(f_id) + "'.");
     return;
   }
@@ -273,7 +277,8 @@ void modelcheckert::inlinedt::build(
 
       const symbol_exprt &symbol=to_symbol_expr(call.function());
 
-      build(abstract_model, symbol.get_identifier(), recursion_stack);
+      build(abstract_model, symbol.get_identifier(),
+            recursion_stack, message_handler);
     }
   }
 

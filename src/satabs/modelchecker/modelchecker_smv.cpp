@@ -1711,7 +1711,7 @@ bool modelchecker_smvt::check(
   get_variable_names(abstract_model);
   get_nondet_symbols(abstract_model);
 
-  inlined.build(abstract_model);
+  inlined.build(abstract_model, get_message_handler());
 
   threadst threads;
   build_threads(threads);
@@ -1810,7 +1810,7 @@ void modelchecker_smvt::save(
   get_variable_names(abstract_model);
   get_nondet_symbols(abstract_model);
 
-  inlined.build(abstract_model);
+  inlined.build(abstract_model, get_message_handler());
 
   threadst threads;
   build_threads(threads);
