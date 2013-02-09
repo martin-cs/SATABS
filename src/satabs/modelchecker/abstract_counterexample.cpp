@@ -74,8 +74,9 @@ Purpose:
 
 \*******************************************************************/
 
-  std::ostream &operator<<
-(std::ostream &out, const abstract_counterexamplet &counterexample)
+std::ostream &operator<< (
+  std::ostream &out,
+  const abstract_counterexamplet &counterexample)
 {
   for(abstract_counterexamplet::stepst::const_iterator
       it=counterexample.steps.begin();

@@ -32,42 +32,19 @@ void abstract_stept::output(std::ostream &out) const
       if(has_pc)
       {
         out << "// " << pc->location << std::endl;
+        out << pc->type;
 
         if(pc->is_goto())
-          out << "GOTO          ";
-        else if(pc->is_assume())
-          out << "ASSUME        ";
-        else if(pc->is_assert())
-          out << "ASSERT        ";
-        else if(pc->is_dead())
-          out << "DEAD          ";
-        else if(pc->is_other())
-          out << "OTHER         ";
-        else if(pc->is_assign())
-          out << "ASSIGN        ";
-        else if(pc->is_location())
-          out << "LOCATION      ";
-        else if(pc->is_start_thread())
-          out << "START_THREAD  ";
-        else if(pc->is_end_thread())
-          out << "END_THREAD    ";
-        else if(pc->is_end_function())
-          out << "END_FUNCTION  ";
-        else if(pc->is_function_call())
-          out << "FUNCTION_CALL ";
-        else if(pc->is_return())
-          out << "RETURN        ";
-        else
-          out << "(?)           ";
+          out << " branch_taken=" << branch_taken;
       }
       else
         out << "// no PC" << std::endl;
 
-      if(has_pc && pc->is_goto())
-        out << "branch_taken=" << branch_taken;
-
       out << std::endl;
-      for(thread_to_predicate_valuest::const_iterator it = thread_states.begin(); it != thread_states.end(); it++)
+
+      for(thread_to_predicate_valuest::const_iterator
+          it=thread_states.begin();
+          it!=thread_states.end(); it++)
       {
         out << "  thread " << it->first << ": (";
         for(unsigned i = 0; i < it->second.size(); i++)
