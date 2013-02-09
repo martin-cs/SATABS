@@ -173,6 +173,8 @@ termination_resultt termination_ctat::rank(
       unwinding_next(loop_begin, sliced_backjump, assertion, n);
       break;
     }
+    
+    temp_goto_functions.update();
 
     std::stringstream msg;
     msg << "Generating ranking functions for " << n << " loop iteration"

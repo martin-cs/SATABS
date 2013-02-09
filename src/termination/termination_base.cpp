@@ -919,13 +919,13 @@ bool termination_baset::cegar(
   abstractor->set_verbosity(this_verb);
   modelchecker->set_verbosity(this_verb);
   simulator->set_verbosity(this_verb);
-
+  
   try
   {
     satabs_safety_checker_baset safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
     safety_checker.set_message_handler(mh);
     safety_checker.set_verbosity(this_verb);
-
+    
     fine_timet before=current_time();
     safety_checkert::resultt result=safety_checker(model.goto_functions);
     fine_timet diff=current_time()-before;
@@ -1039,4 +1039,5 @@ void termination_baset::set_options()
     options.set_option("simulator", "sat");
 
   options.set_option("iterations", 100);
+  options.set_option("max-new-predicates", -1);
 }
