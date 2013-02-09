@@ -24,31 +24,28 @@ class optionst;
 
 class preparet:public language_uit
 {
-  public:
-    preparet(
-        const cmdlinet &_cmdline,
-        const optionst &options,
-        contextt &_shadow_context);
+public:
+  preparet(
+    const cmdlinet &_cmdline,
+    const optionst &options);
 
-    int doit();
+  int doit();
 
-    namespacet ns;
-    contextt &shadow_context;
-    goto_functionst goto_functions;
-    std::vector<exprt> user_provided_predicates;
+  goto_functionst goto_functions;
+  std::vector<exprt> user_provided_predicates;
 
-  private:
-    const cmdlinet &cmdline;
-    const optionst &options;
+private:
+  const cmdlinet &cmdline;
+  const optionst &options;
 
-    void get_initial_state();
-    int get_sync_modules();
-    int get_async_modules();
+  void get_initial_state();
+  int get_sync_modules();
+  int get_async_modules();
 
-    void replace_dynamic_allocation(goto_programt &goto_program);
-    void replace_dynamic_allocation(goto_functionst &goto_functions);
+  void replace_dynamic_allocation(goto_programt &goto_program);
+  void replace_dynamic_allocation(goto_functionst &goto_functions);
 
-    void register_languages();
+  void register_languages();
 };
 
 #endif

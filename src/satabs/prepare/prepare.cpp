@@ -37,8 +37,6 @@ Date: June 2003
 
 #include <pointer-analysis/goto_program_dereference.h>
 #include <pointer-analysis/add_failed_symbols.h>
-#include <pointer-analysis/value_set_analysis.h>
-#include <pointer-analysis/show_value_sets.h>
 
 #include "../version.h"
 #include "prepare.h"
@@ -63,11 +61,8 @@ Purpose: convert input program into goto program
 
 preparet::preparet(
     const cmdlinet &_cmdline,
-    const optionst &_options,
-    contextt &_shadow_context): 
+    const optionst &_options): 
   language_uit("SATABS " SATABS_VERSION, _cmdline),
-  ns(context, _shadow_context),
-  shadow_context(_shadow_context),
   cmdline(_cmdline),
   options(_options)
 {
@@ -93,7 +88,7 @@ int preparet::doit()
   {
     // do we have a goto binary?
     if(cmdline.args.size()==1 &&
-        is_goto_binary(cmdline.args[0]))
+       is_goto_binary(cmdline.args[0]))
     {
       status("Reading GOTO program from file");
 
@@ -106,23 +101,34 @@ int preparet::doit()
     }
     else
     {
-      //
+      // from source
+      
       // parsing
-      //
-
       if(parse()) return 1;
 
-      //
       // type checking
-      //
-
       if(typecheck()) return 1;
 
-      //
       // final adjustments
-      //
-
       if(final()) return 1;
+
+      // see if we have a "main"
+
+      if(context.symbols.find("main")==context.symbols.end())
+      {
+        error("failed to find entry point -- please provide a model");
+        return 1;
+      }
+
+      status("Generating GOTO Program");
+
+      goto_convert(
+          context,
+          goto_functions,
+          get_message_handler());
+
+      // we no longer need any parse trees or language files
+      clear_parse();
     }
 
     {
@@ -139,6 +145,7 @@ int preparet::doit()
 
     if(cmdline.isset("show-claims"))
     {
+      namespacet ns(context);
       show_claims(ns, get_ui(), goto_functions);
       return 0;
     }
@@ -146,11 +153,14 @@ int preparet::doit()
     // get the user provided predicates
 
     if(cmdline.isset("predicates"))
+    {
+      namespacet ns(context);
       get_predicates(
           cmdline.getval("predicates"),
           get_message_handler(),
           ns,
           user_provided_predicates);
+    }
   }
 
   catch(const char *e)
@@ -204,26 +214,7 @@ Purpose:
 
 int preparet::get_async_modules()
 {
-  if(goto_functions.function_map.empty())
-  {
-    // see if we have a "main"
-
-    if(context.symbols.find("main")==context.symbols.end())
-    {
-      error("failed to find entry point -- please provide a model");
-      return 1;
-    }
-
-    status("Generating GOTO Program");
-
-    goto_convert(
-        context,
-        goto_functions,
-        get_message_handler());
-  }
-
-  // we no longer need any parse trees or language files
-  clear_parse();
+  namespacet ns(context);
 
   // finally add the library
   status("Adding CPROVER library");      
@@ -248,8 +239,10 @@ int preparet::get_async_modules()
     string_instrumentation(
         context, get_message_handler(), goto_functions);
 
-  status("Removing function pointers");
-  remove_function_pointers(ns, goto_functions, cmdline.isset("pointer-check"));
+  {
+    status("Removing function pointers");
+    remove_function_pointers(ns, goto_functions, cmdline.isset("pointer-check"));
+  }
 
   status("Removing unused functions");
   remove_unused_functions(
@@ -313,35 +306,6 @@ int preparet::get_async_modules()
         get_message_handler(),
         goto_functions);
   }  
-
-  goto_functions.compute_location_numbers();
-
-  #if 0
-  // obsoleted by goto_check
-  if(cmdline.isset("pointer-check") ||
-      cmdline.isset("show-value-sets"))
-  {
-    status("Pointer Analysis");
-    value_set_analysist value_set_analysis(ns);
-    value_set_analysis(goto_functions);
-
-    // show it?
-    if(cmdline.isset("show-value-sets"))
-    {
-      show_value_sets(get_ui(), goto_functions, value_set_analysis);
-      return 0;
-    }
-
-    if(cmdline.isset("pointer-check"))
-    {
-      status("Adding Pointer Checks");
-
-      // add pointer checks
-      pointer_checks(
-          goto_functions, context, options, value_set_analysis);
-    }
-  }
-  #endif
 
   goto_functions.compute_location_numbers();
 

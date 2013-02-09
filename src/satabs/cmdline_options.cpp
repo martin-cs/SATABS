@@ -172,10 +172,7 @@ int cmdline_optionst::doit()
   optionst options;  
   get_command_line_options(options);
 
-  // context that can be changed within the CEGAR loop
-  contextt shadow_context;
-
-  preparet prepare(cmdline, options, shadow_context);
+  preparet prepare(cmdline, options);
 
   message_handlert &message_handler=prepare.ui_message_handler;
 
@@ -201,8 +198,11 @@ int cmdline_optionst::doit()
   try
   {
     messaget message(message_handler);
+    
+    contextt shadow_context;
+    namespacet ns(prepare.context, shadow_context);
 
-    concrete_modelt concrete_model(prepare.ns, prepare.goto_functions);
+    concrete_modelt concrete_model(ns, prepare.goto_functions);
 
     loop_componentt::argst args(
         message_handler, concrete_model);
@@ -223,7 +223,7 @@ int cmdline_optionst::doit()
 
     // simulator
     std::auto_ptr<simulatort> simulator(
-        select_simulator(options, args, prepare.shadow_context));
+        select_simulator(options, args, shadow_context));
 
     // set their verbosity -- all the same for now
     refiner->set_verbosity(verbosity);
@@ -232,7 +232,7 @@ int cmdline_optionst::doit()
     simulator->set_verbosity(verbosity);    
 
     satabs_safety_checker_baset satabs_safety_checker(
-        prepare.ns,
+        ns,
         *abstractor,
         *refiner,
         *modelchecker,
