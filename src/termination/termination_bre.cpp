@@ -13,16 +13,6 @@ Author: CM Wintersteiger
 #include <i2string.h>
 #include <std_expr.h>
 
-#include <satabs/prepare/prepare.h>
-#include <satabs/refiner/select_refiner.h>
-#include <satabs/refiner/refiner.h>
-#include <satabs/abstractor/select_abstractor.h>
-#include <satabs/abstractor/abstractor.h>
-#include <satabs/modelchecker/select_modelchecker.h>
-#include <satabs/modelchecker/modelchecker.h>
-#include <satabs/simulator/select_simulator.h>
-#include <satabs/simulator/simulator.h>
-#include <satabs/status_values.h>
 #include <satabs/satabs_safety_checker.h>
 
 #include "termination_bre.h"
@@ -64,8 +54,6 @@ termination_resultt termination_bret::terminates(
                               5, /* dep. limit */
                               true /* replace dyn. alloc. */);
 
-  concrete_modelt model(ns, dest_func);
-  
   slicing_time+=current_time()-before;
   
   if(!mres)
@@ -86,7 +74,7 @@ termination_resultt termination_bret::terminates(
   }
   */
   
-  return bre_loop(model);
+  return bre_loop(dest_func);
 }
 
 /********************************************************************\
@@ -101,34 +89,24 @@ termination_resultt termination_bret::terminates(
 
 \********************************************************************/
 
-termination_resultt termination_bret::bre_loop(concrete_modelt &model)
+termination_resultt termination_bret::bre_loop(
+  const goto_functionst &goto_functions)
 {
   null_message_handlert nmh;
   message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
 
-  std::auto_ptr<refinert> refiner(select_refiner(options));
-  std::auto_ptr<abstractort> abstractor(select_abstractor(options));
-  std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options));
-  std::auto_ptr<simulatort> simulator(select_simulator(options, shadow_context));
-
   unsigned this_verb=get_verbosity()-2;
-  
-  // set their verbosity -- all the same for now
-  refiner->set_verbosity(this_verb);
-  abstractor->set_verbosity(this_verb);
-  modelchecker->set_verbosity(this_verb);
-  simulator->set_verbosity(this_verb);    
   
   #if 0
   static unsigned call_counter=0;
   std::string fname("model_"); 
   fname += i2string(++call_counter);
   std::ofstream out(fname.c_str());
-  model.goto_functions.output(ns, out);
+  goto_functions.output(ns, out);
   out.close();
   #endif
     
-  satabs_safety_checker_baset safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+  satabs_safety_checkert safety_checker(context, options);
   safety_checker.set_message_handler(mh);
   safety_checker.set_verbosity(this_verb);
                  
@@ -151,7 +129,7 @@ termination_resultt termination_bret::bre_loop(concrete_modelt &model)
       
       status("Checking for counterexample...");
       fine_timet before=current_time();
-      int result=safety_checker(model.goto_functions);
+      int result=safety_checker(goto_functions);
       fine_timet diff=current_time()-before;
       modelchecker_time+=diff;
           
@@ -241,18 +219,7 @@ termination_resultt termination_bret::terminates(
   null_message_handlert nmh;
   message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
 
-  std::auto_ptr<refinert> refiner(select_refiner(options));
-  std::auto_ptr<abstractort> abstractor(select_abstractor(options));
-  std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options));
-  std::auto_ptr<simulatort> simulator(select_simulator(options, shadow_context));
-  
   unsigned this_verb=2;
-  
-  // set their verbosity -- all the same for now
-  refiner->set_verbosity(this_verb);
-  abstractor->set_verbosity(this_verb);
-  modelchecker->set_verbosity(this_verb);
-  simulator->set_verbosity(this_verb);    
   
   #if 0
   std::ofstream out("model");
@@ -260,7 +227,7 @@ termination_resultt termination_bret::terminates(
   out.close();
   #endif
   
-  satabs_safety_checker_baset safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+  satabs_safety_checkert safety_checker(context, options);
   safety_checker.set_verbosity(this_verb);
   safety_checker.set_message_handler(mh);
   

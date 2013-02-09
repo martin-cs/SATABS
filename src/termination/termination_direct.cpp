@@ -11,14 +11,6 @@ Author: CM Wintersteiger
 
 #include <i2string.h>
 
-#include <satabs/refiner/select_refiner.h>
-#include <satabs/refiner/refiner.h>
-#include <satabs/abstractor/select_abstractor.h>
-#include <satabs/abstractor/abstractor.h>
-#include <satabs/modelchecker/select_modelchecker.h>
-#include <satabs/modelchecker/modelchecker.h>
-#include <satabs/simulator/select_simulator.h>
-#include <satabs/simulator/simulator.h>
 #include <satabs/satabs_safety_checker.h>
 
 #include "termination_direct.h"
@@ -80,18 +72,7 @@ termination_resultt termination_directt::terminates(
   null_message_handlert nmh;
   message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
 
-  std::auto_ptr<refinert> refiner(select_refiner(options));
-  std::auto_ptr<abstractort> abstractor(select_abstractor(options));
-  std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options));
-  std::auto_ptr<simulatort> simulator(select_simulator(options, shadow_context));
-  
   unsigned this_verb=verbosity-2;
-  
-  // set their verbosity -- all the same for now
-  refiner->set_verbosity(this_verb);
-  abstractor->set_verbosity(this_verb);
-  modelchecker->set_verbosity(this_verb);
-  simulator->set_verbosity(this_verb);    
   
   #if 0
   std::string fname("model_"); 
@@ -101,7 +82,7 @@ termination_resultt termination_directt::terminates(
   out.close();  
   #endif
       
-  satabs_safety_checker_baset safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+  satabs_safety_checkert safety_checker(context, options);
   safety_checker.set_message_handler(mh);
   safety_checker.set_verbosity(this_verb);
                  
@@ -187,25 +168,7 @@ termination_resultt termination_directt::terminates(
   null_message_handlert nmh;
   message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
 
-  // finds predicates
-  std::auto_ptr<refinert> refiner(select_refiner(options));
-
-  // calculates abstract program
-  std::auto_ptr<abstractort> abstractor(select_abstractor(options));
-
-  // model checking engine
-  std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options));
-
-  // simulator
-  std::auto_ptr<simulatort> simulator(select_simulator(options, shadow_context));
-  
   unsigned this_verb=verbosity-2;
-  
-  // set their verbosity -- all the same for now
-  refiner->set_verbosity(this_verb);
-  abstractor->set_verbosity(this_verb);
-  modelchecker->set_verbosity(this_verb);
-  simulator->set_verbosity(this_verb);    
   
   #if 0
   std::ofstream out("model");
@@ -213,7 +176,7 @@ termination_resultt termination_directt::terminates(
   out.close();
   #endif
   
-  satabs_safety_checker_baset safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+  satabs_safety_checkert safety_checker(context, options);
   safety_checker.set_message_handler(mh);
   safety_checker.set_verbosity(this_verb);
                

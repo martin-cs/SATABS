@@ -9,6 +9,7 @@ Author: CM Wintersteiger
 #ifndef _CPROVER_TERMINATION_PATH_ENUMERATION_H_
 #define _CPROVER_TERMINATION_PATH_ENUMERATION_H_
 
+#include <goto-programs/goto_functions.h>
 #include <goto-symex/symex_target_equation.h>
 
 #include "termination_bre.h"

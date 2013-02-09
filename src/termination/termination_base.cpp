@@ -23,14 +23,6 @@ Author: CM Wintersteiger
 #include <goto-symex/symex_target_equation.h>
 #include <goto-symex/goto_symex.h>
 
-#include <satabs/refiner/select_refiner.h>
-#include <satabs/refiner/refiner.h>
-#include <satabs/abstractor/select_abstractor.h>
-#include <satabs/abstractor/abstractor.h>
-#include <satabs/modelchecker/select_modelchecker.h>
-#include <satabs/modelchecker/modelchecker.h>
-#include <satabs/simulator/select_simulator.h>
-#include <satabs/simulator/simulator.h>
 #include <satabs/satabs_safety_checker.h>
 
 #include "find_symbols_rw.h"
@@ -800,7 +792,7 @@ void termination_baset::show_stats()
 \********************************************************************/
 
 bool termination_baset::bmc(
-  concrete_modelt &model,
+  const goto_functionst &goto_functions,
   fine_timet &modelchecker_time,
   fine_timet &unsafe_time,
   fine_timet &safe_time)
@@ -828,7 +820,7 @@ bool termination_baset::bmc(
 
   try
   {
-    symex(model.goto_functions);
+    symex(goto_functions);
 
     bv_pointerst::resultt satres;
 
@@ -890,7 +882,7 @@ bool termination_baset::bmc(
 \********************************************************************/
 
 bool termination_baset::cegar(
-  concrete_modelt &model,
+  const goto_functionst &goto_functions,
   goto_tracet &goto_trace,
   fine_timet &modelchecker_time,
   fine_timet &unsafe_time,
@@ -907,27 +899,16 @@ bool termination_baset::cegar(
   null_message_handlert nmh;
   message_handlert &mh = (verbosity >= 8) ? get_message_handler() : nmh;
   
-  std::auto_ptr<refinert> refiner(select_refiner(options));
-  std::auto_ptr<abstractort> abstractor(select_abstractor(options));
-  std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options));
-  std::auto_ptr<simulatort> simulator(select_simulator(options, shadow_context));
-
   unsigned this_verb=get_verbosity()-2;
 
-  // set their verbosity -- all the same for now
-  refiner->set_verbosity(this_verb);
-  abstractor->set_verbosity(this_verb);
-  modelchecker->set_verbosity(this_verb);
-  simulator->set_verbosity(this_verb);
-  
   try
   {
-    satabs_safety_checker_baset safety_checker(ns, *abstractor, *refiner, *modelchecker, *simulator);
+    satabs_safety_checkert safety_checker(context, options);
     safety_checker.set_message_handler(mh);
     safety_checker.set_verbosity(this_verb);
     
     fine_timet before=current_time();
-    safety_checkert::resultt result=safety_checker(model.goto_functions);
+    safety_checkert::resultt result=safety_checker(goto_functions);
     fine_timet diff=current_time()-before;
     modelchecker_time+=diff;
 
@@ -967,7 +948,7 @@ bool termination_baset::cegar(
     if(std::string(s)=="refinement failure")
     {
       status("Dumping failure.o");
-      write_goto_binary("failure.o", ns.get_context(), model.goto_functions, mh);
+      write_goto_binary("failure.o", context, goto_functions, mh);
     }
   }
   catch(unsigned u)
@@ -995,13 +976,14 @@ bool termination_baset::cegar(
 \********************************************************************/
 
 bool termination_baset::cegar(
-  concrete_modelt &model,
+  const goto_functionst &goto_functions,
   fine_timet &modelchecker_time,
   fine_timet &unsafe_time,
   fine_timet &safe_time)
 {
   goto_tracet goto_trace;
-  return cegar(model, goto_trace, modelchecker_time, unsafe_time, safe_time);
+  return cegar(goto_functions, goto_trace,
+               modelchecker_time, unsafe_time, safe_time);
 }
 
 /********************************************************************\

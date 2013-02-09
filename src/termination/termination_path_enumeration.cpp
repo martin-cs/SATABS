@@ -393,15 +393,13 @@ bool termination_path_enumerationt::precondition_is_reachable(
   if(u_method=="bmc-precondition")
   {
     status("Running BMC precondition check...");
-    concrete_modelt model(ns, sliced_goto_functions);
-    res=!bmc(model, modelchecker_time,
+    res=!bmc(sliced_goto_functions, modelchecker_time,
              wp_ce_extraction_time, wp_unreachability_time);
   }
   else
   {
     status("Running CEGAR precondition check...");
-    concrete_modelt model(ns, sliced_goto_functions);
-    res=!cegar(model, modelchecker_time, 
+    res=!cegar(sliced_goto_functions, modelchecker_time, 
                wp_ce_extraction_time, wp_unreachability_time);
   }
   
@@ -451,9 +449,7 @@ termination_resultt termination_path_enumerationt::check_rank_relations(
     default:
       assert(sliced_assertion->guard.id()=="=>");
       sliced_assertion->guard.op1()=ranking_relations.disjunctive_relation();
-              
-      concrete_modelt model(ns, sliced_goto_functions);
-      return bre_loop(model);
+      return bre_loop(sliced_goto_functions);
   }
 }
 
@@ -590,14 +586,12 @@ bool termination_path_enumerationt::is_reachable(
   
   if(use_bmc)
   {
-    concrete_modelt model(ns, sliced_goto_functions);
-    res=!bmc(model, modelchecker_time, 
+    res=!bmc(sliced_goto_functions, modelchecker_time, 
              loop_reachability_time, loop_reachability_time);
   }
   else
   {
-    concrete_modelt model(ns, sliced_goto_functions);
-    res=!cegar(model, modelchecker_time, 
+    res=!cegar(sliced_goto_functions, modelchecker_time, 
                loop_reachability_time, loop_reachability_time);    
   }
   

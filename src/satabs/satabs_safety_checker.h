@@ -20,6 +20,11 @@ Author: Daniel Kroening, kroening@kroening.com
 #include "prepare/concrete_model.h"
 #include "loop_component.h"
 
+#include "abstractor/abstractor.h"
+#include "refiner/refiner.h"
+#include "simulator/simulator.h"
+#include "modelchecker/modelchecker.h"
+
 class abstractort;
 class refinert;
 class modelcheckert;

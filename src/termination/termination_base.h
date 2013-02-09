@@ -18,8 +18,6 @@ Author: CM Wintersteiger
 
 #include <goto-symex/goto_trace.h>
 
-#include <satabs/prepare/concrete_model.h>
-
 #include "ranking_body.h"
 #include "termination_results.h"
 
@@ -123,20 +121,20 @@ protected:
   void replace_nondet_sideeffects(exprt &expr);
   
   bool cegar(
-    concrete_modelt &model,
+    const goto_functionst &goto_functions,
     goto_tracet &goto_trace,
     fine_timet &modelchecker_time,
     fine_timet &unsafe_time,
     fine_timet &safe_time);
   
   bool cegar(
-    concrete_modelt &model,
+    const goto_functionst &goto_functions,
     fine_timet &modelchecker_time,
     fine_timet &unsafe_time,
     fine_timet &safe_time);
   
   bool bmc(
-    concrete_modelt &model,  
+    const goto_functionst &goto_functions,
     fine_timet &modelchecker_time,
     fine_timet &unsafe_time,
     fine_timet &safe_time);

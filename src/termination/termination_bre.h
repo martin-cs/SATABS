@@ -51,7 +51,8 @@ protected:
     const goto_tracet &goto_trace,
     goto_tracet::stepst::const_iterator &loop_begin);
     
-  termination_resultt bre_loop(concrete_modelt &model);
+  termination_resultt bre_loop(
+    const goto_functionst &goto_functions);
 };
 
 #endif

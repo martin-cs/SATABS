@@ -14,7 +14,6 @@ Author: CM Wintersteiger
 #include "termination_path_enumeration.h"
 #include "ranking_relation_cache.h"
 
-class concrete_modelt;
 class value_setst;
 
 class termination_ctat:
@@ -60,12 +59,12 @@ protected:
     goto_programt::const_targett &loop_end,
     goto_programt::const_targett &copy_goto,
     goto_programt::targett &sliced_assertion,
-    concrete_modelt &sliced_model,
+    const goto_functionst &goto_functions,
     replace_idt &premap,
     ranking_relation_cachet &ranking_relations);
 
   bool rank_block(
-    concrete_modelt &model,
+    const goto_functionst &goto_functions,
     goto_programt::targett &original_assertion,
     goto_programt::targett &original_backjump,
     goto_programt::targett &assertion,
@@ -94,7 +93,7 @@ protected:
   void unrename_main(const irep_idt &main_backup_id);
 
   bool all_paths_are_ranked(
-    concrete_modelt &temp_model,
+    const goto_functionst &goto_functions,
     goto_tracet &goto_trace);
 
   void get_loop_program(
@@ -110,7 +109,7 @@ protected:
   exprt weakest_precondition(goto_tracet &goto_trace);
 
   bool exclude_precondition(
-    concrete_modelt &model,
+    const goto_functionst &goto_functions,
     goto_programt::targett &assertion,
     goto_programt::targett &backjump,
     const irep_idt &main_backup_id,
@@ -126,7 +125,7 @@ protected:
     goto_programt::targett &loop_end,
     goto_programt::const_targett &loop_copy_goto,
     goto_programt::targett &loop_assertion,
-    concrete_modelt &model,
+    const goto_functionst &goto_functions,
     replace_idt &premap,
     ranking_relation_cachet &ranking_relations)
   {

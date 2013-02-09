@@ -155,8 +155,6 @@ termination_resultt termination_ctat::rank(
   int delta=INT_MAX;
   termination_resultt res=T_UNKNOWN;
 
-  concrete_modelt tainted_model(ns, temp_goto_functions);
-  
   while(res==T_UNKNOWN)
   {
     unsigned before=ranking_relations.size();
@@ -193,7 +191,7 @@ termination_resultt termination_ctat::rank(
       debug(msg.str());
     }
     
-    if(!rank_block(tainted_model, sliced_assertion, sliced_backjump, assertion,
+    if(!rank_block(temp_goto_functions, sliced_assertion, sliced_backjump, assertion,
                    premap, ranking_relations, main_backup_id))
       res=T_NONTERMINATING;
     else
@@ -207,9 +205,9 @@ termination_resultt termination_ctat::rank(
         status("Ranking argument is compositional.");
         res = T_TERMINATING;
       }
-      else if (make_compositional(loop_begin, sliced_backjump, copy_goto,
-                                  sliced_assertion, tainted_model, premap,
-                                  ranking_relations)) 
+      else if(make_compositional(loop_begin, sliced_backjump, copy_goto,
+                                 sliced_assertion, temp_goto_functions, premap,
+                                 ranking_relations)) 
       {
         // assert(ranking_relations.is_compositional());
         status("Ranking argument was made compositional.");
@@ -506,7 +504,7 @@ void termination_ctat::unwinding_cleanup(const irep_idt main_backup_id)
 \********************************************************************/
 
 bool termination_ctat::rank_block(
-  concrete_modelt &model,
+  const goto_functionst &goto_functions,
   goto_programt::targett &original_assertion,
   goto_programt::targett &original_backjump,
   goto_programt::targett &assertion,
@@ -519,7 +517,7 @@ bool termination_ctat::rank_block(
 
   goto_tracet goto_trace;
 
-  while(!cegar(model, goto_trace,
+  while(!cegar(goto_functions, goto_trace,
                modelchecker_time,
                counter_example_extraction_time,
                ranking_generalization_time))
@@ -530,7 +528,7 @@ bool termination_ctat::rank_block(
 
     if(new_relation.is_false() || new_relation.is_nil())
     {
-      if(!exclude_precondition(model, original_assertion,
+      if(!exclude_precondition(goto_functions, original_assertion,
                                original_backjump, main_backup_id,
                                goto_trace))
       {
@@ -567,7 +565,7 @@ bool termination_ctat::rank_block(
 \********************************************************************/
 
 bool termination_ctat::exclude_precondition(
-  concrete_modelt &model,
+  const goto_functionst &goto_functions,
   goto_programt::targett &assertion,
   goto_programt::targett &backjump,
   const irep_idt &main_backup_id,
@@ -711,7 +709,7 @@ exprt termination_ctat::rank_trace(
 \********************************************************************/
 
 bool termination_ctat::all_paths_are_ranked(
-  concrete_modelt &model,
+  const goto_functionst &goto_functions,
   goto_tracet &goto_trace)
 {
   assert(false);
