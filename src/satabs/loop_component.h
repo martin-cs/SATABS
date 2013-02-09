@@ -32,7 +32,7 @@ public:
   };
 
   explicit loop_componentt(const argst &args):
-    concrete_model(&args.concrete_model)
+    concrete_model(0)
   {
   }
 

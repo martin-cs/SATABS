@@ -427,10 +427,10 @@ Purpose: execute the CEGAR loop
 \*******************************************************************/
 
 safety_checkert::resultt satabs_safety_checker_baset::operator()(
-    const goto_functionst &goto_functions)
+  const goto_functionst &goto_functions)
 {
   status("*** Starting CEGAR Loop ***");
-
+  
   resultt result=ERROR;
   total_start_time=current_time();
   abstractor_time=0;
@@ -440,6 +440,19 @@ safety_checkert::resultt satabs_safety_checker_baset::operator()(
   iteration=0;
 
   concrete_modelt concrete_model(ns, goto_functions);
+
+  // pass concrete model to all components
+  abstractor.set_concrete_model(concrete_model);
+  refiner.set_concrete_model(concrete_model);
+  modelchecker.set_concrete_model(concrete_model);
+  simulator.set_concrete_model(concrete_model);
+  
+  // pass message handler to all components
+
+  abstractor.set_message_handler(get_message_handler());
+  refiner.set_message_handler(get_message_handler());
+  modelchecker.set_message_handler(get_message_handler());
+  simulator.set_message_handler(get_message_handler());
 
   {
     // Create initial abstraction
