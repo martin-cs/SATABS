@@ -897,7 +897,7 @@ bool termination_baset::cegar(
   fine_timet &safe_time)
 {
   goto_trace.clear();
-
+  
   #if 0
   std::ofstream out("model");
   model.goto_functions.output(ns, out);
@@ -1037,4 +1037,6 @@ void termination_baset::set_options()
     options.set_option("simulator", cmdline.getval("simulator"));
   else
     options.set_option("simulator", "sat");
+
+  options.set_option("iterations", 100);
 }
