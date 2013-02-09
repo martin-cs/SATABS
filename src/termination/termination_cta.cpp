@@ -164,14 +164,14 @@ termination_resultt termination_ctat::rank(
 
     switch(n)
     {
-      case 1:
-        unwinding_init(main_backup_id, loop_begin, sliced_backjump, copy_goto,
-                       assertion);
-        break;
+    case 1:
+      unwinding_init(main_backup_id, loop_begin, sliced_backjump, copy_goto,
+                     assertion);
+      break;
 
-      default:
-        unwinding_next(loop_begin, sliced_backjump, assertion, n);
-        break;
+    default:
+      unwinding_next(loop_begin, sliced_backjump, assertion, n);
+      break;
     }
 
     std::stringstream msg;
@@ -190,7 +190,7 @@ termination_resultt termination_ctat::rank(
       f.output(ns, "", msg);
       debug(msg.str());
     }
-
+    
     if(!rank_block(tainted_model, sliced_assertion, sliced_backjump, assertion,
                    premap, ranking_relations, main_backup_id))
       res=T_NONTERMINATING;

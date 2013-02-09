@@ -212,8 +212,7 @@ bool termination_itat::make_compositional(
   temp.instructions.back().guard=rr_replaced;
   
   temp.add_instruction(END_FUNCTION);
-  temp.update();
-  
+  temp.update();  
 
 #if 1
   // save the temporary program
