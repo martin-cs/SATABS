@@ -17,8 +17,6 @@ Date: June 2003
 class optionst;
 class modelcheckert;
 
-modelcheckert *select_modelchecker(
-    const optionst &options,
-    const loop_componentt::argst &args);
+modelcheckert *select_modelchecker(const optionst &options);
 
 #endif

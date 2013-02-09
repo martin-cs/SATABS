@@ -24,12 +24,11 @@ class modelchecker_boolean_programt:public modelcheckert
     typedef enum { BOPPO, MOPED, BEBOP, BOOM } enginet;
 
     modelchecker_boolean_programt(
-        const loop_componentt::argst &args,
         enginet _engine,
         unsigned _max_threads,
         const bool concurrency_aware,
         const bool _build_tts):
-      modelcheckert(args, concurrency_aware),
+      modelcheckert(concurrency_aware),
       engine(_engine),
       loop_detection(false),
       max_threads(_max_threads),

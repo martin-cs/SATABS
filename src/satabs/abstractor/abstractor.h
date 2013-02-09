@@ -19,14 +19,11 @@ Date: June 2003
 class abstractort:public loop_componentt
 {
 public:
-  abstractort(const argst &args):
-    loop_componentt(args)
+  abstractort()
   {
   }
 
-  ~abstractort()
-  {
-  }
+  virtual ~abstractort();
 
   // Generates the abstract program given a concrete program
   // and a set of predicates.

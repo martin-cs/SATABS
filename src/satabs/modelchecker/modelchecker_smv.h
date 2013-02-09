@@ -20,10 +20,8 @@ class modelchecker_smvt:public modelcheckert
 public:
   typedef enum { CMU_SMV, NUSMV, SATMC, CADENCE_SMV } enginet;
 
-  modelchecker_smvt(
-      const loop_componentt::argst &args,
-      enginet _engine, const bool concurrency_aware):
-    modelcheckert(args, concurrency_aware),
+  modelchecker_smvt(enginet _engine, const bool concurrency_aware):
+    modelcheckert(concurrency_aware),
     engine(_engine)
   {
     if(concurrency_aware)

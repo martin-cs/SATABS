@@ -14,6 +14,7 @@ Date: April 2010
 
 #include <pointer-analysis/value_set_analysis.h>
 
+#include "../prepare/concrete_model.h"
 #include "abstractor_wp.h"
 
 class abstractor_wp_cartesiant:public abstractor_wpt
@@ -21,8 +22,7 @@ class abstractor_wp_cartesiant:public abstractor_wpt
 public:
   typedef std::set<exprt> cubet;
 
-  abstractor_wp_cartesiant(
-    const argst &args,
+  explicit abstractor_wp_cartesiant(
     const unsigned int max_cube_length);
 
 protected:
@@ -70,9 +70,21 @@ protected:
   bool contains_subcube(std::set<cubet> cube_set, cubet cube);
 
   const unsigned int max_cube_length;
-  value_set_analysist pointer_info;
   std::map<cubet, bool> sat_cache;
   std::map<std::pair<cubet, predicatet>, bool> implies_cache;
+
+  value_set_analysist *pointer_info;
+
+  virtual void set_concrete_model(const concrete_modelt &_concrete_model)
+  {
+    concrete_model=&_concrete_model;
+    delete pointer_info;
+    pointer_info=new value_set_analysist(concrete_model->ns);
+    status("Performing pointer analysis for Cartesian abstraction");
+    (*pointer_info)(concrete_model->goto_functions);
+    status("Pointer analysis complete");
+  }
+
 };
 
 #endif /* CPROVER_CEGAR_ABSTRACTOR_WP_CARTESIAN_H_ */

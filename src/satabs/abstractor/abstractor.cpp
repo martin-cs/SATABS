@@ -23,6 +23,22 @@ Date: June 2003
 
 /*******************************************************************\
 
+Function: abstractort::~abstractort
+
+Inputs:
+
+Outputs:
+
+Purpose:
+
+\*******************************************************************/
+
+abstractort::~abstractort()
+{
+}
+
+/*******************************************************************\
+
 Function: abstractort::abstract_variables
 
 Inputs:

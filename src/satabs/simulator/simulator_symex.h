@@ -27,10 +27,7 @@ to determmine whether it is spurious.
 class simulator_symext:public simulatort
 {
 public:
-  simulator_symext(
-      const optionst &options,
-      const argst &args) :
-    simulatort(args),
+  simulator_symext(const optionst &options):
     path_slicing(!options.get_bool_option("no-path-slicing")),
     shortest_prefix(options.get_bool_option("shortest-prefix"))
   {

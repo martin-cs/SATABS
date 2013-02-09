@@ -20,7 +20,6 @@ class simulatort;
 
 simulatort *select_simulator(
   const optionst &options,
-  const loop_componentt::argst &args,
   contextt &_shadow_context);
 
 #endif

@@ -19,8 +19,6 @@ Date: September 2005
 class abstractort;
 class optionst;
 
-abstractort *select_abstractor(
-  const optionst &options,
-  const loop_componentt::argst &args);
+abstractort *select_abstractor(const optionst &options);
 
 #endif

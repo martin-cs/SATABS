@@ -119,20 +119,17 @@ class satabs_safety_checkert:public satabs_safety_checker_baset
 public:
   // select components from options
   explicit satabs_safety_checkert(
-    const namespacet &_ns,
-    const goto_functionst &goto_functions,
-    const optionst &options,
-    contextt &shadow_context,
-    message_handlert &message_handler);
+    const contextt &_context,
+    const optionst &options);
 
 protected:
-  concrete_modelt concrete_model;
-  loop_componentt::argst args;
-
   std::auto_ptr<abstractort> abstractor_ptr;
   std::auto_ptr<refinert> refiner_ptr;
   std::auto_ptr<modelcheckert> modelchecker_ptr;
   std::auto_ptr<simulatort> simulator_ptr;
+  
+  const namespacet ns;
+  contextt shadow_context;
 };
 
 #endif

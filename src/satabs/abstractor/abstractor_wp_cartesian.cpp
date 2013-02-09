@@ -24,15 +24,10 @@ Date: April 2010
 #include "../prepare/concrete_model.h"
 
 abstractor_wp_cartesiant::abstractor_wp_cartesiant(
-  const argst &args,
   const unsigned int max_cube_length):
-  abstractor_wpt(args),
   max_cube_length(max_cube_length),
-  pointer_info(args.concrete_model.ns)
+  pointer_info(NULL)
 {
-  status("Performing pointer analysis for Cartesian abstraction");
-  pointer_info(args.concrete_model.goto_functions);
-  status("Pointer analysis complete");
 }
 
 exprt abstractor_wp_cartesiant::get_value(
@@ -216,7 +211,9 @@ std::set<abstractor_wp_cartesiant::cubet> abstractor_wp_cartesiant::compute_larg
   std::list<cubet> queue;
   for(unsigned int i = 0; i < predicates.size(); i++)
   {
-    if(locations_intersect(phi, predicates[i], program_location, pointer_info, concrete_model->ns))
+    if(locations_intersect(
+      phi, predicates[i], program_location,
+      *pointer_info, concrete_model->ns))
     {
       cubet initial_cube;
       initial_cube.insert(predicates[i]);
@@ -388,7 +385,9 @@ bool abstractor_wp_cartesiant::predicate_locations_intersects_cube_locations(
 {
   for(cubet::const_iterator it = cube.begin(); it != cube.end(); it++)
   {
-    if(locations_intersect(phi, *it, program_location, pointer_info, concrete_model->ns))
+    if(locations_intersect(
+      phi, *it, program_location,
+      *pointer_info, concrete_model->ns))
     {
       return true;
     }

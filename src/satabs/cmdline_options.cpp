@@ -204,25 +204,23 @@ int cmdline_optionst::doit()
 
     concrete_modelt concrete_model(ns, prepare.goto_functions);
 
-    loop_componentt::argst args(concrete_model);
-
     // The tools we need
 
     // finds predicates
     std::auto_ptr<refinert> refiner(
-        select_refiner(options, args));
+        select_refiner(options));
 
     // calculates abstract program
     std::auto_ptr<abstractort> abstractor(
-        select_abstractor(options, args));
+        select_abstractor(options));
 
     // model checking engine
     std::auto_ptr<modelcheckert> modelchecker(
-        select_modelchecker(options, args));
+        select_modelchecker(options));
 
     // simulator
     std::auto_ptr<simulatort> simulator(
-        select_simulator(options, args, shadow_context));
+        select_simulator(options, shadow_context));
 
     // set their verbosity -- all the same for now
     refiner->set_verbosity(verbosity);

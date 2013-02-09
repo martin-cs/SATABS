@@ -16,17 +16,17 @@ Date: June 2003
 
 class abstractor_provert:public abstractort
 {
-  public:
-    abstractor_provert(const argst &args): abstractort(args)
+public:
+  abstractor_provert()
   {
   }
 
-  protected:
-    virtual void pred_abstract_block(
-        goto_programt::const_targett target,
-        const predicatest &predicates,
-        abstract_transition_relationt &
-        abstract_transition_relation);
+protected:
+  virtual void pred_abstract_block(
+      goto_programt::const_targett target,
+      const predicatest &predicates,
+      abstract_transition_relationt &
+      abstract_transition_relation);
 };
 
 #endif

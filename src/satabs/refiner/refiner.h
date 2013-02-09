@@ -29,10 +29,7 @@ class abstract_modelt;
 class refinert:public loop_componentt
 {
 public:
-  refinert(
-      const optionst &options,
-      const argst &args) :
-    loop_componentt(args),
+  refinert(const optionst &options):
     max_predicates_to_add(options.get_int_option("max-new-predicates")),
     prefer_non_pointer_predicates(options.get_bool_option("prefer-non-pointer-predicates")),
     remove_equivalent_predicates(options.get_bool_option("remove-equivalent-predicates")),

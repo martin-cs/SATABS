@@ -24,8 +24,8 @@ class abstract_modelt;
 class modelcheckert:public loop_componentt
 {
 public:
-  modelcheckert(const loop_componentt::argst &args, const bool _concurrency_aware):
-      loop_componentt(args), concurrency_aware(_concurrency_aware)
+  explicit modelcheckert(const bool _concurrency_aware):
+    concurrency_aware(_concurrency_aware)
   {
   }
   

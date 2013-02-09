@@ -18,19 +18,17 @@ Interpolant Lifting
 
 class refiner_liftert:public refiner_wpt
 {
-  public:
-    refiner_liftert(
-        const optionst &options,
-        const argst &args) :
-      refiner_wpt(options, args)
+public:
+  refiner_liftert(const optionst &options):
+    refiner_wpt(options)
   {
   }
 
-  protected:
-    bool refine_prefix(
-        predicatest &predicates, 
-        abstract_modelt &abstract_model,
-        const fail_infot &fail_info);
+protected:
+  bool refine_prefix(
+      predicatest &predicates, 
+      abstract_modelt &abstract_model,
+      const fail_infot &fail_info);
 };
 
 #endif

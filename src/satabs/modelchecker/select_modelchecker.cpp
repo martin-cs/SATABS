@@ -28,9 +28,7 @@ Purpose:
 
 \*******************************************************************/
 
-modelcheckert *select_modelchecker(
-  const optionst &options,
-  const loop_componentt::argst &args)
+modelcheckert *select_modelchecker(const optionst &options)
 {
   const std::string name=options.get_option("modelchecker");
 
@@ -45,23 +43,23 @@ modelcheckert *select_modelchecker(
       || name=="boom");
 
   if(name=="boom")
-    m=new modelchecker_boolean_programt(args,
+    m=new modelchecker_boolean_programt(
         modelchecker_boolean_programt::BOOM, max_threads,
         concurrency, build_tts);
   else if(name=="boppo")
-    m=new modelchecker_boolean_programt(args,
+    m=new modelchecker_boolean_programt(
         modelchecker_boolean_programt::BOPPO, max_threads,
         concurrency, build_tts);
   else if(name=="cmu-smv")
-    m=new modelchecker_smvt(args, modelchecker_smvt::CMU_SMV, concurrency);
+    m=new modelchecker_smvt(modelchecker_smvt::CMU_SMV, concurrency);
   else if(name=="cadence-smv")
-    m=new modelchecker_smvt(args, modelchecker_smvt::CADENCE_SMV, concurrency);
+    m=new modelchecker_smvt(modelchecker_smvt::CADENCE_SMV, concurrency);
   else if(name=="nusmv")
-    m=new modelchecker_smvt(args, modelchecker_smvt::NUSMV, concurrency);
+    m=new modelchecker_smvt(modelchecker_smvt::NUSMV, concurrency);
   else if(name=="satmc")
-    m=new modelchecker_smvt(args, modelchecker_smvt::SATMC, concurrency);
+    m=new modelchecker_smvt(modelchecker_smvt::SATMC, concurrency);
   else if(name=="spin")
-    m=new modelchecker_spint(args, concurrency);
+    m=new modelchecker_spint(concurrency);
   else
     throw "unknown modelchecker: "+name;
 

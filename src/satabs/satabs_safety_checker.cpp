@@ -336,7 +336,6 @@ bool satabs_safety_checker_baset::do_modelchecking(
   if(save_bps)
   {
     modelchecker_boolean_programt model_checker_boolean_program(
-        loop_componentt::argst(concrete_model),
         modelchecker_boolean_programt::BOPPO, 0, concurrency_aware,
         build_tts);
     model_checker_boolean_program.set_message_handler(get_message_handler());

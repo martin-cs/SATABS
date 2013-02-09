@@ -22,7 +22,6 @@ Date: August 2011
 
 class value_set_analysist;
 
-
 bool locations_intersect(const predicatet& phi,
     const predicatet& psi,
     const goto_programt::const_targett program_location,

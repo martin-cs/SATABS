@@ -17,8 +17,6 @@ Date: June 2003
 class optionst;
 class refinert;
 
-refinert *select_refiner(
-    const optionst &options,
-    const loop_componentt::argst &args);
+refinert *select_refiner(const optionst &options);
 
 #endif

@@ -8,26 +8,23 @@
 #ifndef CPROVER_SATABS_CONCURRENCY_AWARE_ABSTRACTOR_H
 #define CPROVER_SATABS_CONCURRENCY_AWARE_ABSTRACTOR_H
 
-#include <memory>
-
 #include <std_expr.h>
 #include <location.h>
 
 #include <pointer-analysis/value_set_analysis.h>
 
+#include "../prepare/concrete_model.h"
 #include "abstractor.h"
 
 class concurrency_aware_abstractort : public abstractort
 {
 public:
   concurrency_aware_abstractort(
-      const argst &args,
       std::auto_ptr<abstractort> specific_abstractor,
       const bool _passive_nondet);
 
   virtual ~concurrency_aware_abstractort()
   {
-
   }
 
 protected:
@@ -49,16 +46,29 @@ protected:
       const namespacet &ns,
       goto_programt::const_targett program_location);
 
-  std::set<symbol_exprt> targets_of_lvalue(const exprt& lvalue, goto_programt::const_targett program_location);
+  std::set<symbol_exprt> targets_of_lvalue(
+    const exprt& lvalue,
+    goto_programt::const_targett program_location);
 
   bool broadcast_required(
       goto_programt::const_targett target,
       const predicatet &predicate);
 
+  virtual void set_concrete_model(const concrete_modelt &_concrete_model)
+  {
+    specific_abstractor->set_concrete_model(_concrete_model);
+    concrete_model=&_concrete_model;
+    delete pointer_info;
+    pointer_info=new value_set_analysist(concrete_model->ns);
+    status("Performing pointer analysis for concurrency-aware abstraction");
+    (*pointer_info)(concrete_model->goto_functions);
+    status("Pointer analysis complete");
+  }
+
 private:
   std::auto_ptr<abstractort> specific_abstractor;
-  value_set_analysist pointer_info;
   const bool passive_nondet;
+  value_set_analysist *pointer_info;
 };
 
 #endif /* CPROVER_SATABS_CONCURRENCY_AWARE_ABSTRACTOR_H */

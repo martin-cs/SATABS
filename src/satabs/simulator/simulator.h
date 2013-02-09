@@ -26,8 +26,7 @@ class fail_infot;
 class simulatort:public loop_componentt
 {
 public:
-  simulatort(const argst &args):
-    loop_componentt(args)
+  simulatort()
   {
   }
 

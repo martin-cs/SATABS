@@ -28,18 +28,17 @@ Purpose:
 \*******************************************************************/
 
 simulatort *select_simulator(
-    const optionst &options,
-    const loop_componentt::argst &args,
-    contextt &_shadow_context)
+  const optionst &options,
+  contextt &_shadow_context)
 {
   const std::string name=options.get_option("simulator");
 
   if(name=="sat")
   {
     if(options.get_bool_option("loop-detection"))
-      return new simulator_loop_detectiont(options, args, _shadow_context);
+      return new simulator_loop_detectiont(options, _shadow_context);
 
-    return new simulator_symext(options, args);
+    return new simulator_symext(options);
   }
   else
     throw "unknown simulator: "+name;

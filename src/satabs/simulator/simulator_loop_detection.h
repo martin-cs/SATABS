@@ -29,9 +29,8 @@ class simulator_loop_detectiont:public simulator_symext
 public:
   simulator_loop_detectiont(
       const optionst &options,
-      const argst &args,
       contextt &_shadow_context) :
-    simulator_symext(options, args),
+    simulator_symext(options),
     parameter_index(0),
     shadow_context(_shadow_context)
   {

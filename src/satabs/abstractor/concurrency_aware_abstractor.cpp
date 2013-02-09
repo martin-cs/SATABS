@@ -41,17 +41,12 @@ static void adjust_pred_index(exprt& expr,
 }
 
 concurrency_aware_abstractort::concurrency_aware_abstractort(
-    const argst &args,
-    std::auto_ptr<abstractort> specific_abstractor,
+    std::auto_ptr<abstractort> _specific_abstractor,
     const bool _passive_nondet) :
-  abstractort(args),
-  specific_abstractor(specific_abstractor),
-  pointer_info(args.concrete_model.ns),
-  passive_nondet(_passive_nondet)
+  specific_abstractor(_specific_abstractor),
+  passive_nondet(_passive_nondet),
+  pointer_info(NULL)
 {
-  status("Performing pointer analysis for concurrency-aware abstraction");
-  pointer_info(args.concrete_model.goto_functions);
-  status("Pointer analysis complete");
 }
 
 
@@ -186,8 +181,6 @@ void concurrency_aware_abstractort::abstract_assume_guard(
   this->specific_abstractor->abstract_assume_guard(predicates, expr, ns, program_location);
 }
 
-
-
 /*******************************************************************\
 
 Function: concurrency_aware_abstractor::targets_of_lvalue
@@ -200,7 +193,9 @@ Purpose: compute possible targets of lvalue
 
 \*******************************************************************/
 
-std::set<symbol_exprt> concurrency_aware_abstractort::targets_of_lvalue(const exprt& lvalue, goto_programt::const_targett program_location)
+std::set<symbol_exprt> concurrency_aware_abstractort::targets_of_lvalue(
+  const exprt &lvalue,
+  goto_programt::const_targett program_location)
 {
 
   std::set<symbol_exprt> result;
@@ -213,17 +208,24 @@ std::set<symbol_exprt> concurrency_aware_abstractort::targets_of_lvalue(const ex
     } else {
       return targets_of_lvalue(array_name, program_location);
     }
-  } else if(lvalue.id() == ID_member) {
+  }
+  else if(lvalue.id() == ID_member)
+  {
     assert(lvalue.operands().size() == 1);
     return targets_of_lvalue(lvalue.op0(), program_location);
-  } else if(lvalue.id() == ID_symbol) {
+  }
+  else if(lvalue.id() == ID_symbol)
+  {
     result.insert(to_symbol_expr(lvalue));
-  } else if(lvalue.id() == ID_dereference) {
+  }
+  else if(lvalue.id() == ID_dereference)
+  {
     // We would like to add anything the pointer can point to,
     // but not the pointer itself
 
     value_setst::valuest value_set;
-    pointer_info.get_values(program_location, lvalue.op0(), value_set);
+    pointer_info->get_values(program_location, lvalue.op0(), value_set);
+    
     for(value_setst::valuest::iterator it = value_set.begin(); it != value_set.end(); it++)
     {
       if(it->id() != ID_object_descriptor)
@@ -249,14 +251,14 @@ std::set<symbol_exprt> concurrency_aware_abstractort::targets_of_lvalue(const ex
       result.insert(to_symbol_expr(object_descriptor.object()));
     }
 
-  } else {
+  }
+  else
+  {
     std::cout << "Cannot currently handle lvalue: " << from_expr(lvalue) << std::endl;
     assert(false);
   }
   return result;
 }
-
-
 
 bool concurrency_aware_abstractort::broadcast_required(
     goto_programt::const_targett target,
@@ -264,7 +266,8 @@ bool concurrency_aware_abstractort::broadcast_required(
 {
   // Get targets of assignment
   std::set<symbol_exprt> targets = targets_of_lvalue(target->code.op0(), target);
-  std::set<symbol_exprt> locations = locations_of_expression(predicate, target, pointer_info, concrete_model->ns);
+  std::set<symbol_exprt> locations = locations_of_expression(predicate, target, *pointer_info, concrete_model->ns);
+  
 #ifdef DEBUG_BROADCAST
   std::cout << "Targets of lvalue " << from_expr(concrete_model->ns, "", target->code.op0()) << ":" << std::endl;
   for(std::set<symbol_exprt>::iterator it = targets.begin(); it != targets.end(); it++)
@@ -273,7 +276,9 @@ bool concurrency_aware_abstractort::broadcast_required(
     if(is_global(concrete_model->ns.lookup(it->get(ID_identifier))))
     {
       std::cout << "SHARED";
-    } else {
+    }
+    else
+    {
       assert(is_procedure_local(concrete_model->ns.lookup(it->get(ID_identifier))));
       std::cout << "LOCAL";
     }
@@ -286,7 +291,9 @@ bool concurrency_aware_abstractort::broadcast_required(
     if(is_global(concrete_model->ns.lookup(it->get(ID_identifier))))
     {
       std::cout << "SHARED";
-    } else {
+    }
+    else
+    {
       assert(is_procedure_local(concrete_model->ns.lookup(it->get(ID_identifier))));
       std::cout << "LOCAL";
     }
@@ -306,7 +313,9 @@ bool concurrency_aware_abstractort::broadcast_required(
     if(is_global(concrete_model->ns.lookup(it->get(ID_identifier))))
     {
       std::cout << "SHARED";
-    } else {
+    }
+    else
+    {
       assert(is_procedure_local(concrete_model->ns.lookup(it->get(ID_identifier))));
       std::cout << "LOCAL";
     }
@@ -329,7 +338,9 @@ bool concurrency_aware_abstractort::broadcast_required(
     return true;
 
 
-  } else {
+  }
+  else
+  {
 #ifdef DEBUG_BROADCAST
     std::cout << "Predicate and l-value do not intersect on shared location, so no broadcast required" << std::endl;
 #endif

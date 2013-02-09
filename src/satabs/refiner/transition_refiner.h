@@ -21,9 +21,8 @@ class transition_refinert:public refinert
   public:
     transition_refinert(
         const optionst &options,
-        const argst &args,
         const bool transitions_only) :
-      refinert(options, args),
+      refinert(options),
       prefix_first(!transitions_only &&
           options.get_bool_option("prefix-first")),
       passive_constrain(!options.get_bool_option("concurrency") ||

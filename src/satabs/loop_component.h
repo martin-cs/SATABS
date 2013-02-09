@@ -1,6 +1,6 @@
 /*******************************************************************\
 
-Module: CEGAR Loop
+Module: CEGAR Loop Component
 
 Author: Daniel Kroening
 
@@ -20,24 +20,8 @@ class concrete_modelt;
 class loop_componentt:public messaget
 {
 public:
-  struct argst
-  {
-    const concrete_modelt &concrete_model;
-
-    argst(
-        const concrete_modelt &_concrete_model):
-      concrete_model(_concrete_model)
-    {
-    } 
-  };
-
-  explicit loop_componentt(const argst &args):
-    concrete_model(0)
-  {
-  }
-
-  // must call before use
-  void set_concrete_model(const concrete_modelt &_concrete_model)
+  // Must call before use.
+  virtual void set_concrete_model(const concrete_modelt &_concrete_model)
   {
     concrete_model=&_concrete_model;
   }
