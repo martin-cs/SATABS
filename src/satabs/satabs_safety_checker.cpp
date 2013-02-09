@@ -453,6 +453,11 @@ safety_checkert::resultt satabs_safety_checker_baset::operator()(
   modelchecker.set_message_handler(get_message_handler());
   simulator.set_message_handler(get_message_handler());
 
+  refiner.set_verbosity(get_verbosity());
+  abstractor.set_verbosity(get_verbosity());
+  modelchecker.set_verbosity(get_verbosity());
+  simulator.set_verbosity(get_verbosity());    
+
   {
     // Create initial abstraction
 
@@ -587,4 +592,27 @@ satabs_componentst::satabs_componentst(
   modelchecker_ptr(select_modelchecker(options)),
   simulator_ptr(select_simulator(options, _shadow_context))
 {
+}
+
+/*******************************************************************\
+
+Function: satabs_safety_checkert::satabs_safety_checkert
+
+Inputs:
+
+Outputs:
+
+Purpose:
+
+\*******************************************************************/
+
+satabs_safety_checkert::satabs_safety_checkert(
+  const contextt &_context,
+  const optionst &options):
+  satabs_componentst(options, shadow_context),
+  satabs_safety_checker_baset(
+    ns, *abstractor_ptr, *refiner_ptr, *modelchecker_ptr, *simulator_ptr),
+  ns(_context, shadow_context)
+{
+  max_iterations=options.get_int_option("iterations");
 }

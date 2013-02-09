@@ -199,48 +199,14 @@ int cmdline_optionst::doit()
   {
     messaget message(message_handler);
     
-    contextt shadow_context;
-    namespacet ns(prepare.context, shadow_context);
-
-    concrete_modelt concrete_model(ns, prepare.goto_functions);
-
-    // The tools we need
-
-    // finds predicates
-    std::auto_ptr<refinert> refiner(
-        select_refiner(options));
-
-    // calculates abstract program
-    std::auto_ptr<abstractort> abstractor(
-        select_abstractor(options));
-
-    // model checking engine
-    std::auto_ptr<modelcheckert> modelchecker(
-        select_modelchecker(options));
-
-    // simulator
-    std::auto_ptr<simulatort> simulator(
-        select_simulator(options, shadow_context));
-
-    // set their verbosity -- all the same for now
-    refiner->set_verbosity(verbosity);
-    abstractor->set_verbosity(verbosity);
-    modelchecker->set_verbosity(verbosity);
-    simulator->set_verbosity(verbosity);    
-
-    satabs_safety_checker_baset satabs_safety_checker(
-        ns,
-        *abstractor,
-        *refiner,
-        *modelchecker,
-        *simulator);
+    satabs_safety_checkert satabs_safety_checker(
+      prepare.context, options);
 
     satabs_safety_checker.initial_predicates=
       prepare.user_provided_predicates;
 
     satabs_safety_checker.set_message_handler(message_handler);
     satabs_safety_checker.ui=prepare.get_ui();    
-    satabs_safety_checker.max_iterations=options.get_int_option("iterations");
     satabs_safety_checker.save_bps=cmdline.isset("save-bps");    
     satabs_safety_checker.build_tts=cmdline.isset("build-tts");    
     satabs_safety_checker.concurrency_aware=cmdline.isset("concurrency");
@@ -265,7 +231,7 @@ int cmdline_optionst::doit()
         if(prepare.get_ui()==ui_message_handlert::XML_UI)
         {
           xmlt xml1;
-          convert(concrete_model.ns, satabs_safety_checker.error_trace, xml1);
+          convert(satabs_safety_checker.ns, satabs_safety_checker.error_trace, xml1);
           std::cout << xml1 << std::endl;
 
           xmlt xml2("cprover-status");
@@ -275,7 +241,7 @@ int cmdline_optionst::doit()
         else
         {
           message.result("Counterexample:");
-          show_goto_trace(std::cout, concrete_model.ns,
+          show_goto_trace(std::cout, satabs_safety_checker.ns,
               satabs_safety_checker.error_trace);
           message.result("VERIFICATION FAILED");
         }
@@ -284,7 +250,7 @@ int cmdline_optionst::doit()
 
       case safety_checkert::ERROR:
       default:;
-              return 12;
+        return 12;
     }
   }
 

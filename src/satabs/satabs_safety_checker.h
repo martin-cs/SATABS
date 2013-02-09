@@ -135,16 +135,11 @@ public:
   // select components from options
   explicit satabs_safety_checkert(
     const contextt &_context,
-    const optionst &options):
-    satabs_componentst(options, shadow_context),
-    satabs_safety_checker_baset(
-      ns, *abstractor_ptr, *refiner_ptr, *modelchecker_ptr, *simulator_ptr),
-    ns(_context, shadow_context)
-  {
-  }
+    const optionst &options);
+
+  const namespacet ns;
 
 protected:
-  const namespacet ns;
   contextt shadow_context;
 };
 

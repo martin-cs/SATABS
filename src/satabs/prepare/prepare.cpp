@@ -223,6 +223,7 @@ int preparet::get_async_modules()
 
   if(cmdline.isset("show-goto-functions"))
   {
+    goto_functions.update();
     goto_functions.output(ns, std::cout);
     return 0;
   }
@@ -258,9 +259,9 @@ int preparet::get_async_modules()
     status("Full inlining");
 
     satabs_inline(
-        goto_functions,
-        ns,
-        get_message_handler());
+      goto_functions,
+      ns,
+      get_message_handler());
   }
   else
   {
