@@ -50,11 +50,11 @@ exprt abstractor_wp_cartesiant::get_value(
   std::cout << "New value: ";
   if(new_value.is_constant())
   {
-    std::cout << from_expr(concrete_model.ns, "", new_value);
+    std::cout << from_expr(concrete_model->ns, "", new_value);
   } else if(!new_value.is_nil())
   {
     unsigned p=atoi(new_value.get(ID_identifier).c_str());
-    std::cout << from_expr(concrete_model.ns, "", predicates[p]);
+    std::cout << from_expr(concrete_model->ns, "", predicates[p]);
   } else {
     std::cout << "*";
   }
@@ -85,15 +85,15 @@ exprt abstractor_wp_cartesiant::get_value(
   std::set<cubet> implies_not_value = compute_largest_disjunction_of_cubes(predicates, not_value, value, program_location);
 
 #ifdef DEBUG
-  std::cout << "Relevant cubes that imply " << from_expr(concrete_model.ns, "", not_value) << ":" << std::endl;
+  std::cout << "Relevant cubes that imply " << from_expr(concrete_model->ns, "", not_value) << ":" << std::endl;
   for(std::set<cubet>::iterator it = implies_not_value.begin(); it != implies_not_value.end(); it++)
   {
-    std::cout << "  " << from_expr(concrete_model.ns, "", cube_to_expr(*it)) << std::endl;
+    std::cout << "  " << from_expr(concrete_model->ns, "", cube_to_expr(*it)) << std::endl;
   }
-  std::cout << "Relevant cubes that imply " << from_expr(concrete_model.ns, "", value) << ":" << std::endl;
+  std::cout << "Relevant cubes that imply " << from_expr(concrete_model->ns, "", value) << ":" << std::endl;
   for(std::set<cubet>::iterator it = implies_value.begin(); it != implies_value.end(); it++)
   {
-    std::cout << "  " << from_expr(concrete_model.ns, "", cube_to_expr(*it)) << std::endl;
+    std::cout << "  " << from_expr(concrete_model->ns, "", cube_to_expr(*it)) << std::endl;
   }
   std::cout << std::endl;
 #endif
@@ -216,12 +216,12 @@ std::set<abstractor_wp_cartesiant::cubet> abstractor_wp_cartesiant::compute_larg
   std::list<cubet> queue;
   for(unsigned int i = 0; i < predicates.size(); i++)
   {
-    if(locations_intersect(phi, predicates[i], program_location, pointer_info, concrete_model.ns))
+    if(locations_intersect(phi, predicates[i], program_location, pointer_info, concrete_model->ns))
     {
       cubet initial_cube;
       initial_cube.insert(predicates[i]);
 #ifdef DEBUG
-      std::cout << "Considering initial cube: " << from_expr(concrete_model.ns, "", cube_to_expr(initial_cube)) << std::endl;
+      std::cout << "Considering initial cube: " << from_expr(concrete_model->ns, "", cube_to_expr(initial_cube)) << std::endl;
 #endif
       if(cube_is_satisfiable(initial_cube))
       {
@@ -238,7 +238,7 @@ std::set<abstractor_wp_cartesiant::cubet> abstractor_wp_cartesiant::compute_larg
       cubet initial_cube_negated;
       initial_cube_negated.insert(not_exprt(predicates[i]));
 #ifdef DEBUG
-      std::cout << "Considering initial cube: " << from_expr(concrete_model.ns, "", cube_to_expr(initial_cube_negated)) << std::endl;
+      std::cout << "Considering initial cube: " << from_expr(concrete_model->ns, "", cube_to_expr(initial_cube_negated)) << std::endl;
 #endif
       if(cube_is_satisfiable(initial_cube_negated))
       {
@@ -263,7 +263,7 @@ std::set<abstractor_wp_cartesiant::cubet> abstractor_wp_cartesiant::compute_larg
     queue.pop_front();
 
 #ifdef DEBUG
-    std::cout << "Considering cube: " << from_expr(concrete_model.ns, "", cube_to_expr(current_cube)) << std::endl;
+    std::cout << "Considering cube: " << from_expr(concrete_model->ns, "", cube_to_expr(current_cube)) << std::endl;
 #endif
 
     cubes_tried.insert(current_cube);
@@ -285,18 +285,18 @@ std::set<abstractor_wp_cartesiant::cubet> abstractor_wp_cartesiant::compute_larg
     if(implies(current_cube, phi))
     {
 #ifdef DEBUG
-      std::cout << "It implies " << from_expr(concrete_model.ns, "", phi) << std::endl;
+      std::cout << "It implies " << from_expr(concrete_model->ns, "", phi) << std::endl;
 #endif
       implies_phi.insert(current_cube);
     } else if(implies(current_cube, not_phi)) {
 #ifdef DEBUG
-      std::cout << "It implies " << from_expr(concrete_model.ns, "", not_phi) << std::endl;
+      std::cout << "It implies " << from_expr(concrete_model->ns, "", not_phi) << std::endl;
 #endif
       implies_not_phi.insert(current_cube);
     }
 #ifdef DEBUG
     else {
-      std::cout << "It neither implies " << from_expr(concrete_model.ns, "", phi) << " nor " << from_expr(concrete_model.ns, "", not_phi) << std::endl;
+      std::cout << "It neither implies " << from_expr(concrete_model->ns, "", phi) << " nor " << from_expr(concrete_model->ns, "", not_phi) << std::endl;
     }
 
 #endif
@@ -361,7 +361,7 @@ bool abstractor_wp_cartesiant::cube_is_satisfiable(const cubet& cube)
   exprt cube_conjunction = cube_to_expr(cube);
 
   satcheckt satcheck;
-  bv_pointerst solver(concrete_model.ns, satcheck);
+  bv_pointerst solver(concrete_model->ns, satcheck);
   solver.set_to_true(cube_conjunction);
 
   switch(solver.dec_solve())
@@ -388,7 +388,7 @@ bool abstractor_wp_cartesiant::predicate_locations_intersects_cube_locations(
 {
   for(cubet::const_iterator it = cube.begin(); it != cube.end(); it++)
   {
-    if(locations_intersect(phi, *it, program_location, pointer_info, concrete_model.ns))
+    if(locations_intersect(phi, *it, program_location, pointer_info, concrete_model->ns))
     {
       return true;
     }
@@ -399,7 +399,7 @@ bool abstractor_wp_cartesiant::predicate_locations_intersects_cube_locations(
 bool abstractor_wp_cartesiant::implies(const cubet& cube, const predicatet& phi)
 {
 #ifdef DEBUG
-  std::cout << "Checking whether " << from_expr(concrete_model.ns, "", cube_to_expr(cube)) << " => " << from_expr(concrete_model.ns, "", phi) << " is valid." << std::endl;
+  std::cout << "Checking whether " << from_expr(concrete_model->ns, "", cube_to_expr(cube)) << " => " << from_expr(concrete_model->ns, "", phi) << " is valid." << std::endl;
 #endif
 
   std::map<std::pair<cubet, predicatet>, bool>::iterator cache_entry =
@@ -415,7 +415,7 @@ bool abstractor_wp_cartesiant::implies(const cubet& cube, const predicatet& phi)
   implies_exprt implication = implies_exprt(cube_conjunction, phi);
 
   satcheckt satcheck;
-  bv_pointerst solver(concrete_model.ns, satcheck);
+  bv_pointerst solver(concrete_model->ns, satcheck);
   solver.set_to_false(implication);
 
   switch(solver.dec_solve())

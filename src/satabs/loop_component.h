@@ -31,9 +31,15 @@ public:
     } 
   };
 
-  loop_componentt(const argst &args):
-    concrete_model(args.concrete_model)
+  explicit loop_componentt(const argst &args):
+    concrete_model(&args.concrete_model)
   {
+  }
+
+  // must call before use
+  void set_concrete_model(const concrete_modelt &_concrete_model)
+  {
+    concrete_model=&_concrete_model;
   }
 
   struct statt
@@ -65,9 +71,9 @@ public:
 
     return os;
   }
-
+  
 protected:
-  const concrete_modelt &concrete_model;
+  const concrete_modelt *concrete_model;
 };
 
 #endif

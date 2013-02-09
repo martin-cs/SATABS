@@ -82,8 +82,8 @@ void concurrency_aware_abstractort::pred_abstract_block(
   for(unsigned int i = 0; i < predicates.size(); i++)
   {
     // Add passive versions of existing predicates (lookup does this)
-    passive_predicates.lookup(predicatest::make_expr_passive(predicates[i], concrete_model.ns, 0));
-    all_predicates.lookup(predicatest::make_expr_passive(predicates[i], concrete_model.ns, 0));
+    passive_predicates.lookup(predicatest::make_expr_passive(predicates[i], concrete_model->ns, 0));
+    all_predicates.lookup(predicatest::make_expr_passive(predicates[i], concrete_model->ns, 0));
   }
 
 
@@ -92,7 +92,7 @@ void concurrency_aware_abstractort::pred_abstract_block(
   std::list<exprt> passive_constraints;
 
   build_equation(
-      concrete_model.ns,
+      concrete_model->ns,
       passive_predicates,
       target,
       passive_constraints,
@@ -109,21 +109,21 @@ void concurrency_aware_abstractort::pred_abstract_block(
   for(unsigned int i = 0; i < predicates.size(); i++)
   {
     if((passive_predicates_wp[i]==passive_predicates[i] ||
-        predicates[i]==predicatest::make_expr_passive(predicates[i], concrete_model.ns, 0)) &&
+        predicates[i]==predicatest::make_expr_passive(predicates[i], concrete_model->ns, 0)) &&
         (!passive_broadcast_only ||
          abstract_transition_relation.values.find(i)==abstract_transition_relation.values.end()))
     {
       concurrency_aware_abstract_transition_relation->passive_values.erase(i);
 #ifdef DEBUG
-      std::cout << "UNCHANGED: P" << i << "$ ~ (" << from_expr(concrete_model.ns, "", passive_predicates[i]) << ")" << std::endl << std::endl;
+      std::cout << "UNCHANGED: P" << i << "$ ~ (" << from_expr(concrete_model->ns, "", passive_predicates[i]) << ")" << std::endl << std::endl;
 #endif
     }
     else
     {
 #ifdef DEBUG
-      std::cout << "DIFFERENT: P" << i << "$ ~ (" << from_expr(concrete_model.ns, "", passive_predicates[i]) << ")" << std::endl;
-      std::cout << "WP: " << from_expr(concrete_model.ns, "", passive_predicates_wp[i]) << std::endl;
-      std::cout << "P:  " << from_expr(concrete_model.ns, "", passive_predicates[i]) << std::endl;
+      std::cout << "DIFFERENT: P" << i << "$ ~ (" << from_expr(concrete_model->ns, "", passive_predicates[i]) << ")" << std::endl;
+      std::cout << "WP: " << from_expr(concrete_model->ns, "", passive_predicates_wp[i]) << std::endl;
+      std::cout << "P:  " << from_expr(concrete_model->ns, "", passive_predicates[i]) << std::endl;
 #endif
 
       const bool bc_req=broadcast_required(target, passive_predicates[i]);
@@ -132,17 +132,17 @@ void concurrency_aware_abstractort::pred_abstract_block(
         exprt new_value = passive_nondet ?
           nil_exprt() :
           (bc_req ?
-            specific_abstractor->get_value(-1 /* not used */ , all_predicates, passive_predicates_wp[i], concrete_model.ns, target) :
+            specific_abstractor->get_value(-1 /* not used */ , all_predicates, passive_predicates_wp[i], concrete_model->ns, target) :
             abstract_transition_relation.values[i]);
 
 #ifdef DEBUG
         std::cout << "New value: ";
         if(new_value.is_constant())
         {
-          std::cout << from_expr(concrete_model.ns, "", new_value);
+          std::cout << from_expr(concrete_model->ns, "", new_value);
         } else if(!new_value.is_nil()) {
           unsigned p=safe_str2unsigned(new_value.get(ID_identifier).c_str());
-          std::cout << from_expr(concrete_model.ns, "", all_predicates[p]);
+          std::cout << from_expr(concrete_model->ns, "", all_predicates[p]);
         } else {
           std::cout << "*";
         }
@@ -264,30 +264,30 @@ bool concurrency_aware_abstractort::broadcast_required(
 {
   // Get targets of assignment
   std::set<symbol_exprt> targets = targets_of_lvalue(target->code.op0(), target);
-  std::set<symbol_exprt> locations = locations_of_expression(predicate, target, pointer_info, concrete_model.ns);
+  std::set<symbol_exprt> locations = locations_of_expression(predicate, target, pointer_info, concrete_model->ns);
 #ifdef DEBUG_BROADCAST
-  std::cout << "Targets of lvalue " << from_expr(concrete_model.ns, "", target->code.op0()) << ":" << std::endl;
+  std::cout << "Targets of lvalue " << from_expr(concrete_model->ns, "", target->code.op0()) << ":" << std::endl;
   for(std::set<symbol_exprt>::iterator it = targets.begin(); it != targets.end(); it++)
   {
-    std::cout << "  " << from_expr(concrete_model.ns, "", *it) << " -- ";
-    if(is_global(concrete_model.ns.lookup(it->get(ID_identifier))))
+    std::cout << "  " << from_expr(concrete_model->ns, "", *it) << " -- ";
+    if(is_global(concrete_model->ns.lookup(it->get(ID_identifier))))
     {
       std::cout << "SHARED";
     } else {
-      assert(is_procedure_local(concrete_model.ns.lookup(it->get(ID_identifier))));
+      assert(is_procedure_local(concrete_model->ns.lookup(it->get(ID_identifier))));
       std::cout << "LOCAL";
     }
     std::cout << std::endl;
   }
-  std::cout << "Locations of predicate " << from_expr(concrete_model.ns, "", predicate) << ":" << std::endl;
+  std::cout << "Locations of predicate " << from_expr(concrete_model->ns, "", predicate) << ":" << std::endl;
   for(std::set<symbol_exprt>::iterator it = locations.begin(); it != locations.end(); it++)
   {
-    std::cout << "  " << from_expr(concrete_model.ns, "", *it) << " -- ";
-    if(is_global(concrete_model.ns.lookup(it->get(ID_identifier))))
+    std::cout << "  " << from_expr(concrete_model->ns, "", *it) << " -- ";
+    if(is_global(concrete_model->ns.lookup(it->get(ID_identifier))))
     {
       std::cout << "SHARED";
     } else {
-      assert(is_procedure_local(concrete_model.ns.lookup(it->get(ID_identifier))));
+      assert(is_procedure_local(concrete_model->ns.lookup(it->get(ID_identifier))));
       std::cout << "LOCAL";
     }
     std::cout << std::endl;
@@ -302,12 +302,12 @@ bool concurrency_aware_abstractort::broadcast_required(
   std::cout << "Intersection:" << std::endl;
   for(std::set<symbol_exprt>::iterator it = intersection_of_targets_and_locations.begin(); it != intersection_of_targets_and_locations.end(); it++)
   {
-    std::cout << "  " << from_expr(concrete_model.ns, "", *it) << " -- ";
-    if(is_global(concrete_model.ns.lookup(it->get(ID_identifier))))
+    std::cout << "  " << from_expr(concrete_model->ns, "", *it) << " -- ";
+    if(is_global(concrete_model->ns.lookup(it->get(ID_identifier))))
     {
       std::cout << "SHARED";
     } else {
-      assert(is_procedure_local(concrete_model.ns.lookup(it->get(ID_identifier))));
+      assert(is_procedure_local(concrete_model->ns.lookup(it->get(ID_identifier))));
       std::cout << "LOCAL";
     }
     std::cout << std::endl;
@@ -319,7 +319,7 @@ bool concurrency_aware_abstractort::broadcast_required(
       it=intersection_of_targets_and_locations.begin();
       !require_broadcast && it!=intersection_of_targets_and_locations.end();
       it++)
-    require_broadcast = concrete_model.ns.lookup(it->get(ID_identifier)).is_shared();
+    require_broadcast = concrete_model->ns.lookup(it->get(ID_identifier)).is_shared();
 
   if(require_broadcast)
   {

@@ -98,7 +98,7 @@ void transition_refinert::refine(
     for(unsigned p=0; p<predicates.size(); p++)
     {
       std::cout << "P" << p << ": "
-        << from_expr(concrete_model.ns, "", predicates[p])
+        << from_expr(concrete_model->ns, "", predicates[p])
         << std::endl;
       //std::cout << "      " << predicates[p] << std::endl;
     }
@@ -222,7 +222,7 @@ bool transition_refinert::check_transition(
 #ifdef DEBUG
   ::std::cout << abstract_state_from << ::std::endl;
   goto_programt tmp;
-  tmp.output_instruction(concrete_model.ns, "", std::cout, abstract_state_from.pc->code.concrete_pc);
+  tmp.output_instruction(concrete_model->ns, "", std::cout, abstract_state_from.pc->code.concrete_pc);
   ::std::cout << abstract_state_to << ::std::endl;
 #endif
 
@@ -396,13 +396,13 @@ bool transition_refinert::check_assignment_transition(
     {
       active_passive_preds[t].lookup(active_id==t?
           predicates[i] :
-          predicatest::make_expr_passive(predicates[i], concrete_model.ns, t));
+          predicatest::make_expr_passive(predicates[i], concrete_model->ns, t));
     }
     assert(active_passive_preds[t].size() == predicates.size());
 
     std::list<exprt> constraints_t;
     build_equation(
-        concrete_model.ns,
+        concrete_model->ns,
         active_passive_preds[t],
         abstract_state_from.pc->code.concrete_pc,
         constraints_t,
@@ -413,7 +413,7 @@ bool transition_refinert::check_assignment_transition(
 
   // create SAT solver object
   cnf_clause_listt cnf;
-  bv_pointerst solver(concrete_model.ns, cnf);
+  bv_pointerst solver(concrete_model->ns, cnf);
   solver.unbounded_array=boolbvt::U_NONE;
 
   // convert constraints
@@ -471,7 +471,7 @@ bool transition_refinert::check_assignment_transition(
           active_passive_preds[t][i]==predicates[i])
         continue;
 
-      literalt li=make_pos(concrete_model.ns, solver, active_passive_preds[t][i]);
+      literalt li=make_pos(concrete_model->ns, solver, active_passive_preds[t][i]);
       predicate_variables_from[t][i]=li;
 
       assumptions.push_back(li.cond_negation(
@@ -483,10 +483,10 @@ bool transition_refinert::check_assignment_transition(
       std::cerr
         << "F: " << predname << ": "
         << (from_predicates[t]->second[i]?"":"!") << "("
-        << from_expr(concrete_model.ns, "", active_passive_preds[t][i]) << ")" << std::endl;
+        << from_expr(concrete_model->ns, "", active_passive_preds[t][i]) << ")" << std::endl;
 #endif
 
-      literalt lo=make_pos(concrete_model.ns, solver, predicates_wp[t][i]);
+      literalt lo=make_pos(concrete_model->ns, solver, predicates_wp[t][i]);
       predicate_variables_to[t][i]=lo;
 
       assumptions.push_back(lo.cond_negation(
@@ -496,7 +496,7 @@ bool transition_refinert::check_assignment_transition(
       std::cerr
         << "T: " << predname << ": "
         << (to_predicates[t]->second[i]?"":"!") << "("
-        << from_expr(concrete_model.ns, "", predicates_wp[t][i]) << ")" << std::endl;
+        << from_expr(concrete_model->ns, "", predicates_wp[t][i]) << ")" << std::endl;
 #endif
     }
   }
@@ -539,7 +539,7 @@ bool transition_refinert::check_assignment_transition(
       e.set(ID_identifier, i);
       if(from_predicates[active_id]->second[i]) e.make_not();
 #ifdef DEBUG
-      std::cout << "C-F: " << from_expr(concrete_model.ns, "", e) << std::endl;
+      std::cout << "C-F: " << from_expr(concrete_model->ns, "", e) << std::endl;
 #endif
     }
 
@@ -552,7 +552,7 @@ bool transition_refinert::check_assignment_transition(
       e.set(ID_identifier, i);
       if(from_predicates[passive_id]->second[i]) e.make_not();
 #ifdef DEBUG
-      std::cout << "C-F: " << from_expr(concrete_model.ns, "", e) << std::endl;
+      std::cout << "C-F: " << from_expr(concrete_model->ns, "", e) << std::endl;
 #endif
     }
 
@@ -564,7 +564,7 @@ bool transition_refinert::check_assignment_transition(
       e.set(ID_identifier, i);
       if(to_predicates[active_id]->second[i]) e.make_not();
 #ifdef DEBUG
-      std::cout << "C-T: " << from_expr(concrete_model.ns, "", e) << std::endl;
+      std::cout << "C-T: " << from_expr(concrete_model->ns, "", e) << std::endl;
 #endif
     }
 
@@ -579,7 +579,7 @@ bool transition_refinert::check_assignment_transition(
       e.op0().set(ID_identifier, i);
       if(to_predicates[passive_id]->second[i]) e.make_not();
 #ifdef DEBUG
-      std::cout << "C-T: " << from_expr(concrete_model.ns, "", e) << std::endl;
+      std::cout << "C-T: " << from_expr(concrete_model->ns, "", e) << std::endl;
 #endif
     }
   }
@@ -587,7 +587,7 @@ bool transition_refinert::check_assignment_transition(
   ::std::cerr << "Spurious in thread " << passive_id << " (active: " << abstract_state_from.thread_nr << "): " << ::std::endl;
   ::std::cerr << abstract_state_from << ::std::endl;
   goto_programt tmp;
-  tmp.output_instruction(concrete_model.ns, "", std::cerr, abstract_state_from.pc->code.concrete_pc);
+  tmp.output_instruction(concrete_model->ns, "", std::cerr, abstract_state_from.pc->code.concrete_pc);
   ::std::cerr << abstract_state_to << ::std::endl;
 #endif
 
@@ -662,7 +662,7 @@ bool transition_refinert::check_assignment_transition(
 
         and_exprt a(new_constraint_ops);
 #ifdef DEBUG
-        std::cout << "solution: " << from_expr(concrete_model.ns, "", a) << std::endl;
+        std::cout << "solution: " << from_expr(concrete_model->ns, "", a) << std::endl;
 #endif
         big_or1.move_to_operands(a);
 
@@ -688,8 +688,8 @@ bool transition_refinert::check_assignment_transition(
       or_exprt o1(not_exprt(bp), bp_primed);
       or_exprt o2(bp, not_exprt(bp_primed));
 #ifdef DEBUG
-      std::cout << "passive-eq: " << from_expr(concrete_model.ns, "", o1) << std::endl;
-      std::cout << "passive-eq: " << from_expr(concrete_model.ns, "", o2) << std::endl;
+      std::cout << "passive-eq: " << from_expr(concrete_model->ns, "", o1) << std::endl;
+      std::cout << "passive-eq: " << from_expr(concrete_model->ns, "", o2) << std::endl;
 #endif
       monotone.move_to_operands(o1);
       monotone.move_to_operands(o2);
@@ -781,7 +781,7 @@ bool transition_refinert::check_assignment_transition(
 
         and_exprt a(new_constraint_ops);
 #ifdef DEBUG
-        std::cout << "solution no-passive-succ: " << from_expr(concrete_model.ns, "", a) << std::endl;
+        std::cout << "solution no-passive-succ: " << from_expr(concrete_model->ns, "", a) << std::endl;
 #endif
         big_or2.move_to_operands(a);
 
@@ -848,7 +848,7 @@ bool transition_refinert::check_guarded_transition(
 #else
   satcheckt satcheck;
 #endif
-  bv_pointerst solver(concrete_model.ns, satcheck);
+  bv_pointerst solver(concrete_model->ns, satcheck);
   solver.unbounded_array=boolbvt::U_NONE;
 
   // Note that we take "thread_nr" from "abstract_state_from", not from "abstract_state_to", as the "from" state determines which thread is executing
@@ -868,7 +868,7 @@ bool transition_refinert::check_guarded_transition(
     {
       active_passive_preds[t].lookup(active_id==t?
           predicates[i] :
-          predicatest::make_expr_passive(predicates[i], concrete_model.ns, t));
+          predicatest::make_expr_passive(predicates[i], concrete_model->ns, t));
     }
     assert(active_passive_preds[t].size() == predicates.size());
   }
@@ -901,7 +901,7 @@ bool transition_refinert::check_guarded_transition(
           active_passive_preds[t][i]==predicates[i])
         continue;
 
-      literalt li=make_pos(concrete_model.ns, solver, active_passive_preds[t][i]);
+      literalt li=make_pos(concrete_model->ns, solver, active_passive_preds[t][i]);
       predicate_variables_from[t][i]=li;
 
       assumptions.push_back(li.cond_negation(
@@ -913,7 +913,7 @@ bool transition_refinert::check_guarded_transition(
       std::cerr
         << "G-F: " << predname << ": "
         << (from_predicates[t]->second[i]?"":"!") << "("
-        << from_expr(concrete_model.ns, "", active_passive_preds[t][i]) << ")" << std::endl;
+        << from_expr(concrete_model->ns, "", active_passive_preds[t][i]) << ")" << std::endl;
 #endif
     }
   }
@@ -970,7 +970,7 @@ bool transition_refinert::check_guarded_transition(
       e.set(ID_identifier, i);
       if(!from_predicates[active_id]->second[i]) e.make_not();
 #ifdef DEBUG
-      std::cout << "G-C: " << from_expr(concrete_model.ns, "", e) << std::endl;
+      std::cout << "G-C: " << from_expr(concrete_model->ns, "", e) << std::endl;
 #endif
     }
 
@@ -983,7 +983,7 @@ bool transition_refinert::check_guarded_transition(
       e.set(ID_identifier, i);
       if(!from_predicates[passive_id]->second[i]) e.make_not();
 #ifdef DEBUG
-      std::cout << "G-C-F: " << from_expr(concrete_model.ns, "", e) << std::endl;
+      std::cout << "G-C-F: " << from_expr(concrete_model->ns, "", e) << std::endl;
 #endif
     }
   }

@@ -44,7 +44,7 @@ void refinert::add_predicates(
 {
 
   std::set<predicatet> new_predicates;
-  discover_predicates(expr, new_predicates, concrete_model.ns, no_mixed_predicates);
+  discover_predicates(expr, new_predicates, concrete_model->ns, no_mixed_predicates);
 
   std::set<unsigned> new_predicates_no;
 
@@ -59,7 +59,7 @@ void refinert::add_predicates(
       const exprt &p=*p_it;
 
       std::ostringstream os;
-      os << "Considering " << from_expr(concrete_model.ns, "", p) << "\n";
+      os << "Considering " << from_expr(concrete_model->ns, "", p) << "\n";
 
       if(is_pointer_predicate(p))
       {
@@ -73,7 +73,7 @@ void refinert::add_predicates(
       if(!predicates.find(p))
         continue;
 
-      if(is_pointer_predicate(p) || is_redundant(p, concrete_model.ns))
+      if(is_pointer_predicate(p) || is_redundant(p, concrete_model->ns))
       {
         // Do not add redundant predicate, or predicate which involves address-of
         continue;
@@ -90,11 +90,11 @@ void refinert::add_predicates(
             p_added_it++)
         {
           const exprt &p_added = *p_added_it;
-          if (is_equivalent(p,p_added,concrete_model.ns))
+          if (is_equivalent(p,p_added,concrete_model->ns))
           {
             is_eq_to_added = true;
-            std::string msg="Predicate `" + from_expr(concrete_model.ns, "", p) +
-              "' is equivalent to `" + from_expr(concrete_model.ns, "", p_added) +
+            std::string msg="Predicate `" + from_expr(concrete_model->ns, "", p) +
+              "' is equivalent to `" + from_expr(concrete_model->ns, "", p_added) +
               "' which will was already considered, hence I am skipping it";
             debug(msg);
             debug(p.pretty());
@@ -111,11 +111,11 @@ void refinert::add_predicates(
         for(unsigned i = 0; i < predicates.size(); i++)
         {
           const exprt &p_old=predicates[i];
-          if (is_equivalent(p,p_old,concrete_model.ns))
+          if (is_equivalent(p,p_old,concrete_model->ns))
           {
             is_eq_to_old = true;
-            std::string msg="Predicate `" + from_expr(concrete_model.ns, "", p) +
-              "' is equivalent to `" + from_expr(concrete_model.ns, "", p_old) +
+            std::string msg="Predicate `" + from_expr(concrete_model->ns, "", p) +
+              "' is equivalent to `" + from_expr(concrete_model->ns, "", p_old) +
               "' which is already added, hence I am skipping it";
             debug(msg);
             debug(p.pretty());
@@ -127,7 +127,7 @@ void refinert::add_predicates(
           continue;
       }
 
-      std::string msg="Adding predicate `"+from_expr(concrete_model.ns, "", p)+"'";
+      std::string msg="Adding predicate `"+from_expr(concrete_model->ns, "", p)+"'";
       debug(msg);
       debug(p.pretty());
       num_predicates_added++;
@@ -150,7 +150,7 @@ void refinert::add_predicates(
       continue;
     }
 
-    if(is_redundant(p, concrete_model.ns))
+    if(is_redundant(p, concrete_model->ns))
     {
       // Do not add redundant predicate
       continue;
@@ -167,11 +167,11 @@ void refinert::add_predicates(
           p_added_it++)
       {
         const exprt &p_added = *p_added_it;
-        if (is_equivalent(p,p_added,concrete_model.ns))
+        if (is_equivalent(p,p_added,concrete_model->ns))
         {
           is_eq_to_added = true;
-          std::string msg="Predicate `" + from_expr(concrete_model.ns, "", p) +
-            "' is equivalent to `" + from_expr(concrete_model.ns, "", p_added) +
+          std::string msg="Predicate `" + from_expr(concrete_model->ns, "", p) +
+            "' is equivalent to `" + from_expr(concrete_model->ns, "", p_added) +
             "' which will was already considered, hence I am skipping it";
           debug(msg);
           debug(p.pretty());
@@ -188,11 +188,11 @@ void refinert::add_predicates(
       for(unsigned i = 0; i < predicates.size(); i++)
       {
         const exprt &p_old=predicates[i];
-        if (is_equivalent(p,p_old,concrete_model.ns))
+        if (is_equivalent(p,p_old,concrete_model->ns))
         {
           is_eq_to_old = true;
-          std::string msg="Predicate `" + from_expr(concrete_model.ns, "", p) +
-            "' is equivalent to `" + from_expr(concrete_model.ns, "", p_old) +
+          std::string msg="Predicate `" + from_expr(concrete_model->ns, "", p) +
+            "' is equivalent to `" + from_expr(concrete_model->ns, "", p_old) +
             "' which is already added, hence I am skipping it";
           debug(msg);
           debug(p.pretty());
@@ -204,7 +204,7 @@ void refinert::add_predicates(
         continue;
     }
 
-    std::string msg="Adding predicate `"+from_expr(concrete_model.ns, "", p)+"'";
+    std::string msg="Adding predicate `"+from_expr(concrete_model->ns, "", p)+"'";
     debug(msg);
     debug(p.pretty());
     num_predicates_added++;

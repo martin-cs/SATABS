@@ -75,7 +75,7 @@ protected:
   exprt rename(goto_symex_statet &state, const exprt &expr) const
   {
     exprt tmp(expr);
-    state.rename(tmp, concrete_model.ns);
+    state.rename(tmp, concrete_model->ns);
     return tmp;
   }
 

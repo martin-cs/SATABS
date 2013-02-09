@@ -94,7 +94,7 @@ bool simulator_loop_detectiont::check_phase_I_equation(
         (c_it->is_assume() && c_it->cond_expr.is_true()))
       continue;
 
-    bv_minimizing_dect satcheck(concrete_model.ns);
+    bv_minimizing_dect satcheck(concrete_model->ns);
 
     symex_target_equationt::SSA_stepst SSA_steps;
     SSA_steps.splice(SSA_steps.end(),
@@ -113,7 +113,7 @@ bool simulator_loop_detectiont::check_phase_I_equation(
     {
       for (minimization_listt::const_iterator m_it = symbols.begin();
           m_it!=symbols.end(); m_it++)
-        std::cout << from_expr (concrete_model.ns, "", *m_it) << ", ";
+        std::cout << from_expr (concrete_model->ns, "", *m_it) << ", ";
       std::cout << std::endl;
 
       satcheck.minimize(symbols);
@@ -121,7 +121,7 @@ bool simulator_loop_detectiont::check_phase_I_equation(
       build_goto_trace(
           equation,
           satcheck,
-          concrete_model.ns,
+          concrete_model->ns,
           phase_I_counterexample.goto_trace);
 
       return false;
@@ -241,7 +241,7 @@ void simulator_loop_detectiont::build_loop_recurrence(
       end_state,
       problem, 
       solution,
-      concrete_model.ns);  
+      concrete_model->ns);  
 
   // put in solution
 
@@ -327,7 +327,7 @@ void simulator_loop_detectiont::build_loop_recurrence(
       problem, 
       closed_forms,
       recurrences,
-      concrete_model.ns);
+      concrete_model->ns);
 }
 
 /*******************************************************************\
@@ -543,7 +543,7 @@ void simulator_loop_detectiont::get_fresh_induction_parameter(
 
     try 
     {
-      concrete_model.ns.lookup(parameter_expr);
+      concrete_model->ns.lookup(parameter_expr);
       found = true;
     }
     catch (std::string ex) 
@@ -585,7 +585,7 @@ void simulator_loop_detectiont::build_parameterized_equation(
     prefixt::step_mapt &step_map)
 {
   contextt new_context;
-  namespacet new_ns(concrete_model.ns.get_context(), new_context);
+  namespacet new_ns(concrete_model->ns.get_context(), new_context);
   goto_symext symex_simulator(new_ns, new_context, equation);
   loop_stackt loop_stack;
 
@@ -890,7 +890,7 @@ bool simulator_loop_detectiont::check_prefix(
 
   {  
     // build equation
-    symex_target_equationt equation(concrete_model.ns);
+    symex_target_equationt equation(concrete_model->ns);
     goto_symex_statet state;
     prefixt::step_mapt step_map;
 

@@ -41,7 +41,7 @@ Purpose:
 std::string modelchecker_spint::expr_string(const exprt &src)
 {
   // we just do C expressions now
-  return expr2c(src, concrete_model.ns);
+  return expr2c(src, concrete_model->ns);
 }
 
 /*******************************************************************\

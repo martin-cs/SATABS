@@ -35,7 +35,7 @@ void abstractor_wpt::pred_abstract_block(
   std::list<exprt> constraints;
 
   build_equation(
-      concrete_model.ns,
+      concrete_model->ns,
       predicates,
       target,
       constraints,
@@ -62,12 +62,12 @@ void abstractor_wpt::pred_abstract_block(
     {
 #if 0
       std::cout << "DIFFERENT: P" << i << std::endl;
-      std::cout << "WP: " << from_expr(concrete_model.ns, "", predicates_wp[i]) << std::endl;
-      std::cout << "P:  " << from_expr(concrete_model.ns, "", predicates[i]) << std::endl;
+      std::cout << "WP: " << from_expr(concrete_model->ns, "", predicates_wp[i]) << std::endl;
+      std::cout << "P:  " << from_expr(concrete_model->ns, "", predicates[i]) << std::endl;
 #endif
 
       abstract_transition_relation.values[i]=
-        get_value(i, predicates, predicates_wp[i], concrete_model.ns, target);
+        get_value(i, predicates, predicates_wp[i], concrete_model->ns, target);
 
       // if it changes, it's output
       abstract_transition_relation.to_predicates.insert(i);

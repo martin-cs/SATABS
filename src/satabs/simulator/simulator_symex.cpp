@@ -48,7 +48,7 @@ void simulator_symext::build_equation_prefix(
     bool constant_propagation)
 {
   contextt new_context;
-  namespacet new_ns(concrete_model.ns.get_context(), new_context);
+  namespacet new_ns(concrete_model->ns.get_context(), new_context);
 
   goto_symext symex_simulator(new_ns, new_context, prefix.equation);
   symex_simulator.constant_propagation=constant_propagation;
@@ -94,7 +94,7 @@ void simulator_symext::build_equation_prefix(
       case ASSERT:
         if(last_state && it->relevant)
         {
-          symex_simulator.symex_step(concrete_model.goto_functions, state);
+          symex_simulator.symex_step(concrete_model->goto_functions, state);
           assert(prefix.equation.SSA_steps.size()>s);
         }
         break;
@@ -129,7 +129,7 @@ void simulator_symext::build_equation_prefix(
 
             state.source.pc=c_target;
             state.source.thread_nr=t;
-            symex_simulator.symex_step(concrete_model.goto_functions, state);
+            symex_simulator.symex_step(concrete_model->goto_functions, state);
           }
     
           state.source.thread_nr=it->thread_nr;
@@ -145,7 +145,7 @@ void simulator_symext::build_equation_prefix(
         // this one pops the frame
       default:
         if(it->relevant)
-          symex_simulator.symex_step(concrete_model.goto_functions, state);
+          symex_simulator.symex_step(concrete_model->goto_functions, state);
     }
 
     if(prefix.equation.SSA_steps.size()==s)
@@ -287,7 +287,7 @@ bool simulator_symext::check_prefix_equation(
 
     c_it=state_array[index];
 
-    simulator_sat_dect satcheck(concrete_model.ns);
+    simulator_sat_dect satcheck(concrete_model->ns);
     symex_target_equationt::SSA_stepst SSA_steps;
     SSA_steps.splice(SSA_steps.end(),
         prefix.equation.SSA_steps, prefix.equation.SSA_steps.begin(), ++c_it);
@@ -305,7 +305,7 @@ bool simulator_symext::check_prefix_equation(
         build_goto_trace(
             prefix.equation,
             satcheck,
-            concrete_model.ns,
+            concrete_model->ns,
             concrete_counterexample.goto_trace);
 
         return false;
@@ -373,7 +373,7 @@ bool simulator_symext::check_full_trace(
   symex_target_equationt::SSA_stepst::const_iterator c_it=
     --prefix.equation.SSA_steps.end();
 
-  simulator_sat_dect satcheck(concrete_model.ns);
+  simulator_sat_dect satcheck(concrete_model->ns);
   prefix.equation.convert(satcheck);
 
   if(is_satisfiable(satcheck))
@@ -382,7 +382,7 @@ bool simulator_symext::check_full_trace(
     build_goto_trace(
         prefix.equation,
         satcheck,
-        concrete_model.ns,
+        concrete_model->ns,
         concrete_counterexample.goto_trace);
 
     return false;
@@ -428,9 +428,9 @@ bool simulator_symext::check_prefix(
   concrete_counterexample.clear();
 
   // build equation
-  prefixt prefix(concrete_model.ns);
+  prefixt prefix(concrete_model->ns);
   goto_symex_statet state;
-  state.initialize(concrete_model.goto_functions);
+  state.initialize(concrete_model->goto_functions);
 
 #if 0
   std::cout << "*******************************\n";

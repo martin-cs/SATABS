@@ -42,7 +42,7 @@ void abstractort::abstract_variables(
   for(unsigned i=0; i<predicates.size(); i++)
   {
     variables[i].description=
-      from_expr(concrete_model.ns, "", predicates[i]);
+      from_expr(concrete_model->ns, "", predicates[i]);
 
     // remove line breaks
     for(unsigned j = 0; j<variables[i].description.size(); j++)
@@ -52,7 +52,7 @@ void abstractort::abstract_variables(
 
     // local or global?
     variables[i].var_class=get_var_class(predicates[i],
-        concrete_model.ns);
+        concrete_model->ns);
   }
 }
 
@@ -148,7 +148,7 @@ void abstractort::build_abstraction(const predicatest &predicates)
   // define abstract variables
   abstract_variables(predicates, abstract_model.variables);
 
-  forall_goto_functions(c_it, concrete_model.goto_functions)
+  forall_goto_functions(c_it, concrete_model->goto_functions)
   {
     const goto_functionst::goto_functiont &f=c_it->second;
 
@@ -204,13 +204,13 @@ void abstractort::build_abstraction(
       case ASSERT:
         // if it's a goto or assert, abstract the guard
         a_it->guard=c_it->guard;
-        abstract_expression(predicates, a_it->guard, concrete_model.ns, c_it);
+        abstract_expression(predicates, a_it->guard, concrete_model->ns, c_it);
         break;
 
       case ASSUME:
         // if it's an assume, abstract the guard
         a_it->guard=c_it->guard;
-        abstract_assume_guard(predicates, a_it->guard, concrete_model.ns, c_it);
+        abstract_assume_guard(predicates, a_it->guard, concrete_model->ns, c_it);
         break;
 
       case ASSIGN:
