@@ -369,7 +369,7 @@ void termination_ctat::unwinding_next(
   unsigned total_unwindings)
 {
   goto_functionst::function_mapt::iterator main_it=
-      temp_goto_functions.function_map.find(ID_main);
+    temp_goto_functions.function_map.find(ID_main);
 
   assert(main_it!=temp_goto_functions.function_map.end());
 
@@ -462,7 +462,6 @@ void termination_ctat::unwinding_next(
     main.update();
   }
 
-
   // All the backjumps are now assumptions
   Forall_goto_program_instructions(it, main)
   {
@@ -513,7 +512,9 @@ bool termination_ctat::rank_block(
   ranking_relation_cachet &ranking_relations,
   const irep_idt &main_backup_id)
 {
-  assert(assertion->type==ASSERT && assertion->guard.id()==ID_implies);
+  assert(assertion->type==ASSERT &&
+         assertion->guard.id()==ID_implies);
+
   goto_tracet goto_trace;
 
   while(!cegar(model, goto_trace,
