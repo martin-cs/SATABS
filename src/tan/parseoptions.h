@@ -27,7 +27,7 @@ Author: CM Wintersteiger
   "(no-loop-slicing)" \
   "(ranksynthesis):" \
   "(unranked-method):" \
-  "(engine):"
+  "(engine):(modelchecker):"
 
 typedef enum { TAN_UNKNOWN=0, 
                TAN_TERMINATING=10,
