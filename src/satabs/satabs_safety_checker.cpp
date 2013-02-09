@@ -569,7 +569,7 @@ void satabs_safety_checker_baset::re_abstract(const goto_programt::const_targett
 
 /*******************************************************************\
 
-Function: satabs_safety_checker_baset::satabs_safety_checker_baset
+Function: satabs_componentst::satabs_componentst
 
 Inputs:
 
@@ -579,21 +579,12 @@ Purpose:
 
 \*******************************************************************/
 
-#if 0
-satabs_safety_checkert::satabs_safety_checkert(
-  const namespacet &_ns,
-  const goto_functionst &_goto_functions,
+satabs_componentst::satabs_componentst(
   const optionst &options,
-  contextt &shadow_context,
-  message_handlert &_message_handler):
-  concrete_model(_ns, _goto_functions),
-  args(_message_handler, concrete_model),
-  abstractor_ptr(select_abstractor(options, args)),
-  refiner_ptr(select_refiner(options, args)),
-  modelchecker_ptr(select_modelchecker(options, args)),
-  simulator_ptr(select_simulator(options, args, shadow_context)),
-  satabs_safety_checker_baset(
-    _ns, *abstractor_ptr, *refiner_ptr, *modelchecker_ptr, *simulator_ptr)
+  contextt &_shadow_context):
+  abstractor_ptr(select_abstractor(options)),
+  refiner_ptr(select_refiner(options)),
+  modelchecker_ptr(select_modelchecker(options)),
+  simulator_ptr(select_simulator(options, _shadow_context))
 {
 }
-#endif

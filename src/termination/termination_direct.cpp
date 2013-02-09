@@ -79,13 +79,11 @@ termination_resultt termination_directt::terminates(
   
   null_message_handlert nmh;
   message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
-  loop_componentt::argst args(get_message_handler(), model);
 
-  std::auto_ptr<refinert> refiner(select_refiner(options, args));
-  std::auto_ptr<abstractort> abstractor(select_abstractor(options, args));
-  std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options, args));
-  std::auto_ptr<simulatort> simulator(select_simulator(options, args, 
-                                                       shadow_context));
+  std::auto_ptr<refinert> refiner(select_refiner(options));
+  std::auto_ptr<abstractort> abstractor(select_abstractor(options));
+  std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options));
+  std::auto_ptr<simulatort> simulator(select_simulator(options, shadow_context));
   
   unsigned this_verb=verbosity-2;
   
@@ -188,23 +186,18 @@ termination_resultt termination_directt::terminates(
     
   null_message_handlert nmh;
   message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
-  loop_componentt::argst args(get_message_handler(), model);  
 
   // finds predicates
-  std::auto_ptr<refinert> refiner(
-    select_refiner(options, args));
+  std::auto_ptr<refinert> refiner(select_refiner(options));
 
   // calculates abstract program
-  std::auto_ptr<abstractort> abstractor(
-    select_abstractor(options, args));
+  std::auto_ptr<abstractort> abstractor(select_abstractor(options));
 
   // model checking engine
-  std::auto_ptr<modelcheckert> modelchecker(
-    select_modelchecker(options, args));
+  std::auto_ptr<modelcheckert> modelchecker(select_modelchecker(options));
 
   // simulator
-  std::auto_ptr<simulatort> simulator(
-    select_simulator(options, args, shadow_context));
+  std::auto_ptr<simulatort> simulator(select_simulator(options, shadow_context));
   
   unsigned this_verb=verbosity-2;
   

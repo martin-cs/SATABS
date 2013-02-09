@@ -114,20 +114,36 @@ protected:
       const std::string &name);
 };
 
-class satabs_safety_checkert:public satabs_safety_checker_baset
+class satabs_componentst
+{
+public:
+  satabs_componentst(
+    const optionst &options,
+    contextt &shadow_context);
+
+  std::auto_ptr<abstractort> abstractor_ptr;
+  std::auto_ptr<refinert> refiner_ptr;
+  std::auto_ptr<modelcheckert> modelchecker_ptr;
+  std::auto_ptr<simulatort> simulator_ptr;
+};
+
+class satabs_safety_checkert:
+  public satabs_componentst,
+  public satabs_safety_checker_baset
 {
 public:
   // select components from options
   explicit satabs_safety_checkert(
     const contextt &_context,
-    const optionst &options);
+    const optionst &options):
+    satabs_componentst(options, shadow_context),
+    satabs_safety_checker_baset(
+      ns, *abstractor_ptr, *refiner_ptr, *modelchecker_ptr, *simulator_ptr),
+    ns(_context, shadow_context)
+  {
+  }
 
 protected:
-  std::auto_ptr<abstractort> abstractor_ptr;
-  std::auto_ptr<refinert> refiner_ptr;
-  std::auto_ptr<modelcheckert> modelchecker_ptr;
-  std::auto_ptr<simulatort> simulator_ptr;
-  
   const namespacet ns;
   contextt shadow_context;
 };
