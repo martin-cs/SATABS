@@ -47,9 +47,7 @@
 
 tan_parseoptionst::tan_parseoptionst(int argc, const char **argv):
   parseoptions_baset(TAN_OPTIONS, argc, argv),
-  language_uit("TAN" TAN_VERSION, cmdline),
-  ns(context),
-  loops_nonterminating(0)
+  language_uit("TAN" TAN_VERSION, cmdline)
 {
 }
 
@@ -261,6 +259,8 @@ bool tan_parseoptionst::prepare()
 {
   message_handlert &mh=get_message_handler();
   
+  const namespacet ns(context);
+  
   if(cmdline.isset("show-model"))
   {
     goto_functions.output(ns, std::cout);
@@ -400,7 +400,7 @@ bool tan_parseoptionst::prepare()
 
 tan_resultt tan_parseoptionst::analyze()
 {  
-  contextt shadow_context;
+  const namespacet ns(context);
   value_set_analysist value_set_analysis(ns);
   invariant_propagationt invariant_propagation(ns, value_set_analysis);
   

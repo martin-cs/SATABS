@@ -46,12 +46,8 @@ public:
   
 private:
   contextt context;
-  namespacet ns;
   goto_functionst goto_functions;
 
-  // some stats
-  unsigned loops_nonterminating;
-  
   bool check_and_set_options();
   bool from_file(const std::string &filename);
   bool prepare();
