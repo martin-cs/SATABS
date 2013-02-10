@@ -12,27 +12,6 @@ Date: June 2003
 
 /*******************************************************************\
 
-Function: show_counterexample_gui
-
-Inputs:
-
-Outputs:
-
-Purpose:
-
-\*******************************************************************/
-
-void show_counterexample_gui(
-    std::ostream &out,
-    const contextt &context,
-    const concrete_counterexamplet &counterexample)
-{
-  const namespacet ns(context);
-  show_goto_trace_gui(out, ns, counterexample.goto_trace);
-}
-
-/*******************************************************************\
-
 Function: show_counterexample
 
 Inputs:

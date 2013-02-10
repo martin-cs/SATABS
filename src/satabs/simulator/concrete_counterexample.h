@@ -32,11 +32,6 @@ void show_counterexample(
   const contextt &context,
   const concrete_counterexamplet &counterexample);
 
-void show_counterexample_gui(
-  std::ostream &out,
-  const contextt &context,
-  const concrete_counterexamplet &counterexample);
-
 std::ostream& operator<< (
   std::ostream& out,
   const concrete_counterexamplet &counterexample);
