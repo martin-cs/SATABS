@@ -13,7 +13,7 @@ Author: CM Wintersteiger
 
 #include <namespace.h>
 #include <message.h>
-#include <context.h>
+#include <symbol_table.h>
 #include <find_symbols.h>
 
 #include <goto-programs/goto_program.h>
@@ -25,7 +25,7 @@ public:
   typedef enum { T_DIRECT, T_RANKSYNTH } modet;
   
   termination_instrumentert(goto_functionst &_gf,
-                            contextt &_context,
+                            symbol_tablet &_symbol_table,
                             message_handlert &_mh,
                             modet _mode=T_RANKSYNTH);
   ~termination_instrumentert();
@@ -45,7 +45,7 @@ protected:
   typedef std::map<irep_idt, variantt > globals_cachet;
   
   goto_functionst &goto_functions;
-  contextt &context;
+  symbol_tablet &symbol_table;
   namespacet ns;
   modet mode;
   

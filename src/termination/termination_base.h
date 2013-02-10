@@ -21,7 +21,7 @@ Author: CM Wintersteiger
 #include "ranking_body.h"
 #include "termination_results.h"
 
-class contextt;
+class symbol_tablet;
 class goto_functionst;
 class value_set_analysist;
 class invariant_propagation;
@@ -33,8 +33,8 @@ class termination_baset:public messaget
 public:
   termination_baset(const cmdlinet &_cmd,
                     const goto_functionst &_gf,
-                    const contextt &_ctxt,
-                    class contextt &_sctxt,
+                    const symbol_tablet &_ctxt,
+                    class symbol_tablet &_sctxt,
                     class value_set_analysist &_vsa,
                     class invariant_propagationt &_ip,
                     message_handlert &_mh,
@@ -43,8 +43,8 @@ public:
   virtual termination_resultt operator()()=0;  
 
 protected:
-  const contextt &context;
-  contextt &shadow_context;  
+  const symbol_tablet &symbol_table;
+  symbol_tablet &shadow_symbol_table;  
   const cmdlinet &cmdline;
   namespacet ns;
   ui_message_handlert::uit ui;

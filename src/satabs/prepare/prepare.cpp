@@ -14,7 +14,7 @@ Date: June 2003
 #include <i2string.h>
 #include <xml.h>
 #include <xml_irep.h>
-#include <context.h>
+#include <symbol_table.h>
 #include <cmdline.h>
 
 #include <ansi-c/ansi_c_language.h>
@@ -93,11 +93,11 @@ int preparet::doit()
       status("Reading GOTO program from file");
 
       if(read_goto_binary(cmdline.args[0],
-            context, goto_functions,
+            symbol_table, goto_functions,
             get_message_handler()))
         return 1;
 
-      config.ansi_c.set_from_context(context);
+      config.ansi_c.set_from_symbol_table(symbol_table);
     }
     else
     {
@@ -114,7 +114,7 @@ int preparet::doit()
 
       // see if we have a "main"
 
-      if(context.symbols.find("main")==context.symbols.end())
+      if(symbol_table.symbols.find("main")==symbol_table.symbols.end())
       {
         error("failed to find entry point -- please provide a model");
         return 1;
@@ -123,7 +123,7 @@ int preparet::doit()
       status("Generating GOTO Program");
 
       goto_convert(
-          context,
+          symbol_table,
           goto_functions,
           get_message_handler());
 
@@ -145,7 +145,7 @@ int preparet::doit()
 
     if(cmdline.isset("show-claims"))
     {
-      namespacet ns(context);
+      namespacet ns(symbol_table);
       show_claims(ns, get_ui(), goto_functions);
       return 0;
     }
@@ -154,7 +154,7 @@ int preparet::doit()
 
     if(cmdline.isset("predicates"))
     {
-      namespacet ns(context);
+      namespacet ns(symbol_table);
       get_predicates(
           cmdline.getval("predicates"),
           get_message_handler(),
@@ -214,12 +214,12 @@ Purpose:
 
 int preparet::get_async_modules()
 {
-  namespacet ns(context);
+  namespacet ns(symbol_table);
 
   // finally add the library
   status("Adding CPROVER library");      
   link_to_library(
-      context, goto_functions, get_message_handler());
+      symbol_table, goto_functions, get_message_handler());
 
   if(cmdline.isset("show-goto-functions"))
   {
@@ -238,7 +238,7 @@ int preparet::get_async_modules()
 
   if(cmdline.isset("string-abstraction"))
     string_instrumentation(
-        context, get_message_handler(), goto_functions);
+        symbol_table, get_message_handler(), goto_functions);
 
   {
     status("Removing function pointers");
@@ -279,7 +279,7 @@ int preparet::get_async_modules()
 
     status("Adjusting functions");
     prepare_functions(
-        context,
+        symbol_table,
         goto_functions,
         get_message_handler());
 
@@ -294,7 +294,7 @@ int preparet::get_async_modules()
   // add loop ids
   goto_functions.compute_loop_numbers();
 
-  add_failed_symbols(context);
+  add_failed_symbols(symbol_table);
 
   // add generic checks
   goto_check(ns, options, goto_functions);
@@ -303,7 +303,7 @@ int preparet::get_async_modules()
   {
     status("String Abstraction");
     string_abstraction(
-        context,
+        symbol_table,
         get_message_handler(),
         goto_functions);
   }  

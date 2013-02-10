@@ -24,10 +24,10 @@ Purpose:
 
 void show_counterexample(
     std::ostream &out,
-    const contextt &context,
+    const symbol_tablet &symbol_table,
     const concrete_counterexamplet &counterexample)
 {
-  namespacet ns(context);
+  namespacet ns(symbol_table);
 
   show_goto_trace(out, ns, counterexample.goto_trace);
 

@@ -13,11 +13,11 @@ Date: May 2009
 
 #include <typecheck.h>
 #include <ansi-c/ansi_c_parse_tree.h>
-#include <context.h>
+#include <symbol_table.h>
 #include <namespace.h>
 #include <message.h>
 
-bool parse_rank_function(const std::string &code, contextt &context,
+bool parse_rank_function(const std::string &code, symbol_tablet &symbol_table,
                          const namespacet &ns, message_handlert &mh, exprt &rf);
 
 
@@ -26,12 +26,12 @@ class rankfunction_typecheckt:public typecheckt
 public:
   rankfunction_typecheckt(
     ansi_c_parse_treet &_parse_tree,
-    contextt &_context,
+    symbol_tablet &_symbol_table,
     const namespacet &_ns,
     message_handlert &_message_handler):
       typecheckt(_message_handler),
       parse_tree(_parse_tree),
-      ns(_context),
+      ns(_symbol_table),
       ext_ns(_ns)
   {
   }

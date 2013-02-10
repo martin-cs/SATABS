@@ -29,10 +29,10 @@ class simulator_loop_detectiont:public simulator_symext
 public:
   simulator_loop_detectiont(
       const optionst &options,
-      contextt &_shadow_context) :
+      symbol_tablet &_shadow_symbol_table) :
     simulator_symext(options),
     parameter_index(0),
-    shadow_context(_shadow_context)
+    shadow_symbol_table(_shadow_symbol_table)
   {
   }
 
@@ -112,7 +112,7 @@ protected:
 
   unsigned parameter_index;
 
-  contextt& shadow_context;
+  symbol_tablet& shadow_symbol_table;
 
   bool check_phase_I_equation(
       symex_target_equationt &equation,

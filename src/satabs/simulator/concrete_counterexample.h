@@ -29,7 +29,7 @@ public:
 
 void show_counterexample(
   std::ostream &out,
-  const contextt &context,
+  const symbol_tablet &symbol_table,
   const concrete_counterexamplet &counterexample);
 
 std::ostream& operator<< (

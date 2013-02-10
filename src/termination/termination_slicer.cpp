@@ -44,8 +44,8 @@ class termination_slicert : public messaget
 {
 public:
   termination_slicert(
-    const contextt &_c,
-    contextt &_sc,
+    const symbol_tablet &_c,
+    symbol_tablet &_sc,
     const goto_functionst &_srcf,
     const irep_idt &_entry,
     goto_programt::const_targett &_goal,
@@ -57,7 +57,7 @@ public:
       dependency_limit(5),
       replace_dynamic_allocation(false),
       ns(_c, _sc),
-      shadow_context(_sc),
+      shadow_symbol_table(_sc),
       src_functions(_srcf),
       entry(_entry),
       goal(_goal),
@@ -113,7 +113,7 @@ protected:
     typedef std::priority_queue<slicer_cfgt::iterator> queuet;
 
     const namespacet ns;
-    contextt &shadow_context;
+    symbol_tablet &shadow_symbol_table;
     const goto_functionst &src_functions;
     const irep_idt &entry;
     const_targett &goal;
@@ -1203,7 +1203,7 @@ void termination_slicert::remove_dynamic_allocation()
           else
             new_symbol.type.set("size", "infinity");
         }
-        while (shadow_context.move(new_symbol, new_symbolp));
+        while (shadow_symbol_table.move(new_symbol, new_symbolp));
 
         code.rhs()=typecast_exprt(code.lhs().type());
         code.rhs().op0()=symbol_exprt(new_symbolp->name, new_symbolp->type);
@@ -1275,8 +1275,8 @@ void termination_slicert::operator()()
 \********************************************************************/
 
 bool sliced_abstraction(
-  const contextt &context,
-  contextt &shadow_context,
+  const symbol_tablet &symbol_table,
+  symbol_tablet &shadow_symbol_table,
   const goto_functionst &src_functions,
   const irep_idt &entry,
   goto_programt::const_targett &to,
@@ -1291,8 +1291,8 @@ bool sliced_abstraction(
   assert(to->type==ASSERT);
   dest_functions.clear();
 
-  termination_slicert termination_slicer(context,
-                                         shadow_context,
+  termination_slicert termination_slicer(symbol_table,
+                                         shadow_symbol_table,
                                          src_functions,
                                          entry,
                                          to,

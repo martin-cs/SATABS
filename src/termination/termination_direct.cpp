@@ -38,8 +38,8 @@ termination_resultt termination_directt::terminates(
   fine_timet before=current_time();
    
   goto_functionst dest_func;
-  int mres=sliced_abstraction(context,
-                              shadow_context,
+  int mres=sliced_abstraction(symbol_table,
+                              shadow_symbol_table,
                               goto_functions,
                               main,
                               assertion,
@@ -82,7 +82,7 @@ termination_resultt termination_directt::terminates(
   out.close();  
   #endif
       
-  satabs_safety_checkert safety_checker(context, options);
+  satabs_safety_checkert safety_checker(symbol_table, options);
   safety_checker.set_message_handler(mh);
   safety_checker.set_verbosity(this_verb);
                  
@@ -93,7 +93,7 @@ termination_resultt termination_directt::terminates(
     #if 0
     std::string fname="model_" + i2string(call_counter) + "_" + i2string(++cnt) + ".bin";
     out.open(fname.c_str());
-    write_goto_binary(out, context, model.goto_functions);
+    write_goto_binary(out, symbol_table, model.goto_functions);
     out.close();
     #endif
       
@@ -176,7 +176,7 @@ termination_resultt termination_directt::terminates(
   out.close();
   #endif
   
-  satabs_safety_checkert safety_checker(context, options);
+  satabs_safety_checkert safety_checker(symbol_table, options);
   safety_checker.set_message_handler(mh);
   safety_checker.set_verbosity(this_verb);
                

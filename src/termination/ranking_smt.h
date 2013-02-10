@@ -26,8 +26,8 @@ public:
 
   ranking_synthesis_smtt(
     const bodyt &_body,
-    const contextt &_ctx,
-    contextt &_sctx,
+    const symbol_tablet &_ctx,
+    symbol_tablet &_sctx,
     message_handlert &_mh,
     coef_constraintt _c_mode=COEFFICIENTS_UNCONSTRAINED) :
       ranking_synthesis_baset(_body, _ctx, _sctx, _mh),

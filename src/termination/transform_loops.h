@@ -15,15 +15,15 @@
 class loop_transformt : public message_streamt
 {
 private:
-  contextt &context;
+  symbol_tablet &symbol_table;
   unsigned trans_counter;
 
 public:
   loop_transformt(
-    contextt &_context,
+    symbol_tablet &_symbol_table,
     message_handlert &_message_handler) :
       message_streamt(_message_handler),
-      context(_context),
+      symbol_table(_symbol_table),
       trans_counter(0) {}
 
   void transform(goto_functionst &goto_functions);
@@ -149,11 +149,11 @@ public:
 };
 
 void transform_loops(goto_functionst &goto_functions,
-                     contextt &context,
+                     symbol_tablet &symbol_table,
                      message_handlert &message_handler);
 
 void transform_loops(goto_programt &goto_program,
-                     contextt &context,
+                     symbol_tablet &symbol_table,
                      message_handlert &message_handler);
 
 #endif /*_CPROVER_LOOPFROG_TRANSFORM_LOOPS_H_*/

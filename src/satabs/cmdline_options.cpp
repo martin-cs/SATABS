@@ -200,7 +200,7 @@ int cmdline_optionst::doit()
     messaget message(message_handler);
     
     satabs_safety_checkert satabs_safety_checker(
-      prepare.context, options);
+      prepare.symbol_table, options);
 
     satabs_safety_checker.initial_predicates=
       prepare.user_provided_predicates;

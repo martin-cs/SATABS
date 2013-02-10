@@ -177,7 +177,7 @@ bool termination_itat::make_compositional(
       exprt new_sym_expr = symbol_exprt(new_sym.name, new_sym.type);
       temp.add_instruction(ASSIGN);
       temp.instructions.back().code = code_assignt(new_sym_expr, *it);
-      shadow_context.move(new_sym);
+      shadow_symbol_table.move(new_sym);
     }
     else // does have the prefix
     {
@@ -217,7 +217,7 @@ bool termination_itat::make_compositional(
 #if 1
   // save the temporary program
   goto_functionst gf;
-  contextt ctx = context;
+  symbol_tablet ctx = symbol_table;
   
   gf.copy_from(goto_functions);  
   irep_idt name=ID_main; // overwrite main
@@ -225,8 +225,8 @@ bool termination_itat::make_compositional(
   gf.function_map[name].body.copy_from(temp);
   gf.function_map[name].body_available=true;
   
-  for(contextt::symbolst::const_iterator it=shadow_context.symbols.begin();
-      it!=shadow_context.symbols.end();
+  for(symbol_tablet::symbolst::const_iterator it=shadow_symbol_table.symbols.begin();
+      it!=shadow_symbol_table.symbols.end();
       it++)
     ctx.add(it->second);
   
@@ -240,11 +240,11 @@ bool termination_itat::make_compositional(
     
 
   goto_tracet error_trace;
-  // need new context with both
-  contextt temp_context;
-  forall_symbols(it, context.symbols) temp_context.add(it->second);
-  forall_symbols(it, shadow_context.symbols) temp_context.add(it->second);
-  wolvert wolver(temp_context, temp_goto_functions, error_trace, get_message_handler());
+  // need new symbol_table with both
+  symbol_tablet temp_symbol_table;
+  forall_symbols(it, symbol_table.symbols) temp_symbol_table.add(it->second);
+  forall_symbols(it, shadow_symbol_table.symbols) temp_symbol_table.add(it->second);
+  wolvert wolver(temp_symbol_table, temp_goto_functions, error_trace, get_message_handler());
   wolver.options.set_option("interpolator", "princess");
   if (verbosity>=9) wolver.options.set_option("show-invariants", true);
   

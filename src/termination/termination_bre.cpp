@@ -41,8 +41,8 @@ termination_resultt termination_bret::terminates(
   fine_timet before=current_time();
   
   goto_functionst dest_func;
-  int mres=sliced_abstraction(context,
-                              shadow_context,
+  int mres=sliced_abstraction(symbol_table,
+                              shadow_symbol_table,
                               goto_functions,
                               main,
                               assertion,
@@ -106,7 +106,7 @@ termination_resultt termination_bret::bre_loop(
   out.close();
   #endif
     
-  satabs_safety_checkert safety_checker(context, options);
+  satabs_safety_checkert safety_checker(symbol_table, options);
   safety_checker.set_message_handler(mh);
   safety_checker.set_verbosity(this_verb);
                  
@@ -123,7 +123,7 @@ termination_resultt termination_bret::bre_loop(
       #if 0
       std::string fname="model_" + i2string(call_counter) + "_" + i2string(++cnt) + ".bin";
       out.open(fname.c_str());
-      write_goto_binary(out, context, model.goto_functions);
+      write_goto_binary(out, symbol_table, model.goto_functions);
       out.close();
       #endif
       
@@ -227,7 +227,7 @@ termination_resultt termination_bret::terminates(
   out.close();
   #endif
   
-  satabs_safety_checkert safety_checker(context, options);
+  satabs_safety_checkert safety_checker(symbol_table, options);
   safety_checker.set_verbosity(this_verb);
   safety_checker.set_message_handler(mh);
   
@@ -507,8 +507,8 @@ bool termination_bret::process_counterexample(goto_tracet &trace)
     
     ranksynth_calls++;
     fine_timet before=current_time();    
-    exprt rank_function=ranking(mode, body, context, 
-                                shadow_context, 
+    exprt rank_function=ranking(mode, body, symbol_table, 
+                                shadow_symbol_table, 
                                 *message_handler, 
                                 (verbosity>6)?verbosity:2);
     ranking_time+=current_time()-before;

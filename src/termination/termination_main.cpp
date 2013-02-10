@@ -37,7 +37,7 @@ termination_resultt termination(
   termination_prover_modet mode,
   const cmdlinet &cmdline,
   const goto_functionst &goto_functions,
-  const contextt &context,
+  const symbol_tablet &symbol_table,
   value_set_analysist &value_set_analysis,
   invariant_propagationt &invariant_propagation,
   message_handlert &message_handler,
@@ -48,7 +48,7 @@ termination_resultt termination(
   std::auto_ptr<termination_baset> tt;
   messaget message(message_handler);
   
-  contextt shadow_context;
+  symbol_tablet shadow_symbol_table;
   
   switch(mode)
   {
@@ -56,7 +56,7 @@ termination_resultt termination(
     message.status("Using binary reachability");
     tt=std::auto_ptr<termination_baset>(
           new termination_bret(cmdline, goto_functions, 
-                               context, shadow_context, 
+                               symbol_table, shadow_symbol_table, 
                                value_set_analysis, invariant_propagation,
                                message_handler, ui));
     break;
@@ -65,7 +65,7 @@ termination_resultt termination(
     message.status("Using direct method");
     tt=std::auto_ptr<termination_baset>(
           new termination_directt(cmdline, goto_functions, 
-                                  context, shadow_context, 
+                                  symbol_table, shadow_symbol_table, 
                                   value_set_analysis, invariant_propagation,
                                   message_handler, ui));
     break;
@@ -74,7 +74,7 @@ termination_resultt termination(
     message.status("Using compositional method");
     tt=std::auto_ptr<termination_baset>(
           new termination_ctat(cmdline, goto_functions, 
-                               context, shadow_context, 
+                               symbol_table, shadow_symbol_table, 
                                value_set_analysis, invariant_propagation,
                                message_handler, ui));
     break;
@@ -83,7 +83,7 @@ termination_resultt termination(
     message.status("Using path enumeration");
     tt=std::auto_ptr<termination_baset>(
           new termination_path_enumerationt(cmdline, goto_functions, 
-                                            context, shadow_context, 
+                                            symbol_table, shadow_symbol_table, 
                                             value_set_analysis, 
                                             invariant_propagation,
                                             message_handler, ui));
@@ -94,7 +94,7 @@ termination_resultt termination(
     message.status("Using interpolating method");
     tt=std::auto_ptr<termination_baset>(
           new termination_itat(cmdline, goto_functions, 
-                               context, shadow_context, 
+                               symbol_table, shadow_symbol_table, 
                                value_set_analysis, 
                                invariant_propagation,
                                message_handler, ui));

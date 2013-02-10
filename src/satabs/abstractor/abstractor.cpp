@@ -320,8 +320,8 @@ exprt abstractort::get_value(
   for(unsigned i=0; i<predicates.size(); i++)
   {
 #if 0
-    contextt context;
-    const namespacet ns(context);
+    symbol_tablet symbol_table;
+    const namespacet ns(symbol_table);
     std::cout << "V " << p_nr << " " << from_expr(ns, "", value) << std::endl;
     std::cout << "P " << i << " " << from_expr(ns, "", predicates[i]) << std::endl;
 #endif

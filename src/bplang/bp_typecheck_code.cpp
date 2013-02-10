@@ -282,9 +282,9 @@ void bp_typecheckt::typecheck_code_function_call(code_function_callt &code)
 
   function.set(ID_identifier, full_identifier);  
   
-  contextt::symbolst::iterator s_it=context.symbols.find(full_identifier);
+  symbol_tablet::symbolst::iterator s_it=symbol_table.symbols.find(full_identifier);
 
-  if(s_it==context.symbols.end())
+  if(s_it==symbol_table.symbols.end())
   {
     err_location(code);
     str << "function " << identifier << " not found";
@@ -593,7 +593,7 @@ void bp_typecheckt::typecheck_code_decl(codet &code)
 
   op.set(ID_identifier, symbol.name);
   
-  context.move(symbol);
+  symbol_table.move(symbol);
 }
 
 /*******************************************************************\

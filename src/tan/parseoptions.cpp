@@ -229,7 +229,7 @@ bool tan_parseoptionst::from_file(const std::string &filename)
   }  
 
   status(std::string("Loading `")+filename+"' ...");
-  if(read_goto_binary(filename, context, goto_functions, get_message_handler()))
+  if(read_goto_binary(filename, symbol_table, goto_functions, get_message_handler()))
   {
     error(std::string("Error reading file `")+filename+"'.");
     return true;
@@ -237,7 +237,7 @@ bool tan_parseoptionst::from_file(const std::string &filename)
   
   if(cmdline.isset("show-program"))
   {
-    goto_functions.output(namespacet(context), std::cout);
+    goto_functions.output(namespacet(symbol_table), std::cout);
     return true;    
   }
   
@@ -260,7 +260,7 @@ bool tan_parseoptionst::prepare()
 {
   message_handlert &mh=get_message_handler();
   
-  const namespacet ns(context);
+  const namespacet ns(symbol_table);
   
   if(cmdline.isset("show-model"))
   {
@@ -269,7 +269,7 @@ bool tan_parseoptionst::prepare()
   }
   
   if(cmdline.isset("string-abstraction"))
-    string_instrumentation(context, mh, goto_functions);
+    string_instrumentation(symbol_table, mh, goto_functions);
   
   status("Removing function pointers");
   remove_function_pointers(ns, goto_functions, false);
@@ -278,7 +278,7 @@ bool tan_parseoptionst::prepare()
   remove_unused_functions(goto_functions, mh);
 
   status("Transforming loops");
-  transform_loops(goto_functions, context, mh);
+  transform_loops(goto_functions, symbol_table, mh);
   
   status("Partial inlining");
   goto_partial_inline(goto_functions, ns, mh);
@@ -287,12 +287,12 @@ bool tan_parseoptionst::prepare()
   remove_unused_functions(goto_functions, mh);
 
   status("Adjusting functions");
-  prepare_functions(context, goto_functions, mh);
+  prepare_functions(symbol_table, goto_functions, mh);
   
   if(cmdline.isset("string-abstraction"))
   {
     status("String Abstraction");
-    string_abstraction(context, mh, goto_functions);
+    string_abstraction(symbol_table, mh, goto_functions);
   }
     
   goto_functions.compute_location_numbers();
@@ -321,7 +321,7 @@ bool tan_parseoptionst::prepare()
     instrumenter_mode = termination_instrumentert::T_DIRECT;
   }
 
-  termination_instrumentert termination(goto_functions, context, mh, instrumenter_mode);
+  termination_instrumentert termination(goto_functions, symbol_table, mh, instrumenter_mode);
   termination.set_verbosity(verbosity);
   unsigned loopcount=termination.instrument();
 
@@ -401,7 +401,7 @@ bool tan_parseoptionst::prepare()
 
 tan_resultt tan_parseoptionst::analyze()
 {  
-  const namespacet ns(context);
+  const namespacet ns(symbol_table);
   value_set_analysist value_set_analysis(ns);
   invariant_propagationt invariant_propagation(ns, value_set_analysis);
   
@@ -427,7 +427,7 @@ tan_resultt tan_parseoptionst::analyze()
   
   termination_resultt
     res=termination(engine,
-                    cmdline, goto_functions, context, 
+                    cmdline, goto_functions, symbol_table, 
                     value_set_analysis, invariant_propagation, *message_handler,
                     get_ui(),
                     up_predicates, max_iterations);

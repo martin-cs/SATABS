@@ -29,7 +29,7 @@ Function: bp_languaget::final
 \*******************************************************************/
 
 bool bp_languaget::final(
-  contextt &context,
+  symbol_tablet &symbol_table,
   message_handlert &message_handler)
 {
   // do main symbol
@@ -41,10 +41,10 @@ bool bp_languaget::final(
   new_symbol.name="main";
   new_symbol.type=main_type;
   
-  const contextt::symbolst::const_iterator s_it=
-    context.symbols.find("bp::fkt::main");
+  const symbol_tablet::symbolst::const_iterator s_it=
+    symbol_table.symbols.find("bp::fkt::main");
     
-  if(s_it==context.symbols.end())
+  if(s_it==symbol_table.symbols.end())
     return false;
     
   const symbolt &symbol=s_it->second;
@@ -60,7 +60,7 @@ bool bp_languaget::final(
 
   new_symbol.value=call;
   
-  if(context.move(new_symbol))
+  if(symbol_table.move(new_symbol))
   {
     messaget message;
     message.set_message_handler(message_handler);
@@ -133,12 +133,12 @@ Function: bp_languaget::typecheck
 \*******************************************************************/
 
 bool bp_languaget::typecheck(
-  contextt &context,
+  symbol_tablet &symbol_table,
   const std::string &module,
   message_handlert &message_handler)
 {
   return bp_typecheck(
-    bp_parse_tree, context, module, message_handler);
+    bp_parse_tree, symbol_table, module, message_handler);
 }
 
 /*******************************************************************\

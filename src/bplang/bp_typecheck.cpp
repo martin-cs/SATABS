@@ -108,7 +108,7 @@ void bp_typecheckt::convert_variable(exprt &declaration)
     symbol.pretty_name=symbol.base_name;
     symbol.location=it->location();
 
-    context.add(symbol);
+    symbol_table.add(symbol);
   }
 }
 
@@ -150,7 +150,7 @@ void bp_typecheckt::convert_function(exprt &declaration)
   convert_function_arguments(symbol);
   function_identifiers.push_back(symbol.name);  
 
-  context.move(symbol);
+  symbol_table.move(symbol);
 }
 
 /*******************************************************************\
@@ -196,7 +196,7 @@ void bp_typecheckt::convert_function_arguments(symbolt &fkt_symbol)
    
     it->swap(argument);
 
-    context.add(arg_symbol);
+    symbol_table.add(arg_symbol);
   }
 }
 
@@ -241,9 +241,9 @@ void bp_typecheckt::typecheck()
       it!=function_identifiers.end();
       it++)
   {
-    contextt::symbolst::iterator s_it=context.symbols.find(*it);
+    symbol_tablet::symbolst::iterator s_it=symbol_table.symbols.find(*it);
     
-    assert(s_it!=context.symbols.end());
+    assert(s_it!=symbol_table.symbols.end());
     
     symbolt &symbol=s_it->second;
     
@@ -272,13 +272,13 @@ Function: bp_typecheck
 
 bool bp_typecheck(
   bp_parse_treet &bp_parse_tree,
-  contextt &context,
+  symbol_tablet &symbol_table,
   const std::string &module,
   message_handlert &message_handler)
 {
   bp_typecheckt bp_typecheck(
     bp_parse_tree,
-    context,
+    symbol_table,
     module,
     message_handler);
 

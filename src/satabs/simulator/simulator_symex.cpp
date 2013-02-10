@@ -15,7 +15,7 @@ to determmine whether it is spurious.
 
 #include <expr_util.h>
 #include <i2string.h>
-#include <context.h>
+#include <symbol_table.h>
 
 #include <solvers/sat/satcheck.h>
 #include <solvers/flattening/bv_pointers.h>
@@ -47,10 +47,10 @@ void simulator_symext::build_equation_prefix(
     goto_symex_statet &state,
     bool constant_propagation)
 {
-  contextt new_context;
-  namespacet new_ns(concrete_model->ns.get_context(), new_context);
+  symbol_tablet new_symbol_table;
+  namespacet new_ns(concrete_model->ns.get_symbol_table(), new_symbol_table);
 
-  goto_symext symex_simulator(new_ns, new_context, prefix.equation);
+  goto_symext symex_simulator(new_ns, new_symbol_table, prefix.equation);
   symex_simulator.constant_propagation=constant_propagation;
   symex_simulator.options.set_option("assertions", true);
   symex_simulator.options.set_option("all-assertions", true);

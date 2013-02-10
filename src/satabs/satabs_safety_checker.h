@@ -124,7 +124,7 @@ class satabs_componentst
 public:
   satabs_componentst(
     const optionst &options,
-    contextt &shadow_context);
+    symbol_tablet &shadow_symbol_table);
 
   std::auto_ptr<abstractort> abstractor_ptr;
   std::auto_ptr<refinert> refiner_ptr;
@@ -139,13 +139,13 @@ class satabs_safety_checkert:
 public:
   // select components from options
   explicit satabs_safety_checkert(
-    const contextt &_context,
+    const symbol_tablet &_symbol_table,
     const optionst &options);
 
   const namespacet ns;
 
 protected:
-  contextt shadow_context;
+  symbol_tablet shadow_symbol_table;
 };
 
 #endif

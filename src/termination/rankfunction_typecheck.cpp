@@ -32,7 +32,7 @@ Date: May 2009
 
 \********************************************************************/
 
-bool parse_rank_function(const std::string &code, contextt &context,
+bool parse_rank_function(const std::string &code, symbol_tablet &symbol_table,
                          const namespacet &ext_ns, message_handlert &mh, exprt &rf)
 {
   std::stringstream str(code);
@@ -58,7 +58,7 @@ bool parse_rank_function(const std::string &code, contextt &context,
     if(!result)
     {
       ansi_c_parse_treet ansi_c_parse_tree;
-      rankfunction_typecheckt typecheck(ansi_c_parse_tree, context, ext_ns, mh);
+      rankfunction_typecheckt typecheck(ansi_c_parse_tree, symbol_table, ext_ns, mh);
 
       try
       {

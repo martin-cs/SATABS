@@ -13,7 +13,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include "predicates.h"
 
 #include <std_expr.h>
-#include <context.h>
+#include <symbol_table.h>
 #include <namespace.h>
 
 /*******************************************************************\
@@ -61,8 +61,8 @@ std::ostream& operator<< (std::ostream& out,
 {
   for(unsigned i=0; i<predicates.size(); i++)
   {
-    contextt context;
-    namespacet ns(context);
+    symbol_tablet symbol_table;
+    namespacet ns(symbol_table);
     out << "b" << i << " <=> "
       << from_expr(ns, "", predicates[i]) << std::endl;
   }

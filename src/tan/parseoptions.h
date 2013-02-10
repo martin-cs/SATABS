@@ -13,7 +13,7 @@ Author: CM Wintersteiger
 
 #include <ui_message.h>
 #include <parseoptions.h>
-#include <context.h>
+#include <symbol_table.h>
 
 #include <langapi/language_ui.h>
 #include <goto-programs/goto_functions.h>
@@ -45,7 +45,7 @@ public:
   tan_parseoptionst(int argc, const char **argv);
   
 private:
-  contextt context;
+  symbol_tablet symbol_table;
   goto_functionst goto_functions;
 
   bool check_and_set_options();

@@ -20,8 +20,8 @@ class ranking_synthesis_seneschalt:public ranking_synthesis_baset
 public:
   ranking_synthesis_seneschalt(
     const bodyt &_body,
-    const contextt &_ctx,
-    contextt &_sctx,
+    const symbol_tablet &_ctx,
+    symbol_tablet &_sctx,
     message_handlert &_mh):
       ranking_synthesis_baset(_body, _ctx, _sctx, _mh),
       ranking_function(ID_nil) {}
@@ -31,7 +31,7 @@ public:
 protected:
   typedef replace_mapt variable_mapt;
   variable_mapt variable_map;
-  contextt trans_context;
+  symbol_tablet trans_symbol_table;
 
   exprt ranking_function;
 

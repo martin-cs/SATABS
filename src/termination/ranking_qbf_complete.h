@@ -27,8 +27,8 @@ class ranking_synthesis_qbf_completet:public ranking_synthesis_qbft
 public:
   ranking_synthesis_qbf_completet(
     const bodyt &_body,
-    const contextt &_ctx,
-    contextt &_sctx,
+    const symbol_tablet &_ctx,
+    symbol_tablet &_sctx,
     message_handlert &_mh):
       ranking_synthesis_qbft(_body, _ctx, _sctx, _mh),
       value_width(3)

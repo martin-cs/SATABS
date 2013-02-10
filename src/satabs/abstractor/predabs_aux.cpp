@@ -10,7 +10,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <simplify_expr.h>
 #include <std_expr.h>
-#include <context.h>
+#include <symbol_table.h>
 
 #include <goto-programs/wp.h>
 #include <langapi/language_util.h>
@@ -138,7 +138,7 @@ void build_equation(
 
 #if 0
   optionst options;
-  contextt new_context;
+  symbol_tablet new_symbol_table;
   abstract_dynamic_objectst abstract_dynamic_objects;
   codet tmp_code(to_code(target->code));
 

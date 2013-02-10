@@ -32,8 +32,8 @@ class ranking_synthesis_baset:public messaget
 protected:
   typedef find_symbols_sett intermediate_statet;
 
-  const contextt &context;
-  contextt &shadow_context;
+  const symbol_tablet &symbol_table;
+  symbol_tablet &shadow_symbol_table;
   namespacet ns;
   const bodyt &body;
   exprt rank_relation;
@@ -49,12 +49,12 @@ protected:
 public:
   ranking_synthesis_baset(
     const bodyt &_body,
-    const contextt &_ctx,
-    contextt &_sctx,
+    const symbol_tablet &_ctx,
+    symbol_tablet &_sctx,
     message_handlert &_mh):
     messaget(_mh),
-    context(_ctx),
-    shadow_context(_sctx),
+    symbol_table(_ctx),
+    shadow_symbol_table(_sctx),
     ns(_ctx, _sctx),
     body(_body),
     largest_constant_width(0),

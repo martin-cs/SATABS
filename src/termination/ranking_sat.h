@@ -20,8 +20,8 @@ class ranking_synthesis_satt:public ranking_synthesis_baset
 public:
   ranking_synthesis_satt(
     const bodyt &_body,
-    const contextt &_ctx,
-    contextt &_sctx,
+    const symbol_tablet &_ctx,
+    symbol_tablet &_sctx,
     message_handlert &_mh):
       ranking_synthesis_baset(_body, _ctx, _sctx, _mh) { }
 

@@ -11,7 +11,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <list>
 
-#include <context.h>
+#include <symbol_table.h>
 #include <std_code.h>
 #include <message.h>
 
@@ -19,7 +19,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 bool bp_typecheck(
   bp_parse_treet &bp_parse_tree,
-  contextt &context,
+  symbol_tablet &symbol_table,
   const std::string &module,
   message_handlert &message_handler);
 
@@ -30,12 +30,12 @@ class bp_typecheckt:public typecheckt
  public:
   bp_typecheckt(
     bp_parse_treet &_bp_parse_tree,
-    contextt &_context,
+    symbol_tablet &_symbol_table,
     const std::string &_module,
     message_handlert &_message_handler):
     typecheckt(_message_handler),
     bp_parse_tree(_bp_parse_tree),
-    context(_context),
+    symbol_table(_symbol_table),
     module(_module)
   {
     mode="bp";
@@ -54,7 +54,7 @@ class bp_typecheckt:public typecheckt
 
 protected:
   bp_parse_treet &bp_parse_tree;
-  contextt &context;
+  symbol_tablet &symbol_table;
   const std::string &module;
 
   void typecheck_expr(exprt &expr);

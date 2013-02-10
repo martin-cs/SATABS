@@ -13,8 +13,8 @@ Author: CM Wintersteiger
 
 bool sliced_abstraction(  // Return value: if false, the abstraction collapsed
                           // because the assertion is not reachable.
-  const contextt &context,
-  contextt &shadow_context, // to add static objects when replacing mallocs  
+  const symbol_tablet &symbol_table,
+  symbol_tablet &shadow_symbol_table, // to add static objects when replacing mallocs  
   const goto_functionst &src_functions,
   const irep_idt &entry,
   goto_programt::const_targett &to,

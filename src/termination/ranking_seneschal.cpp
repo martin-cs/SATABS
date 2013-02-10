@@ -296,7 +296,7 @@ bool ranking_synthesis_seneschalt::read_output(exprt &rf)
 
     exprt rfl;
 
-    if(parse_rank_function(rank_string, trans_context, ns, *message_handler, rfl))
+    if(parse_rank_function(rank_string, trans_symbol_table, ns, *message_handler, rfl))
       throw ("RF EXTRACTION ERROR");
 
     replace_expr(variable_map, rfl);
@@ -438,7 +438,7 @@ void ranking_synthesis_seneschalt::collect_variables(
     s.name = std::string("c::") + id2string(newi);
     s.base_name = newi;
     s.type = presym.type();
-    trans_context.move(s);
+    trans_symbol_table.move(s);
 
     ident = it->first;
     newi = std::string("O") + i2string(v++);
@@ -498,7 +498,7 @@ void ranking_synthesis_seneschalt::collect_variables(
     s.name = std::string("c::") + id2string(newi);
     s.base_name = newi;
     s.type = sym.type();
-    trans_context.move(s);
+    trans_symbol_table.move(s);
 
     // AND define an output variable.
     irep_idt newo = (is_nondet) ?

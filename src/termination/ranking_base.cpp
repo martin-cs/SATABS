@@ -14,7 +14,7 @@ Date: September 2008
 #include <find_symbols.h>
 #include <i2string.h>
 #include <symbol.h>
-#include <context.h>
+#include <symbol_table.h>
 
 #include <langapi/language_util.h>
 
@@ -343,7 +343,7 @@ void ranking_synthesis_baset::find_nondet_symbols(
     symbolt s;
     s.name=ident;
     s.type=expr.type();
-    shadow_context.move(s);
+    shadow_symbol_table.move(s);
   }
   else
     forall_operands(it, expr)

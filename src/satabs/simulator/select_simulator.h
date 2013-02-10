@@ -14,12 +14,12 @@ Date: June 2003
 
 #include "../loop_component.h"
 
-class contextt;
+class symbol_tablet;
 class optionst;
 class simulatort;
 
 simulatort *select_simulator(
   const optionst &options,
-  contextt &_shadow_context);
+  symbol_tablet &_shadow_symbol_table);
 
 #endif

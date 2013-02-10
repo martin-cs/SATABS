@@ -14,7 +14,7 @@ Date: May 2009
 #include <map>
 
 #include <replace_symbol.h>
-#include <context.h>
+#include <symbol_table.h>
 
 #include "ranking_base.h"
 
@@ -23,8 +23,8 @@ class ranking_synthesis_rankfindert:public ranking_synthesis_baset
 public:
   ranking_synthesis_rankfindert(
     const bodyt &_body,
-    const contextt &_ctx,
-    contextt &_sctx,
+    const symbol_tablet &_ctx,
+    symbol_tablet &_sctx,
     message_handlert &_mh):
       ranking_synthesis_baset(_body, _ctx, _sctx, _mh) {}
 
@@ -36,7 +36,7 @@ protected:
 
   typedef replace_symbolt variable_mapt;
   variable_mapt variable_map;
-  contextt trans_context;
+  symbol_tablet trans_symbol_table;
 
   virtual bool generate_functions(void);
   virtual exprt instantiate(void);

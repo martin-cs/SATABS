@@ -16,8 +16,8 @@ class termination_itat : public termination_ctat
 public:
   termination_itat(const cmdlinet &_cmd,
                    const goto_functionst &_gf,
-                   const contextt &_ctxt,
-                   class contextt &_sctxt,
+                   const symbol_tablet &_ctxt,
+                   class symbol_tablet &_sctxt,
                    class value_set_analysist &_vsa,
                    class invariant_propagationt &_ip,
                    message_handlert &_mh,

@@ -19,9 +19,9 @@ Author: Daniel Kroening, daniel.kroening@inf.ethz.ch
 class convert_to_promelat
 {
 public:
-  convert_to_promelat(const contextt &_context,
+  convert_to_promelat(const symbol_tablet &_symbol_table,
                       std::ostream &_out):
-    context(_context), out(_out),
+    symbol_table(_symbol_table), out(_out),
     temp_symbol_counter(0)
   {
   }
@@ -29,7 +29,7 @@ public:
   void convert();
 
 protected:
-  const contextt &context;
+  const symbol_tablet &symbol_table;
   std::ostream &out;
   
   void convert_global_variables();
@@ -90,7 +90,7 @@ void convert_to_promelat::convert_global_variables()
   out << "/* Global Variables */" << std::endl;
   out << std::endl;
 
-  forall_symbols(it, context.symbols)
+  forall_symbols(it, symbol_table.symbols)
   {
     const symbolt &symbol=it->second;
 
@@ -120,7 +120,7 @@ void convert_to_promelat::convert_functions()
   out << "/* Functions */" << std::endl;
   out << std::endl;
 
-  forall_symbols(it, context.symbols)
+  forall_symbols(it, symbol_table.symbols)
   {
     const symbolt &symbol=it->second;
 
@@ -317,10 +317,10 @@ void convert_to_promelat::convert_expr(const exprt &expr)
   if(expr.id()==ID_symbol)
   {
     const irep_idt &identifier=expr.get(ID_identifier);
-    const contextt::symbolst::const_iterator s_it=
-      context.symbols.find(identifier);
+    const symbol_tablet::symbolst::const_iterator s_it=
+      symbol_table.symbols.find(identifier);
 
-    if(s_it==context.symbols.end())
+    if(s_it==symbol_table.symbols.end())
     {
       std::cerr << "failed to find symbol "
                 << expr.pretty() << std::endl;
@@ -769,17 +769,17 @@ void convert_to_promelat::convert_functioncall(const exprt &code,
                                                unsigned indent,
                                                const exprt &lhs)
 {
-  // first find the function in the context
+  // first find the function in the symbol table
   assert(code.operands().size()>=1);
   assert(code.op0().id()==ID_symbol);
   
   const irep_idt &identifier=
     code.op0().get(ID_identifier);
   
-  const contextt::symbolst::const_iterator s_it=
-    context.symbols.find(identifier);
+  const symbol_tablet::symbolst::const_iterator s_it=
+    symbol_table.symbols.find(identifier);
   
-  if(s_it==context.symbols.end())
+  if(s_it==symbol_table.symbols.end())
   {
     std::cerr << "failed to find function "
               << identifier << std::endl;
@@ -1113,10 +1113,10 @@ void convert_to_promelat::convert_decl(const exprt &code,
   assert(op.id()==ID_symbol);
 
   const irep_idt &identifier=op.get(ID_identifier);
-  const contextt::symbolst::const_iterator s_it=
-    context.symbols.find(identifier);
+  const symbol_tablet::symbolst::const_iterator s_it=
+    symbol_table.symbols.find(identifier);
 
-  if(s_it==context.symbols.end())
+  if(s_it==symbol_table.symbols.end())
   {
     std::cerr << "failed to find symbol " << identifier
               << std::endl;
@@ -1290,10 +1290,10 @@ Function: convert_to_promela
 
 \*******************************************************************/
 
-void convert_to_promela(const contextt &context,
+void convert_to_promela(const symbol_tablet &symbol_table,
                         std::ostream &out)
 {
-  convert_to_promelat convert_to_promela(context, out);
+  convert_to_promelat convert_to_promela(symbol_table, out);
   
   convert_to_promela.convert();
 }

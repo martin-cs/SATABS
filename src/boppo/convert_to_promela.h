@@ -11,9 +11,9 @@ Author: Daniel Kroening, daniel.kroening@inf.ethz.ch
 
 #include <iostream>
 
-#include <context.h>
+#include <symbol_table.h>
 
-void convert_to_promela(const contextt &context,
+void convert_to_promela(const symbol_tablet &symbol_table,
                         std::ostream &out);
 
 #endif

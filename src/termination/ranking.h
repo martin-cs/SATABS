@@ -16,8 +16,8 @@ Date: September 2008
 exprt ranking(
   const std::string &mode,
   const bodyt &body,
-  const contextt &context,
-  contextt &shadow_context,
+  const symbol_tablet &symbol_table,
+  symbol_tablet &shadow_symbol_table,
   message_handlert &mh,
   unsigned verbosity);
 

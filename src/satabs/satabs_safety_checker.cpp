@@ -586,11 +586,11 @@ Purpose:
 
 satabs_componentst::satabs_componentst(
   const optionst &options,
-  contextt &_shadow_context):
+  symbol_tablet &_shadow_symbol_table):
   abstractor_ptr(select_abstractor(options)),
   refiner_ptr(select_refiner(options)),
   modelchecker_ptr(select_modelchecker(options)),
-  simulator_ptr(select_simulator(options, _shadow_context))
+  simulator_ptr(select_simulator(options, _shadow_symbol_table))
 {
 }
 
@@ -607,12 +607,12 @@ Purpose:
 \*******************************************************************/
 
 satabs_safety_checkert::satabs_safety_checkert(
-  const contextt &_context,
+  const symbol_tablet &_symbol_table,
   const optionst &options):
-  satabs_componentst(options, shadow_context),
+  satabs_componentst(options, shadow_symbol_table),
   satabs_safety_checker_baset(
     ns, *abstractor_ptr, *refiner_ptr, *modelchecker_ptr, *simulator_ptr),
-  ns(_context, shadow_context)
+  ns(_symbol_table, shadow_symbol_table)
 {
   max_iterations=options.get_int_option("iterations");
 }

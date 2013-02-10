@@ -141,13 +141,13 @@ int boppo_parseoptionst::doit()
 
     // do actual job
     if(cmdline.isset("promela"))
-      convert_to_promela(context, std::cout);
+      convert_to_promela(symbol_table, std::cout);
     else if(cmdline.isset("show-goto-functions"))
     {
       goto_functionst goto_functions;
       
       goto_convert(
-        context,
+        symbol_table,
         goto_functions,
         ui_message_handler);
 
@@ -156,7 +156,7 @@ int boppo_parseoptionst::doit()
       options.set_option("assertions", true);  
       options.set_option("error-label", error_label);
       
-      namespacet ns(context);    
+      namespacet ns(symbol_table);    
       goto_check(ns, options, goto_functions);
       goto_functions.output(ns, std::cout);
     }
@@ -170,7 +170,7 @@ int boppo_parseoptionst::doit()
       program_formulat program_formula;
 
       convert_to_program_formula(
-        context, 
+        symbol_table, 
         program_formula,
         formula_container,
         error_label,
@@ -184,7 +184,7 @@ int boppo_parseoptionst::doit()
         program_formula.show_alive(std::cout);
       else if(cmdline.isset("show-cycles"))
       {
-        namespacet ns(context);    
+        namespacet ns(symbol_table);    
         program_formula.show_cycles(ns, std::cout);
       }
       else
@@ -210,7 +210,7 @@ int boppo_parseoptionst::doit()
       program_formulat program_formula;
       
       convert_to_program_formula(
-        context, 
+        symbol_table, 
         program_formula,
         formula_container,
         error_label,
@@ -245,7 +245,7 @@ int boppo_parseoptionst::doit()
       program_formulat program_formula;
       
       convert_to_program_formula(
-        context, 
+        symbol_table, 
         program_formula,
         formula_container,
         error_label,

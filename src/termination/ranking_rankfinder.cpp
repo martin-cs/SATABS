@@ -191,7 +191,7 @@ bool ranking_synthesis_rankfindert::extract_ranking_relation(void)
 
   std::cout << "RANKSTRING: " << rank_string << std::endl;
 
-  if(parse_rank_function(rank_string, trans_context, ns, *message_handler, function))
+  if(parse_rank_function(rank_string, trans_symbol_table, ns, *message_handler, function))
     throw ("RF EXTRACTION ERROR");
 
   variable_map.replace(function);
@@ -691,7 +691,7 @@ void ranking_synthesis_rankfindert::collect_variables(
     s.name = revident;
     s.base_name = newi;
     s.type = final_type;
-    trans_context.move(s);
+    trans_symbol_table.move(s);
 
     ident = it->first;
     newi = std::string("O") + i2string(v++);
@@ -789,7 +789,7 @@ void ranking_synthesis_rankfindert::collect_variables(
     s.name=revident;
     s.base_name=newi;
     s.type=sym.type();
-    trans_context.move(s);
+    trans_symbol_table.move(s);
 
     // AND define an output variable.
     irep_idt newo = std::string("O") + i2string(v++);

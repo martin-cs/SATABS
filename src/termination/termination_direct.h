@@ -16,8 +16,8 @@ class termination_directt : public termination_baset
 public:
   termination_directt(const cmdlinet &_cmd,
                       const goto_functionst &_gf,
-                      const contextt &_ctxt,
-                      class contextt &_sctxt,
+                      const symbol_tablet &_ctxt,
+                      class symbol_tablet &_sctxt,
                       class value_set_analysist &_vsa,
                       class invariant_propagationt &_ip,
                       message_handlert &_mh,

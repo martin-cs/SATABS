@@ -116,9 +116,9 @@ exprt ranking_synthesis_satt::instantiate(void)
   t2.move_to_operands(function, cc);
   function=t2;
       
-  contextt context;
+  symbol_tablet symbol_table;
   ansi_c_parse_treet pt;
-  rankfunction_typecheckt typecheck(pt, context, ns, *message_handler);
+  rankfunction_typecheckt typecheck(pt, symbol_table, ns, *message_handler);
 
   try
   {

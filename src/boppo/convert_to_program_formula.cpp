@@ -24,11 +24,11 @@ class convert_to_program_formulat
 {
 public:
   convert_to_program_formulat(
-    contextt &_context,
+    symbol_tablet &_symbol_table,
     program_formulat &_program_formula,
     formula_containert &_formula_container,
     const std::string &_error_label):
-    context(_context),
+    symbol_table(_symbol_table),
     program_formula(_program_formula),
     formula_container(_formula_container),
     error_label(_error_label)
@@ -40,7 +40,7 @@ public:
   void convert_local_variables(const goto_programt &goto_program);
 
 protected:
-  contextt &context;
+  symbol_tablet &symbol_table;
   program_formulat &program_formula;
   formula_containert &formula_container;
   const std::string &error_label;
@@ -102,11 +102,11 @@ Function: convert_to_program_formulat::convert_global_variables
 
 void convert_to_program_formulat::convert_global_variables()
 {
-  const namespacet ns(context);
+  const namespacet ns(symbol_table);
   
   program_formula.no_globals=0;
 
-  forall_symbols(it, context.symbols)
+  forall_symbols(it, symbol_table.symbols)
   {
     const symbolt &symbol=it->second;
 
@@ -150,7 +150,7 @@ Function: convert_to_program_formulat::convert_local_variables
 void convert_to_program_formulat::convert_local_variables(
   const goto_programt &goto_program)
 {
-  forall_symbols(it, context.symbols)
+  forall_symbols(it, symbol_table.symbols)
   {
     const symbolt &symbol=it->second;
 
@@ -359,21 +359,21 @@ void convert_to_program_formulat::convert_main_code(bool inlining)
   goto_functionst goto_functions;
   console_message_handlert message_handler;
 
-  goto_convert(context, goto_functions, message_handler);
+  goto_convert(symbol_table, goto_functions, message_handler);
 
   // we do want the assertions
   optionst options;
   options.set_option("assertions", true);
   options.set_option("error-label", error_label);
   
-  const namespacet ns(context);
+  const namespacet ns(symbol_table);
   goto_check(ns, options, goto_functions);
 
   program_formula.no_locals=0;
 
   if(inlining)
   {
-    const contextt context;
+    const symbol_tablet symbol_table;
     goto_inline(goto_functions, ns, message_handler);
 
     goto_programt &goto_program=goto_functions.function_map["main"].body;
@@ -857,14 +857,14 @@ Function: convert_to_program_formula
 \*******************************************************************/
 
 void convert_to_program_formula(
-  contextt &context,
+  symbol_tablet &symbol_table,
   program_formulat &program_formula,
   formula_containert &formula_container,
   const std::string &error_label,
   bool inlining)
 {
   convert_to_program_formulat convert_to_program_formula(
-    context, program_formula, formula_container, error_label);
+    symbol_table, program_formula, formula_container, error_label);
   
   convert_to_program_formula.convert_global_variables();
 

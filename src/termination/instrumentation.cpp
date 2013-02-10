@@ -30,12 +30,12 @@ Function: termination_instrumentert::termination_instrumentert
 
 termination_instrumentert::termination_instrumentert(
   goto_functionst &_gf,
-  contextt &_ct,
+  symbol_tablet &_ct,
   message_handlert &_mh,
   modet _mode) :
     messaget(_mh),
     goto_functions(_gf),
-    context(_ct),
+    symbol_table(_ct),
     ns(_ct),
     mode(_mode),
     loop_counter(0),
@@ -268,7 +268,7 @@ exprt termination_instrumentert::add_copied_flag(
   declins->make_decl();
   declins->code=code_declt(copied_flag);
   
-  context.move(flag_symbol);
+  symbol_table.move(flag_symbol);
   
   return copied_flag;
 }
@@ -413,7 +413,7 @@ bool termination_instrumentert::make_old_variables(
     
     declins->make_decl();
     declins->code=code_declt(symbol_expr(new_symbol));
-    context.move(new_symbol);
+    symbol_table.move(new_symbol);
   }
 
   return false;
@@ -504,7 +504,7 @@ void termination_instrumentert::insert_assertion(
   // build branch
   exprt guard=or_exprt(copied_flag,nns);
   
-  context.move(ndsym);  
+  symbol_table.move(ndsym);  
 
   goto_programt::targett goto_statement=
     dest.add_instruction(GOTO);

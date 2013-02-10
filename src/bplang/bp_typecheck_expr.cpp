@@ -84,25 +84,25 @@ void bp_typecheckt::typecheck_expr(exprt &expr)
         id2string(function_name)+"::"+
         id2string(identifier);
 
-      contextt::symbolst::iterator s_it=context.symbols.find(full_identifier);
+      symbol_tablet::symbolst::iterator s_it=symbol_table.symbols.find(full_identifier);
 
-      if(s_it==context.symbols.end())
+      if(s_it==symbol_table.symbols.end())
       {
         // try function argument next
         full_identifier=
           "bp::argument::"+id2string(function_name)+"::"+
           id2string(identifier);
 
-        s_it=context.symbols.find(full_identifier);
+        s_it=symbol_table.symbols.find(full_identifier);
 
-        if(s_it==context.symbols.end())
+        if(s_it==symbol_table.symbols.end())
         {
           // try global next
           full_identifier="bp::var::"+id2string(identifier);
 
-          s_it=context.symbols.find(full_identifier);
+          s_it=symbol_table.symbols.find(full_identifier);
 
-          if(s_it==context.symbols.end())
+          if(s_it==symbol_table.symbols.end())
           {
             err_location(expr);
             str << "variable `" << identifier << "' not found";

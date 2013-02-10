@@ -8,7 +8,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <cassert>
 
-#include <context.h>
+#include <symbol_table.h>
 
 #include "program_formula.h"
 
@@ -381,8 +381,8 @@ std::ostream& operator<< (
   std::ostream &out,
   const program_formulat::formula_goto_programt &program)
 {
-  contextt context;
-  namespacet ns(context);
+  symbol_tablet symbol_table;
+  namespacet ns(symbol_table);
   return program.output(ns, "", out);
 }
 

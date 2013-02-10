@@ -35,34 +35,34 @@ Function: ranking
 exprt ranking(
   const std::string &mode,
   const bodyt &body,
-  const contextt &context,
-  contextt &shadow_context,
+  const symbol_tablet &symbol_table,
+  symbol_tablet &shadow_symbol_table,
   message_handlert &mh,
   unsigned verbosity)
 {
   if(mode=="" || mode=="sat")
   {
-    ranking_synthesis_satt rank_synth(body, context, shadow_context, mh);
+    ranking_synthesis_satt rank_synth(body, symbol_table, shadow_symbol_table, mh);
     rank_synth.set_verbosity(verbosity);
     return rank_synth.ranking();
   }
   else if(mode=="qbf")
   {
-    ranking_synthesis_qbft rank_synth(body, context, shadow_context, mh, 
+    ranking_synthesis_qbft rank_synth(body, symbol_table, shadow_symbol_table, mh, 
                             ranking_synthesis_qbft::COEFFICIENTS_UNCONSTRAINED);
     rank_synth.set_verbosity(verbosity);
     return rank_synth.ranking();
   }
   else if(mode=="qbfC")
   {
-    ranking_synthesis_qbft rank_synth(body, context, shadow_context, mh, 
+    ranking_synthesis_qbft rank_synth(body, symbol_table, shadow_symbol_table, mh, 
                             ranking_synthesis_qbft::COEFFICIENTS_CONSTRAINED);
     rank_synth.set_verbosity(verbosity);
     return rank_synth.ranking();
   }
   else if(mode.substr(0,4)=="qbfb")
   {
-    ranking_synthesis_qbf_bitwiset rank_synth(body, context, shadow_context, mh);
+    ranking_synthesis_qbf_bitwiset rank_synth(body, symbol_table, shadow_symbol_table, mh);
     rank_synth.set_verbosity(verbosity);
     
     if(mode=="qbfbA")
@@ -80,25 +80,25 @@ exprt ranking(
   }
   else if(mode=="qbfc")
   {
-    ranking_synthesis_qbf_completet rank_synth(body, context, shadow_context, mh);
+    ranking_synthesis_qbf_completet rank_synth(body, symbol_table, shadow_symbol_table, mh);
     rank_synth.set_verbosity(verbosity);
     return rank_synth.ranking();
   }
   else if(mode=="rf")
   {
-    ranking_synthesis_rankfindert rank_synth(body, context, shadow_context, mh);
+    ranking_synthesis_rankfindert rank_synth(body, symbol_table, shadow_symbol_table, mh);
     rank_synth.set_verbosity(verbosity);
     return rank_synth.ranking();
   }
   else if(mode=="seneschal")
   {
-    ranking_synthesis_seneschalt rank_synth(body, context, shadow_context, mh);
+    ranking_synthesis_seneschalt rank_synth(body, symbol_table, shadow_symbol_table, mh);
     rank_synth.set_verbosity(verbosity);
     return rank_synth.ranking();
   }
   else if(mode=="smt")
   {
-    ranking_synthesis_smtt rank_synth(body, context, shadow_context, mh);
+    ranking_synthesis_smtt rank_synth(body, symbol_table, shadow_symbol_table, mh);
     rank_synth.set_verbosity(verbosity);
     return rank_synth.ranking();
   }

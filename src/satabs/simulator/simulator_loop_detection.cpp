@@ -20,7 +20,7 @@ Purpose:
 #include <i2string.h>
 #include <arith_tools.h>
 #include <std_expr.h>
-#include <context.h>
+#include <symbol_table.h>
 
 #include <solvers/flattening/bv_minimize.h>
 #include <solvers/sat/pbs_dimacs_cnf.h>
@@ -559,7 +559,7 @@ void simulator_loop_detectiont::get_fresh_induction_parameter(
   sym.base_name = "N$"+i2string(parameter_index);
   sym.module = ID_C;
 
-  shadow_context.add (sym);
+  shadow_symbol_table.add(sym);
 
   parameter = parameter_expr;
 }
@@ -584,9 +584,9 @@ void simulator_loop_detectiont::build_parameterized_equation(
     fail_infot &fail_info,
     prefixt::step_mapt &step_map)
 {
-  contextt new_context;
-  namespacet new_ns(concrete_model->ns.get_context(), new_context);
-  goto_symext symex_simulator(new_ns, new_context, equation);
+  symbol_tablet new_symbol_table;
+  namespacet new_ns(concrete_model->ns.get_symbol_table(), new_symbol_table);
+  goto_symext symex_simulator(new_ns, new_symbol_table, equation);
   loop_stackt loop_stack;
 
   // turn off constant propagation -- it's not sound here

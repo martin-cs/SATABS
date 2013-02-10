@@ -15,11 +15,11 @@ Purpose:
 
 #include <goto-programs/goto_functions.h>
 
-class contextt;
+class symbol_tablet;
 class message_handlert;
 
 void prepare_functions(
-    contextt &context,
+    symbol_tablet &symbol_table,
     goto_functionst &goto_functions,
     message_handlert &message_handler);
 

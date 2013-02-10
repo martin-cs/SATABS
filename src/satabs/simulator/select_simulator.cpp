@@ -29,14 +29,14 @@ Purpose:
 
 simulatort *select_simulator(
   const optionst &options,
-  contextt &_shadow_context)
+  symbol_tablet &_shadow_symbol_table)
 {
   const std::string name=options.get_option("simulator");
 
   if(name=="sat")
   {
     if(options.get_bool_option("loop-detection"))
-      return new simulator_loop_detectiont(options, _shadow_context);
+      return new simulator_loop_detectiont(options, _shadow_symbol_table);
 
     return new simulator_symext(options);
   }

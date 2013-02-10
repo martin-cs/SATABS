@@ -71,16 +71,16 @@ Purpose:
 class map_varst:public messaget
 {
   public:
-    map_varst(contextt &_context, replace_mapt &_replace_map,
+    map_varst(symbol_tablet &_symbol_table, replace_mapt &_replace_map,
         message_handlert &_message):
       messaget(_message),
-      context(_context), replace_map(_replace_map)
+      symbol_table(_symbol_table), replace_map(_replace_map)
   { }
 
     void map_vars(const std::set<irep_idt> &modules);
 
   protected:
-    contextt &context;
+    symbol_tablet &symbol_table;
     replace_mapt &replace_map;
 
     symbolt &lookup(const irep_idt &identifier);
@@ -116,9 +116,9 @@ Purpose:
 
 symbolt &map_varst::lookup(const irep_idt &identifier)
 {
-  symbolst::iterator it=context.symbols.find(identifier);
+  symbolst::iterator it=symbol_table.symbols.find(identifier);
 
-  if(it==context.symbols.end())
+  if(it==symbol_table.symbols.end())
     throw "failed to find identifier "+id2string(identifier);
 
   return it->second;
@@ -234,7 +234,7 @@ Purpose:
 {
   symbolptr_listt symbolptr_list;
 
-  forall_symbol_base_map(it, context.symbol_base_map, id)
+  forall_symbol_base_map(it, symbol_table.symbol_base_map, id)
   {
     const symbolt &s=lookup(it->second);
 
@@ -334,21 +334,21 @@ Inputs:
 
 Outputs:
 
-Purpose: Looks through context for external ANSI-C symbols
+Purpose: Looks through symbol table for external ANSI-C symbols
 Calls map_var to find mapping to HDL
 
 \*******************************************************************/
 
 void map_varst::map_vars(const std::set<irep_idt> &modules)
 {
-  Forall_symbols(it, context.symbols)
+  Forall_symbols(it, symbol_table.symbols)
     if(is_program_symbol(it->second) && it->second.is_extern)
     {
       symbolt::hierarchyt hierarchy;
 
       exprt expr=symbol_expr(it->second);
 
-      namespacet ns(context);
+      namespacet ns(symbol_table);
       base_type(expr, ns);
 
       map_var(modules, it->second.base_name, expr, hierarchy);
@@ -367,7 +367,7 @@ Purpose:
 
 \*******************************************************************/
 
-void map_vars(contextt &context,
+void map_vars(symbol_tablet &symbol_table,
     const std::list<concrete_transition_systemt> &modules,
     replace_mapt &replace_map,
     message_handlert &message)
@@ -380,7 +380,7 @@ void map_vars(contextt &context,
       modules.begin(); it!=modules.end(); it++)
     module_set.insert(it->symbol->name);
 
-  map_varst map_vars(context, replace_map, message);
+  map_varst map_vars(symbol_table, replace_map, message);
 
   map_vars.map_vars(module_set);
 }

@@ -143,8 +143,8 @@ bool termination_path_enumerationt::get_model(
 {  
   fine_timet before=current_time();
   
-  bool mres=sliced_abstraction(context,
-                               shadow_context,
+  bool mres=sliced_abstraction(symbol_table,
+                               shadow_symbol_table,
                                goto_functions,
                                main,
                                assertion,
@@ -224,7 +224,7 @@ bool termination_path_enumerationt::get_model(
   */
       
 //  // Remove pointers
-//  goto_program_dereferencet gpd(ns, shadow_context, optionst(),
+//  goto_program_dereferencet gpd(ns, shadow_symbol_table, optionst(),
 //                                sliced_model.value_set_analysis);
 //  gpd.dereference_program(sliced_model.goto_functions, false);
   
@@ -309,7 +309,7 @@ termination_resultt termination_path_enumerationt::rank(
     ranksynth_calls++;
     fine_timet before_ranking=current_time();    
     exprt new_relation=ranking(ranking_mode, path_body, 
-                               context, shadow_context, 
+                               symbol_table, shadow_symbol_table, 
                                get_message_handler(),
                                (verbosity>6)?verbosity:2);
     ranking_time+=current_time()-before_ranking;
@@ -935,7 +935,7 @@ bodyt termination_path_enumerationt::extract_path(
       newsym.base_name=newsym.name;
       newsym.type=symbol.type;
       
-      shadow_context.move(newsym); // we don't care if it's already there.
+      shadow_symbol_table.move(newsym); // we don't care if it's already there.
     }
     
     vri.insert(id2string(id)+"!"+i2string(sit->second), id);    

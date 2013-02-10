@@ -10,41 +10,41 @@ Date:   September 2009
 
 #include <std_code.h>
 #include <std_expr.h>
-#include <context.h>
+#include <symbol_table.h>
 #include <message.h>
 
 #include "prepare_functions.h"
 
 class prepare_functionst:public messaget
 {
-  public:
-    prepare_functionst(contextt &_context):context(_context)
+public:
+  prepare_functionst(symbol_tablet &_symbol_table):symbol_table(_symbol_table)
   {
   }
 
-    void operator()(
-        goto_functionst &goto_functions);
+  void operator()(
+    goto_functionst &goto_functions);
 
-  protected:
-    typedef std::map<irep_idt, code_typet> original_typest;
-    original_typest original_types;
+protected:
+  typedef std::map<irep_idt, code_typet> original_typest;
+  original_typest original_types;
 
-    contextt &context;
+  symbol_tablet &symbol_table;
 
-    void adjust_function_arguments(
-        const code_typet::argumentst &arguments);
+  void adjust_function_arguments(
+      const code_typet::argumentst &arguments);
 
-    void do_return_value(
-        goto_functionst::function_mapt::iterator f_it);
+  void do_return_value(
+      goto_functionst::function_mapt::iterator f_it);
 
-    void do_function_calls(
-        goto_functionst &goto_functions,
-        goto_programt &goto_program);
+  void do_function_calls(
+      goto_functionst &goto_functions,
+      goto_programt &goto_program);
 
-    void do_function_arguments(
-        goto_functionst::function_mapt::iterator f_it);
+  void do_function_arguments(
+      goto_functionst::function_mapt::iterator f_it);
 
-    std::set<irep_idt> no_body_set;
+  std::set<irep_idt> no_body_set;
 };
 
 /*******************************************************************\
@@ -71,10 +71,10 @@ void prepare_functionst::adjust_function_arguments(
 
     if(identifier=="") continue;
 
-    const contextt::symbolst::iterator s_it=
-      context.symbols.find(identifier);
+    const symbol_tablet::symbolst::iterator s_it=
+      symbol_table.symbols.find(identifier);
 
-    assert(s_it!=context.symbols.end());
+    assert(s_it!=symbol_table.symbols.end());
 
     symbolt &symbol=s_it->second;
 
@@ -108,16 +108,16 @@ void prepare_functionst::do_return_value(
   // look up the function symbol
   const irep_idt function_id=f_it->first;
 
-  contextt::symbolst::iterator s_it=
-    context.symbols.find(function_id);
+  symbol_tablet::symbolst::iterator s_it=
+    symbol_table.symbols.find(function_id);
 
-  assert(s_it!=context.symbols.end());
+  assert(s_it!=symbol_table.symbols.end());
   symbolt &function_symbol=s_it->second;
 
   // make the return type 'void'
   function_symbol.type=f_it->second.type;
 
-  // add symbol to context
+  // add symbol to symbol_table
   symbolt new_symbol;
   new_symbol.is_lvalue=true;
   new_symbol.is_state_var=true;
@@ -131,7 +131,7 @@ void prepare_functionst::do_return_value(
   new_symbol.mode=function_symbol.mode;
   new_symbol.type=return_type;
 
-  context.add(new_symbol);
+  symbol_table.add(new_symbol);
 
   goto_programt &goto_program=f_it->second.body;
 
@@ -292,10 +292,10 @@ void prepare_functionst::do_function_arguments(
     // look up the function symbol
     const irep_idt function_id=f_it->first;
 
-    contextt::symbolst::iterator s_it=
-      context.symbols.find(function_id);
+    symbol_tablet::symbolst::iterator s_it=
+      symbol_table.symbols.find(function_id);
 
-    assert(s_it!=context.symbols.end());
+    assert(s_it!=symbol_table.symbols.end());
     symbolt &function_symbol=s_it->second;
 
     // adjust type of function
@@ -397,11 +397,11 @@ Purpose: convert input program into goto program
 \*******************************************************************/
 
 void prepare_functions(
-    contextt &context,
+    symbol_tablet &symbol_table,
     goto_functionst &goto_functions,
     message_handlert &message_handler)
 {
-  prepare_functionst pf(context);
+  prepare_functionst pf(symbol_table);
   pf.set_message_handler(message_handler);
   pf(goto_functions);
 }

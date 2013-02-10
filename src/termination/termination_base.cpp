@@ -36,9 +36,9 @@ class custom_symext:
 {
 public:
   custom_symext(const namespacet &_ns,
-                contextt &_new_context,
+                symbol_tablet &_new_symbol_table,
                 symex_targett &_target):
-    goto_symext(_ns, _new_context, _target)
+    goto_symext(_ns, _new_symbol_table, _target)
   {
   }
 
@@ -60,15 +60,15 @@ public:
 termination_baset::termination_baset(
   const cmdlinet &_cmd,
   const goto_functionst &_gf,
-  const contextt &_ctxt,
-  class contextt &_sctxt,
+  const symbol_tablet &_ctxt,
+  class symbol_tablet &_sctxt,
   class value_set_analysist &_vsa,
   class invariant_propagationt &_ip,
   message_handlert &_mh,
   ui_message_handlert::uit _ui):
     messaget(_mh),    
-    context(_ctxt),
-    shadow_context(_sctxt),
+    symbol_table(_ctxt),
+    shadow_symbol_table(_sctxt),
     cmdline(_cmd),
     ns(_ctxt, _sctxt),
     ui(_ui),
@@ -403,7 +403,7 @@ void termination_baset::replace_nondet_sideeffects(exprt &expr)
     symbol.type=expr.type();
 
     expr=symbol_expr(symbol);
-    shadow_context.move(symbol);
+    shadow_symbol_table.move(symbol);
   }
   else
     Forall_operands(it, expr)
@@ -808,7 +808,7 @@ bool termination_baset::bmc(
   fine_timet before=current_time();
 
   symex_target_equationt equation(ns);
-  custom_symext symex(ns, shadow_context, equation);
+  custom_symext symex(ns, shadow_symbol_table, equation);
   satcheckt satcheck;
   bv_pointerst bv_pointers(ns, satcheck);
 
@@ -903,7 +903,7 @@ bool termination_baset::cegar(
 
   try
   {
-    satabs_safety_checkert safety_checker(context, options);
+    satabs_safety_checkert safety_checker(symbol_table, options);
     safety_checker.set_message_handler(mh);
     safety_checker.set_verbosity(this_verb);
     
@@ -948,7 +948,7 @@ bool termination_baset::cegar(
     if(std::string(s)=="refinement failure")
     {
       status("Dumping failure.o");
-      write_goto_binary("failure.o", context, goto_functions, mh);
+      write_goto_binary("failure.o", symbol_table, goto_functions, mh);
     }
   }
   catch(unsigned u)

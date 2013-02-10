@@ -9,7 +9,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <cassert>
 #include <fstream>
 
-#include <context.h>
+#include <symbol_table.h>
 #include <prefix.h>
 
 #include "simulator.h"
@@ -74,8 +74,8 @@ void simulator_baset::dump_full_trace(tracet &trace)
                 << trace_step.previous_PC->location
                 << std::endl;
                 
-      const contextt context;
-      const namespacet ns(context);
+      const symbol_tablet symbol_table;
+      const namespacet ns(symbol_table);
                 
       trace_step.previous_program->
         output_instruction(ns, "", std::cout, trace_step.previous_PC);

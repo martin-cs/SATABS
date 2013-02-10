@@ -24,8 +24,8 @@ public:
 
   ranking_synthesis_qbf_bitwiset(
     const bodyt &_body,
-    const contextt &_ctx,
-    contextt &_sctx,
+    const symbol_tablet &_ctx,
+    symbol_tablet &_sctx,
     message_handlert &_mh,
     function_classt mode=F_AFFINE) :
       ranking_synthesis_qbft(_body, _ctx, _sctx, _mh),

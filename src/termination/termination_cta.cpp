@@ -254,12 +254,12 @@ void termination_ctat::rename_main(const irep_idt &main_backup_id)
 
   main_backup.swap(main_it->second);
 
-  contextt::symbolst::const_iterator sit=context.symbols.find("main");
+  symbol_tablet::symbolst::const_iterator sit=symbol_table.symbols.find("main");
   symbolt ns=sit->second;
   ns.name=main_backup_id;
   ns.base_name=ns.name;
   ns.type=sit->second.type;
-  const_cast<contextt*>(&context)->move(ns);
+  const_cast<symbol_tablet*>(&symbol_table)->move(ns);
 }
 
 /********************************************************************\
@@ -684,7 +684,7 @@ exprt termination_ctat::rank_trace(
   ranksynth_calls++;
   fine_timet before_ranking=current_time();
   exprt new_relation=ranking(ranking_mode, path_body,
-                             context, shadow_context,
+                             symbol_table, shadow_symbol_table,
                              get_message_handler(),
                              (verbosity>6)?verbosity:2);
   ranking_time+=current_time()-before_ranking;
@@ -721,7 +721,7 @@ bool termination_ctat::all_paths_are_ranked(
   satcheckt satcheck;
   bv_pointerst bv_pointers(ns, satcheck);
   symex_target_equationt equation(ns);
-  goto_symext symex(ns, shadow_context, equation);
+  goto_symext symex(ns, shadow_symbol_table, equation);
 
   bv_pointers.set_message_handler(get_message_handler());
   bv_pointers.set_verbosity(verbosity);
@@ -743,7 +743,7 @@ bool termination_ctat::all_paths_are_ranked(
 
 //      concrete_counterexamplet ce;
 //      build_goto_trace(equation, bv_pointers, ce.goto_trace);
-//      show_counterexample(std::cout, context, ce);
+//      show_counterexample(std::cout, symbol_table, ce);
 
       return false;
     }
