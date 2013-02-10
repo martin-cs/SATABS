@@ -10,6 +10,7 @@
 
 #include <config.h>
 #include <time_stopping.h>
+#include <xml.h>
 
 #include <goto-programs/read_goto_binary.h>
 #include <goto-programs/goto_inline.h>
@@ -430,6 +431,17 @@ tan_resultt tan_parseoptionst::analyze()
                     value_set_analysis, invariant_propagation, *message_handler,
                     get_ui(),
                     up_predicates, max_iterations);
+
+  if(get_ui()==ui_message_handlert::XML_UI)
+  {
+    if(res==T_TERMINATING || res==T_NONTERMINATING)
+    {
+      xmlt xml("cprover-status");
+      xml.data=(res==T_NONTERMINATING?"FAILURE":"SUCCESS");
+      std::cout << xml;
+      std::cout << std::endl;
+    }
+  }
   
   switch(res)
   {
