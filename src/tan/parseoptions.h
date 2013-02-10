@@ -20,7 +20,7 @@ Author: CM Wintersteiger
 #include <pointer-analysis/value_set_analysis.h>
 
 #define TAN_OPTIONS \
-  "(v):(version)(xml-ui)" \
+  "(verbosity):(version)(xml-ui)" \
   "(show-model)(show-prepared-model)" \
   "(function)(claim):(show-claims)" \
   "(string-abstraction)(no-invariant-propagation)(no-value-sets)" \

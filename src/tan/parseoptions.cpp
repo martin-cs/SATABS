@@ -169,13 +169,16 @@ bool tan_parseoptionst::check_and_set_options()
     return true;
   }
     
-  int verbosity=6;
-  if(cmdline.isset("v")) verbosity=atoi(cmdline.getval("v"));
-  set_verbosity(verbosity);
+  {
+    int verbosity=6;
+    if(cmdline.isset("verbosity"))
+      verbosity=atoi(cmdline.getval("verbosity"));
+    set_verbosity(verbosity);
+  }
   
   if(cmdline.args.size()==0)
   {
-    error("Please provide an input file.");
+    error("Please provide a goto-binary as input file.");
     return 1;
   }
   else if (cmdline.args.size()>1)
