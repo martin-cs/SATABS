@@ -423,7 +423,7 @@ tan_resultt tan_parseoptionst::analyze()
   
   termination_resultt
     res=termination(engine,
-                    cmdline, goto_functions, context, shadow_context, 
+                    cmdline, goto_functions, context, 
                     value_set_analysis, invariant_propagation, *message_handler,
                     get_ui(),
                     up_predicates, max_iterations);

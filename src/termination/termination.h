@@ -35,7 +35,6 @@ termination_resultt
               const class cmdlinet &cmdline,
               const class goto_functionst &goto_functions,
               const class contextt &context,
-              class contextt &shadow_context,
               class value_set_analysist &value_set_analysis,
               class invariant_propagationt &invariant_propagation,
               message_handlert &message_handler,

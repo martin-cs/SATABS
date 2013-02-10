@@ -38,7 +38,6 @@ termination_resultt termination(
   const cmdlinet &cmdline,
   const goto_functionst &goto_functions,
   const contextt &context,
-  contextt &shadow_context,
   value_set_analysist &value_set_analysis,
   invariant_propagationt &invariant_propagation,
   message_handlert &message_handler,
@@ -48,6 +47,8 @@ termination_resultt termination(
 {  
   std::auto_ptr<termination_baset> tt;
   messaget message(message_handler);
+  
+  contextt shadow_context;
   
   switch(mode)
   {
