@@ -242,7 +242,8 @@ int preparet::get_async_modules()
 
   {
     status("Removing function pointers");
-    remove_function_pointers(ns, goto_functions, cmdline.isset("pointer-check"));
+    remove_function_pointers(
+        symbol_table, goto_functions, cmdline.isset("pointer-check"));
   }
 
   status("Removing unused functions");

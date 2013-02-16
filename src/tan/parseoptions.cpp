@@ -272,7 +272,7 @@ bool tan_parseoptionst::prepare()
     string_instrumentation(symbol_table, mh, goto_functions);
   
   status("Removing function pointers");
-  remove_function_pointers(ns, goto_functions, false);
+  remove_function_pointers(symbol_table, goto_functions, false);
 
   status("Removing unused functions");
   remove_unused_functions(goto_functions, mh);
