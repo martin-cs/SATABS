@@ -1,6 +1,6 @@
 CORE
 main.c
---iterations 10 --max-threads 3
+--iterations 20 --max-threads 3
 ^EXIT=10$
 ^SIGNAL=0$
 ^VERIFICATION FAILED$
