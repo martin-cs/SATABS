@@ -43,7 +43,9 @@ int main(int argc, const char **argv)
   #endif
 
   loopfrog_parseoptionst parseoptions(argc, argv);
+
   int r = 0;
+
   try
   {
     r = parseoptions.main();
@@ -60,5 +62,6 @@ int main(int argc, const char **argv)
   {
     std::cout << std::endl << "MEMORY LIMIT EXCEEDED" << std::endl;
   }
+
   return r;
 }
