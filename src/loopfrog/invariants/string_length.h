@@ -16,7 +16,7 @@ class string_length_invariant_testt :
 {
 public:
   string_length_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("SL", "String Length", context) {}
   
   virtual ~string_length_invariant_testt(void) {}

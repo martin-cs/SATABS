@@ -16,7 +16,7 @@ class pointer_offset_invariant_testt :
 {
 public:
   pointer_offset_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("POFF", "Pointer Offset", context) {}
   
   virtual ~pointer_offset_invariant_testt(void) {}

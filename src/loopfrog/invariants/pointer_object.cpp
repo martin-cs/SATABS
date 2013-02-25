@@ -6,14 +6,16 @@
 
 \*******************************************************************/
 
-#include <ansi-c/expr2c.h>
-#include <ansi-c/c_types.h>
 #include <std_expr.h>
 #include <expr_util.h>
+
+#include <ansi-c/expr2c.h>
+#include <ansi-c/c_types.h>
+
 #include <goto-programs/string_abstraction.h>
 
-#include "pointer_expr.h"
-#include "string_utils.h"
+#include "../pointer_expr.h"
+#include "../string_utils.h"
 
 #include "pointer_object.h"
 

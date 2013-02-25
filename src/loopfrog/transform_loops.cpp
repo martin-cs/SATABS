@@ -7,12 +7,15 @@
 \*******************************************************************/
 
 #include <fstream>
+#include <iostream>
+
 #include <message_stream.h>
 #include <i2string.h>
-#include <ansi-c/c_types.h>
 #include <expr_util.h>
 #include <std_expr.h>
 #include <arith_tools.h>
+
+#include <ansi-c/c_types.h>
 
 #include "transform_loops.h"
 
@@ -328,7 +331,7 @@ void loop_transformt::split_multi_head(
     program.update();
 
     #if 0
-    namespacet ns(context);
+    namespacet ns(symbol_table);
     std::cout << "Split loop: " << std::endl;
     goto_programt::const_targett it = newskip;
     for (;
@@ -766,7 +769,7 @@ exprt loop_transformt::get_new_variable(void)
   {
     ident = "looptrans::loopvar$" + i2string(++trans_counter);
   }
-  while(context.symbols.find(ident)!=context.symbols.end());
+  while(symbol_table.symbols.find(ident)!=symbol_table.symbols.end());
 
   symbolt newsym;
   newsym.name = ident;
@@ -776,7 +779,7 @@ exprt loop_transformt::get_new_variable(void)
   exprt res("symbol", newsym.type);
   res.set("identifier", ident);
 
-  context.move(newsym);
+  symbol_table.move(newsym);
 
   return res;
 }
@@ -1167,7 +1170,7 @@ void loop_transformt::output_loop(
   for(goto_programt::const_targett it = begin;
       it!=next;
       it++)
-    goto_program.output_instruction(namespacet(context), "", out, it);
+    goto_program.output_instruction(namespacet(symbol_table), "", out, it);
 }
 
 /*******************************************************************
@@ -1213,10 +1216,10 @@ void loop_transformt::run_checks(
 
 void transform_loops(
   goto_functionst &goto_functions,
-  contextt &context,
+  symbol_tablet &symbol_table,
   message_handlert &message_handler)
 {
-  loop_transformt loop_transform(context, message_handler);
+  loop_transformt loop_transform(symbol_table, message_handler);
   loop_transform.transform(goto_functions);
 }
 
@@ -1234,9 +1237,9 @@ void transform_loops(
 
 void transform_loops(
   goto_programt &goto_program,
-  contextt &context,
+  symbol_tablet &symbol_table,
   message_handlert &message_handler)
 {
-  loop_transformt loop_transform(context, message_handler);
+  loop_transformt loop_transform(symbol_table, message_handler);
   loop_transform.transform(goto_program);
 }

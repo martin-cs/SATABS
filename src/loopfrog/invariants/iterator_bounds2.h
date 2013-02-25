@@ -17,7 +17,7 @@ class iterator_bounds2_invariant_testt :
 {
 public:
   iterator_bounds2_invariant_testt(
-    contextt &context) :
+    symbol_tablet &context) :
       invariant_testt("I2", "Positive iterator", context),
       ns(context) {}
 

@@ -16,7 +16,7 @@ class zero_termination_invariant_testt :
 {
 public:
   zero_termination_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("ZT", "Zero Termination", context) {}
   
   virtual ~zero_termination_invariant_testt(void) {}

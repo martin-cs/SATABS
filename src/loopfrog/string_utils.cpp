@@ -158,22 +158,22 @@ void find_symbols_with_members(
   const value_sett& vset,
   find_symbols_sett &dest)
 {
-  if (src.id()=="member") {
+  if (src.id()==ID_member) {
     find_symbols_sett t;
     find_symbols_with_members(src.op0(), vset, t);
-    irep_idt cn = src.get("component_name"); 
+    irep_idt cn = src.get(ID_component_name); 
     for (find_symbols_sett::const_iterator it=t.begin();
          it!=t.end();
          it++)
     {
-      std::string s = it->as_string();
+      std::string s = id2string(*it);
       s.append("->");
-      s.append(cn.as_string());
+      s.append(id2string(cn));
       dest.insert(irep_idt(s));
     }
-  } else if((src.id()=="symbol") ||
-     (src.id()=="next_symbol"))
-    dest.insert(src.get("identifier"));
+  } else if((src.id()==ID_symbol) ||
+     (src.id()==ID_next_symbol))
+    dest.insert(src.get(ID_identifier));
   else
   {
     forall_operands(it, src)
@@ -210,32 +210,32 @@ void find_indexes(
 /*******************************************************************
  Function: get_symbol
 
- Inputs: contextt, id of the symbol to search, type of the symbol (if not found)
+ Inputs: symbol_tablet, id of the symbol to search, type of the symbol (if not found)
 
  Outputs: symbolt
 
- Purpose: gets (or adds) the symbol from the context my its ID
+ Purpose: gets (or adds) the symbol from the symbol_table my its ID
 
  \*******************************************************************/
-symbolt get_symbol(contextt &context, irep_idt &id, typet type)
+symbolt get_symbol(symbol_tablet &symbol_table, irep_idt &id, typet type)
 {
   symbolt sym;
-  contextt::symbolst::iterator sit = context.symbols.find(id);
-  if (sit==context.symbols.end())
+  symbol_tablet::symbolst::iterator sit = symbol_table.symbols.find(id);
+  if (sit==symbol_table.symbols.end())
     {
       sym.name = (irep_idt)id;
 
-      std::string s = id.as_string();
+      std::string s = id2string(id);
       size_t i = s.rfind("::", s.length());
       if (i!=std::string::npos)
         s = s.substr(i+2, s.length()-1);
       else
-        s = id.as_string();
+        s = id2string(id);
 
       sym.base_name=(irep_idt)s;
       sym.module = (irep_idt)"c";
       sym.type = type;
-      context.add(sym);
+      symbol_table.add(sym);
     }
   else
     sym=sit->second;

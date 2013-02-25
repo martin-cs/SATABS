@@ -17,7 +17,7 @@ class ti_sum_less_greater_invariant_testt :
 {
 public:
   ti_sum_less_greater_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("TI3", "a'+b'>/<a+b", context, TRANSITION),
       ns(context) {}
   

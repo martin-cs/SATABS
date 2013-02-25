@@ -16,7 +16,7 @@ class ti_less_greater_all_invariant_testt :
 {
 public:
   ti_less_greater_all_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("TI2", "var' >/< var", context, TRANSITION),
       ns(context) {}
   

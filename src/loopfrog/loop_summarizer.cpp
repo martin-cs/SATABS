@@ -39,7 +39,7 @@ Function: summarize
 
 loop_summarizer_statst summarize(
   goto_functionst &goto_functions,
-  contextt &context,
+  symbol_tablet &symbol_table,
   summarizationt &sum,
   loopstoret &imprecise_loops,
   loopstoret &precise_loops,
@@ -48,7 +48,7 @@ loop_summarizer_statst summarize(
   cmdlinet &cmdline,
   const std::string &stats_dir)
 {
-  loop_summarizert summarizer(context, sum, goto_functions,
+  loop_summarizert summarizer(symbol_table, sum, goto_functions,
                               imprecise_loops, precise_loops,
                               value_sets, stats_dir,
                               message_handler, cmdline);
@@ -462,7 +462,7 @@ void loop_summarizert::create_imprecise_loop_summary(
   goto_programt &summary_program = imprecise_loops[current_loop_nr];
 
   goto_programt preconditions;
-  summary.get_preconditions_program(context, preconditions);
+  summary.get_preconditions_program(symbol_table, preconditions);
   summary_program.instructions.splice(summary_program.instructions.end(),
                                       preconditions.instructions);
 
@@ -472,7 +472,7 @@ void loop_summarizert::create_imprecise_loop_summary(
                                       variants.instructions);
 
   goto_programt invariants;
-  summary.get_invariants_program(context, invariants);
+  summary.get_invariants_program(symbol_table, invariants);
   summary_program.instructions.splice(summary_program.instructions.end(),
                                       invariants.instructions);
 

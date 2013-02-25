@@ -6,14 +6,16 @@
 
 \*******************************************************************/
 
-#include <ansi-c/expr2c.h>
-#include <ansi-c/c_types.h>
 #include <std_expr.h>
 #include <expr_util.h>
-#include <goto-programs/string_abstraction.h>
+#include <message.h>
 
-#include "string_utils.h"
+#include <ansi-c/expr2c.h>
+#include <ansi-c/c_types.h>
 
+#include <goto-programs/string_instrumentation.h>
+
+#include "../string_utils.h"
 #include "zero_termination.h"
 
 /*******************************************************************\
@@ -35,7 +37,6 @@ void zero_termination_invariant_testt::get_invariants(
   namespacet ns(context);
   
   stream_message_handlert mh(std::cout);
-  string_abstractiont abs(context, mh);
      
   std::list<exprt> pointers;
   
@@ -80,7 +81,7 @@ void zero_termination_invariant_testt::get_invariants(
       temp.swap(aof);
     }
     
-    exprt invariant = abs.is_zero_string(temp, false, locationt());
+    exprt invariant=is_zero_string(temp, false);
     
     if(invariant.op0().id()=="dereference" &&
        invariant.op0().op0().id()=="constant" &&

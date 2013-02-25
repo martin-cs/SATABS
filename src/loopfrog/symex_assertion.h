@@ -34,7 +34,7 @@ public:
     const value_setst &original_value_sets,
     goto_programt::const_targett &original_head,
     const namespacet &_ns,
-    contextt &_context,
+    symbol_tablet &_context,
     symex_target_equationt &_target) : 
       goto_symext(_ns, _context, _target),
       equation(_target),
@@ -61,8 +61,8 @@ public:
     bool use_smt=false);
   
   void to_equation(
-    const contextt &context,
-    contextt &temp_context,
+    const symbol_tablet &context,
+    symbol_tablet &temp_context,
     const value_setst &value_sets,
     goto_programt::const_targett &head,
     const goto_programt &goto_program,
@@ -73,8 +73,8 @@ public:
     bool use_smt);
   
   void slice_equation(
-    const contextt &context,
-    contextt &temp_context,
+    const symbol_tablet &context,
+    symbol_tablet &temp_context,
     symex_target_equationt &target,
     std::ostream &out) const;
 
@@ -89,7 +89,7 @@ protected:
 };
 
 bool assertion_holds(
-  const contextt &context,
+  const symbol_tablet &context,
   const value_setst &value_sets,
   goto_programt::const_targett &head,
   const goto_programt &goto_program,
@@ -99,7 +99,7 @@ bool assertion_holds(
   bool use_smt=false);
 
 bool last_assertion_holds(
-  const contextt &context,
+  const symbol_tablet &context,
   const value_setst &value_sets,
   goto_programt::const_targett &head,
   const goto_programt &goto_program,
@@ -108,7 +108,7 @@ bool last_assertion_holds(
   bool use_smt=false);
 
 bool assertion_holds(
-  const contextt &context,
+  const symbol_tablet &context,
   const goto_programt &goto_program,
   goto_programt::const_targett &assertion,
   std::ostream &out,

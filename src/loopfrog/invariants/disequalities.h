@@ -13,7 +13,7 @@
 class disequalities_invariant_testt : public variable_relations_invariant_testt
 {
 public:
-  disequalities_invariant_testt(contextt &context) :
+  disequalities_invariant_testt(symbol_tablet &context) :
     variable_relations_invariant_testt("DQ", "Disequalities Domain", context) {};
     
   virtual ~disequalities_invariant_testt() {};

@@ -40,7 +40,7 @@ class loop_summarizert : public message_streamt
 {
 private:
   const namespacet ns;
-  contextt &context;
+  symbol_tablet &symbol_table;
   summarizationt &summarization;
   goto_functionst &goto_functions;
   const cmdlinet &cmdline;
@@ -72,7 +72,7 @@ public:
 
 public:
   loop_summarizert(
-    contextt &_context,
+    symbol_tablet &_symbol_table,
     summarizationt &_summarization,
     goto_functionst &_goto_functions,
     loopstoret &_imprecise_loops,
@@ -82,8 +82,8 @@ public:
     message_handlert &_message_handler,
     const cmdlinet &_cmdline) :
       message_streamt(_message_handler),
-      ns(_context),
-      context(_context),
+      ns(_symbol_table),
+      symbol_table(_symbol_table),
       summarization(_summarization),
       goto_functions(_goto_functions),
       cmdline(_cmdline),
@@ -131,7 +131,7 @@ protected:
 
 loop_summarizer_statst summarize(
   goto_functionst &goto_functions,
-  contextt &context,
+  symbol_tablet &symbol_table,
   summarizationt& summarization,
   loopstoret &_imprecise_loops,
   loopstoret &_precise_loops,

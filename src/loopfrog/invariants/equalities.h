@@ -13,7 +13,7 @@
 class equalities_invariant_testt : public variable_relations_invariant_testt
 {
 public:
-  equalities_invariant_testt(contextt &context) :
+  equalities_invariant_testt(symbol_tablet &context) :
     variable_relations_invariant_testt("EQ", "Equalities Domain", context){};
     
   virtual ~equalities_invariant_testt() {};

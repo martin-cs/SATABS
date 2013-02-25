@@ -16,7 +16,7 @@ class pointer_object_invariant_testt :
 {
 public:
   pointer_object_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("PO", "Pointer Object", context) {}
   
   virtual ~pointer_object_invariant_testt(void) {}

@@ -16,7 +16,7 @@ class ti_less_greater_numeric_invariant_testt :
 {
 public:
   ti_less_greater_numeric_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("TI1", "num' >/< num", context, TRANSITION),
       ns(context) {}
   

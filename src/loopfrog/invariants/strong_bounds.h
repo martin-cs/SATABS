@@ -16,7 +16,7 @@ class strong_bounds_invariant_testt :
 {
 public:
   strong_bounds_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("SB", "Strong It. Bounds", context),
       ns(context) {}
   

@@ -6,14 +6,16 @@
 
 \*******************************************************************/
 
-#include <ansi-c/expr2c.h>
-#include <ansi-c/c_types.h>
 #include <std_expr.h>
 #include <expr_util.h>
-#include <goto-programs/string_abstraction.h>
+#include <message.h>
 
-#include "string_utils.h"
+#include <ansi-c/expr2c.h>
+#include <ansi-c/c_types.h>
 
+#include <goto-programs/string_instrumentation.h>
+
+#include "../string_utils.h"
 #include "string_length.h"
 
 /*******************************************************************\
@@ -35,7 +37,6 @@ void string_length_invariant_testt::get_invariants(
   namespacet ns(context);
   
   stream_message_handlert mh(std::cout);
-  string_abstractiont abs(context, mh);
      
   std::list<exprt> pointers;
   
@@ -80,13 +81,13 @@ void string_length_invariant_testt::get_invariants(
       temp.swap(aof);
     }
     
-    exprt zero_length = abs.zero_string_length(temp, false, locationt());
+    exprt zero_length = zero_string_length(temp, false);
     
     if(zero_length.op0().op0().id()=="dereference" &&
        zero_length.op0().op0().op0().id()=="constant" &&
        zero_length.op0().op0().op0().get("value")=="NULL") continue; // not necessary...
     
-    exprt buffer_size = abs.buffer_size(temp, locationt());
+    exprt buffer_size = ::buffer_size(temp);
     
     exprt invariant = binary_relation_exprt(zero_length, "<", buffer_size);
     potential_invariants.insert(invariant);

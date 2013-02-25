@@ -6,14 +6,17 @@
 
 \*******************************************************************/
 
-#include <ansi-c/expr2c.h>
-#include <ansi-c/c_types.h>
 #include <std_expr.h>
 #include <expr_util.h>
-#include <goto-programs/string_abstraction.h>
+#include <message.h>
 
-#include "pointer_expr.h"
-#include "string_utils.h"
+#include <ansi-c/expr2c.h>
+#include <ansi-c/c_types.h>
+
+#include <goto-programs/string_instrumentation.h>
+
+#include "../pointer_expr.h"
+#include "../string_utils.h"
 
 #include "pointer_offset.h"
 
@@ -36,7 +39,6 @@ void pointer_offset_invariant_testt::get_invariants(
   namespacet ns(context);
   
   stream_message_handlert mh(std::cout);
-  string_abstractiont abs(context, mh);
      
   std::list<exprt> pointers;
   
@@ -62,7 +64,7 @@ void pointer_offset_invariant_testt::get_invariants(
     #endif
     
     typecast_exprt bufsize(int_type());
-    bufsize.op()=abs.buffer_size(*it, locationt()); 
+    bufsize.op()=::buffer_size(*it);
     
     pointer_offset_exprt pos(*it);
     binary_relation_exprt zero_lte_pos(gen_zero(int_type()), "<=", pos);

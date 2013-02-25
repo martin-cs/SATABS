@@ -1,3 +1,6 @@
+include ../config.inc
+include ../common
+
 SRC = main.cpp \
       parseoptions.cpp \
       loop_summarizer.cpp \
@@ -22,44 +25,54 @@ SRC = main.cpp \
       summarization.cpp \
       value_set_alloc_adaptor.cpp \
       ../termination/replace_identifier.cpp \
-      languages.cpp
+      languages.cpp \
+      invariants/invariant_test.cpp \
+      invariants/zero_termination.cpp \
+      invariants/iterator_bounds.cpp \
+      invariants/iterator_bounds2.cpp \
+      invariants/string_length.cpp \
+      invariants/null_pointer.cpp \
+      invariants/pointer_offset.cpp \
+      invariants/constant_tracker.cpp \
+      invariants/pointer_object.cpp \
+      invariants/strong_bounds.cpp \
+      invariants/decreasing_length.cpp \
+      invariants/equalities.cpp \
+      invariants/inequalities.cpp \
+      invariants/disequalities.cpp  \
+      invariants/variable_relations_base.cpp \
+      invariants/ti_less_greater_all.cpp \
+      invariants/ti_less_greater_numeric.cpp \
+      invariants/ti_or_less_greater_all.cpp \
+      invariants/ti_max_less_greater.cpp \
+      invariants/ti_sum_less_greater.cpp \
+      invariants/sti_gzero_implies_less_greater_all.cpp \
+      invariants/sti_gzero_implies_or_less_greater_all.cpp 
 
 OBJ = $(SRC:.cpp=$(OBJEXT)) \
-      invariants/invariants.o \
-      ../big-int/bigint$(OBJEXT) \
-      ../goto-programs/goto-programs$(LIBEXT) \
-      ../goto-symex/goto-symex$(LIBEXT) \
-      ../pointer-analysis/pointer-analysis$(LIBEXT) \
-      ../solvers/solvers$(LIBEXT) \
-      ../util/util$(LIBEXT) \
-      ../langapi/langapi$(LIBEXT) \
-      ../ansi-c/ansi-c$(LIBEXT)
+      $(CBMC)/src/big-int/bigint$(OBJEXT) \
+      $(CBMC)/src/goto-programs/goto-programs$(LIBEXT) \
+      $(CBMC)/src/goto-symex/goto-symex$(LIBEXT) \
+      $(CBMC)/src/pointer-analysis/pointer-analysis$(LIBEXT) \
+      $(CBMC)/src/analyses/analyses$(LIBEXT) \
+      $(CBMC)/src/linking/linking$(LIBEXT) \
+      $(CBMC)/src/assembler/assembler$(LIBEXT) \
+      $(CBMC)/src/solvers/solvers$(LIBEXT) \
+      $(CBMC)/src/util/util$(LIBEXT) \
+      $(CBMC)/src/langapi/langapi$(LIBEXT) \
+      $(CBMC)/src/ansi-c/ansi-c$(LIBEXT)
 
-INCLUDES= -I ../$(CHAFF) -I .. -I ../util
+INCLUDES= -I $(CBMC)/src -I $(CBMC)/src/util
 
 LIBS =
 
-include ../config.inc
-include ../common
+include $(CBMC)/src/config.inc
+include $(CBMC)/src/common
 
 all: loopfrog$(EXEEXT)
 
-ifdef MODULE_CPP
-  OBJ += ../cpp/cpp$(LIBEXT)
-endif
-
-ifdef MODULE_SPECC
-  OBJ += ../specc/specc$(LIBEXT)
-endif
-
 ###############################################################################
 
-.invariants:
-	$(MAKE) $(MAKEARGS) -C invariants
+loopfrog$(EXEEXT): $(OBJ)
+	$(LINKBIN)
 
-loopfrog$(EXEEXT): .invariants $(OBJ)
-	$(CXX) $(LINKFLAGS) -o $@ $(OBJ) $(LIBS)
-
-clean:
-	$(MAKE) $(MAKEARGS) -C invariants clean
-	rm -f *.o loopfrog$(EXEEXT)

@@ -14,8 +14,9 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <signal.h>
 
-#include "parseoptions.h"
+#include <iostream>
 
+#include "parseoptions.h"
 
 void xcpu_termination_handler(int signum)
 {

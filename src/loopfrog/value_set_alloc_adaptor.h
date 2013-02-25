@@ -10,20 +10,20 @@
 #define _CPROVER_LOOPFORG_VALUE_SET_ALLOC_ADAPTOR_H_
 
 #include <expr_util.h>
-#include <context.h>
+#include <symbol_table.h>
 #include <pointer-analysis/value_sets.h>
 
 class value_set_alloc_adaptort : public value_setst
 {
 private:
-  contextt &context;
+  symbol_tablet &symbol_table;
   value_setst &value_sets;
 
 public:
   value_set_alloc_adaptort(
-    contextt &_context,
+    symbol_tablet &_symbol_table,
     value_setst &_value_sets) :
-      context(_context),
+      symbol_table(_symbol_table),
       value_sets(_value_sets) {};
 
   virtual void get_values(

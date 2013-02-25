@@ -9,7 +9,7 @@
 #ifndef _CPROVER_LOOPFORG_INVARIANT_PROPAGATION_ADAPTOR_H_
 #define _CPROVER_LOOPFORG_INVARIANT_PROPAGATION_ADAPTOR_H_
 
-#include <goto-programs/invariant_propagation.h>
+#include <analyses/invariant_propagation.h>
 
 class invariant_propagation_adaptort : public invariant_propagationt
 {

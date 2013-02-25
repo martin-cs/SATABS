@@ -9,13 +9,17 @@
 
 #include <memory>
 
-#include <goto-symex/build_goto_trace.h>
 #include <find_symbols.h>
-#include <ansi-c/expr2c.h>
 #include <time_stopping.h>
+
+#include <ansi-c/expr2c.h>
+
+#include <goto-symex/build_goto_trace.h>
 #include <pointer-analysis/value_set_analysis.h>
+
 #include <solvers/sat/satcheck.h>
 #include <solvers/smt1/smt1_dec.h>
+#include <solvers/flattening/bv_pointers.h>
 
 #include "symex_assertion.h"
 #include "localized_inlining.h"
@@ -37,7 +41,7 @@ fine_timet global_sat_conversion_time;
 \*******************************************************************/
 
 bool last_assertion_holds(
-  const contextt &context,
+  const symbol_tablet &context,
   const value_setst &value_sets,
   goto_programt::const_targett &head,
   const goto_programt &goto_program,
@@ -45,7 +49,7 @@ bool last_assertion_holds(
   unsigned long &max_memory_used,
   bool use_smt)
 {
-  contextt temp_context;
+  symbol_tablet temp_context;
   namespacet ns(context, temp_context);
   symex_target_equationt equation(ns);
   symex_assertiont symex(value_sets, head, ns, temp_context, equation);
@@ -92,14 +96,14 @@ bool symex_assertiont::last_assertion_holds(
 \*******************************************************************/
 
 bool assertion_holds(
-  const contextt &context,
+  const symbol_tablet &context,
   const goto_programt &goto_program,
   goto_programt::const_targett &assertion,
   std::ostream &out,
   unsigned long &max_memory_used,
   bool use_smt)
 {
-  contextt temp_context;
+  symbol_tablet temp_context;
   namespacet ns(context, temp_context);
   symex_target_equationt equation(ns);  
   goto_programt::const_targett first = goto_program.instructions.begin();
@@ -123,7 +127,7 @@ bool assertion_holds(
 \*******************************************************************/
 
 bool assertion_holds(
-  const contextt &context,
+  const symbol_tablet &context,
   const value_setst &value_sets,
   goto_programt::const_targett &head,
   const goto_programt &goto_program,
@@ -132,7 +136,7 @@ bool assertion_holds(
   unsigned long &max_memory_used,
   bool use_smt)
 {
-  contextt temp_context;
+  symbol_tablet temp_context;
   namespacet ns(context, temp_context);
   symex_target_equationt equation(ns);
   symex_assertiont symex(value_sets, head, ns, temp_context, equation);
@@ -529,8 +533,8 @@ bool symex_assertiont::equation_holds(
 \*******************************************************************/
 
 void symex_assertiont::to_equation(
-  const contextt &context,
-  contextt &temp_context,
+  const symbol_tablet &context,
+  symbol_tablet &temp_context,
   const value_setst &value_sets,
   goto_programt::const_targett &head,
   const goto_programt &goto_program,
@@ -576,8 +580,8 @@ void symex_assertiont::to_equation(
 \*******************************************************************/
 
 void symex_assertiont::slice_equation(
-  const contextt &context,
-  contextt &temp_context,
+  const symbol_tablet &context,
+  symbol_tablet &temp_context,
   symex_target_equationt &target,
   std::ostream &out) const
 {

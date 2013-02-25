@@ -21,7 +21,7 @@
 #endif
 
 #include <message.h>
-#include <context.h>
+#include <symbol_table.h>
 #include <i2string.h>
 #include <std_expr.h>
 #include <arith_tools.h>
@@ -30,15 +30,16 @@
 
 #include <goto-programs/read_goto_binary.h>
 #include <goto-programs/goto_functions.h>
-#include <goto-programs/goto_function_pointers.h>
+#include <goto-programs/remove_function_pointers.h>
 #include <goto-programs/goto_convert_functions.h>
 #include <goto-programs/goto_inline.h>
 #include <goto-programs/goto_check.h>
 #include <goto-programs/string_instrumentation.h>
 #include <goto-programs/string_abstraction.h>
-#include <goto-programs/slicer.h>
 #include <goto-programs/show_claims.h>
 #include <goto-programs/remove_unused_functions.h>
+
+#include <goto-instrument/full_slicer.h>
 
 #include <pointer-analysis/add_failed_symbols.h>
 #include <pointer-analysis/value_set_analysis.h>
@@ -168,12 +169,12 @@ int loopfrog_parseoptionst::doit()
 
   // Stage 1: Load file
   goto_functionst goto_functions;
-  namespacet ns(context);
+  namespacet ns(symbol_table);
   fine_timet before, after;
 
   status(std::string("#1: Loading `")+cmdline.args[0]+"' ...");
   before=current_time();
-  if(read_goto_binary(cmdline.args[0], context, goto_functions, mh))
+  if(read_goto_binary(cmdline.args[0], symbol_table, goto_functions, mh))
   {
     error(std::string("Error reading file `")+cmdline.args[0]+"'.");
     return 1;
@@ -212,7 +213,7 @@ int loopfrog_parseoptionst::doit()
   // Stage 2: Loop transformations
   status("#2: Transforming Loops...");
   before=current_time();
-  transform_loops(goto_functions, context, mh);
+  transform_loops(goto_functions, symbol_table, mh);
   after=current_time();
   status(std::string("    TRANS Time: ") + time2string(after-before) + " sec.");
   mem = report_mem();
@@ -274,7 +275,7 @@ int loopfrog_parseoptionst::doit()
   status("#4: Removing function pointers...");
   before=current_time();
 //  unsigned max_it;
-  remove_function_pointers(ns, goto_functions);
+  remove_function_pointers(symbol_table, goto_functions, false);
   remove_unused_functions(goto_functions, get_message_handler());
   after=current_time();
 //  status(std::string("    Max. Iterations: ") + i2string(max_it));
@@ -305,7 +306,7 @@ int loopfrog_parseoptionst::doit()
   // Stage 5: String Instrumentation
   status("#5: String instrumentation...");
   before=current_time();
-  string_instrumentation(context, mh, goto_functions);
+  string_instrumentation(symbol_table, mh, goto_functions);
   after=current_time();
   status(std::string("    STRINS Time: ") + time2string(after-before) + " sec.");
   mem=report_mem();
@@ -374,7 +375,7 @@ int loopfrog_parseoptionst::doit()
   // Stage 7: String abstraction
   status("#7: String abstraction...");
   before=current_time();
-  string_abstraction(context, mh, goto_functions);
+  string_abstraction(symbol_table, mh, goto_functions);
   after=current_time();
   status(std::string("    STRABS Time: ") + time2string(after-before));
   mem=report_mem();
@@ -448,14 +449,14 @@ int loopfrog_parseoptionst::doit()
     statfile.flush();
   }
 
-  value_set_alloc_adaptort adaptor(context, pointer_analysis);
+  value_set_alloc_adaptort adaptor(symbol_table, pointer_analysis);
 
   // Stage 9: Dereference
   status("#9: Pointer dereferencing...");
   before=current_time();
-  replace_malloc( context, goto_functions, adaptor );
+  replace_malloc(symbol_table, goto_functions, adaptor );
   Forall_goto_functions(it, goto_functions)
-    remove_pointers( it->second.body, context, options, adaptor );
+    remove_pointers( it->second.body, symbol_table, adaptor);
   after=current_time();
   status(std::string("    DEREF Time: ") + time2string(after-before));
   mem=report_mem();
@@ -814,10 +815,11 @@ bool loopfrog_parseoptionst::check_loop_summarization(
   loopstoret precise_loops;
 
 
-  string_summarizationt strsum( context, leaping_functions, imprecise_loops, precise_loops,adaptor, stats_dir, options );
+  string_summarizationt strsum(symbol_table, leaping_functions, 
+    imprecise_loops, precise_loops,adaptor, stats_dir, options);
 
   before=current_time();
-  sumstats = summarize(goto_functions, context, strsum,
+  sumstats = summarize(goto_functions, symbol_table, strsum,
                        imprecise_loops, precise_loops, adaptor,
                        get_message_handler(), cmdline, stats_dir);
   if(!cmdline.isset("no-progress") &&

@@ -17,7 +17,7 @@ class ti_or_less_greater_all_invariant_testt :
 {
 public:
   ti_or_less_greater_all_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("TI5", "(a'>a and b'=b) or...", context, TRANSITION),
       ns(context) {}
   

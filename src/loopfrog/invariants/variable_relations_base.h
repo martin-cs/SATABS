@@ -16,7 +16,7 @@ class variable_relations_invariant_testt : public invariant_testt
 public:
   variable_relations_invariant_testt(const std::string &shortid,
                                      const std::string &longid,
-                                     contextt &context) :
+                                     symbol_tablet &context) :
     invariant_testt(shortid, longid, context){};
     
   virtual ~variable_relations_invariant_testt() {};

@@ -15,7 +15,7 @@ class sti_gzero_implies_less_greater_all_invariant_testt :
 {
 public:
   sti_gzero_implies_less_greater_all_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("ST1", "a>=0 => a' >/< a", context, STATE_AND_TRANSITION),
       ns(context) {}
   

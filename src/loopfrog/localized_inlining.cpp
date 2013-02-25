@@ -6,10 +6,13 @@
 
 \*******************************************************************/
 
-#include <goto-programs/remove_skip.h>
-#include <util/base_type.h>
+#include <iostream>
+
+#include <base_type.h>
 #include <message_stream.h>
 #include <arith_tools.h>
+
+#include <goto-programs/remove_skip.h>
 
 #include "localized_inlining.h"
 
@@ -479,7 +482,7 @@ goto_programt::const_targett goto_inline_localizedt::goto_inline_int(
          it->code.get("statement")=="loop-summary")
       {
         const codet &code = to_code(it->code);
-        std::string ident = "LOOP-SUMMARY-" + code.get("index").as_string();
+        std::string ident = "LOOP-SUMMARY-" + id2string(code.get(ID_index));
 
         if(progress.recursion_set.find(ident)!=
            progress.recursion_set.end())
@@ -507,7 +510,7 @@ goto_programt::const_targett goto_inline_localizedt::goto_inline_int(
                       (goal_stack.size()+1==progress.call_stack.size() &&
                        is_prefix_of(goal_stack, progress.call_stack));
 
-          mp_integer inx_mp = string2integer(code.get("index").as_string(), 10);
+          mp_integer inx_mp = string2integer(id2string(code.get(ID_index)), 10);
           unsigned long inx = inx_mp.to_ulong();
 
           #if 0
@@ -724,7 +727,7 @@ goto_programt::const_targett find_assertion(
          it->code.get("statement")=="loop-summary")
       {
         const codet &code = to_code(it->code);
-        mp_integer inx_mp = string2integer(code.get("index").as_string(), 10);
+        mp_integer inx_mp = string2integer(id2string(code.get(ID_index)), 10);
         unsigned long inx = inx_mp.to_ulong();
 
         // always search the precise loops

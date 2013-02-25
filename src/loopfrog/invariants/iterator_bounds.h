@@ -16,7 +16,7 @@ class iterator_bounds_invariant_testt :
 {
 public:
   iterator_bounds_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("IB", "Iterator Bounds", context),
       ns(context) {}
   

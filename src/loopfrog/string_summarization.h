@@ -25,7 +25,7 @@ class string_summarizationt : public summarizationt
 {
 public:
   string_summarizationt(
-    contextt &context, 
+    symbol_tablet &context, 
     goto_functionst &_goto_functions,
     const loopstoret &_imprecise_loops,
     const loopstoret &_precise_loops,

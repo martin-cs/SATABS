@@ -130,7 +130,7 @@ claim_statst check_claims(
     {
       if(/* !checked || safe */
          !claim_map[ass_ptr].first || claim_map[ass_ptr].second)       
-        pass = assertion_holds(ns.get_context(),
+        pass = assertion_holds(ns.get_symbol_table(),
             inlined_program,
             inlined_assertion,
             out,

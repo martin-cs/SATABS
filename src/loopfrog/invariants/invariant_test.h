@@ -23,7 +23,7 @@ typedef enum { STATE, TRANSITION, STATE_AND_TRANSITION } invariant_test_typet;
 class invariant_testt
 {
 protected:
-  contextt &context;
+  symbol_tablet &context;
   unsigned temporary_counter;
 
 public:
@@ -34,7 +34,7 @@ public:
   invariant_testt(
     const std::string &sn,
     const std::string &ln,
-    contextt &_context,
+    symbol_tablet &_context,
     invariant_test_typet inv_type = STATE) :
       context(_context),
       temporary_counter(0),

@@ -20,7 +20,7 @@ Author: CM Wintersteiger
 
 #include "invariants/invariant_test.h"
 
-#include <termination/replace_identifier.h>
+#include "../termination/replace_identifier.h"
 
 #include "value_set_duplication_adaptor.h"
 #include "summary.h"
@@ -31,7 +31,7 @@ class summarizationt
 {
 protected:
   namespacet ns;
-  contextt &context;
+  symbol_tablet &symbol_table;
   const goto_functionst &goto_functions;
   const loopstoret &imprecise_loops;
   const loopstoret &precise_loops;
@@ -62,15 +62,15 @@ public:
   const optionst &options;
 
   summarizationt(
-    contextt &_context,
+    symbol_tablet &_symbol_table,
     const goto_functionst &_goto_functions,
     const loopstoret &_imprecise_loops,
     const loopstoret &_precise_loops,
     value_setst &_value_sets,
     const std::string &_stats_dir,
     const optionst &_opts) :
-      ns(_context),
-      context(_context),
+      ns(_symbol_table),
+      symbol_table(_symbol_table),
       goto_functions(_goto_functions),
       imprecise_loops(_imprecise_loops),
       precise_loops(_precise_loops),
@@ -133,7 +133,7 @@ protected:
 
 
   void get_loop_equation(
-    contextt &temp_context,
+    symbol_tablet &temp_symbol_table,
     symex_assertiont &symex,
     goto_programt &source,
     symex_target_equationt &equation,

@@ -94,10 +94,10 @@ void value_set_alloc_adaptort::replace_dynamic_objects(exprt &expr)
 
       typet type("array");
 
-      contextt::symbolst::const_iterator s_it =
-        context.symbols.find(ad_prefix+new_name);
+      symbol_tablet::symbolst::const_iterator s_it =
+        symbol_table.symbols.find(ad_prefix+new_name);
 
-      if(s_it!=context.symbols.end())
+      if(s_it!=symbol_table.symbols.end())
       {
         // we're not replacing malloc, this is for real.
         type = s_it->second.type;

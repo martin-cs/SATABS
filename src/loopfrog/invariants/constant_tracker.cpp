@@ -6,14 +6,17 @@
 
 \*******************************************************************/
 
-#include <ansi-c/expr2c.h>
-#include <ansi-c/c_types.h>
 #include <std_expr.h>
 #include <expr_util.h>
-#include <goto-programs/string_abstraction.h>
+#include <message.h>
 
-#include "pointer_expr.h"
-#include "string_utils.h"
+#include <ansi-c/expr2c.h>
+#include <ansi-c/c_types.h>
+
+#include <goto-programs/string_instrumentation.h>
+
+#include "../pointer_expr.h"
+#include "../string_utils.h"
 
 #include "constant_tracker.h"
 
@@ -36,7 +39,6 @@ void constant_tracker_invariant_testt::get_invariants(
   namespacet ns(context);
 
   stream_message_handlert mh(std::cout);
-  string_abstractiont abs(context, mh);
 
   std::list<exprt> pointers;
 
@@ -52,7 +54,9 @@ void constant_tracker_invariant_testt::get_invariants(
     }
   }
 
-  typet struct_ptr_type("pointer");
+  #if 0
+  // commented out due to get_string_struct()
+  typet struct_ptr_type(ID_pointer);
   struct_ptr_type.subtype() = abs.get_string_struct();
 
   // test the invariant for every string
@@ -66,7 +70,7 @@ void constant_tracker_invariant_testt::get_invariants(
 
     symbol_exprt temp = get_temporary_symbol(struct_ptr_type);
 
-    exprt bufsize = abs.is_zero_string(*it, false, locationt());
+    exprt bufsize = is_zero_string(*it, false);
 
     assert(bufsize.id()=="member");
 
@@ -91,4 +95,5 @@ void constant_tracker_invariant_testt::get_invariants(
     std::cout << "CT INVARIANT: " << expr2c(invariant, ns) << std::endl;
     #endif
   }
+  #endif
 }

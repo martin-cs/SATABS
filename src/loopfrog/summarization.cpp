@@ -7,26 +7,24 @@ Author: CM Wintersteiger
 \*******************************************************************/
 
 #include <memory>
-#include <ansi-c/expr2c.h>
+#include <sstream>
+
 #include <i2string.h>
 #include <config.h>
-
+#include <std_expr.h>
+#include <prefix.h>
+#include <find_symbols.h>
 #include <expr_util.h>
-#include <str_getline.h>
+
 #include <ansi-c/ansi_c_language.h>
+#include <ansi-c/expr2c.h>
+
 #include <langapi/language_util.h>
 #include <langapi/mode.h>
 #include <langapi/languages.h>
 
 #include <solvers/sat/satcheck.h>
 #include <solvers/flattening/bv_pointers.h>
-
-#include <sstream>
-
-#include <std_expr.h>
-#include <prefix.h>
-
-#include <util/find_symbols.h>
 
 #include "summarization.h"
 
@@ -154,12 +152,12 @@ void summarizationt::test_invariant(
 
     std::string dname = stats_dir + "/loop_";
     dname += i2string(seen_loops) + "/";
-    std::string fname = dname + statname.as_string() + "_" + i2string(c);
+    std::string fname = dname + id2string(statname) + "_" + i2string(c);
 
     out.open(fname.c_str(), std::fstream::out);
   }
   
-  if (last_assertion_holds(ns.get_context(),
+  if (last_assertion_holds(ns.get_symbol_table(),
                            value_sets,
                            original_loop_head,
                            symex_prg, out,
@@ -232,12 +230,12 @@ termination_typet summarizationt::test_transition_invariant(
 
     std::string dname = stats_dir + "/loop_";
     dname += i2string(seen_loops) + "/";
-    std::string fname = dname + statname.as_string() + "_" + i2string(c);
+    std::string fname = dname + id2string(statname) + "_" + i2string(c);
 
     out.open(fname.c_str(), std::fstream::out);
   }
 
-  if (last_assertion_holds(ns.get_context(),
+  if (last_assertion_holds(ns.get_symbol_table(),
                            value_sets,
                            original_loop_head,
                            symex_prg, out,
@@ -257,7 +255,7 @@ termination_typet summarizationt::test_transition_invariant(
       symex_prg.instructions.front().guard = *it;
       (++symex_prg.instructions.rbegin())->guard = *it;
       symex_prg.update();
-      if (last_assertion_holds(ns.get_context(),
+      if (last_assertion_holds(ns.get_symbol_table(),
                                  value_sets,
                                  original_loop_head,
                                  symex_prg, out,
@@ -595,8 +593,8 @@ void summarizationt::run_tests_incremental(
   goto_programt &source,
   loop_summaryt &summary)
 {
-  contextt temp_context;
-  namespacet ns(context, temp_context);
+  symbol_tablet temp_symbol_table;
+  namespacet ns(symbol_table, temp_symbol_table);
   symex_target_equationt equation(ns);
   std::ofstream out;
 
@@ -608,9 +606,9 @@ void summarizationt::run_tests_incremental(
   }
 
   symex_assertiont symex(value_sets, original_loop_head,
-                         ns, context, equation);
+                         ns, symbol_table, equation);
 
-  get_loop_equation(temp_context, symex, source, equation, out);
+  get_loop_equation(temp_symbol_table, symex, source, equation, out);
 
   if (options.get_bool_option("save-loops"))
   {
@@ -645,7 +643,7 @@ void summarizationt::run_tests_incremental(
 
         std::string dname = stats_dir + "/loop_";
         dname += i2string(seen_loops) + "/";
-        std::string fname = dname + statname.as_string() + "_" + i2string(c);
+        std::string fname = dname + id2string(statname) + "_" + i2string(c);
 
         out.open(fname.c_str(), std::fstream::out);
       }
@@ -703,7 +701,7 @@ void summarizationt::run_tests_incremental(
 \*******************************************************************/
 
 void summarizationt::get_loop_equation(
-  contextt &temp_context,
+  symbol_tablet &temp_symbol_table,
   symex_assertiont &symex,
   goto_programt &source,
   symex_target_equationt &equation,
@@ -711,7 +709,7 @@ void summarizationt::get_loop_equation(
 {
   goto_programt::const_targett last=--source.instructions.end();
 
-  symex.to_equation(context, temp_context, value_sets, original_loop_head,
+  symex.to_equation(symbol_table, temp_symbol_table, value_sets, original_loop_head,
                     source, last, equation, out, max_mem_used,
                     options.get_bool_option("use-smt"));
 }
@@ -755,7 +753,7 @@ void summarizationt::get_user_invariants_fromfile(std::set<exprt> &user_invarian
 
   std::string line;
 
-  while(str_getline(infile, line))
+  while(std::getline(infile, line))
   {
     if(line!="" && line[0]!='#' &&
        std::string(line, 0, 2)!="//")
@@ -810,8 +808,8 @@ bool summarizationt::is_compositional( const exprt &disjunction)
     const irep_idt &pre = it->first;
     const irep_idt &post = it->second;
 
-    p1_replacer.insert(post, "LINK::"+post.as_string());
-    p2_replacer.insert(pre,  "LINK::"+post.as_string());
+    p1_replacer.insert(post, "LINK::"+id2string(post));
+    p2_replacer.insert(pre,  "LINK::"+id2string(post));
   }
 
   p1_replacer.replace(d_post1);
@@ -863,7 +861,7 @@ void summarizationt::get_pre_post(
       it++)
   {
     irep_idt id = it->get(ID_identifier);
-    const std::string &id_s = id.as_string();
+    const std::string &id_s = id2string(id);
     if (has_prefix(id_s, "termination"))
       varmap.insert(id, ID_nil);
   }
@@ -873,7 +871,7 @@ void summarizationt::get_pre_post(
       it++)
   {
     irep_idt id = it->get(ID_identifier);
-    const std::string &id_s = id.as_string();
+    const std::string &id_s = id2string(id);
     if (!has_prefix(id_s, "termination"))
     {
       // This is an instrumented variable; we should have a
@@ -883,7 +881,7 @@ void summarizationt::get_pre_post(
            vit++)
       {
         const irep_idt &pre = vit->first;
-        if (pre.as_string().find(id_s)!=std::string::npos)
+        if(id2string(pre).find(id_s)!=std::string::npos)
         {
           vit->second = id;
           break;

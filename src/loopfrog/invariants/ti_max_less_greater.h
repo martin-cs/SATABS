@@ -18,7 +18,7 @@ class ti_max_less_greater_invariant_testt :
 {
 public:
   ti_max_less_greater_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("TI4", "max(a',b')>/<max(a,b)", context, TRANSITION),
       ns(context) {}
   

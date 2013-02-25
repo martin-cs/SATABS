@@ -16,7 +16,7 @@ class null_pointer_invariant_testt :
 {
 public:
   null_pointer_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("NP", "NULL-Pointer", context) {}
   
   virtual ~null_pointer_invariant_testt(void) {}

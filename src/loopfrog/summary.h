@@ -52,11 +52,11 @@ public:
     goto_programt &goto_program);
   
   void get_preconditions_program(
-    contextt &context, 
+    symbol_tablet &context, 
     goto_programt &goto_program);
   
   void get_invariants_program(
-    contextt &context, 
+    symbol_tablet &context, 
     goto_programt&);
 
   loop_summaryt():termination_type(DOES_NOT_TERMINATE){}

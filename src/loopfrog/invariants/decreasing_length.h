@@ -16,7 +16,7 @@ class decreasing_length_invariant_testt :
 {
 public:
   decreasing_length_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("DL", "Decreasing Length", context) {}
   
   virtual ~decreasing_length_invariant_testt(void) {}

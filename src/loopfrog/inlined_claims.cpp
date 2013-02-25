@@ -9,6 +9,8 @@
 #include <list>
 #include <stack>
 #include <ostream>
+#include <iostream>
+
 #include <arith_tools.h>
 
 #include "inlined_claims.h"
@@ -57,7 +59,7 @@ void show_inlined_claimst::show(
       const codet &code = to_code(it->code);
       if(code.get_statement()=="loop-summary")
       {
-        mp_integer inx_mp = string2integer(code.get("index").as_string(), 10);
+        mp_integer inx_mp = string2integer(id2string(code.get(ID_index)), 10);
         unsigned long inx = inx_mp.to_ulong();
         
         loopstoret::const_iterator s_it = precise_loops.find(inx);
@@ -97,7 +99,7 @@ unsigned find_marked_claim(
   
   unsigned holdoff=0;
   
-  const std::string &mstring = mark.as_string();
+  const std::string &mstring = id2string(mark);
   size_t p=mstring.rfind("_");
   if(p!=std::string::npos)
   {
@@ -267,7 +269,7 @@ unsigned count_inlined_claims(
       const codet &code = to_code(it->code);
       if(code.get_statement()=="loop-summary")
       {
-        mp_integer inx_mp = string2integer(code.get("index").as_string(), 10);
+        mp_integer inx_mp = string2integer(id2string(code.get(ID_index)), 10);
         unsigned long inx = inx_mp.to_ulong();
         
         loopstoret::const_iterator s_it = precise_loops.find(inx);

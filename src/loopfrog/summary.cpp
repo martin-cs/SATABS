@@ -51,7 +51,7 @@ void loop_summaryt::get_variants_program(
 \*******************************************************************/
 
 void loop_summaryt::get_preconditions_program(
-  contextt &context,
+  symbol_tablet &context,
   goto_programt &goto_program)
 {
   unsigned counter=0;
@@ -69,19 +69,19 @@ void loop_summaryt::get_preconditions_program(
     else
     {
       irep_idt identifier="precondition_check$"+integer2string(counter++);
-      irep_idt long_id = "loopfrog::" + identifier.as_string();
+      irep_idt long_id = "loopfrog::" + id2string(identifier);
 
       symbolt *symbolp = NULL;
-      contextt::symbolst::iterator s_it = context.symbols.find(identifier);
+      symbol_tablet::symbolst::iterator s_it = context.symbols.find(identifier);
 
       if (s_it==context.symbols.end())
       {
         symbolt new_symbol;
         new_symbol.name=long_id;
         new_symbol.type=typet("bool");
-        new_symbol.is_statevar=true;
-        new_symbol.lvalue=true;
-        new_symbol.static_lifetime=true;
+        new_symbol.is_state_var=true;
+        new_symbol.is_lvalue=true;
+        new_symbol.is_static_lifetime=true;
         new_symbol.pretty_name=identifier;
         new_symbol.base_name=identifier;
 
@@ -117,7 +117,7 @@ void loop_summaryt::get_preconditions_program(
 \*******************************************************************/
 
 void loop_summaryt::get_invariants_program(
-  contextt &context,
+  symbol_tablet &context,
   goto_programt &goto_program)
 {
   unsigned counter=0;
@@ -135,19 +135,19 @@ void loop_summaryt::get_invariants_program(
     else
     {
       irep_idt identifier="precondition_check$"+integer2string(counter++);
-      irep_idt long_id = "loopfrog::" + identifier.as_string();
+      irep_idt long_id = "loopfrog::" + id2string(identifier);
 
       symbolt *symbolp = NULL;
-      contextt::symbolst::iterator s_it = context.symbols.find(identifier);
+      symbol_tablet::symbolst::iterator s_it = context.symbols.find(identifier);
 
       if (s_it==context.symbols.end())
       {
         symbolt new_symbol;
         new_symbol.name=long_id;
         new_symbol.type=typet("bool");
-        new_symbol.is_statevar=true;
-        new_symbol.lvalue=true;
-        new_symbol.static_lifetime=true;
+        new_symbol.is_state_var=true;
+        new_symbol.is_lvalue=true;
+        new_symbol.is_static_lifetime=true;
         new_symbol.pretty_name=identifier;
         new_symbol.base_name=identifier;
 

@@ -27,7 +27,7 @@
 \*******************************************************************/
 
 void replace_malloc_at(
-  contextt &context,
+  symbol_tablet &context,
   goto_programt &goto_program,
   const symbol_exprt &static_object,
   goto_programt::targett &next,
@@ -35,9 +35,9 @@ void replace_malloc_at(
   exprt &rhs)
 {
   const irep_idt &name = static_object.get("identifier");
-  const irep_idt &sizename = name.as_string() + "#size";
+  const irep_idt &sizename = id2string(name) + "#size";
 
-  std::string short_name(name.as_string(), name.as_string().find("::")+2);
+  std::string short_name(id2string(name), id2string(name).find("::")+2);
 
   // we need new symbols for this.
   symbolt new_symbol;
@@ -49,7 +49,7 @@ void replace_malloc_at(
 
   new_symbol.name=name;
   new_symbol.base_name=short_name;
-  new_symbol.lvalue=true;
+  new_symbol.is_lvalue=true;
 
   const typet &malloc_type = (typet&) rhs.find("#type");
 
@@ -107,7 +107,7 @@ void replace_malloc_at(
 \*******************************************************************/
 
 void replace_malloc(
-  contextt &context,
+  symbol_tablet &context,
   goto_functionst &goto_functions,
   value_setst &value_sets)
 {
@@ -139,16 +139,16 @@ void replace_malloc(
 
           const exprt *root_obj=&(obj.object());
 
-          while(root_obj->id()=="member" ||
-                root_obj->id()=="index" ||
-                root_obj->id()=="typecast")
+          while(root_obj->id()==ID_member ||
+                root_obj->id()==ID_index ||
+                root_obj->id()==ID_typecast)
           {
             assert(root_obj->operands().size()!=0);
             root_obj=&root_obj->op0();
           }
 
-          assert(root_obj->id()=="symbol" &&
-                 has_prefix(root_obj->get("identifier").as_string(),
+          assert(root_obj->id()==ID_symbol &&
+                 has_prefix(id2string(root_obj->get(ID_identifier)),
                             "alloc_adaptor::"));
 
           // find the dynamic object instance

@@ -16,7 +16,7 @@ class constant_tracker_invariant_testt :
 {
 public:
   constant_tracker_invariant_testt(
-    contextt &context) : 
+    symbol_tablet &context) : 
       invariant_testt("CT", "Constant Tracker", context) {}
   
   virtual ~constant_tracker_invariant_testt(void) {}

@@ -6,17 +6,18 @@
 
 \*******************************************************************/
 
-#include <ansi-c/expr2c.h>
-#include <ansi-c/c_types.h>
 #include <std_expr.h>
 #include <expr_util.h>
-#include <goto-programs/string_abstraction.h>
 #include <arith_tools.h>
 
-#include "string_utils.h"
+#include <ansi-c/expr2c.h>
+#include <ansi-c/c_types.h>
+
+#include <goto-programs/string_abstraction.h>
+
+#include "../string_utils.h"
 
 #include "ti_sum_less_greater.h"
-
 
 /*******************************************************************\
  
@@ -30,7 +31,7 @@
 
 \*******************************************************************/
 
- void ti_sum_less_greater_invariant_testt::get_transition_invariants(
+void ti_sum_less_greater_invariant_testt::get_transition_invariants(
   const loop_summaryt &summary,
   transition_invariantst &candidates)
 {

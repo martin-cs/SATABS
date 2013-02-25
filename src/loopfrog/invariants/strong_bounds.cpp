@@ -6,13 +6,16 @@
 
 \*******************************************************************/
 
-#include <ansi-c/expr2c.h>
-#include <ansi-c/c_types.h>
 #include <std_expr.h>
 #include <expr_util.h>
-#include <goto-programs/string_abstraction.h>
+#include <message.h>
 
-#include "string_utils.h"
+#include <ansi-c/expr2c.h>
+#include <ansi-c/c_types.h>
+
+#include <goto-programs/string_instrumentation.h>
+
+#include "../string_utils.h"
 
 #include "strong_bounds.h"
 
@@ -92,7 +95,6 @@ void strong_bounds_invariant_testt::get_invariants(
   std::set<exprt> &potential_invariants)  
 {
   stream_message_handlert mh(std::cout);
-  string_abstractiont abs(context, mh);
      
   std::set<exprt> indexes;
   
@@ -126,8 +128,8 @@ void strong_bounds_invariant_testt::get_invariants(
       exprt aof = address_of_exprt(array_0);
       temp.swap(aof);
     }
-    exprt is_zero = abs.is_zero_string(temp, false, locationt());
-    exprt strlen = abs.zero_string_length(temp, false, locationt());
+    exprt is_zero = is_zero_string(temp, false);
+    exprt strlen = zero_string_length(temp, false);
     
     index_exprt zci;
     zci.type()=array_type.subtype();

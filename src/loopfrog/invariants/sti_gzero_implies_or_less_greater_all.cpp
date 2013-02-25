@@ -6,13 +6,15 @@
 
 \*******************************************************************/
 
-#include <ansi-c/expr2c.h>
-#include <ansi-c/c_types.h>
 #include <std_expr.h>
 #include <expr_util.h>
+
+#include <ansi-c/expr2c.h>
+#include <ansi-c/c_types.h>
+
 #include <goto-programs/string_abstraction.h>
 
-#include "string_utils.h"
+#include "../string_utils.h"
 
 #include "sti_gzero_implies_or_less_greater_all.h"
 

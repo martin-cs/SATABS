@@ -32,7 +32,7 @@ bool contains_string_type(const typet &type);
 
 void find_indexes(const exprt &src, std::set<exprt> &dest);
 
-symbolt get_symbol(contextt &context, 
+symbolt get_symbol(symbol_tablet &context, 
                    irep_idt &id, 
                    typet type);
 

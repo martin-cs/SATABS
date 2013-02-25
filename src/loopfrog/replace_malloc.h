@@ -16,7 +16,7 @@
 // Warning: This relies on alloc_adaptor being used!
 
 void replace_malloc(
-  contextt &context,
+  symbol_tablet &context,
   goto_functionst &goto_functions,
   value_setst &value_sets);
 
