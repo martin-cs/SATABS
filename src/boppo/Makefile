@@ -19,6 +19,7 @@ OBJ+= $(CBMC)/src/util/util$(LIBEXT) \
       $(CBMC)/src/solvers/solvers$(LIBEXT) \
       $(CBMC)/src/big-int/bigint$(OBJEXT) \
       $(CBMC)/src/linking/linking$(LIBEXT) \
+      $(CBMC)/src/analyses/analyses$(LIBEXT) \
       ../bplang/bplang$(LIBEXT)
 
 INCLUDES= -I $(CBMC)/src -I $(CBMC)/src/util -I ..

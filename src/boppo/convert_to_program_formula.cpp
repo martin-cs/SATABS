@@ -15,8 +15,9 @@ Author: Daniel Kroening, daniel.kroening@inf.ethz.ch
 
 #include <bplang/bp_util.h>
 #include <goto-programs/goto_inline.h>
-#include <goto-programs/goto_check.h>
 #include <goto-programs/goto_convert_functions.h>
+
+#include <analyses/goto_check.h>
 
 #include "convert_to_program_formula.h"
 

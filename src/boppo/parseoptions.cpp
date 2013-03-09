@@ -34,7 +34,8 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <bplang/bp_language.h>
 #include <goto-programs/goto_convert_functions.h>
 #include <goto-programs/goto_convert.h>
-#include <goto-programs/goto_check.h>
+
+#include <analyses/goto_check.h>
 
 #include "convert_to_promela.h"
 #include "convert_to_program_formula.h"

@@ -21,7 +21,6 @@ Date: June 2003
 
 #include <goto-programs/show_claims.h>
 #include <goto-programs/set_claims.h>
-#include <goto-programs/goto_check.h>
 #include <goto-programs/reachability_slicer.h>
 #include <goto-programs/goto_convert_functions.h>
 #include <goto-programs/remove_function_pointers.h>
@@ -30,6 +29,8 @@ Date: June 2003
 #include <goto-programs/string_abstraction.h>
 #include <goto-programs/remove_unused_functions.h>
 #include <goto-programs/link_to_library.h>
+
+#include <analyses/goto_check.h>
 
 #include <langapi/language_util.h>
 #include <langapi/mode.h>
