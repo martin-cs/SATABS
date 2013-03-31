@@ -13,3 +13,5 @@
 
    make
 
+5. Recall that you need to obtain a model checker for the Boolean program.
+   We recommend you try boom, available at http://www.cprover.org/boom/
