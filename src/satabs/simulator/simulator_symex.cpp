@@ -151,7 +151,7 @@ void simulator_symext::build_equation_prefix(
     if(prefix.equation.SSA_steps.size()==s)
     {
       // just note that we have been there
-      prefix.equation.location(state.guard, state.source);
+      prefix.equation.location(state.guard.as_expr(), state.source);
     }
 
     // record it
@@ -210,7 +210,7 @@ void simulator_symext::get_fail_info(
 
   // we might need to negate it
   if(c_it->source.pc->is_goto())
-    if(c_it->guard_expr.is_false())
+    if(c_it->guard.is_false())
       fail_info.guard.make_not();
 }
 

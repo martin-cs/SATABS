@@ -162,7 +162,7 @@ bool simulator_loop_detectiont::check_phase_I_equation(
 
   // we might need to negate it
   if (c_it->source.pc->is_goto())
-    if (c_it->guard_expr.is_false())
+    if (c_it->guard.is_false())
       fail_info.guard.make_not();
 
   return true;
@@ -311,7 +311,7 @@ void simulator_loop_detectiont::build_loop_recurrence(
   exprt tmp(parameter_expr);
 
   equation.assignment(
-      guardt(),
+      true_exprt(),
       to_symbol_expr(parameter_expr),
       to_symbol_expr(parameter_expr),
       to_symbol_expr(parameter_expr),
@@ -648,7 +648,7 @@ void simulator_loop_detectiont::build_parameterized_equation(
       if(equation.SSA_steps.size()==s)
       {
         // just note that we have been there
-        equation.location(state.guard, state.source);
+        equation.location(state.guard.as_expr(), state.source);
       }
 
       // record it (as in simulator_symext::build_equation_prefix)
