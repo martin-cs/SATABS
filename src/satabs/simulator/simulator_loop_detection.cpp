@@ -12,6 +12,7 @@ Purpose:
 
 #include <algorithm>
 #include <iterator>
+#include <iostream>
 
 //#define DEBUG
 

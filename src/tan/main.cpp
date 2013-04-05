@@ -6,8 +6,10 @@ Author: CM Wintersteiger
 
 \*******************************************************************/
 
-#include <cstdlib>
 #include <signal.h>
+
+#include <iostream>
+#include <cstdlib>
 
 #include "parseoptions.h"
 

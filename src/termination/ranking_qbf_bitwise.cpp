@@ -9,6 +9,7 @@ Date: May 2009
 \*******************************************************************/
 
 #include <memory>
+#include <iostream>
 
 #include <math.h>
 #include <std_expr.h>

@@ -8,6 +8,8 @@ Date: October 2008
 
 \*******************************************************************/
 
+#include <iostream>
+
 #include <base_type.h>
 #include <symbol.h>
 

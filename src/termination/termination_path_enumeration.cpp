@@ -10,6 +10,7 @@ Author: CM Wintersteiger
 #include <sstream>
 #include <fstream>
 #include <memory>
+#include <iostream>
 
 #include <std_expr.h>
 #include <i2string.h>

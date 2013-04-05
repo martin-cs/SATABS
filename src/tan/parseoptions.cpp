@@ -7,6 +7,7 @@
 \*******************************************************************/
 
 #include <cstdlib>
+#include <iostream>
 
 #include <config.h>
 #include <time_stopping.h>

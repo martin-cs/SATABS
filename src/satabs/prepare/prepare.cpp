@@ -9,6 +9,8 @@ Date: June 2003
 
 \*******************************************************************/
 
+#include <iostream>
+
 #include <expr_util.h>
 #include <get_module.h>
 #include <i2string.h>

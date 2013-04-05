@@ -5,6 +5,7 @@
  *      Author: alad
  */
 
+#include <iostream>
 #include <algorithm>
 #include <iterator>
 

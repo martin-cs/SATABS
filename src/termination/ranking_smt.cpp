@@ -9,6 +9,7 @@ Date: March 2010
 \*******************************************************************/
 
 #include <memory>
+#include <iostream>
 
 #include <std_expr.h>
 #include <arith_tools.h>
