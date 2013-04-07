@@ -1,9 +1,0 @@
-KNOWNBUG
-main.c
---iterations 4 --pointer-check
-^EXIT=10$
-^SIGNAL=0$
-^VERIFICATION FAILED$
---
-^warning: ignoring
-Also fails with CBMC - pointer analysis does not consider scope
