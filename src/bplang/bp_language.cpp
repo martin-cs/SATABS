@@ -6,10 +6,10 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include <expr_util.h>
-#include <std_code.h>
-#include <std_types.h>
-#include <std_expr.h>
+#include <util/expr_util.h>
+#include <util/std_code.h>
+#include <util/std_types.h>
+#include <util/std_expr.h>
 
 #include "bp_language.h"
 #include "bp_typecheck.h"

@@ -4,10 +4,10 @@
 static int isatty(int) { return 0; }
 #endif
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
-#include <expr.h>
+#include <util/expr.h>
 
 #define PARSER bp_parser
 #define YYSTYPE unsigned

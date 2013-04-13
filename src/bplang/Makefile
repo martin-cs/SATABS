@@ -5,7 +5,7 @@ SRC = bp_language.cpp bp_parser.cpp bp_typecheck.cpp expr2bp.cpp \
       y.tab.cpp lex.yy.cpp bp_parse_tree.cpp bp_typecheck_code.cpp \
       bp_typecheck_expr.cpp bp_util.cpp
 
-INCLUDES= -I $(CBMC)/src -I $(CBMC)/src/util
+INCLUDES= -I $(CBMC)/src
 
 include $(CBMC)/src/config.inc
 include $(CBMC)/src/common

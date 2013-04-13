@@ -9,9 +9,9 @@ Author: Daniel Kroening, kroening@kroening.com
 #ifndef CPROVER_BP_PARSE_TREE_H
 #define CPROVER_BP_PARSE_TREE_H
 
-#include <hash_cont.h>
-#include <string_hash.h>
-#include <expr.h>
+#include <util/hash_cont.h>
+#include <util/string_hash.h>
+#include <util/expr.h>
 
 class bp_parse_treet
 {

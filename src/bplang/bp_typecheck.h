@@ -11,9 +11,10 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <list>
 
-#include <symbol_table.h>
-#include <std_code.h>
-#include <message.h>
+#include <util/symbol_table.h>
+#include <util/std_code.h>
+#include <util/message.h>
+#include <util/typecheck.h>
 
 #include "bp_parse_tree.h"
 
@@ -22,8 +23,6 @@ bool bp_typecheck(
   symbol_tablet &symbol_table,
   const std::string &module,
   message_handlert &message_handler);
-
-#include <typecheck.h>
 
 class bp_typecheckt:public typecheckt
 {

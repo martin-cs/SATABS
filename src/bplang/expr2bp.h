@@ -6,7 +6,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include "expr.h"
+#include <util/expr.h>
 
 std::string expr2bp(const exprt &expr);
 std::string type2bp(const typet &type);

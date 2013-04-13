@@ -9,7 +9,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #ifndef CPROVER_BP_PARSER_H
 #define CPROVER_BP_PARSER_H
 
-#include <parser.h>
+#include <util/parser.h>
 
 #include "bp_parse_tree.h"
 

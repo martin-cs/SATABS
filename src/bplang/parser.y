@@ -1,5 +1,5 @@
 %{
-#include <i2string.h>
+#include <util/i2string.h>
 
 #include "bp_parser.h"
 #include "bp_typecheck.h"
