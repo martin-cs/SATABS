@@ -5,6 +5,7 @@
  Author: Aliaksei Tsitovich
 
 \*******************************************************************/
+
 #ifndef __CPROVER_LOOPFROG_INVARIANTS_STI_GZERO_IMPLIES_LESS_GREATER_ALL_H_
 #define __CPROVER_LOOPFROG_INVARIANTS_STI_GZERO_IMPLIES_LESS_GREATER_ALL_H_
 

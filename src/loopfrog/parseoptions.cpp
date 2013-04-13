@@ -7,8 +7,6 @@
 
 \*******************************************************************/
 
-#include <config.h>
-
 #include <iostream>
 #include <fstream>
 
@@ -20,26 +18,28 @@
 #include <io.h>
 #endif
 
-#include <message.h>
-#include <symbol_table.h>
-#include <i2string.h>
-#include <std_expr.h>
-#include <arith_tools.h>
-#include <prefix.h>
-#include <time_stopping.h>
+#include <util/config.h>
+#include <util/message.h>
+#include <util/symbol_table.h>
+#include <util/i2string.h>
+#include <util/std_expr.h>
+#include <util/arith_tools.h>
+#include <util/prefix.h>
+#include <util/time_stopping.h>
 
 #include <goto-programs/read_goto_binary.h>
 #include <goto-programs/goto_functions.h>
 #include <goto-programs/remove_function_pointers.h>
 #include <goto-programs/goto_convert_functions.h>
 #include <goto-programs/goto_inline.h>
-#include <goto-programs/goto_check.h>
 #include <goto-programs/string_instrumentation.h>
 #include <goto-programs/string_abstraction.h>
 #include <goto-programs/show_claims.h>
 #include <goto-programs/remove_unused_functions.h>
 
 #include <goto-instrument/full_slicer.h>
+
+#include <analyses/goto_check.h>
 
 #include <pointer-analysis/add_failed_symbols.h>
 #include <pointer-analysis/value_set_analysis.h>

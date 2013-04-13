@@ -9,8 +9,8 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <cassert>
 #include <fstream>
 
-#include <symbol_table.h>
-#include <prefix.h>
+#include <util/symbol_table.h>
+#include <util/prefix.h>
 
 #include "simulator.h"
 #include "slam_trace.h"

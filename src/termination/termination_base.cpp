@@ -11,9 +11,9 @@ Author: CM Wintersteiger
 #include <cstdlib>
 #include <algorithm>
 
-#include <find_symbols.h>
-#include <prefix.h>
-#include <expr_util.h>
+#include <util/find_symbols.h>
+#include <util/prefix.h>
+#include <util/expr_util.h>
 
 #include <solvers/sat/satcheck.h>
 #include <solvers/flattening/bv_pointers.h>

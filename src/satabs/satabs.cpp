@@ -19,7 +19,7 @@ Purpose: Main Module
 
 */
 
-#include <unicode.h>
+#include <util/unicode.h>
 
 #include "cmdline_options.h"
 

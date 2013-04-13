@@ -8,7 +8,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <cassert>
 
-#include <symbol_table.h>
+#include <util/symbol_table.h>
 
 #include "program_formula.h"
 

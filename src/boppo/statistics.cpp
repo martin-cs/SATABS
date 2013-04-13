@@ -6,7 +6,7 @@ Author: Daniel Kroening, daniel.kroening@inf.ethz.ch
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 
 #include "program_formula.h"
 

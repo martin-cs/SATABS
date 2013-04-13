@@ -9,7 +9,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #ifndef CPROVER_BOPPO_HISTORY_H
 #define CPROVER_BOPPO_HISTORY_H
 
-#include <hash_cont.h>
+#include <util/hash_cont.h>
 
 #include "state.h"
 

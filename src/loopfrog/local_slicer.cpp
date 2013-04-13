@@ -7,9 +7,9 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include <i2string.h>
-#include <find_symbols.h>
-#include <std_code.h>
+#include <util/i2string.h>
+#include <util/find_symbols.h>
+#include <util/std_code.h>
 
 #include "local_slicer.h"
 

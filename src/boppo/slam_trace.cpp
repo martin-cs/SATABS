@@ -7,18 +7,15 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include <assert.h>
-#include <string.h>
-
+#include <cassert>
+#include <cstring>
 #include <fstream>
 #include <sstream>
-
-#include <prefix.h>
-
 #include <algorithm>
 #include <cstdlib>
-
 #include <map>
+
+#include <util/prefix.h>
 
 #include "slam_trace.h"
 

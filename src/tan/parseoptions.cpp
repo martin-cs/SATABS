@@ -9,9 +9,9 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <config.h>
-#include <time_stopping.h>
-#include <xml.h>
+#include <util/config.h>
+#include <util/time_stopping.h>
+#include <util/xml.h>
 
 #include <goto-programs/read_goto_binary.h>
 #include <goto-programs/goto_inline.h>

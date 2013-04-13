@@ -9,7 +9,7 @@ Author: Daniel Kroening, daniel.kroening@inf.ethz.ch
 #ifndef CPROVER_BOPPO_PARSEOPTIONS_H
 #define CPROVER_BOPPO_PARSEOPTIONS_H
 
-#include <parseoptions.h>
+#include <util/parseoptions.h>
 #include <langapi/language_ui.h>
 
 class boppo_parseoptionst:public parseoptions_baset,

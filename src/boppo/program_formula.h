@@ -14,8 +14,8 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <list>
 #include <map>
 
-#include <std_types.h>
-#include <std_code.h>
+#include <util/std_types.h>
+#include <util/std_code.h>
 
 #include <goto-programs/goto_program_template.h>
 

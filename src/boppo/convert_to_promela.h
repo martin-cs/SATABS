@@ -11,7 +11,7 @@ Author: Daniel Kroening, daniel.kroening@inf.ethz.ch
 
 #include <iostream>
 
-#include <symbol_table.h>
+#include <util/symbol_table.h>
 
 void convert_to_promela(const symbol_tablet &symbol_table,
                         std::ostream &out);

@@ -6,8 +6,8 @@ Author: CM Wintersteiger
 
 \*******************************************************************/
 
-#include <arith_tools.h>
-#include <i2string.h>
+#include <util/arith_tools.h>
+#include <util/i2string.h>
 
 #include "ranking_tools.h"
 #include "expr2seneschal.h"

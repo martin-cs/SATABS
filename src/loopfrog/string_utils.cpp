@@ -9,7 +9,7 @@ Date: June 2007
  
 \*******************************************************************/
 
-#include <find_symbols.h>
+#include <util/find_symbols.h>
 
 #include "string_utils.h"
 

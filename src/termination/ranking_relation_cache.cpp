@@ -8,8 +8,8 @@ Author: CM Wintersteiger
 
 #include <sstream>
 
-#include <std_expr.h>
-#include <prefix.h>
+#include <util/std_expr.h>
+#include <util/prefix.h>
 
 #include <langapi/language_util.h>
 

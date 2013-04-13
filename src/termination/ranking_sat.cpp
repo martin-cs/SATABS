@@ -10,10 +10,10 @@ Date: October 2008
 
 #include <memory>
 
-#include <std_expr.h>
-#include <arith_tools.h>
-#include <simplify_expr.h>
-#include <base_type.h>
+#include <util/std_expr.h>
+#include <util/arith_tools.h>
+#include <util/simplify_expr.h>
+#include <util/base_type.h>
 
 #include <ansi-c/c_types.h>
 #include <langapi/language_util.h>

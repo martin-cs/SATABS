@@ -6,7 +6,7 @@ Author: CM Wintersteiger
 
 \*******************************************************************/
 
-#include <std_expr.h>
+#include <util/std_expr.h>
 
 #include "find_symbols_rw.h"
 

@@ -9,17 +9,18 @@
 #define SYMEX_ASSERTION_H_
 
 #include <stack>
+#include <fstream>
+
+#include <util/namespace.h>
+#include <util/base_type.h>
+#include <util/time_stopping.h>
 
 #include <solvers/flattening/sat_minimizer.h>
+
 #include <goto-programs/goto_program.h>
 #include <goto-programs/goto_functions.h>
 #include <goto-symex/goto_symex.h>
 #include <goto-symex/symex_target_equation.h>
-#include <namespace.h>
-
-#include <base_type.h>
-#include <time_stopping.h>
-#include <fstream>
 #include <goto-symex/slice.h>
 
 #include "loopstore.h"

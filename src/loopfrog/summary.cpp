@@ -7,8 +7,8 @@
 
  \*******************************************************************/
 
-#include <std_expr.h>
-#include <expr_util.h>
+#include <util/std_expr.h>
+#include <util/expr_util.h>
 
 #include "pointer_expr.h"
 

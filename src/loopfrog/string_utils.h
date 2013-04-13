@@ -12,9 +12,10 @@ Date: June 2007
 #ifndef STRING_UTILS_H_
 #define STRING_UTILS_H_
 
-#include <expr.h>
-#include <type.h>
-#include <find_symbols.h>
+#include <util/expr.h>
+#include <util/type.h>
+#include <util/find_symbols.h>
+
 #include <pointer-analysis/value_set.h>
 
 bool find_string_type(const exprt&);

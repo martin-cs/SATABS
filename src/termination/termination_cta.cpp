@@ -10,12 +10,12 @@ Author: CM Wintersteiger
 #include <sstream>
 #include <fstream>
 
-#include <std_expr.h>
-#include <i2string.h>
-#include <prefix.h>
-#include <replace_symbol.h>
-#include <simplify_expr.h>
-#include <rename.h>
+#include <util/std_expr.h>
+#include <util/i2string.h>
+#include <util/prefix.h>
+#include <util/replace_symbol.h>
+#include <util/simplify_expr.h>
+#include <util/rename.h>
 
 #include <goto-programs/goto_inline.h>
 #include <goto-programs/remove_skip.h>

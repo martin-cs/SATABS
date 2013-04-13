@@ -6,12 +6,12 @@ Author: Daniel Kroening, daniel.kroening@inf.ethz.ch
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 
-#include <expr_util.h>
-#include <cout_message.h>
-#include <std_code.h>
-#include <std_expr.h>
+#include <util/expr_util.h>
+#include <util/cout_message.h>
+#include <util/std_code.h>
+#include <util/std_expr.h>
 
 #include <bplang/bp_util.h>
 #include <goto-programs/goto_inline.h>

@@ -10,11 +10,11 @@ Date: September 2008
 
 #include <sstream>
 
-#include <std_expr.h>
-#include <find_symbols.h>
-#include <i2string.h>
-#include <symbol.h>
-#include <symbol_table.h>
+#include <util/std_expr.h>
+#include <util/find_symbols.h>
+#include <util/i2string.h>
+#include <util/symbol.h>
+#include <util/symbol_table.h>
 
 #include <langapi/language_util.h>
 

@@ -23,7 +23,7 @@ endif
 include $(CBMC)/src/config.inc
 include $(CBMC)/src/common
 
-INCLUDES= -I $(CBMC)/src -I $(CBMC)/src/util -I ../
+INCLUDES= -I $(CBMC)/src -I ../
 
 all: termination$(LIBEXT)
 

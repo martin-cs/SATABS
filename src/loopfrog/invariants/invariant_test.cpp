@@ -6,8 +6,8 @@
 
 \*******************************************************************/
 
-#include <expr_util.h>
-#include <i2string.h>
+#include <util/expr_util.h>
+#include <util/i2string.h>
 
 #include "invariant_test.h"
 

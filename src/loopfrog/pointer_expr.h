@@ -9,12 +9,13 @@
 #ifndef CPROVER_LOOPFROG_POINTER_EXPR_H_
 #define CPROVER_LOOPFROG_POINTER_EXPR_H_
 
-#include <expr.h>
-#include <std_expr.h>
-#include <ansi-c/c_types.h>
-#include <std_types.h>
-#include <config.h>
+#include <util/expr.h>
+#include <util/std_expr.h>
+#include <util/std_types.h>
+#include <util/config.h>
 #include <util/mp_arith.h>
+
+#include <ansi-c/c_types.h>
 
 class pointer_offset_exprt : public exprt
 {

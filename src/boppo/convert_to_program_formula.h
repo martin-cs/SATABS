@@ -9,8 +9,8 @@ Author: Daniel Kroening, daniel.kroening@inf.ethz.ch
 #ifndef CPROVER_BOPPO_CONVERT_TO_PROGRAM_FORMULA_H
 #define CPROVER_BOPPO_CONVERT_TO_PROGRAM_FORMULA_H
 
-#include <symbol_table.h>
-#include <std_code.h>
+#include <util/symbol_table.h>
+#include <util/std_code.h>
 
 #include "program_formula.h"
 

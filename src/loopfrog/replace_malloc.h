@@ -9,7 +9,8 @@
 #ifndef _CPROVER_LOOPFROG_REPLACE_MALLOC_H_
 #define _CPROVER_LOOPFROG_REPLACE_MALLOC_H_
 
-#include <context.h>
+#include <util/context.h>
+
 #include <goto-programs/goto_functions.h>
 #include <pointer-analysis/value_sets.h>
 

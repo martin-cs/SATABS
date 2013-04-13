@@ -12,7 +12,7 @@ Author: CM Wintersteiger
 
 /* this is a string-related summarization "plugin" */
 
-#include <simplify_expr.h>
+#include <util/simplify_expr.h>
 
 #include "invariants/invariant_test.h"
 

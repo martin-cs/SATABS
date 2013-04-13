@@ -6,6 +6,8 @@
 
 \*******************************************************************/
 
+#include <iostream>
+
 #include <ansi-c/expr2c.h>
 
 #include "symex_assertion.h"

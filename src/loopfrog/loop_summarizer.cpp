@@ -11,8 +11,11 @@ Author: CM Wintersteiger
 #include <io.h>
 #endif
 
-#include <base_type.h>
-#include <i2string.h>
+#include <iostream>
+
+#include <util/base_type.h>
+#include <util/i2string.h>
+
 #include <ansi-c/expr2c.h>
 
 #include "pointer_expr.h"

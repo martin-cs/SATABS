@@ -11,7 +11,7 @@
 
 #include <map>
 
-#include <context.h>
+#include <util/context.h>
 #include <pointer-analysis/value_sets.h>
 
 class value_set_duplication_adaptort : public value_setst

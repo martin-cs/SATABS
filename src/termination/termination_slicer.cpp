@@ -11,9 +11,9 @@ Author: CM Wintersteiger
 #include <stack>
 #include <queue>
 
-#include <find_symbols.h>
-#include <prefix.h>
-#include <i2string.h>
+#include <util/find_symbols.h>
+#include <util/prefix.h>
+#include <util/i2string.h>
 
 #include <goto-programs/cfg.h>
 #include <goto-programs/remove_skip.h>

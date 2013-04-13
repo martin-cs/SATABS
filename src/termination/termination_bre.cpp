@@ -10,8 +10,8 @@ Author: CM Wintersteiger
 #include <sstream>
 #include <memory>
 
-#include <i2string.h>
-#include <std_expr.h>
+#include <util/i2string.h>
+#include <util/std_expr.h>
 
 #include <satabs/satabs_safety_checker.h>
 

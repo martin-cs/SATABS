@@ -8,10 +8,10 @@ Date: May 2009
 
 \*******************************************************************/
 
-#include <std_expr.h>
-#include <std_types.h>
-#include <arith_tools.h>
-#include <config.h>
+#include <util/std_expr.h>
+#include <util/std_types.h>
+#include <util/arith_tools.h>
+#include <util/config.h>
 
 #include <ansi-c/ansi_c_parser.h>
 #include <ansi-c/ansi_c_convert.h>

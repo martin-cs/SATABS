@@ -8,13 +8,14 @@ Author: CM Wintersteiger
 
 #include <memory>
 #include <sstream>
+#include <iostream>
 
-#include <i2string.h>
-#include <config.h>
-#include <std_expr.h>
-#include <prefix.h>
-#include <find_symbols.h>
-#include <expr_util.h>
+#include <util/i2string.h>
+#include <util/config.h>
+#include <util/std_expr.h>
+#include <util/prefix.h>
+#include <util/find_symbols.h>
+#include <util/expr_util.h>
 
 #include <ansi-c/ansi_c_language.h>
 #include <ansi-c/expr2c.h>
@@ -653,7 +654,7 @@ void summarizationt::run_tests_incremental(
       symex_target_equationt eq_copy = equation;
       guardt guard;
 
-      guard.add(eq_copy.SSA_steps.back().guard_expr);
+      guard.add(eq_copy.SSA_steps.back().guard);
 
       exprt temp(invariant);
       eq_copy.assertion(guard, temp, "invariant candidate",
@@ -663,7 +664,7 @@ void summarizationt::run_tests_incremental(
       eq_copy.SSA_steps.push_front(symex_target_equationt::SSA_stept());
       symex_target_equationt::SSA_stept &state=eq_copy.SSA_steps.front();
 
-      state.guard_expr.make_true();
+      state.guard.make_true();
       state.ssa_lhs.make_nil();
       state.cond_expr = invariant;
       state.type=goto_trace_stept::ASSUME;

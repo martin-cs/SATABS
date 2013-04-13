@@ -11,9 +11,11 @@
 
 #include <map>
 #include <stack>
+
+#include <util/message_stream.h>
+
 #include <goto-programs/goto_program.h>
 #include <goto-programs/goto_functions.h>
-#include <message_stream.h>
 
 #include "loopstore.h"
 #include "call_stack.h"

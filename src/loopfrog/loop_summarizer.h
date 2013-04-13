@@ -11,8 +11,8 @@ Author: CM Wintersteiger
 
 #include <map>
 
-#include <message_stream.h>
-#include <irep.h>
+#include <util/message_stream.h>
+#include <util/irep.h>
 
 #include <goto-programs/goto_functions.h>
 #include <goto-programs/goto_program.h>

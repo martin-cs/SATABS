@@ -11,13 +11,15 @@ Author: Daniel Kroening, kroening@kroening.com
 #define CPROVER_LOOPFROG_PARSEOPTIONS_H
 
 #include <fstream>
-#include <langapi/language_ui.h>
-#include <ui_message.h>
-#include <parseoptions.h>
-#include <options.h>
 
+#include <util/ui_message.h>
+#include <util/parseoptions.h>
+#include <util/options.h>
+
+#include <langapi/language_ui.h>
 #include <goto-programs/goto_functions.h>
 #include <pointer-analysis/value_sets.h>
+
 #include "loopstore.h"
 
 class value_set_alloc_adaptort;

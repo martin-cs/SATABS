@@ -9,7 +9,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #ifndef CPROVER_BOPPO_QBF_CACHE_H
 #define CPROVER_BOPPO_QBF_CACHE_H
 
-#include <hash_cont.h>
+#include <util/hash_cont.h>
 
 #include <solvers/qbf/qdimacs_cnf.h>
 

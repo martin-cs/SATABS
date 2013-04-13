@@ -8,9 +8,9 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <set>
 
-#include <expr_util.h>
-#include <namespace.h>
-#include <base_type.h>
+#include <util/expr_util.h>
+#include <util/namespace.h>
+#include <util/base_type.h>
 
 #include "map_vars.h"
 

@@ -6,9 +6,11 @@
 
 \*******************************************************************/
 
-#include <std_expr.h>
-#include <expr_util.h>
-#include <message.h>
+#include <iostream>
+
+#include <util/std_expr.h>
+#include <util/expr_util.h>
+#include <util/message.h>
 
 #include <ansi-c/expr2c.h>
 #include <ansi-c/c_types.h>

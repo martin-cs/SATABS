@@ -10,13 +10,13 @@ Date: May 2009
 
 #include <memory>
 #include <iostream>
+#include <cmath>
 
-#include <math.h>
-#include <std_expr.h>
-#include <arith_tools.h>
-#include <simplify_expr.h>
-#include <i2string.h>
-#include <symbol.h>
+#include <util/std_expr.h>
+#include <util/arith_tools.h>
+#include <util/simplify_expr.h>
+#include <util/i2string.h>
+#include <util/symbol.h>
 
 #include <ansi-c/c_types.h>
 

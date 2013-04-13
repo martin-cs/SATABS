@@ -9,9 +9,9 @@ Author: Daniel Kroening, kroening@kroening.com
 #ifndef CPROVER_CEGAR_MAP_VARS_H
 #define CPROVER_CEGAR_MAP_VARS_H
 
-#include <symbol_table.h>
-#include <message.h>
-#include <replace_expr.h>
+#include <util/symbol_table.h>
+#include <util/message.h>
+#include <util/replace_expr.h>
 
 #include "concrete_model.h"
 

@@ -13,8 +13,8 @@ Date: August 2008
 
 #include <vector>
 
-#include <expr.h>
-#include <ui_message.h>
+#include <util/expr.h>
+#include <util/ui_message.h>
 
 #include "termination_results.h"
 

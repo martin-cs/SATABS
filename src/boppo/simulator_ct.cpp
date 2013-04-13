@@ -6,9 +6,9 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 
-#include <time_stopping.h>
+#include <util/time_stopping.h>
 
 #include "simulator_ct.h"
 

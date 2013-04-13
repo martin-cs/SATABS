@@ -9,8 +9,9 @@
 #ifndef _CPROVER_LOOPFORG_VALUE_SET_ALLOC_ADAPTOR_H_
 #define _CPROVER_LOOPFORG_VALUE_SET_ALLOC_ADAPTOR_H_
 
-#include <expr_util.h>
-#include <symbol_table.h>
+#include <util/expr_util.h>
+#include <util/symbol_table.h>
+
 #include <pointer-analysis/value_sets.h>
 
 class value_set_alloc_adaptort : public value_setst

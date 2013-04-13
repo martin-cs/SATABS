@@ -11,15 +11,15 @@ Date: May 2009
 #ifndef RANKFUNCTION_TYPECHECK_H_
 #define RANKFUNCTION_TYPECHECK_H_
 
-#include <typecheck.h>
+#include <util/typecheck.h>
+#include <util/symbol_table.h>
+#include <util/namespace.h>
+#include <util/message.h>
+
 #include <ansi-c/ansi_c_parse_tree.h>
-#include <symbol_table.h>
-#include <namespace.h>
-#include <message.h>
 
 bool parse_rank_function(const std::string &code, symbol_tablet &symbol_table,
                          const namespacet &ns, message_handlert &mh, exprt &rf);
-
 
 class rankfunction_typecheckt:public typecheckt
 {

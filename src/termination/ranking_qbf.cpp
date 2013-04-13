@@ -11,12 +11,12 @@ Date: October 2008
 #include <memory>
 #include <iostream>
 
-#include <std_expr.h>
-#include <arith_tools.h>
-#include <simplify_expr.h>
-#include <i2string.h>
-#include <prefix.h>
-#include <base_type.h>
+#include <util/std_expr.h>
+#include <util/arith_tools.h>
+#include <util/simplify_expr.h>
+#include <util/i2string.h>
+#include <util/prefix.h>
+#include <util/base_type.h>
 
 #include <ansi-c/c_types.h>
 

@@ -13,9 +13,9 @@ to determmine whether it is spurious.
 
 #include <cassert>
 
-#include <expr_util.h>
-#include <i2string.h>
-#include <symbol_table.h>
+#include <util/expr_util.h>
+#include <util/i2string.h>
+#include <util/symbol_table.h>
 
 #include <solvers/sat/satcheck.h>
 #include <solvers/flattening/bv_pointers.h>

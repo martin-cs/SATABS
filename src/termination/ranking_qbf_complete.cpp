@@ -10,8 +10,8 @@ Date: October 2008
 
 #include <iostream>
 
-#include <base_type.h>
-#include <symbol.h>
+#include <util/base_type.h>
+#include <util/symbol.h>
 
 #include <solvers/sat/satcheck.h>
 

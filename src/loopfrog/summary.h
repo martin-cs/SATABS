@@ -11,7 +11,8 @@ Author: CM Wintersteiger
 #define _LOOPFROG_SUMMARY_H_
 
 #include <set>
-#include <expr.h>
+
+#include <util/expr.h>
 
 #include <goto-programs/goto_program.h>
 #include <pointer-analysis/value_sets.h>

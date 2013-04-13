@@ -9,7 +9,7 @@ Author: CM Wintersteiger
 #include <sstream>
 #include <memory>
 
-#include <i2string.h>
+#include <util/i2string.h>
 
 #include <satabs/satabs_safety_checker.h>
 

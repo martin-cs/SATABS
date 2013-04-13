@@ -9,7 +9,7 @@ Author: CM Wintersteiger
 #ifndef CPROVER_SATABS_TERMINATION_FIND_SYMBOLS_RW_H_
 #define CPROVER_SATABS_TERMINATION_FIND_SYMBOLS_RW_H_
 
-#include <find_symbols.h>
+#include <util/find_symbols.h>
 
 void find_symbols_w(
   const exprt& lhs, 

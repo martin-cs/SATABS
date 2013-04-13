@@ -11,9 +11,9 @@ Author: CM Wintersteiger
 
 #include <fstream>
 
-#include <ui_message.h>
-#include <parseoptions.h>
-#include <symbol_table.h>
+#include <util/ui_message.h>
+#include <util/parseoptions.h>
+#include <util/symbol_table.h>
 
 #include <langapi/language_ui.h>
 #include <goto-programs/goto_functions.h>

@@ -8,9 +8,9 @@
 
 #include <iostream>
 
-#include <base_type.h>
-#include <message_stream.h>
-#include <arith_tools.h>
+#include <util/base_type.h>
+#include <util/message_stream.h>
+#include <util/arith_tools.h>
 
 #include <goto-programs/remove_skip.h>
 

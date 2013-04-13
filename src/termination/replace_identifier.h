@@ -9,9 +9,9 @@ Author: CM Wintersteiger
 #ifndef CPROVER_SATABS_TERMINATION_REPLACE_IDENTIFIER_H_
 #define CPROVER_SATABS_TERMINATION_REPLACE_IDENTIFIER_H_
 
-#include "hash_cont.h"
-#include "expr.h"
-#include "type.h"
+#include <util/hash_cont.h>
+#include <util/expr.h>
+#include <util/type.h>
 
 class replace_idt : public hash_map_cont<irep_idt, irep_idt, irep_id_hash>
 {

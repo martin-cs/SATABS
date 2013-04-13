@@ -6,7 +6,7 @@ Author: CM Wintersteiger
 
 \*******************************************************************/
 
-#include <find_symbols.h>
+#include <util/find_symbols.h>
 
 #include "variable_relations_base.h"
 

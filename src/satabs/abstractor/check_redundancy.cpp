@@ -8,7 +8,7 @@
 #include <map>
 #include <memory>
 
-#include <std_expr.h>
+#include <util/std_expr.h>
 
 #include <solvers/flattening/bv_pointers.h>
 #include <solvers/sat/satcheck.h>

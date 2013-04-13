@@ -12,7 +12,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <vector>
 #include <list>
 
-#include <expr.h>
+#include <util/expr.h>
 
 class message_handlert;
 class symex_target_equationt;

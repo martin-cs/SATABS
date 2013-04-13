@@ -6,12 +6,10 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 
-#include <time_stopping.h>
-#include <threeval.h>
-
-//#include <config.h>
+#include <util/time_stopping.h>
+#include <util/threeval.h>
 
 #include "simulator.h"
 #include "state_projection.h"

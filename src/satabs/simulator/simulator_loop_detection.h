@@ -16,7 +16,7 @@ Purpose: Simulate an abstract counterexample on the concrete program
 
 #include <stack>
 
-#include <mp_arith.h>
+#include <util/mp_arith.h>
 
 #include <goto-programs/goto_program.h>
 

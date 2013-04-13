@@ -6,7 +6,7 @@
 
 \*******************************************************************/
 
-#include <simplify_expr.h>
+#include <util/simplify_expr.h>
 
 #include "invariant_propagation_adaptor.h"
 

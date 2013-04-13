@@ -10,10 +10,10 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <cstdlib>
 #include <set>
 
-#include <expr_util.h>
-#include <location.h>
-#include <arith_tools.h>
-#include <i2string.h>
+#include <util/expr_util.h>
+#include <util/location.h>
+#include <util/arith_tools.h>
+#include <util/i2string.h>
 
 #include "bp_typecheck.h"
 #include "expr2bp.h"

@@ -14,7 +14,7 @@ Date: May 2009
 #include <string>
 #include <vector>
 
-#include <expr.h>
+#include <util/expr.h>
 
 unsigned safe_width(const exprt &e, const class namespacet &ns);
 

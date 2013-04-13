@@ -11,10 +11,10 @@ Author: CM Wintersteiger
 
 #include <set>
 
-#include <namespace.h>
-#include <message.h>
-#include <symbol_table.h>
-#include <find_symbols.h>
+#include <util/namespace.h>
+#include <util/message.h>
+#include <util/symbol_table.h>
+#include <util/find_symbols.h>
 
 #include <goto-programs/goto_program.h>
 #include <goto-programs/goto_functions.h>

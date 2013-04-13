@@ -14,13 +14,13 @@ Date: October 2008
 #include <map>
 #include <set>
 
-#include <message.h>
-#include <expr.h>
-#include <replace_expr.h>
-#include <time_stopping.h>
-#include <arith_tools.h>
-#include <find_symbols.h>
-#include <namespace.h>
+#include <util/message.h>
+#include <util/expr.h>
+#include <util/replace_expr.h>
+#include <util/time_stopping.h>
+#include <util/arith_tools.h>
+#include <util/find_symbols.h>
+#include <util/namespace.h>
 
 #include <solvers/flattening/boolbv.h>
 

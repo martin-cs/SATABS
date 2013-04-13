@@ -29,7 +29,7 @@ OBJ = $(SRC:.cpp=.o) \
       ../satabs/abstractor/*.o \
       ../satabs/simulator/*.o
 
-INCLUDES= -I $(CBMC)/src -I $(CBMC)/src/util -I ../
+INCLUDES= -I $(CBMC)/src -I ../
 
 LIBS =
 

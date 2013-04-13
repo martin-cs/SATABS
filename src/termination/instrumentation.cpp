@@ -6,13 +6,13 @@ Author: CM Wintersteiger
 
 \*******************************************************************/
 
-#include <ansi-c/expr2c.h>
+#include <util/std_expr.h>
+#include <util/expr_util.h>
+#include <util/i2string.h>
+#include <util/rename.h>
+#include <util/prefix.h>
 
-#include <std_expr.h>
-#include <expr_util.h>
-#include <i2string.h>
-#include <rename.h>
-#include <prefix.h>
+#include <ansi-c/expr2c.h>
 
 #include "instrumentation.h"
 

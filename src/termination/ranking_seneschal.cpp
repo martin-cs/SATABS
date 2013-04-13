@@ -14,11 +14,11 @@ Date: May 2009
 #include <iostream>
 #include <cstdlib>
 
-#include <std_expr.h>
-#include <simplify_expr.h>
-#include <i2string.h>
-#include <find_symbols.h>
-#include <prefix.h>
+#include <util/std_expr.h>
+#include <util/simplify_expr.h>
+#include <util/i2string.h>
+#include <util/find_symbols.h>
+#include <util/prefix.h>
 
 #include <langapi/language_util.h>
 

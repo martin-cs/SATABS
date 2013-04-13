@@ -12,9 +12,9 @@
 #include <set>
 #include <string>
 
-#include <expr.h>
-#include <std_expr.h>
-#include <context.h>
+#include <util/expr.h>
+#include <util/std_expr.h>
+#include <util/context.h>
 
 #include "../summary.h"
 

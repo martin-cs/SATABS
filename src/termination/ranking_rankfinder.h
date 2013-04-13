@@ -13,8 +13,8 @@ Date: May 2009
 
 #include <map>
 
-#include <replace_symbol.h>
-#include <symbol_table.h>
+#include <util/replace_symbol.h>
+#include <util/symbol_table.h>
 
 #include "ranking_base.h"
 

@@ -6,11 +6,12 @@
 
 \*******************************************************************/
 
-#include <std_expr.h>
-#include <std_types.h>
-#include <arith_tools.h>
-#include <i2string.h>
-#include <prefix.h>
+#include <util/std_expr.h>
+#include <util/std_types.h>
+#include <util/arith_tools.h>
+#include <util/i2string.h>
+#include <util/prefix.h>
+
 #include <ansi-c/c_types.h>
 
 #include "value_set_alloc_adaptor.h"

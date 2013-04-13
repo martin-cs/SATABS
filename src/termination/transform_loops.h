@@ -10,6 +10,7 @@
 #define _CPROVER_LOOPFROG_TRANSFORM_LOOPS_H_
 
 #include <util/message_stream.h>
+
 #include <goto-programs/goto_functions.h>
 
 class loop_transformt : public message_streamt

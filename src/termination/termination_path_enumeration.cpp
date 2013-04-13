@@ -12,12 +12,12 @@ Author: CM Wintersteiger
 #include <memory>
 #include <iostream>
 
-#include <std_expr.h>
-#include <i2string.h>
-#include <prefix.h>
-#include <replace_symbol.h>
-#include <simplify_expr.h>
-#include <decision_procedure.h>
+#include <util/std_expr.h>
+#include <util/i2string.h>
+#include <util/prefix.h>
+#include <util/replace_symbol.h>
+#include <util/simplify_expr.h>
+#include <util/decision_procedure.h>
 
 #include <goto-programs/goto_inline_class.h>
 #include <goto-programs/remove_skip.h>

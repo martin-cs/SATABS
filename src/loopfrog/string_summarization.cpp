@@ -11,13 +11,15 @@
 #include <sstream>
 #include <algorithm>
 
+#include <util/mp_arith.h>
+#include <util/expr_util.h>
+#include <util/std_expr.h>
+#include <util/i2string.h>
+#include <util/config.h>
+
 #include <ansi-c/c_types.h>
 #include <ansi-c/expr2c.h>
-#include <mp_arith.h>
-#include <expr_util.h>
-#include <std_expr.h>
-#include <i2string.h>
-#include <config.h>
+
 #include <langapi/language_util.h>
 
 #include <goto-programs/goto_program.h>

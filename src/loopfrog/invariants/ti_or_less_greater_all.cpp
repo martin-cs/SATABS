@@ -7,9 +7,9 @@
 
 \*******************************************************************/
 
-#include <std_expr.h>
-#include <expr_util.h>
-#include <arith_tools.h>
+#include <util/std_expr.h>
+#include <util/expr_util.h>
+#include <util/arith_tools.h>
 
 #include <ansi-c/expr2c.h>
 #include <ansi-c/c_types.h>

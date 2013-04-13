@@ -16,19 +16,19 @@ Author: Daniel Kroening, kroening@kroening.com
 
 */
 
-#include <assert.h>
-
+#include <cassert>
 #include <fstream>
 
-#include <i2string.h>
-#include <parseoptions.h>
+#include <util/i2string.h>
+#include <util/parseoptions.h>
+#include <util/cout_message.h>
+#include <util/ui_message.h>
+#include <util/namespace.h>
+#include <util/time_stopping.h>
+#include <util/config.h>
+#include <util/threeval.h>
+
 #include <langapi/mode.h>
-#include <cout_message.h>
-#include <ui_message.h>
-#include <namespace.h>
-#include <time_stopping.h>
-#include <config.h>
-#include <threeval.h>
 
 #include <bplang/expr2bp.h>
 #include <bplang/bp_language.h>

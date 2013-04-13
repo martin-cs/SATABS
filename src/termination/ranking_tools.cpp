@@ -8,8 +8,8 @@ Date: May 2009
 
 \*******************************************************************/
 
-#include <config.h>
-#include <namespace.h>
+#include <util/config.h>
+#include <util/namespace.h>
 
 #include <solvers/flattening/boolbv.h>
 

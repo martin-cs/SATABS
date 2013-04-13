@@ -6,9 +6,9 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 
-#include <threeval.h>
+#include <util/threeval.h>
 
 #include "simulator.h"
 

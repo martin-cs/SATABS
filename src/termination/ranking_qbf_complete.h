@@ -11,10 +11,10 @@ Date: October 2008
 #ifndef CPROVER_TERMINATION_RANKING_QBF_COMPLETE_H
 #define CPROVER_TERMINATION_RANKING_QBF_COMPLETE_H
 
-#include <std_expr.h>
-#include <i2string.h>
-#include <simplify_expr.h>
-#include <arith_tools.h>
+#include <util/std_expr.h>
+#include <util/i2string.h>
+#include <util/simplify_expr.h>
+#include <util/arith_tools.h>
 
 #include <langapi/language_util.h>
 

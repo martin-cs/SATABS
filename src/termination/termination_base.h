@@ -9,12 +9,12 @@ Author: CM Wintersteiger
 #ifndef _CPROVER_TERMINATION_BASE_H_
 #define _CPROVER_TERMINATION_BASE_H_
 
-#include <cmdline.h>
-#include <ui_message.h>
-#include <replace_expr.h>
-#include <find_symbols.h>
-#include <time_stopping.h>
-#include <options.h>
+#include <util/cmdline.h>
+#include <util/ui_message.h>
+#include <util/replace_expr.h>
+#include <util/find_symbols.h>
+#include <util/time_stopping.h>
+#include <util/options.h>
 
 #include <goto-symex/goto_trace.h>
 

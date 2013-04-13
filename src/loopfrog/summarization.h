@@ -12,8 +12,9 @@ Author: CM Wintersteiger
 #include <list>
 #include <map>
 
-#include <cmdline.h>
-#include <time_stopping.h>
+#include <util/cmdline.h>
+#include <util/time_stopping.h>
+
 #include <goto-programs/goto_program.h>
 #include <goto-programs/goto_functions.h>
 #include <goto-symex/symex_target_equation.h>

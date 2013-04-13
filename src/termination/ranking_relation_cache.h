@@ -11,10 +11,10 @@ Author: CM Wintersteiger
 
 #include <set>
 
-#include <expr.h>
-#include <message.h>
-#include <namespace.h>
-#include <std_expr.h>
+#include <util/expr.h>
+#include <util/message.h>
+#include <util/namespace.h>
+#include <util/std_expr.h>
 
 #include "find_symbols_rw.h"
 #include "replace_identifier.h"

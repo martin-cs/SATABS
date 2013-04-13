@@ -10,7 +10,7 @@ Date: September 2005
 
 #include <cstdlib>
 
-#include <string2int.h>
+#include <util/string2int.h>
 
 #include "select_refiner.h"
 #include "refiner_wp.h"

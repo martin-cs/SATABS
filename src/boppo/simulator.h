@@ -9,7 +9,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #ifndef CPROVER_BOPPO_SIMULATOR_H
 #define CPROVER_BOPPO_SIMULATOR_H
 
-#include <hash_cont.h>
+#include <util/hash_cont.h>
 
 #include "simulator_base.h"
 #include "history.h"

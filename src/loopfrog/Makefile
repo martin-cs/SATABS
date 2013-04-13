@@ -62,7 +62,7 @@ OBJ = $(SRC:.cpp=$(OBJEXT)) \
       $(CBMC)/src/langapi/langapi$(LIBEXT) \
       $(CBMC)/src/ansi-c/ansi-c$(LIBEXT)
 
-INCLUDES= -I $(CBMC)/src -I $(CBMC)/src/util
+INCLUDES= -I $(CBMC)/src
 
 LIBS =
 

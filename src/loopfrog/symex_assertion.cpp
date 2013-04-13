@@ -9,8 +9,8 @@
 
 #include <memory>
 
-#include <find_symbols.h>
-#include <time_stopping.h>
+#include <util/find_symbols.h>
+#include <util/time_stopping.h>
 
 #include <ansi-c/expr2c.h>
 
