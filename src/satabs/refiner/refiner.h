@@ -14,8 +14,8 @@ Purpose: Calculate predicates for predicate abstraction.
 #ifndef CPROVER_CEGAR_REFINER_H
 #define CPROVER_CEGAR_REFINER_H
 
-#include <decision_procedure.h>
-#include <options.h>
+#include <util/decision_procedure.h>
+#include <util/options.h>
 
 #include <solvers/prop/prop.h>
 

@@ -17,9 +17,10 @@ Date: January 2012
 #include <sstream>
 #include <list>
 
-#include <mp_arith.h>
+#include <util/mp_arith.h>
 
 #include <solvers/prop/literal.h>
+
 #include "../abstractor/abstract_program.h"
 
 class tts_buildert

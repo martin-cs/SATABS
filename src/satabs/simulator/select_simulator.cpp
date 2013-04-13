@@ -9,7 +9,7 @@ Date: June 2003
 
 \*******************************************************************/
 
-#include <options.h>
+#include <util/options.h>
 
 #include "select_simulator.h"
 #include "simulator_symex.h"

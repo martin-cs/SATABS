@@ -13,7 +13,7 @@
 #ifndef CPROVER_SATABS_SATABS_INLINE_CLASS_H
 #define CPROVER_SATABS_SATABS_INLINE_CLASS_H
 
-#include <message_stream.h>
+#include <util/message_stream.h>
 
 #include <goto-programs/goto_functions.h>
 

@@ -14,7 +14,7 @@ Date: August 2011
 
 #include <set>
 
-#include <std_expr.h>
+#include <util/std_expr.h>
 
 #include <goto-programs/goto_program.h>
 

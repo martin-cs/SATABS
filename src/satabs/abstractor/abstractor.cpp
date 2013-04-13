@@ -11,9 +11,9 @@ Date: June 2003
 
 #include <map>
 
-#include <simplify_expr.h>
-#include <find_symbols.h>
-#include <std_expr.h>
+#include <util/simplify_expr.h>
+#include <util/find_symbols.h>
+#include <util/std_expr.h>
 
 #include <langapi/language_util.h>
 

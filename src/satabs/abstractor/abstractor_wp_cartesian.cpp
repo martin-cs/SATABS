@@ -12,11 +12,13 @@ Date: April 2010
 #include <algorithm>
 #include <iterator>
 
-#include <ansi-c/c_types.h>
+#include <util/arith_tools.h>
+#include <util/simplify_expr.h>
+
 #include <solvers/flattening/bv_pointers.h>
 #include <solvers/sat/satcheck.h>
-#include <arith_tools.h>
-#include <simplify_expr.h>
+
+#include <ansi-c/c_types.h>
 
 #include "check_redundancy.h"
 #include "abstractor_wp_cartesian.h"

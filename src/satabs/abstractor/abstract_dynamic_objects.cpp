@@ -6,10 +6,10 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 
-#include <i2string.h>
-#include <std_expr.h>
+#include <util/i2string.h>
+#include <util/std_expr.h>
 
 #include "abstract_dynamic_objects.h"
 

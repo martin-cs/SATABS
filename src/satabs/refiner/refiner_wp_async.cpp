@@ -8,18 +8,17 @@ Date: June 2003
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 
-#include <expr_util.h>
-#include <arith_tools.h>
-#include <i2string.h>
-#include <replace_expr.h>
+#include <util/expr_util.h>
+#include <util/arith_tools.h>
+#include <util/i2string.h>
+#include <util/replace_expr.h>
+#include <util/simplify_expr.h>
 
 #include <goto-symex/precondition.h>
 #include <goto-symex/postcondition.h>
-
-#include <simplify_expr.h>
 
 #include "refiner_wp.h"
 #include "substitute_invariants.h"

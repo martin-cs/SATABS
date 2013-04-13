@@ -14,19 +14,12 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <vector>
 #include <string>
 
-#include <expr.h>
+#include <util/expr.h>
 #include <solvers/prop/literal.h>
 #include <goto-programs/goto_program.h>
 
 class predicatest;
 class prop_convt;
-
-#if 0
-void get_final_predicates(
-    const std::vector<exprt> &predicates,
-    goto_symex_statet &state,
-    std::vector<exprt> &final_predicates);
-#endif
 
 literalt make_pos(
     const namespacet &ns,

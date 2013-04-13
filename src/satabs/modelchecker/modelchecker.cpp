@@ -9,12 +9,12 @@ Date: June 2003
 
 \*******************************************************************/
 
-#include <i2string.h>
-#include <substitute.h>
-#include <std_expr.h>
+#include <util/i2string.h>
+#include <util/substitute.h>
+#include <util/std_expr.h>
 
-#include "modelchecker.h"
 #include "../abstractor/abstract_model.h"
+#include "modelchecker.h"
 
 /*******************************************************************\
 

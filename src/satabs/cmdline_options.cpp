@@ -12,10 +12,10 @@ Date: June 2003
 #include <iostream>
 #include <memory>
 
-#include <message.h>
-#include <string2int.h>
-#include <options.h>
-#include <config.h>
+#include <util/message.h>
+#include <util/string2int.h>
+#include <util/options.h>
+#include <util/config.h>
 
 #include <goto-symex/xml_goto_trace.h>
 

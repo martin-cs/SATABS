@@ -15,8 +15,8 @@ to determmine whether it is spurious.
 #ifndef CPROVER_SATABS_SIMULATOR_SYMEX_H
 #define CPROVER_SATABS_SIMULATOR_SYMEX_H
 
-#include <options.h>
-#include <decision_procedure.h>
+#include <util/options.h>
+#include <util/decision_procedure.h>
 
 #include <goto-symex/goto_symex_state.h>
 #include <goto-symex/symex_target_equation.h>

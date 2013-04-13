@@ -12,7 +12,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <set>
 #include <list>
 
-#include <expr.h>
+#include <util/expr.h>
 
 class abstract_initial_statet
 {

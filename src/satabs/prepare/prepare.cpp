@@ -11,13 +11,13 @@ Date: June 2003
 
 #include <iostream>
 
-#include <expr_util.h>
-#include <get_module.h>
-#include <i2string.h>
-#include <xml.h>
-#include <xml_irep.h>
-#include <symbol_table.h>
-#include <cmdline.h>
+#include <util/expr_util.h>
+#include <util/get_module.h>
+#include <util/i2string.h>
+#include <util/xml.h>
+#include <util/xml_irep.h>
+#include <util/symbol_table.h>
+#include <util/cmdline.h>
 
 #include <ansi-c/ansi_c_language.h>
 

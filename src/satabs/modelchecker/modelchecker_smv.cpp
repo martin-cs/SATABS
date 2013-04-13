@@ -18,11 +18,11 @@ Date: June 2003
 #include <algorithm>
 #include <sstream>
 
-#include <i2string.h>
-#include <prefix.h>
-#include <std_expr.h>
-#include <string2int.h>
-#include <tempdir.h>
+#include <util/i2string.h>
+#include <util/prefix.h>
+#include <util/std_expr.h>
+#include <util/string2int.h>
+#include <util/tempdir.h>
 
 #include "../abstractor/abstract_model.h"
 #include "abstract_counterexample.h"

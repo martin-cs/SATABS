@@ -11,17 +11,16 @@ Date: October 2004
 #include <cassert>
 #include <cstdlib>
 #include <cctype>
-
 #include <fstream>
 #include <list>
 #include <algorithm>
 #include <sstream>
 
-#include <i2string.h>
-#include <substitute.h>
-#include <std_expr.h>
-#include <string2int.h>
-#include <tempdir.h>
+#include <util/i2string.h>
+#include <util/substitute.h>
+#include <util/std_expr.h>
+#include <util/string2int.h>
+#include <util/tempdir.h>
 
 #include "../abstractor/concurrency_aware_abstract_transition_relation.h"
 #include "../abstractor/abstract_model.h"

@@ -10,10 +10,10 @@
 #include <algorithm>
 #include <iterator>
 
-#include <ansi-c/c_types.h>
+#include <util/arith_tools.h>
+#include <util/string2int.h>
 
-#include <arith_tools.h>
-#include <string2int.h>
+#include <ansi-c/c_types.h>
 
 #include "concurrency_aware_abstractor.h"
 #include "concurrency_aware_abstract_transition_relation.h"

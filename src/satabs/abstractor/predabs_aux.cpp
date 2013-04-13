@@ -8,9 +8,9 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <cassert>
 
-#include <simplify_expr.h>
-#include <std_expr.h>
-#include <symbol_table.h>
+#include <util/simplify_expr.h>
+#include <util/std_expr.h>
+#include <util/symbol_table.h>
 
 #include <goto-programs/wp.h>
 #include <langapi/language_util.h>

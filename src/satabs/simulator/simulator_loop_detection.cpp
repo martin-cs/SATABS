@@ -16,12 +16,12 @@ Purpose:
 
 //#define DEBUG
 
-#include <replace_expr.h>
-#include <simplify_expr.h>
-#include <i2string.h>
-#include <arith_tools.h>
-#include <std_expr.h>
-#include <symbol_table.h>
+#include <util/replace_expr.h>
+#include <util/simplify_expr.h>
+#include <util/i2string.h>
+#include <util/arith_tools.h>
+#include <util/std_expr.h>
+#include <util/symbol_table.h>
 
 #include <solvers/flattening/bv_minimize.h>
 #include <solvers/sat/pbs_dimacs_cnf.h>

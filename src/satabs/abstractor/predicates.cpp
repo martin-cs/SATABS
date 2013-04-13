@@ -10,11 +10,11 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <langapi/language_util.h>
 
-#include "predicates.h"
+#include <util/std_expr.h>
+#include <util/symbol_table.h>
+#include <util/namespace.h>
 
-#include <std_expr.h>
-#include <symbol_table.h>
-#include <namespace.h>
+#include "predicates.h"
 
 /*******************************************************************\
 

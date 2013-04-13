@@ -16,9 +16,9 @@ Purpose: Solve recurrences
 #include <map>
 #include <list>
 
-#include <solvers/flattening/bv_minimize.h>
+#include <util/expr.h>
 
-#include <expr.h>
+#include <solvers/flattening/bv_minimize.h>
 
 class goto_symex_statet;
 class symex_target_equationt;

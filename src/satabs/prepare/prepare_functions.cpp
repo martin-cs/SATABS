@@ -8,10 +8,10 @@ Date:   September 2009
 
 \*******************************************************************/
 
-#include <std_code.h>
-#include <std_expr.h>
-#include <symbol_table.h>
-#include <message.h>
+#include <util/std_code.h>
+#include <util/std_expr.h>
+#include <util/symbol_table.h>
+#include <util/message.h>
 
 #include "prepare_functions.h"
 

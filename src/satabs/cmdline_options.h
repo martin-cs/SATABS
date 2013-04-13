@@ -12,7 +12,7 @@ Date: June 2003
 #ifndef CPROVER_CEGAR_CMDLINE_OPTIONS_H
 #define CPROVER_CEGAR_CMDLINE_OPTIONS_H
 
-#include <parseoptions.h>
+#include <util/parseoptions.h>
 
 #include <cbmc/xml_interface.h>
 

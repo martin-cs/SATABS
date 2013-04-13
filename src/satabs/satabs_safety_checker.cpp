@@ -9,7 +9,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <sstream>
 #include <fstream>
 
-#include <i2string.h>
+#include <util/i2string.h>
 
 #include "abstractor/initial_abstraction.h"
 #include "modelchecker/modelchecker_boolean_program.h"

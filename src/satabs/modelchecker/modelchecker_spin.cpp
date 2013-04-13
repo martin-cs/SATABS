@@ -16,9 +16,9 @@ Date: March 2004
 #include <list>
 #include <algorithm>
 
-#include <i2string.h>
-#include <string2int.h>
-#include <tempdir.h>
+#include <util/i2string.h>
+#include <util/string2int.h>
+#include <util/tempdir.h>
 
 #include <ansi-c/expr2c.h>
 

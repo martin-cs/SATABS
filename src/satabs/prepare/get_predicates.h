@@ -16,7 +16,7 @@ Purpose:
 #include <string>
 #include <vector>
 
-#include <expr.h>
+#include <util/expr.h>
 
 class message_handlert;
 class namespacet;

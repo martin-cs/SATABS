@@ -9,7 +9,7 @@ Date: June 2003
 
 \*******************************************************************/
 
-#include <options.h>
+#include <util/options.h>
 
 #include "select_modelchecker.h"
 #include "modelchecker_boolean_program.h"

@@ -8,9 +8,9 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <cassert>
 
-#include <i2string.h>
-#include <expr_util.h>
-#include <simplify_expr.h>
+#include <util/i2string.h>
+#include <util/expr_util.h>
+#include <util/simplify_expr.h>
 
 #include "check_redundancy.h"
 #include "abstractor.h"

@@ -12,12 +12,12 @@ Date: June 2003
 #include <algorithm>
 #include <iostream>
 
-#include <expr_util.h>
-#include <std_types.h>
-#include <std_expr.h>
-#include <simplify_expr.h>
-#include <i2string.h>
-#include <threeval.h>
+#include <util/expr_util.h>
+#include <util/std_types.h>
+#include <util/std_expr.h>
+#include <util/simplify_expr.h>
+#include <util/i2string.h>
+#include <util/threeval.h>
 
 #include <langapi/language_util.h>
 

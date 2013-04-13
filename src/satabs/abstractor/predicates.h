@@ -12,7 +12,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <map>
 #include <vector>
 
-#include <expr.h>
+#include <util/expr.h>
 
 typedef exprt predicatet;
 

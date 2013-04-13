@@ -92,7 +92,7 @@ CP_CXXFLAGS += -DHAVE_QBF_CORE
 endif
 endif
 
-INCLUDES= -I $(CBMC)/src -I $(CBMC)/src/util
+INCLUDES= -I $(CBMC)/src
 
 #ifneq ($(wildcard ../prover/Makefile),)
 #  CP_CXXFLAGS += -DHAVE_PROVER

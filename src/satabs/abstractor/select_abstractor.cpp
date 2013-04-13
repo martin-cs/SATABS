@@ -8,7 +8,7 @@ Date: September 2005
 
 \*******************************************************************/
 
-#include <options.h>
+#include <util/options.h>
 
 #include "select_abstractor.h"
 #include "abstractor_wp.h"

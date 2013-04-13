@@ -12,17 +12,18 @@ Date: June 2003
 #include <iostream>
 #include <sstream>
 
-#include <expr_util.h>
-#include <std_expr.h>
-#include <arith_tools.h>
-#include <i2string.h>
-#include <simplify_expr.h>
+#include <util/expr_util.h>
+#include <util/std_expr.h>
+#include <util/arith_tools.h>
+#include <util/i2string.h>
+#include <util/simplify_expr.h>
 
 #include <goto-programs/wp.h>
 #include <goto-symex/goto_symex_state.h>
 
 #include <solvers/sat/satcheck.h>
 #include <solvers/flattening/bv_pointers.h>
+
 #include "../abstractor/predabs_aux.h"
 #include "../abstractor/predicates.h"
 #include "../prepare/concrete_model.h"

@@ -15,10 +15,10 @@ Purpose:
 #include <algorithm>
 #include <iterator>
 
-#include <replace_expr.h>
-#include <simplify_expr.h>
-#include <i2string.h>
-#include <arith_tools.h>
+#include <util/replace_expr.h>
+#include <util/simplify_expr.h>
+#include <util/i2string.h>
+#include <util/arith_tools.h>
 
 #include <goto-symex/goto_symex.h>
 #include <goto-symex/symex_target_equation.h>

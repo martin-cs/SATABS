@@ -8,7 +8,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <cassert>
 
-#include <prefix.h>
+#include <util/prefix.h>
 
 #include "discover_predicates.h"
 #include "lift_if.h"

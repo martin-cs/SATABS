@@ -16,7 +16,7 @@ Purpose: Calculate predicates for predicate abstraction.
 
 #include <vector>
 
-#include <message.h>
+#include <util/message.h>
 
 #include <goto-programs/goto_functions.h>
 

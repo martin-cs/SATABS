@@ -12,11 +12,11 @@ Purpose:
 
 #include <cassert>
 
-#include <std_expr.h>
-#include <std_types.h>
-#include <hash_cont.h>
-#include <prefix.h>
-#include <namespace.h>
+#include <util/std_expr.h>
+#include <util/std_types.h>
+#include <util/hash_cont.h>
+#include <util/prefix.h>
+#include <util/namespace.h>
 
 #include <goto-programs/goto_program.h>
 

@@ -13,7 +13,7 @@ Purpose:
 #ifndef CPROVER_SATABS_LOOP_COMPONENT_H
 #define CPROVER_SATABS_LOOP_COMPONENT_H
 
-#include <message.h>
+#include <util/message.h>
 
 class concrete_modelt;
 

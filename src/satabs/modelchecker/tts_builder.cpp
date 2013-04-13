@@ -8,16 +8,16 @@ Date: January 2012
 
 \*******************************************************************/
 
-#include "tts_builder.h"
-
 #include <iostream>
 #include <fstream>
 
-#include <string2int.h>
-#include <arith_tools.h>
-#include <std_expr.h>
+#include <util/string2int.h>
+#include <util/arith_tools.h>
+#include <util/std_expr.h>
 
 #include "../abstractor/concurrency_aware_abstract_transition_relation.h"
+
+#include "tts_builder.h"
 
 #define COMMENTS
 #define DEBUG
