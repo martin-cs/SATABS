@@ -65,7 +65,7 @@ SRC = satabs.cpp cmdline_options.cpp \
 OBJ += \
       $(CBMC)/src/ansi-c/ansi-c$(LIBEXT) \
       $(CBMC)/src/linking/linking$(LIBEXT) \
-      $(CBMC)/src/big-int/bigint$(OBJEXT) \
+      $(CBMC)/src/big-int/big-int$(LIBEXT) \
       $(CBMC)/src/goto-programs/goto-programs$(LIBEXT) \
       $(CBMC)/src/goto-symex/goto-symex$(LIBEXT) \
       $(CBMC)/src/analyses/analyses$(LIBEXT) \
