@@ -39,7 +39,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include "convert_to_promela.h"
 #include "convert_to_program_formula.h"
-#include "parseoptions.h"
+#include "boppo_parseoptions.h"
 #include "simulator.h"
 #include "simulator_ct.h"
 #include "version.h"

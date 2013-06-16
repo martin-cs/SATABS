@@ -14,7 +14,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 */
 
-#include "parseoptions.h"
+#include "boppo_parseoptions.h"
 
 /*******************************************************************\
 
