@@ -31,7 +31,7 @@
 #include <termination/termination_slicer.h>
 #include <termination/transform_loops.h>
 
-#include "parseoptions.h"
+#include "tan_parseoptions.h"
 #include "version.h"
 #include "languages.h"
 

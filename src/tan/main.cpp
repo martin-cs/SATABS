@@ -11,7 +11,7 @@ Author: CM Wintersteiger
 #include <iostream>
 #include <cstdlib>
 
-#include "parseoptions.h"
+#include "tan_parseoptions.h"
 
 void xcpu_termination_handler(int signum)
 {

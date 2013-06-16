@@ -2,11 +2,11 @@ include ../config.inc
 include ../common
 
 SRC = main.cpp \
-      parseoptions.cpp \
-      languages.cpp
+      tan_parseoptions.cpp \
+      tan_languages.cpp
 
 OBJ = $(SRC:.cpp=.o) \
-      $(CBMC)/src/big-int/bigint.o \
+      $(CBMC)/src/big-int/big-int$(LIBEXT) \
       $(CBMC)/src/goto-programs/goto-programs$(LIBEXT) \
       $(CBMC)/src/assembler/assembler$(LIBEXT) \
       $(CBMC)/src/goto-symex/goto-symex$(LIBEXT) \
