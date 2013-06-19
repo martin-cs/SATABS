@@ -1220,8 +1220,13 @@ void modelchecker_smvt::build_smv_file_control(
       // treat like skip for now
       out << PC+1 << "; -- catch";
     }
+    else if(instruction.is_dead())
+    {
+      // treat like skip for now
+      out << PC+1 << "; -- dead";
+    }
     else
-      throw "unknown statement";
+      throw "unknown statement (modelchecker_smvt::build_smv_file_control)";
 
     out << std::endl;
   }
