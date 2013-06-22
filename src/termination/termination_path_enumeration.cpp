@@ -1201,42 +1201,26 @@ std::string termination_path_enumerationt::path_string(const path_mapt &path_map
 
 void termination_path_enumerationt::show_stats(void)
 {
-  std::stringstream ss;
-    
-  ss << "Rank relation cache: " <<
-    time2string(ranking_cache_time) << " s check time, " <<
-    ranking_relations.hit << " hits, " <<
-    ranking_relations.miss << " misses. ";  
+  status() << "Rank relation cache: "
+           << ranking_cache_time << " s check time, "
+           << ranking_relations.hit << " hits, "
+           << ranking_relations.miss << " misses. " << eom;
   
-  status(ss.str());
-  ss.str("");
+  status() << "Pointer analysis: " 
+           << pointer_analysis_time << " s total." << eom;
     
-  ss << "Pointer analysis: " <<
-    time2string(pointer_analysis_time) << " s total.";  
-    
-  status(ss.str());
-  ss.str("");
-  
-  ss << "Loop reachability checks: " <<
-    time2string(loop_reachability_time) << " s total.";  
+  status() << "Loop reachability checks: "
+           << loop_reachability_time << " s total." << eom;
       
-  status(ss.str());
-  ss.str("");
-  
-  ss << "Paths: " <<
-    paths_analyzed << " seen, " <<
-    paths_infeasible << " infeasible, " <<
-    time2string(path_feasibility_time) << " s feasibility check time.";  
+  status() << "Paths: " 
+           << paths_analyzed << " seen, " 
+           << paths_infeasible << " infeasible, "
+           << path_feasibility_time << " s feasibility check time." << eom;
     
-  status(ss.str());  
-  ss.str("");
-  
-  ss << "Precondition checks: " <<
-    time2string(wp_ce_extraction_time+wp_unreachability_time) << " s total, " <<
-    time2string(wp_ce_extraction_time) << " s counterexample extraction, " <<
-    time2string(wp_unreachability_time) << " s unreachability checks.";  
-    
-  status(ss.str());
+  status() << "Precondition checks: "
+           << (wp_ce_extraction_time+wp_unreachability_time) << " s total, "
+           << wp_ce_extraction_time << " s counterexample extraction, " 
+           << wp_unreachability_time << " s unreachability checks." << eom;
   
   termination_baset::show_stats();
 }
@@ -1317,7 +1301,7 @@ termination_resultt termination_path_enumerationt::operator()()
         
         time=current_time()-time;
         
-        status("Check Time: " + time2string(time) + " s");
+        status() << "Check Time: " << time << + " s" << eom;
         
         if(res!=T_TERMINATING)
         {

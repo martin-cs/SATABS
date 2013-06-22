@@ -7,7 +7,6 @@ Author: CM Wintersteiger
 \*******************************************************************/
 
 #include <string>
-#include <sstream>
 #include <cstdlib>
 #include <algorithm>
 
@@ -760,23 +759,21 @@ goto_programt::const_targett termination_baset::find_next_loop(
 
 void termination_baset::show_stats()
 {
-  std::stringstream ss;
+  status() << "Statistics: " << ranksynth_calls 
+           << " ranking synthesis calls, " 
+           << total_loops << " loops, "
+           << total_loops-nonterminating_loops << " loops terminate, "
+           << nonterminating_loops << " non-terminating loops."
+           << eom;
 
-  ss << "Statistics: " << ranksynth_calls << " ranking synthesis calls, " <<
-    total_loops << " loops, " <<
-    total_loops-nonterminating_loops << " loops terminate, " <<
-    nonterminating_loops << " non-terminating loops.";
+  status() << eom;
 
-  status(ss.str());
-  ss.str("");
-
-  ss << "Time: " << time2string(current_time()-start_time) << " s total, " <<
-    time2string(modelchecker_time) << " s model checker, " <<
-    time2string(ranking_time) << " s ranking time, " <<
-    time2string(counter_example_extraction_time) << " s counterexample extraction, " <<
-    time2string(final_check_time) << " s final check";
-
-  status(ss.str());
+  status() << "Time: " << (current_time()-start_time) << " s total, "
+           << modelchecker_time << " s model checker, "
+           << ranking_time << " s ranking time, "
+           << counter_example_extraction_time << " s counterexample extraction, "
+           << final_check_time << " s final check"
+           << eom;
 }
 
 /********************************************************************\

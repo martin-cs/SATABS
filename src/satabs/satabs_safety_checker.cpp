@@ -95,11 +95,11 @@ Purpose:
 void satabs_safety_checker_baset::show_statistics(const namespacet &ns)
 {
   status() << "Time: "
-           << time2string(total_time) << " total, "
-           << time2string(abstractor_time) << " abstractor, "
-           << time2string(modelchecker_time) << " model checker, "
-           << time2string(simulator_time) << " simulator, "
-           << time2string(refiner_time) << " refiner"
+           << total_time << " total, "
+           << abstractor_time << " abstractor, "
+           << modelchecker_time << " model checker, "
+           << simulator_time << " simulator, "
+           << refiner_time << " refiner"
            << eom;
 
   status() << "Number of iterations: " << iteration << eom;
@@ -237,29 +237,29 @@ void satabs_safety_checker_baset::csv_stats(
     }
 
     of << shared_count << ","
-      << mixed_count << ","
-      << local_count << ",";
+       << mixed_count << ","
+       << local_count << ",";
   }
 
   {
     static fine_timet prev_tot_time=total_start_time;
-    output_time(current_time()-prev_tot_time, of);
+    of << (current_time()-prev_tot_time);
     prev_tot_time=current_time();
     of << ",";
-    static fine_timet prev_abs_time=0;
-    output_time(abstractor_time-prev_abs_time, of);
+    static fine_timet prev_abs_time;
+    of << (abstractor_time-prev_abs_time);
     prev_abs_time=abstractor_time;
     of << ",";
-    static fine_timet prev_mc_time=0;
-    output_time(modelchecker_time-prev_mc_time, of);
+    static fine_timet prev_mc_time;
+    of << (modelchecker_time-prev_mc_time);
     prev_mc_time=modelchecker_time;
     of << ",";
-    static fine_timet prev_sim_time=0;
-    output_time(simulator_time-prev_sim_time, of);
+    static fine_timet prev_sim_time;
+    of << (simulator_time-prev_sim_time);
     prev_sim_time=simulator_time;
     of << ",";
-    static fine_timet prev_ref_time=0;
-    output_time(refiner_time-prev_ref_time, of);
+    static fine_timet prev_ref_time;
+    of << (refiner_time-prev_ref_time);
     prev_ref_time=refiner_time;
     of << ",";
   }
@@ -413,10 +413,6 @@ safety_checkert::resultt satabs_safety_checker_baset::operator()(
   
   resultt result=ERROR;
   total_start_time=current_time();
-  abstractor_time=0;
-  modelchecker_time=0;
-  simulator_time=0;
-  refiner_time=0;
   iteration=0;
 
   concrete_modelt concrete_model(ns, goto_functions);

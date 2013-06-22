@@ -373,7 +373,7 @@ bool tan_parseoptionst::prepare()
     }
     
     status() << "Invariant Propagation: "
-             << time2string(current_time()-before) << " s total" << eom;
+             << (current_time()-before) << " s total" << eom;
   }
 
   // set claim

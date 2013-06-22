@@ -285,15 +285,15 @@ termination_resultt termination_directt::operator()()
           termination_resultt res=terminates(main, goto_functions, assertion);
           time=current_time()-time;
           
-          status("Check Time: " + time2string(time) + " s");
+          status() << "Check Time: " << time << " s" << eom;
           
           if(res!=T_TERMINATING)
           {
-            status("LOOP DOES NOT TERMINATE");
+            status() << "LOOP DOES NOT TERMINATE" << eom;
             nonterminating_loops++;
           }
           else
-            status("LOOP TERMINATES");
+            status() << "LOOP TERMINATES" << eom;
         }
                 
         status("==================================================");
@@ -333,18 +333,11 @@ termination_resultt termination_directt::operator()()
 
 void termination_directt::show_stats(void)
 {
-  std::stringstream ss;      
+  status() << "Pointer analysis: " 
+           << pointer_analysis_time << " s total." << eom;
     
-  ss << "Pointer analysis: " <<
-    time2string(pointer_analysis_time) << " s total.";  
-    
-  status(ss.str());
-  ss.clear();
-    
-  ss << "Loop slicer: " <<
-    time2string(slicing_time) << " s total.";  
-      
-  status(ss.str());
+  status() << "Loop slicer: "
+           << slicing_time << " s total." << eom;
   
   termination_baset::show_stats();
 }

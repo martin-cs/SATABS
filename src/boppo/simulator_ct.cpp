@@ -124,9 +124,7 @@ void simulator_ctt::simulator()
     std::cout << "VERIFICATION SUCCESSFUL" << std::endl;
 
   std::cout << std::endl;
-  std::cout << "Runtime: ";
-  output_time(current_time()-start_time, std::cout);
-  std::cout << std::endl;
+  std::cout << "Runtime: " << (current_time()-start_time) << std::endl;
   std::cout << "Paths: " << path_counter << std::endl;
   std::cout << "States explored: " << state_counter << std::endl;
 }

@@ -135,9 +135,7 @@ void simulatort::run(queuet &queue)
 
   std::cout << std::endl;
   std::cout << "States explored: " << counter << std::endl;
-  std::cout << "Runtime: ";
-  output_time(current_time()-start_time, std::cout);
-  std::cout << std::endl;
+  std::cout << "Runtime: " << (current_time()-start_time) << std::endl;
 }
 
 /*******************************************************************\

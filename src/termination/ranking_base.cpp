@@ -305,11 +305,9 @@ exprt ranking_synthesis_baset::ranking(void)
 
   bool res=generate_functions();
 
-  status(std::string("TConversion time: ") +
-         time2string(conversion_time) + " sec.");
-  status(std::string("TSolver time: ") +
-         time2string(solver_time) + " sec.");
-  status(std::string("TSolver calls: " + i2string(solver_calls)));
+  status() << "TConversion time: " << conversion_time << " sec." << eom;
+  status() << "TSolver time: " << solver_time << " sec." << eom;
+  status() << "TSolver calls: " << solver_calls << eom;
 
   if(!res)
     return nil_exprt();

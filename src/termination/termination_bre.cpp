@@ -58,7 +58,7 @@ termination_resultt termination_bret::terminates(
   
   if(!mres)
   {
-    status("Slicer has shown unreachability of the assertion.");      
+    status() << "Slicer has shown unreachability of the assertion" << eom;
     return T_TERMINATING;
   }
   
@@ -67,7 +67,7 @@ termination_resultt termination_bret::terminates(
     model.value_set_analysis.initialize(model.goto_functions);
   else
   {
-    status("Pointer analysis...");  
+    status() << "Pointer analysis..." << eom;
     fine_timet before=current_time();
     model.value_set_analysis(model.goto_functions);  
     pointer_analysis_time=current_time()-before;
@@ -110,7 +110,7 @@ termination_resultt termination_bret::bre_loop(
   safety_checker.set_message_handler(mh);
   safety_checker.set_verbosity(this_verb);
                  
-  status("Running CEGAR/BRE...");
+  status() << "Running CEGAR/BRE..." << eom;
   
   try
   {
@@ -127,7 +127,7 @@ termination_resultt termination_bret::bre_loop(
       out.close();
       #endif
       
-      status("Checking for counterexample...");
+      status() << "Checking for counterexample..." << eom;
       fine_timet before=current_time();
       int result=safety_checker(goto_functions);
       fine_timet diff=current_time()-before;
@@ -147,7 +147,7 @@ termination_resultt termination_bret::bre_loop(
           
         if(process_counterexample(trace))
         {
-          status("Rank synthesis failed");
+          status() << "Rank synthesis failed" << eom;
           return T_NONTERMINATING;
         }
           
@@ -169,19 +169,19 @@ termination_resultt termination_bret::bre_loop(
   }
   catch(const std::string &s)
   {
-    status(std::string("CEGAR Loop Exception: ") + s);
+    status() << "CEGAR Loop Exception: " << s << eom;
   }
   catch(const char *s)
   {
-    status(std::string("CEGAR Loop Exception: ") + s);
+    status() << "CEGAR Loop Exception: " << s << eom;
   }
   catch(unsigned u)
   {
-    status(std::string("CEGAR Loop Exception: ") + i2string(u));
+    status() << "CEGAR Loop Exception: " << u << eom;
   }
   catch(...)
   {
-    status("UNKNOWN EXCEPTION CAUGHT");
+    status() << "UNKNOWN EXCEPTION CAUGHT" << eom;
   }
   
   return T_NONTERMINATING;   
@@ -231,7 +231,7 @@ termination_resultt termination_bret::terminates(
   safety_checker.set_verbosity(this_verb);
   safety_checker.set_message_handler(mh);
   
-  status("Running CEGAR/BRE...");
+  status() << "Running CEGAR/BRE..." << eom;
                  
   try {
     while(true)
@@ -256,7 +256,7 @@ termination_resultt termination_bret::terminates(
         
         if(process_counterexample(trace))
         {
-          status("Rank synthesis failed");
+          status() << "Rank synthesis failed" << eom;
           return T_NONTERMINATING;
         }
         
@@ -278,19 +278,19 @@ termination_resultt termination_bret::terminates(
   }
   catch (const std::string &s)
   {
-    status(std::string("CEGAR Loop Exception: ") + s);
+    status() << "CEGAR Loop Exception: " << s << eom;
   }
   catch (const char *s)
   {
-    status(std::string("CEGAR Loop Exception: ") + s);
+    status() << "CEGAR Loop Exception: " << s << eom;
   }
   catch (unsigned u)
   {
-    status(std::string("CEGAR Loop Exception: ") + i2string(u));
+    status() << "CEGAR Loop Exception: " << u << eom;
   }
   catch (...)
   {
-    status("UNKNOWN EXCEPTION CAUGHT");
+    status() << "UNKNOWN EXCEPTION CAUGHT" << eom;
   }
 
   return T_NONTERMINATING;
@@ -357,10 +357,10 @@ termination_resultt termination_bret::operator()()
         total_loops++;        
         const locationt &loc=assertion->location;
         
-        status("==================================================");
-        status("Loop Termination Check #" + i2string(total_loops));
-        status(std::string("at: ") + ((loc.is_nil()) ? "?" : loc.as_string()));
-        status("--------------------------------------------------");
+        status() << "==================================================" << endl
+                 << "Loop Termination Check #" << total_loops << endl
+                 << "at: " << ((loc.is_nil()) ? "?" : loc.as_string()) << endl
+                 << "--------------------------------------------------" << eom;
         
         if(!assertion->guard.is_true())
         {          
@@ -368,24 +368,24 @@ termination_resultt termination_bret::operator()()
           termination_resultt res=terminates(main, goto_functions, assertion);          
           time=current_time()-time;
           
-          status("Check Time: " + time2string(time) + " s");
+          status() << "Check Time: " << time << " s" << eom;
           
           if(res!=T_TERMINATING)
           {
-            status("LOOP DOES NOT TERMINATE");
+            status() << "LOOP DOES NOT TERMINATE" << eom;
             nonterminating_loops++;
           }
           else
-            status("LOOP TERMINATES");
+            status() << "LOOP TERMINATES" << eom;
         }
         else
         {
-          debug("Loop guard simplified by invariant propagation; "
-                "loop terminates trivially.");
-          status("LOOP TERMINATES");
+          debug() << "Loop guard simplified by invariant propagation; "
+                     "loop terminates trivially." << eom;
+          status() << "LOOP TERMINATES" << eom;
         }
                 
-        status("==================================================");
+        status() << "==================================================" << eom;
         
         seen_loops.insert(assertion);
       }
@@ -398,12 +398,12 @@ termination_resultt termination_bret::operator()()
     
   if(nonterminating_loops>0)
   {
-    status("Program is (possibly) NON-TERMINATING.");
+    status() << "Program is (possibly) NON-TERMINATING." << eom;
     return T_NONTERMINATING;
   }
   else
   {
-    status("Program TERMINATES.");
+    status() << "Program TERMINATES." << eom;
     return T_TERMINATING;
   }
 }
@@ -422,19 +422,12 @@ termination_resultt termination_bret::operator()()
 
 void termination_bret::show_stats(void)
 {
-  std::stringstream ss;      
+  status() << "Pointer analysis: "
+           << pointer_analysis_time << " s total." << eom;
     
-  ss << "Pointer analysis: " <<
-    time2string(pointer_analysis_time) << " s total.";  
-    
-  status(ss.str());
-  ss.clear();
-  
-  ss << "Loop slicer: " <<
-    time2string(slicing_time) << " s total.";  
+  status() << "Loop slicer: "
+           << slicing_time << " s total." << eom;
       
-  status(ss.str());
-  
   termination_baset::show_stats();
 }
 
@@ -503,7 +496,7 @@ bool termination_bret::process_counterexample(goto_tracet &trace)
     return true;
   else
   {
-    status("Synthesising a ranking function.");
+    status() << "Synthesising a ranking function." << eom;
     
     ranksynth_calls++;
     fine_timet before=current_time();    
@@ -517,12 +510,12 @@ bool termination_bret::process_counterexample(goto_tracet &trace)
     {
       if(!cmdline.isset("no-slicing"))
       {
-        status("No rank functions found; loop is possibly non-terminating.");
+        status() << "No rank functions found; loop is possibly non-terminating." << eom;
         return true;
       }
       else // Running without slicer
       {
-        status("Assuming loop termination to check other loops.");
+        status() << "Assuming loop termination to check other loops." << eom;
         adjust_assertion(true_exprt(), trace);
         nonterminating_loops++;
         return false; 

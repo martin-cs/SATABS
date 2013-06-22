@@ -58,7 +58,7 @@ termination_resultt termination_ctat::terminates(
   
   if(!get_model(main, goto_functions, assertion))
   {
-    status("Slicer has shown unreachability of the assertion.");
+    status() << "Slicer has shown unreachability of the assertion." << eom;
     return T_TERMINATING;
   }  
 
@@ -67,10 +67,10 @@ termination_resultt termination_ctat::terminates(
 
   goto_programt::const_targett loop_end, loop_begin, copy_goto;
   if (!get_loop_extent(sliced_assertion, loop_begin, loop_end, copy_goto))
-	{
-		status("Copy-goto was sliced away; this loop must be terminating.");
-		return T_TERMINATING;
-	}
+  {
+    status() << "Copy-goto was sliced away; this loop must be terminating." << eom;
+    return T_TERMINATING;
+  }
 
   // get a mapping between pre and post variables
   replace_idt premap;
@@ -120,11 +120,11 @@ termination_resultt termination_ctat::terminates(
 
       if(!is_reachable(loop_begin, loop_end, u_mode=="bmc"))
       {
-        status("Loop is potentially non-terminating, but unreachable.");
+        status() << "Loop is potentially non-terminating, but unreachable." << eom;
         res=T_TERMINATING;
       }
       else
-        status("Loop is potentially non-terminating and reachable.");
+        status() << "Loop is potentially non-terminating and reachable." << eom;
     }
   }
 
@@ -174,21 +174,18 @@ termination_resultt termination_ctat::rank(
     
     temp_goto_functions.update();
 
-    std::stringstream msg;
-    msg << "Generating ranking functions for " << n << " loop iteration"
-        << ((n==1)?"":"s") << ".";
-    status(msg.str());
+    status() << "Generating ranking functions for " << n 
+             << " loop iteration" << ((n==1)?"":"s") << "." << eom;
     
     if(verbosity>8)
     {
-      std::stringstream msg;
-      msg << "Unwinding: " << std::endl;
+      debug() << "Unwinding: " << endl;
       goto_functionst::function_mapt::const_iterator f_it = 
           temp_goto_functions.function_map.find(ID_main);
       assert(f_it!=temp_goto_functions.function_map.end());
       const goto_programt &f=f_it->second.body;
-      f.output(ns, "", msg);
-      debug(msg.str());
+      f.output(ns, "", debug());
+      debug() << eom;
     }
     
     if(!rank_block(temp_goto_functions, sliced_assertion, sliced_backjump, assertion,
@@ -198,11 +195,11 @@ termination_resultt termination_ctat::rank(
     {
       delta=ranking_relations.size()-before;
       assert(delta>=0);
-      status("Found " + i2string(delta) + " new ranking functions.");
+      status() << "Found " << delta << " new ranking functions." << eom;
             
       if(ranking_relations.is_compositional())        
       {
-        status("Ranking argument is compositional.");
+        status() << "Ranking argument is compositional." << eom;
         res = T_TERMINATING;
       }
       else if(make_compositional(loop_begin, sliced_backjump, copy_goto,
@@ -210,13 +207,13 @@ termination_resultt termination_ctat::rank(
                                  ranking_relations)) 
       {
         // assert(ranking_relations.is_compositional());
-        status("Ranking argument was made compositional.");
+        status() << "Ranking argument was made compositional." << eom;
         res = T_TERMINATING;
       }
       else
       {
-        status("Ranking argument is not compositional, "
-               "increasing the unwinding.");
+        status() << "Ranking argument is not compositional, "
+                    "increasing the unwinding." << eom;
         n+=n;
       }
     }
@@ -532,7 +529,7 @@ bool termination_ctat::rank_block(
                                original_backjump, main_backup_id,
                                goto_trace))
       {
-        status("Failed to rank a reachable path through the loop.");
+        status() << "Failed to rank a reachable path through the loop." << eom;
         return false;
       }
     }
@@ -931,24 +928,24 @@ termination_resultt termination_ctat::operator()()
         termination_resultt res=terminates(main, goto_functions, assertion);
         time=current_time()-time;
 
-        status("Check Time: " + time2string(time) + " s");
+        status() << "Check Time: " << time << " s" << eom;
 
         if(res!=T_TERMINATING)
         {
-          status("LOOP DOES NOT TERMINATE");
+          status() << "LOOP DOES NOT TERMINATE" << eom;
           nonterminating_loops++;
         }
         else
-          status("LOOP TERMINATES");
+          status() << "LOOP TERMINATES" << eom;
       }
       else
       {
-        debug("Loop guard simplified by invariant propagation; "
-              "loop terminates trivially.");
-        status("LOOP TERMINATES");
+        debug() << "Loop guard simplified by invariant propagation; "
+                   "loop terminates trivially." << eom;
+        status() << "LOOP TERMINATES" << eom;
       }
 
-      status("==================================================");
+      status() << "==================================================" << eom;
 
       seen_loops.insert(assertion);
     }
@@ -960,12 +957,12 @@ termination_resultt termination_ctat::operator()()
 
   if(nonterminating_loops>0)
   {
-    status("Program is (possibly) NON-TERMINATING.");
+    status() << "Program is (possibly) NON-TERMINATING." << eom;
     return T_NONTERMINATING;
   }
   else
   {
-    status("Program TERMINATES.");
+    status() << "Program TERMINATES." << eom;
     return T_TERMINATING;
   }
 }
@@ -1075,12 +1072,9 @@ exprt termination_ctat::weakest_precondition(goto_tracet &goto_trace)
 
 void termination_ctat::show_stats(void)
 {
-  std::stringstream ss("");
+  status() << "RF Generalization: " 
+           << ranking_generalization_time << " s total." << eom;
 
-  ss << "RF Generalization: " <<
-    time2string(ranking_generalization_time) << " s total.";
-
-  status(ss.str());
   termination_path_enumerationt::show_stats();
 }
 

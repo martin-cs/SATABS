@@ -334,7 +334,7 @@ bool ranking_synthesis_qbf_bitwiset::generate_functions(void)
   
   unsigned state_size = get_state_size();
   
-  status("Termination: state size is " + i2string(state_size));
+  status() << "Termination: state size is " << i2string(state_size) << eom;
 
   while (res==qdimacs_coret::P_UNSATISFIABLE && 
          bitwise_width <= state_size)
@@ -349,12 +349,12 @@ bool ranking_synthesis_qbf_bitwiset::generate_functions(void)
 
     exprt templ = instantiate();
 
-    status("Template:");
+    status() << "Template:" << eom;
     quantify_variables(converter, *solver);
 
     std::cout << std::endl << from_expr(ns, "", templ) << std::endl;
 
-    status("Converting template...");
+    status() << "Converting template..." << eom;
     fine_timet before = current_time();
     converter.set_to_true(templ);
     fine_timet ctime = current_time()-before;
@@ -362,20 +362,18 @@ bool ranking_synthesis_qbf_bitwiset::generate_functions(void)
     if(get_verbosity()>5)
         show_varmap(converter, std::cout);
 
-    status("Solving...");
+    status() << "Solving..." << eom;
     before = current_time();
     res = solver->prop_solve();
      
     // solver_calls++; // we don't count calls or time globally.
-    status(std::string("TConversion time: ") +
-           time2string(ctime) + " sec.");
-    status(std::string("TSolver time: ") +
-           time2string(current_time()-before) + " sec.");
-    status(std::string("TSolver calls: 1"));
+    status() << "TConversion time: " << ctime << " sec." << eom;
+    status() << "TSolver time: " << (current_time()-before) << " sec." << eom;
+    status() << "TSolver calls: 1" << eom;
 
     if(res==qdimacs_coret::P_SATISFIABLE)
     {
-      status("Found ranking functions");
+      status() << "Found ranking functions" << eom;
 
       if(extract_ranking_relation(converter))
         return false;
@@ -384,8 +382,8 @@ bool ranking_synthesis_qbf_bitwiset::generate_functions(void)
     {
       bitwise_width++;
       if(bitwise_width <= state_size)
-        status("No ranking functions found; increasing width to " +
-               i2string(bitwise_width));
+        status() << "No ranking functions found; increasing width to "
+                 << bitwise_width;
     }
   }
 
