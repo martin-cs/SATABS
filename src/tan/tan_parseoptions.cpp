@@ -178,12 +178,12 @@ bool tan_parseoptionst::check_and_set_options()
   
   if(cmdline.args.size()==0)
   {
-    error("Please provide a goto-binary as input file.");
+    error() << "Please provide a goto-binary as input file" << eom;
     return 1;
   }
-  else if (cmdline.args.size()>1)
+  else if(cmdline.args.size()>1)
   {
-    error("Multiple input files not supported.");
+    error() << "Multiple input files not supported" << eom;
     return 1;
   }
   
@@ -225,14 +225,15 @@ bool tan_parseoptionst::from_file(const std::string &filename)
 
   if(!infile)
   {
-    error(std::string("Error opening file `")+filename+"'.");
+    error() << "Error opening file `" << filename << "'" << eom;
     return true;
   }  
 
-  status(std::string("Loading `")+filename+"' ...");
+  status() << "Loading `" << filename << "'" << eom;
+
   if(read_goto_binary(filename, symbol_table, goto_functions, get_message_handler()))
   {
-    error(std::string("Error reading file `")+filename+"'.");
+    error() << "Error reading file `" << filename << "'" << eom;
     return true;
   }
   
@@ -272,34 +273,34 @@ bool tan_parseoptionst::prepare()
   if(cmdline.isset("string-abstraction"))
     string_instrumentation(symbol_table, mh, goto_functions);
   
-  status("Removing function pointers");
+  status() << "Removing function pointers" << eom;
   remove_function_pointers(symbol_table, goto_functions, false);
 
-  status("Removing unused functions");
+  status() << "Removing unused functions" << eom;
   remove_unused_functions(goto_functions, mh);
 
-  status("Transforming loops");
+  status() << "Transforming loops" << eom;
   transform_loops(goto_functions, symbol_table, mh);
   
-  status("Partial inlining");
+  status() << "Partial inlining" << eom;
   goto_partial_inline(goto_functions, ns, mh);
   
   // we do this again, to remove all the functions that are inlined now
   remove_unused_functions(goto_functions, mh);
 
-  status("Adjusting functions");
+  status() << "Adjusting functions" << eom;
   prepare_functions(symbol_table, goto_functions, mh);
   
   if(cmdline.isset("string-abstraction"))
   {
-    status("String Abstraction");
+    status() << "String Abstraction" << eom;
     string_abstraction(symbol_table, mh, goto_functions);
   }
     
   goto_functions.compute_location_numbers();
 
   #if 0
-  status("Natural loops:");
+  status() << "Natural loops:" << eom;
 
   forall_goto_functions(it, goto_functions)
   {
@@ -309,7 +310,7 @@ bool tan_parseoptionst::prepare()
   }
   #endif
 		
-  status("Termination instrumentation");
+  status() << "Termination instrumentation" << eom;
   termination_instrumentert::modet instrumenter_mode=
     termination_instrumentert::T_RANKSYNTH;
     
@@ -332,7 +333,7 @@ bool tan_parseoptionst::prepare()
   if(cmdline.isset("show-claims"))
   {
     if(loopcount==0)
-      status("No claims.");
+      status() << "No claims" << eom;
     else
       show_claims(ns, get_ui(), goto_functions);
     
@@ -347,7 +348,7 @@ bool tan_parseoptionst::prepare()
     value_set_analysist vsa(ns);
     invariant_propagationt ip(ns, vsa);
         
-    status("Invariant Propagation");
+    status() << "Invariant Propagation" << eom;
     
     try 
     {
@@ -371,8 +372,8 @@ bool tan_parseoptionst::prepare()
               "exceeded the memory limit");
     }
     
-    status("Invariant Propagation: " + 
-           time2string(current_time()-before) + " s total.");
+    status() << "Invariant Propagation: "
+             << time2string(current_time()-before) << " s total" << eom;
   }
 
   // set claim
