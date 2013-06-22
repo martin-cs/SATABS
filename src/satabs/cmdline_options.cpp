@@ -268,7 +268,7 @@ int cmdline_optionst::doit()
 
   catch(std::bad_alloc)
   {
-    prepare.error("Out of memory");
+    prepare.error() << "Out of memory" << messaget::eom;
     return 100;
   }
 

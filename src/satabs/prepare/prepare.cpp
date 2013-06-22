@@ -13,7 +13,6 @@ Date: June 2003
 
 #include <util/expr_util.h>
 #include <util/get_module.h>
-#include <util/i2string.h>
 #include <util/xml.h>
 #include <util/xml_irep.h>
 #include <util/symbol_table.h>
@@ -93,7 +92,7 @@ int preparet::doit()
     if(cmdline.args.size()==1 &&
        is_goto_binary(cmdline.args[0]))
     {
-      status("Reading GOTO program from file");
+      status() << "Reading GOTO program from file" << eom;
 
       if(read_goto_binary(cmdline.args[0],
             symbol_table, goto_functions,
@@ -123,7 +122,7 @@ int preparet::doit()
         return 1;
       }
 
-      status("Generating GOTO Program");
+      status() << "Generating GOTO Program" << eom;
 
       goto_convert(
           symbol_table,
@@ -220,7 +219,7 @@ int preparet::get_async_modules()
   namespacet ns(symbol_table);
 
   // finally add the library
-  status("Adding CPROVER library");      
+  status() << "Adding CPROVER library" << eom;
   link_to_library(
       symbol_table, goto_functions, get_message_handler());
 
@@ -236,20 +235,20 @@ int preparet::get_async_modules()
   forall_goto_functions(it, goto_functions)
     instructions+=it->second.body.instructions.size();
 
-  status(i2string(functions)+" functions, "+
-      i2string(instructions)+" instructions.");
+  statistics() << functions << " functions, "
+               << instructions << " instructions" << eom;
 
   if(cmdline.isset("string-abstraction"))
     string_instrumentation(
         symbol_table, get_message_handler(), goto_functions);
 
   {
-    status("Removing function pointers");
+    status() << "Removing function pointers" << eom;
     remove_function_pointers(
         symbol_table, goto_functions, cmdline.isset("pointer-check"));
   }
 
-  status("Removing unused functions");
+  status() << "Removing unused functions" << eom;
   remove_unused_functions(
       goto_functions, get_message_handler());
 
@@ -260,7 +259,7 @@ int preparet::get_async_modules()
 
   if(cmdline.isset("full-inlining") || boom)
   {
-    status("Full inlining");
+    status() << "Full inlining" << eom;
 
     satabs_inline(
       goto_functions,
@@ -270,7 +269,7 @@ int preparet::get_async_modules()
   else
   {
     // partially inline functions
-    status("Partial inlining");
+    status() << "Partial inlining" << eom;
 
     satabs_partial_inline(
         goto_functions,
@@ -281,7 +280,7 @@ int preparet::get_async_modules()
     remove_unused_functions(
         goto_functions, get_message_handler());
 
-    status("Adjusting functions");
+    status() << "Adjusting functions" << eom;
     prepare_functions(
         symbol_table,
         goto_functions,
@@ -305,7 +304,7 @@ int preparet::get_async_modules()
 
   if(cmdline.isset("string-abstraction"))
   {
-    status("String Abstraction");
+    status() << "String Abstraction" << eom;
     string_abstraction(
         symbol_table,
         get_message_handler(),

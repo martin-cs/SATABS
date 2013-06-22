@@ -9,8 +9,6 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <sstream>
 #include <fstream>
 
-#include <util/i2string.h>
-
 #include "abstractor/initial_abstraction.h"
 #include "modelchecker/modelchecker_boolean_program.h"
 #include "satabs_safety_checker.h"
@@ -77,7 +75,7 @@ void satabs_safety_checker_baset::show_loop_component_statistics(
   lc.statistics(str);
   if(!str.str().empty())
   {
-    status("Statistics of "+name+":");
+    status() << "Statistics of " << name << ":" << eom;
     status(str.str());
   }
 }
@@ -96,42 +94,23 @@ Purpose:
 
 void satabs_safety_checker_baset::show_statistics(const namespacet &ns)
 {
+  status() << "Time: "
+           << time2string(total_time) << " total, "
+           << time2string(abstractor_time) << " abstractor, "
+           << time2string(modelchecker_time) << " model checker, "
+           << time2string(simulator_time) << " simulator, "
+           << time2string(refiner_time) << " refiner"
+           << eom;
+
+  status() << "Number of iterations: " << iteration << eom;
+
+  status() << "Number of predicates: " << predicates.size() << eom;
+
+  for(unsigned p=0; p<predicates.size(); p++)
   {
-    std::ostringstream str;
-    str << "Time: ";
-    output_time(total_time, str);
-    str << " total, ";
-    output_time(abstractor_time, str);
-    str << " abstractor, ";
-    output_time(modelchecker_time, str);
-    str << " model checker, ";
-    output_time(simulator_time, str);
-    str << " simulator, ";
-    output_time(refiner_time, str);
-    str << " refiner";
-    status(str.str());
-  }
-
-  {
-    std::ostringstream str;
-    str << "Iterations: " << iteration;
-    status(str.str());
-  }
-
-  {
-    std::ostringstream str;
-    str << "Predicates: " << predicates.size();
-    status(str.str());
-
-    std::ostringstream str2;
-    for(unsigned p=0; p<predicates.size(); p++)
-    {
-      str2 << "P" << p << ": "
-        << from_expr(ns, "", predicates[p])
-        << std::endl;
-    }
-    print(10, str2.str());
-
+    debug() << "P" << p << ": "
+            << from_expr(ns, "", predicates[p])
+            << eom;
   }
 
   if(concurrency_aware)
@@ -158,9 +137,11 @@ void satabs_safety_checker_baset::show_statistics(const namespacet &ns)
           assert(false);
       }
     }
-    std::ostringstream str;
-    str << "Breakdown of predicate types:" << std::endl << "   shared: " << shared_count << std::endl << "   local: " << local_count << std::endl << "   mixed: " << mixed_count;
-    status(str.str());
+
+    status() << "Breakdown of predicate types:" << endl
+             << "   shared: " << shared_count << endl
+             << "   local: " << local_count << endl
+             << "   mixed: " << mixed_count << eom;
   }
 
   show_loop_component_statistics(abstractor, "abstractor");
@@ -428,7 +409,7 @@ Purpose: execute the CEGAR loop
 safety_checkert::resultt satabs_safety_checker_baset::operator()(
   const goto_functionst &goto_functions)
 {
-  status("*** Starting CEGAR Loop ***");
+  status() << "*** Starting CEGAR Loop ***" << eom;
   
   resultt result=ERROR;
   total_start_time=current_time();
@@ -481,7 +462,7 @@ safety_checkert::resultt satabs_safety_checker_baset::operator()(
   {
     iteration++;
 
-    status("*** CEGAR Loop Iteration "+i2string(iteration));
+    status() << "*** CEGAR Loop Iteration " << iteration << eom;
 
     do_abstraction();
 
@@ -505,12 +486,12 @@ safety_checkert::resultt satabs_safety_checker_baset::operator()(
             concrete_counterexample,
             fail_info))
       {
-        status("Trace is spurious");
+        status() << "Trace is spurious" << eom;
 
         if(iteration==max_iterations)
         {
-          error("Too many iterations, giving up.");
-          error("Consider increasing the number of iterations.");
+          error() << "Too many iterations, giving up." << eom;
+          error() << "Consider increasing the number of iterations." << eom;
           result=ERROR;
           break;
         }
