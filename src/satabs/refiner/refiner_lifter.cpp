@@ -34,7 +34,7 @@ bool refiner_liftert::refine_prefix(
     abstract_modelt &abstract_model,
     const fail_infot &fail_info)
 {
-  status("Refining set of predicates according to counterexample");
+  status() << "Refining set of predicates according to counterexample" << eom;
 
   return true;
 }

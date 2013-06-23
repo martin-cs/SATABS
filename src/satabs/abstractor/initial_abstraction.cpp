@@ -58,7 +58,7 @@ void initial_abstractiont::init_preds(
     predicatest &predicates, 
     const concrete_modelt &concrete_model)
 {
-  status("Calculating initial set of predicates");
+  status() << "Calculating initial set of predicates" << eom;
 
   init_preds(ns, predicates, concrete_model.goto_functions);
 
@@ -168,7 +168,7 @@ void initial_abstractiont::init_preds(
     const std::vector<exprt> &initial_predicates,
     abstract_modelt &abstract_model)
 {
-  status("Using provided set of initial predicates");
+  status() << "Using provided set of initial predicates" << eom;
 
   for(std::vector<predicatet>::const_iterator
       p_it=initial_predicates.begin();

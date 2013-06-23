@@ -1086,14 +1086,14 @@ bool modelchecker_boolean_programt::check(
     switch(engine)
     {
       case BOPPO:
-        status(std::string("Running BOPPO"));
+        status() << "Running BOPPO" << eom;
         command="boppo --compact-trace --por";
         if(loop_detection)
           command+=" --loop-detection";
         break;
 
       case BOOM:
-        status(std::string("Running BOOM"));
+        status() << "Running BOOM" << eom;
         command="boom --stats -t";
 
         // boom has a default of 2, which we override
@@ -1105,11 +1105,11 @@ bool modelchecker_boolean_programt::check(
         break;
 
       case BEBOP:
-        status(std::string("Running BEBOP"));
+        status() << "Running BEBOP" << eom;
         throw "Support for Bebop not yet implemented";
 
       case MOPED:
-        status(std::string("Running MOPED"));
+        status() << "Running MOPED" << eom;
         throw "Support for Moped not yet implemented";
 
       default:

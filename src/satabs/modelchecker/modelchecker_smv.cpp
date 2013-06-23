@@ -122,7 +122,7 @@ bool modelchecker_smvt::read_result(
         else if(std::string(*it, it->size()-8)=="is false")
         {
           // produce counterexample
-          status("SMV produced counterexample");
+          status() << "SMV produced counterexample" << eom;
           read_counterexample(file, it, abstract_model,
               threads, counterexample);
           print(9, "SMV counterexample sucessfully read\n");
@@ -183,7 +183,7 @@ bool modelchecker_smvt::read_result_cadence_smv(
       else if(std::string(*it, it->size()-1)=="0")
       {
         // produce counterexample
-        status("Cadence SMV produced counterexample");
+        status() << "Cadence SMV produced counterexample" << eom;
         read_counterexample_cadence_smv(
             file, it, abstract_model,
             threads, counterexample);
@@ -1728,7 +1728,7 @@ bool modelchecker_smvt::check(
 
   if(!inlined.has_assertion())
   {
-    status("Property holds trivially");
+    status() << "Property holds trivially" << eom;
     return true;
   }
 
@@ -1739,22 +1739,22 @@ bool modelchecker_smvt::check(
     {
       case NUSMV:
         command="NuSMV -dynamic";
-        status(std::string("Running NuSMV: ")+command);
+        status() << "Running NuSMV: " << command << eom;
         break;
 
       case CMU_SMV:
         command="smv";
-        status(std::string("Running CMU SMV: ")+command);
+        status() << "Running CMU SMV: " << command << eom;
         break;
 
       case CADENCE_SMV:
         command="smv -force -sift";
-        status(std::string("Running Cadence SMV: ")+command);
+        status() << "Running Cadence SMV: " << command << eom;
         break;
 
       case SATMC:
         command="satmc";
-        status(std::string("Running SATMC")+command);
+        status() << "Running SATMC: " << command << eom;
         break;
 
       default:

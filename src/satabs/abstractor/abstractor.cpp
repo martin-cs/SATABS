@@ -159,7 +159,7 @@ void abstractort::build_abstraction(const predicatest &predicates)
   have_new_predicates=(predicates!=old_predicates);
   old_predicates=predicates;
 
-  status("Computing Predicate Abstraction for Program");
+  status() << "Computing Predicate Abstraction for Program" << eom;
 
   // define abstract variables
   abstract_variables(predicates, abstract_model.variables);

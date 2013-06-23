@@ -61,7 +61,7 @@ bool simulator_ippt::check_prefix_equation(
       return false;
 
     case decision_proceduret::D_UNSATISFIABLE:
-      status("Counterexample prefix is spurious");
+      status() << "Counterexample prefix is spurious" << eom;
 
       interpolating_tp.get_interpolant_list().swap(interpolant_list);
 

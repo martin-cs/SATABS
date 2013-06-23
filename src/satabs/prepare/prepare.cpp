@@ -115,10 +115,12 @@ int preparet::doit()
       if(final()) return 1;
 
       // see if we have a "main"
+      
+      irep_idt entry_point=goto_functions.entry_point();
 
-      if(symbol_table.symbols.find("main")==symbol_table.symbols.end())
+      if(symbol_table.symbols.find(entry_point)==symbol_table.symbols.end())
       {
-        error("failed to find entry point -- please provide a model");
+        error() << "failed to find entry point -- please provide a model" << eom;
         return 1;
       }
 

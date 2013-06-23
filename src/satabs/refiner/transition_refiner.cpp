@@ -125,7 +125,7 @@ bool transition_refinert::check_transitions(
     abstract_modelt &abstract_model,
     const fail_infot &fail_info)
 {
-  status("Checking transitions");
+  status() << "Checking transitions" << eom;
 
   bool error=true;
 
@@ -174,10 +174,10 @@ bool transition_refinert::check_transitions(
   }
 
   if(error)
-    status("Transitions are not spurious");
+    status() << "Transitions are not spurious" << eom;
   else
   {
-    status("Found a spurious transition");
+    status() << "Found a spurious transition" << eom;
     const std::string opt="Transition refinement iterations";
     assert(stats.find(opt)!=stats.end());
     ++(stats[opt].val);

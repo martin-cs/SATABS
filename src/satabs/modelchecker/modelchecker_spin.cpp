@@ -103,10 +103,10 @@ Purpose:
         else if(std::string(*it, it->size()-8)=="is false")
         {
           // produce counterexample
-          status("SPIN produced counterexample");
+          status() << "SPIN produced counterexample" << eom;
           read_counterexample(file, it, abstract_model,
               counterexample);
-          status("SPIN counterexample sucessfully read");
+          status() << "SPIN counterexample sucessfully read" << eom;
 
           // show it
           //std::cout << counterexample;
@@ -727,7 +727,7 @@ bool modelchecker_spint::check(
 
   build(abstract_model, temp_spin);
 
-  status("Running SPIN");
+  status() << "Running SPIN" << eom;
 
   {
     std::string command;

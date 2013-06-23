@@ -35,7 +35,7 @@ bool refiner_ippt::refine_prefix(
     abstract_modelt &abstract_model,
     const fail_infot &fail_info)
 {
-  status("Refining set of predicates according to counterexample");
+  status() << "Refining set of predicates according to counterexample" << eom;
 
   concrete_counterexamplet tmp_concrete_counterexample;
   fail_infot tmp_fail_info;

@@ -244,7 +244,8 @@ bool simulator_symext::check_prefix_equation(
   assert(!prefix.equation.SSA_steps.empty());  
   assert(prefix.equation.SSA_steps.back().is_assert());
 
-  status("Unprocessed prefix of size "+ i2string (prefix.equation.SSA_steps.size ()));
+  status() << "Unprocessed prefix of size "
+           << prefix.equation.SSA_steps.size() << eom;
 
   symex_target_equationt::SSA_stepst::iterator c_it;
 
@@ -273,7 +274,8 @@ bool simulator_symext::check_prefix_equation(
 
   assert(!state_array.empty()); // we expect at least one element!
 
-  status("Processed prefix of size "+ i2string (state_array.size ()));
+  status() << "Processed prefix of size "
+           << state_array.size() << eom;
 
   right=state_array.size();
 
@@ -283,7 +285,7 @@ bool simulator_symext::check_prefix_equation(
     assert(index>=left);
     assert(index<right);
 
-    status("Simulating prefix of size "+i2string(index+1));
+    status() << "Simulating prefix of size " << (index+1) << eom;
 
     c_it=state_array[index];
 
@@ -337,11 +339,11 @@ bool simulator_symext::check_prefix_equation(
   while(left+1<right);
 
   // cannot be simulated, its spurious
-  status("Spurious counterexample");
+  status() << "Spurious counterexample" << eom;
 
   // report the location
-  status("Simulation failed at "+
-      fail_info.last_step().pc->location.as_string());
+  status() << "Simulation failed at "
+           << fail_info.last_step().pc->location << eom;
 
   return true;
 }
@@ -368,7 +370,8 @@ bool simulator_symext::check_full_trace(
   assert(!prefix.equation.SSA_steps.empty());  
   assert(prefix.equation.SSA_steps.back().is_assert());
 
-  status("Prefix of size "+i2string(prefix.equation.SSA_steps.size()));
+  status() << "Prefix of size "
+           << prefix.equation.SSA_steps.size() << eom;
 
   symex_target_equationt::SSA_stepst::const_iterator c_it=
     --prefix.equation.SSA_steps.end();
@@ -396,7 +399,7 @@ bool simulator_symext::check_full_trace(
       fail_info);
 
   // cannot be simulated, its spurious
-  status("Spurious counterexample.");
+  status() << "Spurious counterexample" << eom;
 
   return true;
 }
@@ -484,7 +487,7 @@ bool simulator_symext::is_spurious(
     concrete_counterexamplet &concrete_counterexample,
     fail_infot &fail_info)
 {
-  status("Simulating abstract counterexample on concrete program");
+  status() << "Simulating abstract counterexample on concrete program" << eom;
 
 #if 0
   std::cout << "***********************************" << std::endl;
@@ -494,7 +497,7 @@ bool simulator_symext::is_spurious(
   if(path_slicing)
   {
 #if 0 // buggy right now
-    status("Path slicing");
+    status() << "Path slicing" << eom;
     path_slicer(
         ns,
         abstract_model.goto_functions,
@@ -515,7 +518,7 @@ bool simulator_symext::is_spurious(
         concrete_counterexample,
         fail_info))
   {
-    status("Simulation successful");
+    status() << "Simulation successful" << eom;
     return false;
   }
 

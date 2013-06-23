@@ -132,7 +132,7 @@ bool simulator_loop_detectiont::check_phase_I_equation(
   assert(c_it !=equation.SSA_steps.end());
 
   // cannot be simulated, its spurious
-  status("Phase I Counterexample is spurious");
+  status() << "Phase I Counterexample is spurious" << eom;
 
   // fill fail_info
   fail_info.all_steps = abstract_counterexample.steps;
@@ -885,7 +885,7 @@ bool simulator_loop_detectiont::check_prefix(
 
   // phase 1: build parameterized equation
 
-  status("Loop Simulation Phase I");
+  status() << "Loop Simulation Phase I" << eom;
 
   concrete_counterexamplet phase_I_counterexample;
 
@@ -940,7 +940,7 @@ bool simulator_loop_detectiont::check_prefix(
 
   // phase 2: unwind counterexample
 
-  status("Loop Simulation Phase II");
+  status() << "Loop Simulation Phase II" << eom;
 
 #ifdef DEBUG
   std::cout << abstract_counterexample;
