@@ -123,19 +123,19 @@ int loopfrog_parseoptionst::doit()
 
   if(cmdline.args.size()==0)
   {
-    error("Please provide an input file.");
+    error() << "Please provide an input file." << eom;
     return 1;
   }
-  else if (cmdline.args.size()>1)
+  else if(cmdline.args.size()>1)
   {
-    error("Multiple input files not supported.");
+    error() << "Multiple input files not supported." << eom;
     return 1;
   }
 
   std::ifstream infile(cmdline.args[0].c_str());
   if (!infile)
   {
-    error(std::string("Error opening file `")+cmdline.args[0]+"'.");
+    error() << "Error opening file `" << cmdline.args[0] << "'." << eom;
     return 1;
   }
 
@@ -176,7 +176,7 @@ int loopfrog_parseoptionst::doit()
   before=current_time();
   if(read_goto_binary(cmdline.args[0], symbol_table, goto_functions, mh))
   {
-    error(std::string("Error reading file `")+cmdline.args[0]+"'.");
+    error() << "Error reading file `" << cmdline.args[0] << "'." << eom;
     return 1;
   }
 
@@ -896,7 +896,7 @@ bool loopfrog_parseoptionst::check_loop_summarization(
                                claim_numbers);
     if(claim_nr==(unsigned) -1)
     {
-      error("Testclaim not found.");
+      error() << "Testclaim not found." << eom;
       return 1;
     }
   }
