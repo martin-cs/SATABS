@@ -6,10 +6,10 @@ Author: CM Wintersteiger
 
 \*******************************************************************/
 
+#include <util/simplify_expr.h>
+#include <util/find_symbols.h>
+
 #include <goto-programs/remove_skip.h>
-#include <goto-programs/slicer.h>
-#include <simplify_expr.h>
-#include <find_symbols.h>
 
 #include "string_utils.h"
 

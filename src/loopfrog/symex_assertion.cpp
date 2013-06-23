@@ -219,7 +219,7 @@ bool symex_assertiont::assertion_holds(
   after=current_time();
 
   if(out.good())
-    out << "SYMEX TIME: "<< time2string(after-before) << std::endl;
+    out << "SYMEX TIME: " << (after-before) << std::endl;
 
   bool sat=false;
 
@@ -251,7 +251,7 @@ bool symex_assertiont::assertion_holds(
     after=current_time();
 
     if (out.good())
-      out << "SLICER TIME: "<< time2string(after-before) << std::endl;
+      out << "SLICER TIME: " << (after-before) << std::endl;
     
     fine_timet before,after;
     before=current_time();
@@ -347,8 +347,8 @@ bool symex_assertiont::is_satisfiable(
   before=current_time();
   decision_proceduret::resultt r = decision_procedure.dec_solve();
   after=current_time();
-  if (out.good())
-    out << "SOLVER TIME: "<< time2string(after-before) << std::endl;
+  if(out.good())
+    out << "SOLVER TIME: " << (after-before) << std::endl;
 
   global_satsolver_time += (after-before);
 
@@ -564,7 +564,7 @@ void symex_assertiont::to_equation(
   after=current_time();
 
   if(out.good())
-    out << "SYMEX TIME: "<< time2string(after-before) << std::endl;
+    out << "SYMEX TIME: " << (after-before) << std::endl;
 }
 
 /*******************************************************************
@@ -594,6 +594,6 @@ void symex_assertiont::slice_equation(
   slice(target);
   after=current_time();
 
-  if (out.good())
-    out << "SLICER TIME: "<< time2string(after-before) << std::endl;    
+  if(out.good())
+    out << "SLICER TIME: " << (after-before) << std::endl;    
 }

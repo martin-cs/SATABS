@@ -50,7 +50,7 @@ SRC = main.cpp \
       invariants/sti_gzero_implies_or_less_greater_all.cpp 
 
 OBJ = $(SRC:.cpp=$(OBJEXT)) \
-      $(CBMC)/src/big-int/bigint$(OBJEXT) \
+      $(CBMC)/src/big-int/big-int$(LIBEXT) \
       $(CBMC)/src/goto-programs/goto-programs$(LIBEXT) \
       $(CBMC)/src/goto-symex/goto-symex$(LIBEXT) \
       $(CBMC)/src/pointer-analysis/pointer-analysis$(LIBEXT) \

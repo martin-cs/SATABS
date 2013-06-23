@@ -323,8 +323,7 @@ void summarizationt::print_statistics(
       it->first << ")" << "\t\t" <<
       stats.passed + it->second.failed << "\t" <<
       stats.passed << "\t" <<
-      stats.failed << "\t" <<
-      time2string(stats.time) << std::endl;;
+      stats.failed << "\t" << stats.time << std::endl;;
   }
 }
 
@@ -482,7 +481,8 @@ void summarizationt::run_tests(
     default:
       std::cout << " - Loop (possibly) does not terminate";
     }
-    std::cout << " (analysis time: " << (double)(current_time()-before)/1000 << " sec.)" << std::endl;
+
+    std::cout << " (analysis time: " << (current_time()-before) << " sec.)" << std::endl;
   }
   
   if (options.get_bool_option("interactive"))
@@ -657,7 +657,7 @@ void summarizationt::run_tests_incremental(
       guard.add(eq_copy.SSA_steps.back().guard);
 
       exprt temp(invariant);
-      eq_copy.assertion(guard, temp, "invariant candidate",
+      eq_copy.assertion(guard.as_expr(), temp, "invariant candidate",
                         symex_targett::sourcet());
 
       // push an assumption into the front of the equation

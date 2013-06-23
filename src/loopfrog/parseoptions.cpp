@@ -179,14 +179,15 @@ int loopfrog_parseoptionst::doit()
     error(std::string("Error reading file `")+cmdline.args[0]+"'.");
     return 1;
   }
+
   after=current_time();
-  status(std::string("    LOAD Time: ") + time2string(after-before) + " sec.");
+  status() << "    LOAD Time: " << (after-before) << " sec." << eom;
   unsigned long mem = report_mem();
   unsigned inst = count(goto_functions);
   
   if(cmdline.isset("save-stats"))
   {
-    statfile << "LOAD;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "LOAD;" << (after-before) << ";" << mem << ";" <<
       inst << ";";
     statfile.flush();
   }
@@ -215,13 +216,13 @@ int loopfrog_parseoptionst::doit()
   before=current_time();
   transform_loops(goto_functions, symbol_table, mh);
   after=current_time();
-  status(std::string("    TRANS Time: ") + time2string(after-before) + " sec.");
+  status() << "    TRANS Time: " << (after-before) << " sec." << eom;
   mem = report_mem();
   inst = count(goto_functions);
 
   if(cmdline.isset("save-stats"))
   {
-    statfile << "TRANS;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "TRANS;" << (after-before) << ";" << mem << ";" <<
       inst << ";";
     statfile.flush();
   }
@@ -247,13 +248,13 @@ int loopfrog_parseoptionst::doit()
   before=current_time();
   goto_partial_inline(goto_functions, ns, mh, limit);
   after=current_time();
-  status(std::string("    INL Time: ") + time2string(after-before) + " sec.");
+  status() << "    INL Time: " << (after-before) << " sec." << eom;
   mem = report_mem();
   inst = count(goto_functions);
 
   if(cmdline.isset("save-stats"))
   {
-    statfile << "INL;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "INL;" << (after-before) << ";" << mem << ";" <<
       inst << ";";
     statfile.flush();
   }
@@ -279,13 +280,13 @@ int loopfrog_parseoptionst::doit()
   remove_unused_functions(goto_functions, get_message_handler());
   after=current_time();
 //  status(std::string("    Max. Iterations: ") + i2string(max_it));
-  status(std::string("    RFP Time: ") + time2string(after-before) + " sec.");
+  status() << "    RFP Time: " << (after-before) << " sec." << eom;
   mem=report_mem();
   inst=count(goto_functions);
 
   if(cmdline.isset("save-stats"))
   {
-    statfile << "RFP;" << time2string(after-before) << ";" << mem << ";" << inst
+    statfile << "RFP;" << (after-before) << ";" << mem << ";" << inst
       << ";" ; // << i2string(max_it) << ";";
     statfile.flush();
   }
@@ -308,13 +309,13 @@ int loopfrog_parseoptionst::doit()
   before=current_time();
   string_instrumentation(symbol_table, mh, goto_functions);
   after=current_time();
-  status(std::string("    STRINS Time: ") + time2string(after-before) + " sec.");
+  status() << "    STRINS Time: " << (after-before) << " sec." << eom;
   mem=report_mem();
   inst=count(goto_functions);
 
   if(cmdline.isset("save-stats"))
   {
-    statfile << "STRINS;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "STRINS;" << (after-before) << ";" << mem << ";" <<
     inst << ";";
     statfile.flush();
   }
@@ -341,11 +342,11 @@ int loopfrog_parseoptionst::doit()
   after=current_time();
   mem=report_mem();
   inst=count(goto_functions);
-  status(std::string("    AGC Time: ") + time2string(after-before) + " sec.");
+  status() << "    AGC Time: " << (after-before) << " sec." << eom;
 
   if(cmdline.isset("save-stats"))
   {
-    statfile << "GCL;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "GCL;" << (after-before) << ";" << mem << ";" <<
       inst << ";";
     statfile.flush();
   }
@@ -377,13 +378,13 @@ int loopfrog_parseoptionst::doit()
   before=current_time();
   string_abstraction(symbol_table, mh, goto_functions);
   after=current_time();
-  status(std::string("    STRABS Time: ") + time2string(after-before));
+  status() << "    STRABS Time: " << (after-before) << eom;
   mem=report_mem();
   inst=count(goto_functions);
 
   if(cmdline.isset("save-stats"))
   {
-    statfile << "STRABS;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "STRABS;" << (after-before) << ";" << mem << ";" <<
     inst << ";";
     statfile.flush();
   }
@@ -409,13 +410,13 @@ int loopfrog_parseoptionst::doit()
   value_set_analysis_fit pointer_analysis(ns);
   pointer_analysis(goto_functions);
   after=current_time();
-  status(std::string("    VSP Time: ") + time2string(after-before) + " sec.");
+  status() << "    VSP Time: " << (after-before) << " sec." << eom;
   mem=report_mem();
   inst=count(goto_functions);
 
   if(cmdline.isset("save-stats"))
   {
-    statfile << "VSP;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "VSP;" << (after-before) << ";" << mem << ";" <<
       inst << ";";
     statfile.flush();
   }
@@ -458,13 +459,13 @@ int loopfrog_parseoptionst::doit()
   Forall_goto_functions(it, goto_functions)
     remove_pointers( it->second.body, symbol_table, adaptor);
   after=current_time();
-  status(std::string("    DEREF Time: ") + time2string(after-before));
+  status() << "    DEREF Time: " << (after-before) << eom;
   mem=report_mem();
   inst=count(goto_functions);
 
   if(cmdline.isset("save-stats"))
   {
-    statfile << "DEREF;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "DEREF;" << (after-before) << ";" << mem << ";" <<
       inst << ";";
     statfile.flush();
   }
@@ -738,13 +739,13 @@ bool loopfrog_parseoptionst::check_invariant_propagation(
   invariant_propagation_adaptort invariant_propagation(ns, adaptor);
   invariant_propagation(goto_functions);
   after = current_time();
-  status(std::string("    IP time: ") + time2string(after - before));
+  status() << "    IP time: " << (after - before) << eom;
   mem = report_mem();
   inst=count(goto_functions);
     
   if(cmdline.isset("save-stats"))
   {
-    statfile << "IP;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "IP;" << (after-before) << ";" << mem << ";" <<
       inst << ";0;0;0;";
     statfile.flush();
   }
@@ -758,20 +759,20 @@ bool loopfrog_parseoptionst::check_invariant_propagation(
   if(!cmdline.isset("no-progress")) std::cout << "\r";
   status(std::string("    PASS: ")+i2string(stats.claims_passed)+
                         " FAIL: "+i2string(stats.claims_failed) + " ");
-  status(std::string("    CC Time: ") + time2string(after-before) + " sec.");
-  status(std::string("    Time spent in SAT SOLVER: ") +
-           time2string(global_satsolver_time) + " sec.");
-  status(std::string("    Time spent in SAT CONVERSION: ") +
-             time2string(global_sat_conversion_time) + " sec.");
+  status() << "    CC Time: " << (after-before) << " sec." << eom;
+  status() << "    Time spent in SAT SOLVER: "
+           << global_satsolver_time << " sec." << eom;
+  status() << "    Time spent in SAT CONVERSION: "
+           << global_sat_conversion_time << " sec." << eom;
   mem = report_mem();
 
   if (cmdline.isset("save-stats"))
   {
-    statfile << "CC;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "CC;" << (after-before) << ";" << mem << ";" <<
       inst << ";CLAIMS;" << stats.claims_passed << ";" <<
       stats.claims_failed <<
-      ";SAT;" << time2string(global_satsolver_time) <<
-      ";SCONV;" << time2string(global_sat_conversion_time) << ";";
+      ";SAT;" << global_satsolver_time <<
+      ";SCONV;" << global_sat_conversion_time << ";";
     statfile.close();
   }
   
@@ -826,7 +827,7 @@ bool loopfrog_parseoptionst::check_loop_summarization(
      !cmdline.isset("no-invariants"))
     strsum.print_statistics(std::cout);
   after=current_time();
-  status(std::string("    LS Time: ") + time2string(after-before) + " sec.");
+  status() << "    LS Time: " << (after-before) << " sec." << eom;
   if(cmdline.isset("no-invariants"))
     mem = report_mem();
   else
@@ -835,7 +836,7 @@ bool loopfrog_parseoptionst::check_loop_summarization(
   
   if(cmdline.isset("save-stats"))
   {
-    statfile << "LS;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "LS;" << (after-before) << ";" << mem << ";" <<
       inst << ";" << strsum.seen_loops << ";" << sumstats.good << ";" <<
       sumstats.bad << ";";
     statfile.flush();
@@ -924,22 +925,22 @@ bool loopfrog_parseoptionst::check_loop_summarization(
   status(std::string("    PASS: ")+i2string(stats.claims_passed +
                                             sumstats.good)+
                         " FAIL: "+i2string(stats.claims_failed) + " ");
-  status(std::string("    CC Time: ") + time2string(after-before) + " sec.");
-  status(std::string("    Time spent in SAT SOLVER: ") +
-           time2string(global_satsolver_time) + " sec.");
-  status(std::string("    Time spent in SAT CONVERSION: ") +
-             time2string(global_sat_conversion_time) + " sec.");
+  status() << "    CC Time: " << (after-before) << " sec." << eom;
+  status() << "    Time spent in SAT SOLVER: "
+           << global_satsolver_time << " sec." << eom;
+  status() << "    Time spent in SAT CONVERSION: "
+           << global_sat_conversion_time << " sec." << eom;
   mem=report_max_mem(stats.max_mem_used);
   inst=count(goto_functions, imprecise_loops,
              precise_loops, stats.max_instruction_count);
   
   if(cmdline.isset("save-stats"))
   {
-    statfile << "CC;" << time2string(after-before) << ";" << mem << ";" <<
+    statfile << "CC;" << (after-before) << ";" << mem << ";" <<
       inst << ";CLAIMS;" << stats.claims_passed << ";" <<
       stats.claims_failed <<
-      ";SAT;" << time2string(global_satsolver_time) <<
-      ";SCONV;" << time2string(global_sat_conversion_time) << ";";
+      ";SAT;" << global_satsolver_time <<
+      ";SCONV;" << global_sat_conversion_time << ";";
     statfile.close();
   }
   

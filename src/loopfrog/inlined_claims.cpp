@@ -11,7 +11,7 @@
 #include <ostream>
 #include <iostream>
 
-#include <arith_tools.h>
+#include <util/arith_tools.h>
 
 #include "inlined_claims.h"
 
@@ -42,7 +42,7 @@ void show_inlined_claimst::show(
       const code_function_callt &call = 
         to_code_function_call(to_code(it->code));
       
-      const irep_idt name = call.function().get("identifier");
+      const irep_idt name = call.function().get(ID_identifier);
       
       goto_functionst::function_mapt::const_iterator f_it = 
         functions.function_map.find(name);
