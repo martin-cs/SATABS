@@ -43,15 +43,7 @@ Function: init
 static void init(exprt &expr)
 {
   expr.clear();
-
-  locationt &location=expr.location();
-  location.set_line(PARSER.line_no);
-
-  if(PARSER.filename!=irep_idt())
-    location.set_file(PARSER.filename);
-
-  if(PARSER.function!=irep_idt())
-    location.set_function(PARSER.function);
+  PARSER.set_location(expr);
 }
 
 /*******************************************************************\

@@ -90,7 +90,7 @@ bool bp_languaget::parse(
 {
   bp_parser.clear();
 
-  bp_parser.filename=path;
+  bp_parser.set_file(path);
   bp_parser.in=&instream;
   bp_parser.set_message_handler(message_handler);
 

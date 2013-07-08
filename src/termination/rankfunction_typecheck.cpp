@@ -37,7 +37,7 @@ bool parse_rank_function(const std::string &code, symbol_tablet &symbol_table,
 {
   std::stringstream str(code);
   ansi_c_parser.clear();
-  ansi_c_parser.filename="";
+  ansi_c_parser.set_file("");
   ansi_c_parser.in=&str;
   ansi_c_parser.set_message_handler(mh);
   ansi_c_parser.grammar=ansi_c_parsert::EXPRESSION;
