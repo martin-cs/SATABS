@@ -9,7 +9,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <cassert>
 
 #include <util/i2string.h>
-#include <util/expr_util.h>
+#include <util/std_expr.h>
 #include <util/simplify_expr.h>
 
 #include "check_redundancy.h"
@@ -130,7 +130,7 @@ void abstractort::abstract_expression(
     true_expr.copy_to_operands(expr.op0(), expr.op1());
 
     exprt false_expr(ID_and, bool_typet());
-    false_expr.copy_to_operands(gen_not(expr.op0()), expr.op2());
+    false_expr.copy_to_operands(not_exprt(expr.op0()), expr.op2());
 
     exprt or_expr(ID_or, bool_typet());
     or_expr.move_to_operands(true_expr, false_expr);
