@@ -100,20 +100,20 @@ exprt abstractor_wp_cartesiant::get_value(
 
   if(true_condition == false_exprt() && false_condition == false_exprt())
   {
-    return exprt(ID_nondet_bool);
+    return exprt(ID_nondet_bool, bool_typet());
   }
 
   if(true_condition == false_exprt())
   {
-    return and_exprt(not_exprt(false_condition), exprt(ID_nondet_bool));
+    return and_exprt(not_exprt(false_condition), exprt(ID_nondet_bool, bool_typet()));
   }
 
   if(false_condition == false_exprt())
   {
-    return or_exprt(true_condition, exprt(ID_nondet_bool));
+    return or_exprt(true_condition, exprt(ID_nondet_bool, bool_typet()));
   }
 
-  return or_exprt(true_condition, and_exprt(not_exprt(false_condition), exprt(ID_nondet_bool)));
+  return or_exprt(true_condition, and_exprt(not_exprt(false_condition), exprt(ID_nondet_bool, bool_typet())));
 
 }
 

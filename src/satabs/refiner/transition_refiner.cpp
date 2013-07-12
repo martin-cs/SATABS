@@ -525,14 +525,14 @@ bool transition_refinert::check_assignment_transition(
 
   print(9, "Assignment transition is spurious, refining");
 
-  exprt constraint;
+  exprt::operandst constraint_ops;
 
   for(unsigned i=0; i < predicates.size(); ++i)
   {
     if(satcheck.is_in_conflict(predicate_variables_from[active_id][i]))
     {
-      constraint.operands().push_back(exprt());
-      exprt &e=constraint.operands().back();
+      constraint_ops.push_back(exprt());
+      exprt &e=constraint_ops.back();
       e=exprt(ID_predicate_symbol, bool_typet());
       e.set(ID_identifier, i);
       if(from_predicates[active_id]->second[i]) e.make_not();
@@ -544,8 +544,8 @@ bool transition_refinert::check_assignment_transition(
     if(passive_id!=active_id &&
         satcheck.is_in_conflict(predicate_variables_from[passive_id][i]))
     {
-      constraint.operands().push_back(exprt());
-      exprt &e=constraint.operands().back();
+      constraint_ops.push_back(exprt());
+      exprt &e=constraint_ops.back();
       e=exprt(ID_predicate_passive_symbol, bool_typet());
       e.set(ID_identifier, i);
       if(from_predicates[passive_id]->second[i]) e.make_not();
@@ -556,8 +556,8 @@ bool transition_refinert::check_assignment_transition(
 
     if(satcheck.is_in_conflict(predicate_variables_to[active_id][i]))
     {
-      constraint.operands().push_back(exprt());
-      exprt &e=constraint.operands().back();
+      constraint_ops.push_back(exprt());
+      exprt &e=constraint_ops.back();
       e=exprt(ID_predicate_next_symbol, bool_typet());
       e.set(ID_identifier, i);
       if(to_predicates[active_id]->second[i]) e.make_not();
@@ -569,8 +569,8 @@ bool transition_refinert::check_assignment_transition(
     if(passive_id!=active_id &&
         satcheck.is_in_conflict(predicate_variables_to[passive_id][i]))
     {
-      constraint.operands().push_back(exprt());
-      exprt &e=constraint.operands().back();
+      constraint_ops.push_back(exprt());
+      exprt &e=constraint_ops.back();
       e=exprt(ID_next_symbol, bool_typet());
       e.operands().resize(1);
       e.op0()=exprt(ID_predicate_passive_symbol, bool_typet());
@@ -589,10 +589,9 @@ bool transition_refinert::check_assignment_transition(
   ::std::cerr << abstract_state_to << ::std::endl;
 #endif
 
-  if(constraint.operands().empty())
-    constraint.make_false(); // this can happen if
-  else                       // the invariants are inconsistent
-    gen_or(constraint);
+  // this can be empty (false) if
+  // the invariants are inconsistent
+  exprt constraint=disjunction(constraint_ops);
 
   // monotonicity-preserving refinement
   if(monotone_constrain &&
@@ -956,14 +955,14 @@ bool transition_refinert::check_guarded_transition(
 
   print(9, "Guarded transition is spurious, refining");
 
-  exprt condition;
+  exprt::operandst condition_ops;
 
   for(unsigned i=0; i < predicates.size(); ++i)
   {
     if(satcheck.is_in_conflict(predicate_variables_from[active_id][i]))
     {
-      condition.operands().push_back(exprt());
-      exprt &e=condition.operands().back();
+      condition_ops.push_back(exprt());
+      exprt &e=condition_ops.back();
       e=exprt(ID_predicate_symbol, bool_typet());
       e.set(ID_identifier, i);
       if(!from_predicates[active_id]->second[i]) e.make_not();
@@ -975,8 +974,8 @@ bool transition_refinert::check_guarded_transition(
     if(passive_id!=active_id &&
         satcheck.is_in_conflict(predicate_variables_from[passive_id][i]))
     {
-      condition.operands().push_back(exprt());
-      exprt &e=condition.operands().back();
+      condition_ops.push_back(exprt());
+      exprt &e=condition_ops.back();
       e=exprt(ID_predicate_passive_symbol, bool_typet());
       e.set(ID_identifier, i);
       if(!from_predicates[passive_id]->second[i]) e.make_not();
@@ -986,7 +985,7 @@ bool transition_refinert::check_guarded_transition(
     }
   }
 
-  gen_and(condition);
+  exprt condition=conjunction(condition_ops);
 
   if(c_instruction.is_goto())
   {  
