@@ -189,7 +189,7 @@ void loop_transformt::transform_do_while(
     newguard.guard = end->guard;
     newguard.guard.make_not();
     newguard.location = end->location;
-    end->guard.make_true();
+    end->guard=true_exprt();
 
     unsigned ln = end->location_number; // doesn't get swapped
     program.insert_before_swap(end, newguard); // end now points to the new guard
@@ -830,7 +830,7 @@ void loop_transformt::transform_entries(
   // a new backjump
   goto_programt::targett backjump = program.insert_before(postend);
   backjump->type = GOTO;
-  backjump->guard.make_true();
+  backjump->guard=true_exprt();
   backjump->location_number = end->location_number;
   backjump->targets.push_back(loop_start);
   //backjump->labels.push_back("BACKJUMP");

@@ -124,7 +124,7 @@ void termination_baset::adjust_assertion(
 
   if(expr.is_true()) // to cancel the termination check
   {
-    guard.make_true();
+    guard=true_exprt();
   }
   else if(guard.op1().id()=="or")
   {
@@ -345,7 +345,7 @@ bodyt termination_baset::get_body(
 
   // the final result, which (again) contains SSA variables
   exprt &body_expr = result_body.body_relation;
-  body_expr = and_exprt(op);
+  body_expr=conjunction(op);
 
   if(result_body.variable_map.empty())
   {

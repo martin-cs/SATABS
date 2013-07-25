@@ -581,6 +581,7 @@ bool transition_refinert::check_assignment_transition(
 #endif
     }
   }
+
 #ifdef DEBUG
   ::std::cerr << "Spurious in thread " << passive_id << " (active: " << abstract_state_from.thread_nr << "): " << ::std::endl;
   ::std::cerr << abstract_state_from << ::std::endl;
@@ -657,7 +658,7 @@ bool transition_refinert::check_assignment_transition(
           if(sol.is_true()==l.sign()) e.make_not();
         }
 
-        and_exprt a(new_constraint_ops);
+        exprt a=conjunction(new_constraint_ops);
 #ifdef DEBUG
         std::cout << "solution: " << from_expr(concrete_model->ns, "", a) << std::endl;
 #endif
@@ -776,7 +777,7 @@ bool transition_refinert::check_assignment_transition(
           if(sol.is_true()==l.sign()) e.make_not();
         }
 
-        and_exprt a(new_constraint_ops);
+        exprt a=conjunction(new_constraint_ops);
 #ifdef DEBUG
         std::cout << "solution no-passive-succ: " << from_expr(concrete_model->ns, "", a) << std::endl;
 #endif

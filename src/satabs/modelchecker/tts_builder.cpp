@@ -932,7 +932,7 @@ void tts_buildert::to_cnf(
             it->op0()));
       c.back().op0().make_not();
 
-      it->make_true();
+      *it=true_exprt();
       continue;
     }
     else if(it->id()==ID_equal)
@@ -946,7 +946,7 @@ void tts_buildert::to_cnf(
             it->op1()));
       c.back().op1().make_not();
 
-      it->make_true();
+      *it=true_exprt();
       continue;
     }
 
@@ -959,7 +959,7 @@ void tts_buildert::to_cnf(
         c.back().swap(*it2);
       }
 
-      it->make_true();
+      *it=true_exprt();
       continue;
     }
 
@@ -972,7 +972,7 @@ void tts_buildert::to_cnf(
         c.front().swap(*it2);
       }
 
-      it->make_true();
+      *it=true_exprt();
     }
   }
 

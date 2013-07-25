@@ -165,7 +165,7 @@ bool refiner_wpt::refine_prefix(
         else if(it->is_loop_end())
         {
           push_induction_info(fail_info, it, loops);
-          invariant.make_true();
+          invariant=true_exprt();
         }
       }
 
@@ -288,7 +288,7 @@ bool refiner_wpt::refine_prefix(
         propt::resultt result=satcheck.prop_solve();
         assert(propt::P_SATISFIABLE==result || propt::P_UNSATISFIABLE==result);
         if(propt::P_UNSATISFIABLE==result)
-          predicate.make_false();
+          predicate=false_exprt();
         else
         {
           satcheck.set_assumptions(bvt(1, li.negation()));
@@ -296,7 +296,7 @@ bool refiner_wpt::refine_prefix(
           assert(propt::P_SATISFIABLE==result || propt::P_UNSATISFIABLE==result);
           if(propt::P_UNSATISFIABLE==result)
           {
-            predicate.make_true();
+            predicate=true_exprt();
             if(it->pc->type==ASSIGN)
             {
               const codet &code=concrete_pc->code;

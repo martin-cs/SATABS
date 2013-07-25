@@ -944,7 +944,7 @@ bodyt termination_path_enumerationt::extract_path(
     result.variable_map[id]=pre_id;
   }
       
-  result.body_relation=and_exprt(op);
+  result.body_relation=conjunction(op);
   vri.replace(result.body_relation);  
   
   return result;

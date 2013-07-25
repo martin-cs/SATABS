@@ -45,9 +45,9 @@ void make_it_a_predicate(
 
     // see if it is a constant
     if(predicates[nr].is_true())
-      expr.make_true();
+      expr=true_exprt();
     else if(predicates[nr].is_false())
-      expr.make_false();
+      expr=false_exprt();
     else
     {
       expr=exprt(ID_predicate_symbol, typet(ID_bool));
@@ -93,13 +93,15 @@ void abstractort::abstract_expression(
   if(is_valid(expr, ns))
   {
     // If expr is valid, we can abstract it as 'true'
-    expr.make_true();
-  } else if(is_unsatisfiable(expr, ns))
+    expr=true_exprt();
+  }
+  else if(is_unsatisfiable(expr, ns))
   {
     // If expr is unsatisfiable, we can abstract it as 'false'
-    expr.make_false();
-  } else if(expr.id()==ID_and || expr.id()==ID_or ||
-      expr.id()==ID_implies || expr.id()==ID_xor)
+    expr=false_exprt();
+  }
+  else if(expr.id()==ID_and || expr.id()==ID_or ||
+          expr.id()==ID_implies || expr.id()==ID_xor)
   {
     Forall_operands(it, expr)
       abstract_expression(predicates, *it, ns, program_location);

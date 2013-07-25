@@ -41,7 +41,7 @@ public:
                             hit(0),
                             miss(0) 
   {
-    constraint.make_true();
+    constraint=true_exprt();
   }
   
   unsigned hit, miss;

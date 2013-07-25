@@ -461,7 +461,7 @@ exprt termination_instrumentert::generate_termination_assertion(
       throw "UNKNOWN INSTRUMENTATION MODE";
   }
 
-  return implies_exprt(copied_flag, or_exprt(op));  
+  return implies_exprt(copied_flag, disjunction(op));
 }
 
 /*******************************************************************\
