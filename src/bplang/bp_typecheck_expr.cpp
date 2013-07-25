@@ -6,7 +6,9 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include <assert.h>
+#include <cassert>
+
+#include <util/std_expr.h>
 
 #include "bp_typecheck.h"
 
@@ -66,9 +68,9 @@ void bp_typecheckt::typecheck_expr(exprt &expr)
     const irep_idt &identifier=expr.get(ID_identifier);
 
     if(identifier=="T")
-      expr.make_true();
+      expr=true_exprt();
     else if(identifier=="F")
-      expr.make_false();
+      expr=false_exprt();
     else if(identifier=="_")
     {
       expr.id("bp_unused");
@@ -166,7 +168,7 @@ void bp_typecheckt::typecheck_expr(exprt &expr)
       // schoose[T,F] means "must be true and not false"
       // schoose[T,T] means "must be true and false"
       // in Moped, the later happens to be true
-      expr.make_true();
+      expr=true_exprt();
     }
     else if(expr.op1().is_true())
     {
@@ -226,11 +228,11 @@ void bp_typecheckt::typecheck_expr(exprt &expr)
     
     if(value==ID_0)
     {
-      expr.make_false();
+      expr=false_exprt();
     }
     else if(value==ID_1)
     {
-      expr.make_true();
+      expr=true_exprt();
     }
     else
     {
