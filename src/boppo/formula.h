@@ -6,13 +6,15 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#ifndef CPROVER_FORMULA_H
-#define CPROVER_FORMULA_H
+#ifndef CPROVER_BOPPO_FORMULA_H
+#define CPROVER_BOPPO_FORMULA_H
 
+#include <cassert>
 #include <iostream>
 #include <list>
 #include <set>
 
+#include <util/expr.h>
 #include <solvers/prop/prop.h>
 
 class formula_nodet
@@ -33,7 +35,7 @@ public:
   {
   }
 
-  formula_nodet(idt _id):id(_id), variable(0), a(NULL), b(NULL), l_is_set(false)
+  explicit formula_nodet(idt _id):id(_id), variable(0), a(NULL), b(NULL), l_is_set(false)
   {
   }
 
@@ -78,6 +80,16 @@ public:
   
   explicit formulat(formula_nodet *_node):node(_node)
   {
+  }
+  
+  explicit formulat(const exprt &src)
+  {
+    if(src.is_true())
+      make_true();
+    else if(src.is_false())
+      make_false();
+    else
+      assert(false);
   }
   
   formulat():node(NULL)
