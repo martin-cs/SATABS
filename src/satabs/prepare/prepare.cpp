@@ -30,8 +30,9 @@ Date: June 2003
 #include <goto-programs/remove_unused_functions.h>
 #include <goto-programs/link_to_library.h>
 
-#include <analyses/reachability_slicer.h>
 #include <analyses/goto_check.h>
+
+#include <goto-instrument/reachability_slicer.h>
 
 #include <langapi/language_util.h>
 #include <langapi/mode.h>
