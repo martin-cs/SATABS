@@ -20,6 +20,7 @@ OBJ = $(SRC:.cpp=.o) \
       $(CBMC)/src/ansi-c/ansi-c$(LIBEXT) \
       $(CBMC)/src/cpp/cpp$(LIBEXT) \
       $(CBMC)/src/linking/linking$(LIBEXT) \
+			$(CBMC)/src/goto-instrument/reachability_slicer$(OBJEXT) \
       \
       ../satabs/cmdline_options.o \
       ../satabs/satabs_safety_checker.o \
