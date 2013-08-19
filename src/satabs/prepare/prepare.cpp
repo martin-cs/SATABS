@@ -20,8 +20,8 @@ Date: June 2003
 
 #include <ansi-c/ansi_c_language.h>
 
-#include <goto-programs/show_claims.h>
-#include <goto-programs/set_claims.h>
+#include <goto-programs/show_properties.h>
+#include <goto-programs/set_properties.h>
 #include <goto-programs/goto_convert_functions.h>
 #include <goto-programs/remove_function_pointers.h>
 #include <goto-programs/read_goto_binary.h>
@@ -148,10 +148,10 @@ int preparet::doit()
         return return_value_get_async_modules;
     }
 
-    if(cmdline.isset("show-claims"))
+    if(cmdline.isset("show-properties"))
     {
       namespacet ns(symbol_table);
-      show_claims(ns, get_ui(), goto_functions);
+      show_properties(ns, get_ui(), goto_functions);
       return 0;
     }
 
@@ -316,14 +316,14 @@ int preparet::get_async_modules()
 
   goto_functions.compute_location_numbers();
 
-  // label claims
-  label_claims(goto_functions);
+  // label properties
+  label_properties(goto_functions);
 
-  // set claim
-  if(cmdline.isset("claim"))
-    set_claims(
+  // set property
+  if(cmdline.isset("property"))
+    set_properties(
         goto_functions,
-        cmdline.get_values("claim"));
+        cmdline.get_values("property"));
 
   // reachability slice?
   if(!cmdline.isset("no-slicing"))

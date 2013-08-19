@@ -19,8 +19,8 @@
 #include <goto-programs/remove_unused_functions.h>
 #include <goto-programs/string_instrumentation.h>
 #include <goto-programs/string_abstraction.h>
-#include <goto-programs/set_claims.h>
-#include <goto-programs/show_claims.h>
+#include <goto-programs/set_properties.h>
+#include <goto-programs/show_properties.h>
 
 #include <analyses/invariant_propagation.h>
 #include <analyses/natural_loops.h>
@@ -109,8 +109,8 @@ void tan_parseoptionst::help()
   "--no-invariant-propagation     disable invariant propagation\n"
   "--no-value-sets                disable value sets (pointer analysis)\n"
   "--function                     set entry point\n"
-  "--claim #                      check only claim #\n"
-  "--show-claims                  show all available claims\n"  
+  "--property #                   check only property #\n"
+  "--show-properties              show all generated properties\n"
   "\n"
   "Termination Engine Options:\n"
   "--engine <engine>              Select one of the termination engines:\n"
@@ -328,14 +328,14 @@ bool tan_parseoptionst::prepare()
   unsigned loopcount=termination.instrument();
 
   goto_functions.update();
-  label_claims(goto_functions);
+  label_properties(goto_functions);
     
-  if(cmdline.isset("show-claims"))
+  if(cmdline.isset("show-properties"))
   {
     if(loopcount==0)
-      status() << "No claims" << eom;
+      status() << "No properties" << eom;
     else
-      show_claims(ns, get_ui(), goto_functions);
+      show_properties(ns, get_ui(), goto_functions);
     
     return true;
   }
@@ -376,9 +376,9 @@ bool tan_parseoptionst::prepare()
              << (current_time()-before) << " s total" << eom;
   }
 
-  // set claim
-  if(cmdline.isset("claim"))
-    set_claims(goto_functions, cmdline.get_values("claim"));
+  // set property
+  if(cmdline.isset("property"))
+    set_properties(goto_functions, cmdline.get_values("property"));
   
   if(cmdline.isset("show-prepared-model"))
   {
