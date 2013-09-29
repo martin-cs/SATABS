@@ -374,7 +374,7 @@ void convert_to_program_formulat::convert_main_code(bool inlining)
 
   if(inlining)
   {
-    const symbol_tablet symbol_table;
+    symbol_tablet symbol_table;
     goto_inline(goto_functions, ns, message_handler);
 
     goto_programt &goto_program=goto_functions.function_map["main"].body;

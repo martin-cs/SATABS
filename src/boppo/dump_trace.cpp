@@ -74,7 +74,7 @@ void simulator_baset::dump_full_trace(tracet &trace)
                 << trace_step.previous_PC->location
                 << std::endl;
                 
-      const symbol_tablet symbol_table;
+      symbol_tablet symbol_table;
       const namespacet ns(symbol_table);
                 
       trace_step.previous_program->
