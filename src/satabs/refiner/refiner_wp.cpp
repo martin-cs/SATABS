@@ -291,7 +291,7 @@ bool refiner_wpt::refine_prefix(
           predicate=false_exprt();
         else
         {
-          satcheck.set_assumptions(bvt(1, li.negation()));
+          satcheck.set_assumptions(bvt(1, !li));
           propt::resultt result=satcheck.prop_solve();
           assert(propt::P_SATISFIABLE==result || propt::P_UNSATISFIABLE==result);
           if(propt::P_UNSATISFIABLE==result)

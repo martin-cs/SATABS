@@ -472,8 +472,7 @@ bool transition_refinert::check_assignment_transition(
       literalt li=make_pos(concrete_model->ns, solver, active_passive_preds[t][i]);
       predicate_variables_from[t][i]=li;
 
-      assumptions.push_back(li.cond_negation(
-            !from_predicates[t]->second[i]));
+      assumptions.push_back(li^(!from_predicates[t]->second[i]));
 
 #ifdef DEBUG
       const std::string predname=
@@ -487,8 +486,7 @@ bool transition_refinert::check_assignment_transition(
       literalt lo=make_pos(concrete_model->ns, solver, predicates_wp[t][i]);
       predicate_variables_to[t][i]=lo;
 
-      assumptions.push_back(lo.cond_negation(
-            !to_predicates[t]->second[i]));
+      assumptions.push_back(lo^(!to_predicates[t]->second[i]));
 
 #ifdef DEBUG
       std::cerr
@@ -631,7 +629,7 @@ bool transition_refinert::check_assignment_transition(
 // #endif
           tvt sol=satcheck2.l_get(l);
           assert(sol.is_known());
-          new_clause.push_back(l.cond_negation(sol.is_true()));
+          new_clause.push_back(l^sol.is_true());
 
           new_constraint_ops.push_back(exprt());
           exprt &e=new_constraint_ops.back();
@@ -649,7 +647,7 @@ bool transition_refinert::check_assignment_transition(
 // #endif
           tvt sol=satcheck2.l_get(l);
           assert(sol.is_known());
-          new_clause.push_back(l.cond_negation(sol.is_true()));
+          new_clause.push_back(l^sol.is_true());
 
           new_constraint_ops.push_back(exprt());
           exprt &e=new_constraint_ops.back();
@@ -709,9 +707,9 @@ bool transition_refinert::check_assignment_transition(
       clause.reserve(3*predicates.size());
       for(unsigned i=0; i < predicates.size(); ++i)
       {
-        clause.push_back(predicate_variables_from[active_id][i].negation());
-        clause.push_back(predicate_variables_to[active_id][i].negation());
-        clause.push_back(predicate_variables_from[passive_id][i].negation());
+        clause.push_back(!predicate_variables_from[active_id][i]);
+        clause.push_back(!predicate_variables_to[active_id][i]);
+        clause.push_back(!predicate_variables_from[passive_id][i]);
       }
       satcheck2.lcnf(clause);
 
@@ -732,7 +730,7 @@ bool transition_refinert::check_assignment_transition(
 // #endif
           tvt sol=satcheck2.l_get(l);
           assert(sol.is_known());
-          new_clause.push_back(l.cond_negation(sol.is_true()));
+          new_clause.push_back(l^sol.is_true());
 
           new_constraint_ops.push_back(exprt());
           exprt &e=new_constraint_ops.back();
@@ -750,7 +748,7 @@ bool transition_refinert::check_assignment_transition(
 // #endif
           tvt sol=satcheck2.l_get(l);
           assert(sol.is_known());
-          new_clause.push_back(l.cond_negation(sol.is_true()));
+          new_clause.push_back(l^sol.is_true());
 
           new_constraint_ops.push_back(exprt());
           exprt &e=new_constraint_ops.back();
@@ -768,7 +766,7 @@ bool transition_refinert::check_assignment_transition(
 // #endif
           tvt sol=satcheck2.l_get(l);
           assert(sol.is_known());
-          new_clause.push_back(l.cond_negation(sol.is_true()));
+          new_clause.push_back(l^sol.is_true());
 
           new_constraint_ops.push_back(exprt());
           exprt &e=new_constraint_ops.back();
@@ -902,8 +900,7 @@ bool transition_refinert::check_guarded_transition(
       literalt li=make_pos(concrete_model->ns, solver, active_passive_preds[t][i]);
       predicate_variables_from[t][i]=li;
 
-      assumptions.push_back(li.cond_negation(
-            !from_predicates[t]->second[i]));
+      assumptions.push_back(li^(!from_predicates[t]->second[i]));
 
 #ifdef DEBUG
       const std::string predname=
