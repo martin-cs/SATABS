@@ -219,7 +219,7 @@ void rankfunction_typecheckt::typecheck_expr(exprt &expr)
   else if(expr.id()==ID_div)
   {
     assert(expr.operands().size()==2);
-    expr.type()==expr.op0().type();
+    //expr.type()==expr.op0().type();
     typecast_exprt tc(expr.op0().type());
     tc.op() = expr.op1();
     expr.op1()=tc;
