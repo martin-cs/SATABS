@@ -217,7 +217,7 @@ void build_equation(
   if(code.get_statement() ==ID_decl)
   {
     const code_declt &decl=to_code_decl(code);
-    code=code_assignt(decl.symbol(), nondet_exprt(decl.symbol().type()));
+    code=code_assignt(decl.symbol(), side_effect_expr_nondett(decl.symbol().type()));
   }
   if(code.get_statement() == ID_assign)
     approximate_nondet(to_code_assign(code).rhs());

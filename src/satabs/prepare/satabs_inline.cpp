@@ -214,7 +214,7 @@ void satabs_inlinet::satabs_replace_return(
             code_assign.rhs().type())
           code_assign.rhs().make_typecast(code_assign.lhs().type());
 
-        if(add_return_predicates && !(code_assign.rhs() == nondet_exprt(code_assign.rhs().type())))
+        if(add_return_predicates && !(code_assign.rhs() == side_effect_expr_nondett(code_assign.rhs().type())))
         {
           goto_programt::targett t = dest.add_instruction(OTHER);
           t->guard = equal_exprt(code_assign.lhs(), code_assign.rhs());
@@ -524,7 +524,7 @@ void satabs_inlinet::expand_function_call(
     // return value
     if(lhs.is_not_nil())
     {
-      exprt rhs=nondet_exprt(lhs.type());
+      exprt rhs=side_effect_expr_nondett(lhs.type());
       rhs.location()=target->location;
 
       code_assignt code(lhs, rhs);
