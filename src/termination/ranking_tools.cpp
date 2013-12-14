@@ -31,7 +31,7 @@ unsigned safe_width(const exprt &e, const namespacet &ns)
 {
   const typet &type=ns.follow(e.type());
 
-  if(type.id()=="pointer" || type.id()=="reference")
+  if(type.id()=="pointer" || type.id()=="reference" || type.id()=="array")
     return config.ansi_c.pointer_width;
   
   return boolbv_widtht(ns)(type);

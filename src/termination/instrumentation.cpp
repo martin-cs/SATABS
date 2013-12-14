@@ -260,6 +260,7 @@ exprt termination_instrumentert::add_copied_flag(
   flag_symbol.base_name=flag_ident.substr(flag_ident.find("::")+2);
   flag_symbol.type=bool_typet();
   flag_symbol.is_lvalue=true;
+  flag_symbol.is_thread_local=true;
   exprt copied_flag=symbol_expr(flag_symbol);
   
   goto_programt::targett declins=
@@ -494,6 +495,7 @@ void termination_instrumentert::insert_assertion(
   ndsym.base_name = "nondet_" + i2string(tmp_symbol_cnt);
   ndsym.type = bool_typet();
   ndsym.is_lvalue=true;
+  ndsym.is_thread_local=true;
   
   exprt nns = symbol_expr(ndsym);
   

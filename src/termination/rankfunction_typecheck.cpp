@@ -175,6 +175,8 @@ void rankfunction_typecheckt::typecheck_expr(exprt &expr)
         total_width += safe_width(*it, ext_ns);
       else if(type.id()==ID_fixedbv)
         total_width += safe_width(*it, ext_ns) + 1;
+      else if(type.id()==ID_array)
+        total_width += config.ansi_c.pointer_width;
       else
         throw std::string("Unhandled Type: ") + it->type().to_string();
     }

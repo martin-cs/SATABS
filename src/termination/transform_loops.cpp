@@ -370,6 +370,9 @@ bool loop_transformt::check_loop_interleaved(
   // we start from next, since a backjump to the first
   // instruction is just a nested loop, as long as it's
   // not a backjump itself.
+  if (begin->is_backwards_goto())
+    return false; // This is an error-label self-loop. 
+
   assert(!begin->is_backwards_goto());
 
   for(goto_programt::const_targett it = next;

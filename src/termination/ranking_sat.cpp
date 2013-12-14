@@ -9,6 +9,7 @@ Date: October 2008
 \*******************************************************************/
 
 #include <memory>
+#include <iostream>
 
 #include <util/std_expr.h>
 #include <util/arith_tools.h>
@@ -68,7 +69,15 @@ exprt ranking_synthesis_satt::instantiate(void)
     assert(width!=0);
 
     exprt term("*", typet(""));
-    term.copy_to_operands(coef, var);
+    
+    if (type.id()==ID_array)
+    {
+      exprt tmp(ID_address_of, pointer_typet());
+      tmp.move_to_operands(var);
+      term.copy_to_operands(coef, tmp);      
+    }
+    else
+      term.copy_to_operands(coef, var);
 
     if(first)
     {
@@ -84,7 +93,7 @@ exprt ranking_synthesis_satt::instantiate(void)
     }
   }
   
-  if(first) // non of the interesting variables was used - bail out!
+  if(first) // none of the interesting variables was used - bail out!
   {
     debug("Completely non-deterministic template; "
            "this loop does not terminate.");
@@ -478,5 +487,5 @@ void ranking_synthesis_satt::adjust_type(typet &type) const
   {
     type=unsigned_int_type();
     type.set(ID_width, 1);
-  }
+  } 
 }
