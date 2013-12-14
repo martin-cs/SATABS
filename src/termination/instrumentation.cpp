@@ -330,6 +330,16 @@ void termination_instrumentert::instrument_loop(
       a->location.set("comment", "loop termination");
       a->location.set("property", "termination");
     }
+    else if (loop.begin == loop.end && loop.begin->guard.is_true()) 
+    {
+      loop.begin->type = ASSERT;
+      loop.begin->guard = false_exprt();
+      loop.begin->location.set("comment", "loop termination");
+      loop.begin->location.set("property", "termination");
+      loop.begin->targets.clear();
+
+      program.compute_incoming_edges();
+    }
     else
     {
       // add the loop flag

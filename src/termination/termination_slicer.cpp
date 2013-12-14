@@ -1138,6 +1138,9 @@ void termination_slicert::kill_loops()
   assert(eit!=dest_functions.function_map.end());
   goto_functiont &func=eit->second;
 
+  if (dest_goal->type==ASSERT && dest_goal->guard.is_false())
+    return;
+
   // find the corresponding backjump (to kill loops in loops)
   targett last=dest_goal;
   while((!last->is_goto() ||
