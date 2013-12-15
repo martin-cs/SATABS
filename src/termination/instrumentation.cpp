@@ -349,7 +349,8 @@ void termination_instrumentert::instrument_loop(
       // all forwards-incoming edges of the loop head have to hit set_flag,
       // while all backwards-incoming edges have to hit the assertion!
       program.compute_incoming_edges();
-  
+      program.compute_location_numbers();
+
       goto_programt::targett next=set_flag; next++;
 
       for(std::set<goto_programt::targett>::iterator it=
@@ -368,6 +369,9 @@ void termination_instrumentert::instrument_loop(
           }
         }
       }
+
+      program.compute_incoming_edges();
+      program.compute_location_numbers();
     }
   }
   
