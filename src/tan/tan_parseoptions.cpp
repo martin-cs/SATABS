@@ -102,7 +102,7 @@ void tan_parseoptionst::help()
   "\n"
   "Display options:\n"
   "--version                      show version information\n"
-  "--v <int>                      set verbosity (default: 6)\n"
+  "--verbosity <int>              set verbosity (default: 6)\n"
   "--show-model                   show the model as loaded\n"
   "--show-prepared-model          show the model after preparation\n"
   "--string-abstraction           enable string abstraction\n"
