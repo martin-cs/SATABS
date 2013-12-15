@@ -6,6 +6,8 @@ Author: CM Wintersteiger
 
 \*******************************************************************/
 
+#include <iostream>
+
 #include <util/std_expr.h>
 #include <util/expr_util.h>
 #include <util/i2string.h>
@@ -330,16 +332,6 @@ void termination_instrumentert::instrument_loop(
       a->location.set("comment", "loop termination");
       a->location.set("property", "termination");
     }
-    else if (loop.begin == loop.end && loop.begin->guard.is_true()) 
-    {
-      loop.begin->type = ASSERT;
-      loop.begin->guard = false_exprt();
-      loop.begin->location.set("comment", "loop termination");
-      loop.begin->location.set("property", "termination");
-      loop.begin->targets.clear();
-
-      program.compute_incoming_edges();
-    }
     else
     {
       // add the loop flag
@@ -359,16 +351,16 @@ void termination_instrumentert::instrument_loop(
       program.compute_incoming_edges();
   
       goto_programt::targett next=set_flag; next++;
-  
+
       for(std::set<goto_programt::targett>::iterator it=
             next->incoming_edges.begin();
           it!=next->incoming_edges.end();
           it++)
       {
-        if((*it)!=loop.end && (*it)->is_goto())
+        if((*it)->is_goto() && !(*it)->is_backwards_goto())
         {
           assert((*it)->targets.size()==1);
-  
+
           if((*it)->targets.front()==next)
           {
             (*it)->targets.clear();
