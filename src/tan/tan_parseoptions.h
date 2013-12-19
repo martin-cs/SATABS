@@ -24,6 +24,7 @@ Author: CM Wintersteiger
   "(show-model)(show-prepared-model)" \
   "(function)(claim):(show-claims)" \
   "(string-abstraction)(no-invariant-propagation)(no-value-sets)" \
+  "(show-invariant-sets)" \
   "(no-loop-slicing)" \
   "(ranksynthesis):" \
   "(unranked-method):" \

@@ -42,7 +42,11 @@ public:
       paths_infeasible(0),
       ranking_relations(ns, _mh) 
   {
-    ranking_relations.set_verbosity(verbosity);
+    if (_cmd.isset("verbosity")) {
+      unsigned v = atoi(_cmd.getval("verbosity"));
+      ranking_relations.set_verbosity(v);
+      verbosity = v;
+    }
     ranking_relations.set_message_handler(get_message_handler());
   }
   
