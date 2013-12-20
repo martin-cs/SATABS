@@ -469,7 +469,7 @@ bool transition_refinert::check_assignment_transition(
           active_passive_preds[t][i]==predicates[i])
         continue;
 
-      literalt li=make_pos(concrete_model->ns, solver, active_passive_preds[t][i]);
+      literalt li=make_pos(concrete_model->ns, cnf, solver, active_passive_preds[t][i]);
       predicate_variables_from[t][i]=li;
 
       assumptions.push_back(li^(!from_predicates[t]->second[i]));
@@ -483,7 +483,7 @@ bool transition_refinert::check_assignment_transition(
         << from_expr(concrete_model->ns, "", active_passive_preds[t][i]) << ")" << std::endl;
 #endif
 
-      literalt lo=make_pos(concrete_model->ns, solver, predicates_wp[t][i]);
+      literalt lo=make_pos(concrete_model->ns, cnf, solver, predicates_wp[t][i]);
       predicate_variables_to[t][i]=lo;
 
       assumptions.push_back(lo^(!to_predicates[t]->second[i]));
@@ -897,7 +897,7 @@ bool transition_refinert::check_guarded_transition(
           active_passive_preds[t][i]==predicates[i])
         continue;
 
-      literalt li=make_pos(concrete_model->ns, solver, active_passive_preds[t][i]);
+      literalt li=make_pos(concrete_model->ns, satcheck, solver, active_passive_preds[t][i]);
       predicate_variables_from[t][i]=li;
 
       assumptions.push_back(li^(!from_predicates[t]->second[i]));

@@ -283,7 +283,7 @@ bool refiner_wpt::refine_prefix(
         satcheckt satcheck;
         bv_pointerst solver(concrete_model->ns, satcheck);
         solver.unbounded_array=boolbvt::U_NONE;
-        literalt li=make_pos(concrete_model->ns, solver, predicate);
+        literalt li=make_pos(concrete_model->ns, satcheck, solver, predicate);
         satcheck.set_assumptions(bvt(1, li));
         propt::resultt result=satcheck.prop_solve();
         assert(propt::P_SATISFIABLE==result || propt::P_UNSATISFIABLE==result);

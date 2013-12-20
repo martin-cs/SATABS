@@ -36,14 +36,15 @@ are unique
 \*******************************************************************/
 
 literalt make_pos(
-    const namespacet &ns,
-    prop_convt &conv,
-    const exprt &expr)
+  const namespacet &ns,
+  propt &prop,
+  prop_convt &conv,
+  const exprt &expr)
 {
   exprt tmp_expr(expr);
   literalt l=conv.convert(tmp_expr);
-  literalt tmp_lit=conv.prop.new_variable();
-  conv.prop.set_equal(tmp_lit, l);
+  literalt tmp_lit=prop.new_variable();
+  prop.set_equal(tmp_lit, l);
   assert(!tmp_lit.sign());
   return tmp_lit;
 }

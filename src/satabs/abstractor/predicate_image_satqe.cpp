@@ -7,9 +7,8 @@ Stefano Tonetta, tonettas@lu.unisi.ch
 
 \*******************************************************************/
 
-#include <i2string.h>
-#include <std_expr.h>
-#include <expr_util.h>
+#include <util/std_expr.h>
+#include <util/expr_util.h>
 
 #include <solvers/flattening/bv_pointers.h>
 #include <satqe/satqe_satcheck.h>
