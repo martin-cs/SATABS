@@ -412,7 +412,8 @@ bool termination_instrumentert::make_old_variables(
     new_symbol.name=prefix+id2string(ident);
     new_symbol.base_name=id2string(old_symbol.base_name) + "'";
     new_symbol.pretty_name=id2string(old_symbol.pretty_name) + "'";
-    
+    new_symbol.is_thread_local=true;
+ 
     var_map[ident]=new_symbol.name;    
     
     goto_programt::targett declins=
