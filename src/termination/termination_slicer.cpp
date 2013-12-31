@@ -581,9 +581,9 @@ void termination_slicert::fixedpoint_path_dependencies()
       case FUNCTION_CALL:
       case RETURN:
       case END_FUNCTION:
+      case DEAD:
         break;
 
-      case DEAD:
       case START_THREAD:
       case END_THREAD:
       case ATOMIC_BEGIN:
