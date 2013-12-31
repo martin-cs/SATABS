@@ -369,11 +369,11 @@ bool termination_path_enumerationt::precondition_is_reachable(
   if(precondition.is_false()) return false;
   
   if(!cmdline.isset("unranked-method"))
-    return false;
+    return true;
   
   std::string u_method=cmdline.getval("unranked-method");
   if(u_method!="precondition" && u_method!="bmc-precondition")
-    return false;
+    return true;
   
   // This checks the precondition in the original (sliced) model 
   // i.e., this _does_ contain the backjump if it was not removed before.
