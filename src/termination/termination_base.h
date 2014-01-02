@@ -16,7 +16,7 @@ Author: CM Wintersteiger
 #include <util/time_stopping.h>
 #include <util/options.h>
 
-#include <goto-symex/goto_trace.h>
+#include <goto-programs/goto_trace.h>
 
 #include "ranking_body.h"
 #include "termination_results.h"

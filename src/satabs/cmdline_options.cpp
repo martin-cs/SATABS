@@ -17,7 +17,7 @@ Date: June 2003
 #include <util/options.h>
 #include <util/config.h>
 
-#include <goto-symex/xml_goto_trace.h>
+#include <goto-programs/xml_goto_trace.h>
 
 #include <cbmc/xml_interface.h>
 #include <cbmc/version.h>

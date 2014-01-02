@@ -12,7 +12,7 @@ Date: June 2003
 #ifndef CPROVER_CEGAR_COUNTEREXAMPLE_H
 #define CPROVER_CEGAR_COUNTEREXAMPLE_H
 
-#include <goto-symex/goto_trace.h>
+#include <goto-programs/goto_trace.h>
 
 /* A concrete conterexample */
 
