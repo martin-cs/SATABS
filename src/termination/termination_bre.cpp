@@ -38,7 +38,7 @@ termination_resultt termination_bret::terminates(
 {    
   goto_programt::targett sliced_assertion;
   
-  fine_timet before=current_time();
+  absolute_timet before=current_time();
   
   goto_functionst dest_func;
   int mres=sliced_abstraction(symbol_table,
@@ -68,7 +68,7 @@ termination_resultt termination_bret::terminates(
   else
   {
     status() << "Pointer analysis..." << eom;
-    fine_timet before=current_time();
+    absolute_timet before=current_time();
     model.value_set_analysis(model.goto_functions);  
     pointer_analysis_time=current_time()-before;
   }
@@ -128,9 +128,9 @@ termination_resultt termination_bret::bre_loop(
       #endif
       
       status() << "Checking for counterexample..." << eom;
-      fine_timet before=current_time();
+      absolute_timet before=current_time();
       int result=safety_checker(goto_functions);
-      fine_timet diff=current_time()-before;
+      time_periodt diff=current_time()-before;
       modelchecker_time+=diff;
           
       switch(result)
@@ -210,7 +210,7 @@ termination_resultt termination_bret::terminates(
   else
   {
     status("Pointer analysis...");
-    fine_timet before=current_time();
+    absolute_timet before=current_time();
     model.value_set_analysis(model.goto_functions);  
     pointer_analysis_time=current_time()-before;
   }
@@ -236,9 +236,9 @@ termination_resultt termination_bret::terminates(
   try {
     while(true)
     {
-      fine_timet before=current_time();
+      absolute_timet before=current_time();
       safety_checkert::resultt result=safety_checker(model.goto_functions);
-      fine_timet diff=current_time()-before;
+      time_periodt diff=current_time()-before;
       modelchecker_time+=diff;
             
       switch(result)
@@ -364,11 +364,10 @@ termination_resultt termination_bret::operator()()
         
         if(!assertion->guard.is_true())
         {          
-          fine_timet time=current_time();
+          absolute_timet time=current_time();
           termination_resultt res=terminates(main, goto_functions, assertion);          
-          time=current_time()-time;
           
-          status() << "Check Time: " << time << " s" << eom;
+          status() << "Check Time: " << current_time()-time << " s" << eom;
           
           if(res!=T_TERMINATING)
           {
@@ -499,7 +498,7 @@ bool termination_bret::process_counterexample(goto_tracet &trace)
     status() << "Synthesising a ranking function." << eom;
     
     ranksynth_calls++;
-    fine_timet before=current_time();    
+    absolute_timet before=current_time();    
     exprt rank_function=ranking(mode, body, symbol_table, 
                                 shadow_symbol_table, 
                                 *message_handler, 

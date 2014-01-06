@@ -114,7 +114,7 @@ void simulator_ctt::simulator()
   path_counter=1;
   state_counter=0;
 
-  fine_timet start_time=current_time();
+  absolute_timet start_time=current_time();
   
   summarize();
 

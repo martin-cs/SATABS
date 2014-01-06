@@ -103,7 +103,7 @@ bool ranking_synthesis_rankfindert::generate_functions(void)
     return false;
 
   status("Calling rankfinder...");
-  fine_timet before = current_time();
+  absolute_timet before = current_time();
   system("rankfinder rankfinder.input 1> rankfinder.out 2> rankfinder.err");
   solver_time += current_time()-before;
   solver_calls++;

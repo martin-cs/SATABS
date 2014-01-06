@@ -142,7 +142,7 @@ bool termination_path_enumerationt::get_model(
   const goto_functionst &goto_functions,
   goto_programt::const_targett assertion)
 {  
-  fine_timet before=current_time();
+  absolute_timet before=current_time();
   
   bool mres=sliced_abstraction(symbol_table,
                                shadow_symbol_table,
@@ -218,7 +218,7 @@ bool termination_path_enumerationt::get_model(
   else
   {
     status("Pointer analysis...");  
-    fine_timet before=current_time();
+    absolute_timet before=current_time();
     sliced_model.value_set_analysis(sliced_model.goto_functions);  
     pointer_analysis_time=current_time()-before;
   }
@@ -297,7 +297,7 @@ termination_resultt termination_path_enumerationt::rank(
       continue;
     }
     
-    fine_timet before=current_time();
+    absolute_timet before=current_time();
     bool is_ranked=ranking_relations.is_ranked(path_body.body_relation);
     ranking_cache_time+=current_time()-before;
         
@@ -308,7 +308,7 @@ termination_resultt termination_path_enumerationt::rank(
     }
     
     ranksynth_calls++;
-    fine_timet before_ranking=current_time();    
+    absolute_timet before_ranking=current_time();    
     exprt new_relation=ranking(ranking_mode, path_body, 
                                symbol_table, shadow_symbol_table, 
                                get_message_handler(),
@@ -507,7 +507,7 @@ bool termination_path_enumerationt::is_feasible(bodyt &body)
 {
   if(body.body_relation.is_false()) return false;
   
-  fine_timet before=current_time();
+  absolute_timet before=current_time();
   satcheckt solver;
   bv_pointerst converter(ns, solver);   
   
@@ -1287,7 +1287,7 @@ termination_resultt termination_path_enumerationt::operator()()
       {      
         i++;
         
-        fine_timet time=current_time();
+        absolute_timet time=current_time();
         termination_resultt res=T_NONTERMINATING;
         
         try 
@@ -1299,9 +1299,7 @@ termination_resultt termination_path_enumerationt::operator()()
           res=T_NONTERMINATING;
         }
         
-        time=current_time()-time;
-        
-        status() << "Check Time: " << time << + " s" << eom;
+        status() << "Check Time: " << current_time()-time << + " s" << eom;
         
         if(res!=T_TERMINATING)
         {

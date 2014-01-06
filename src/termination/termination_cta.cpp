@@ -679,7 +679,7 @@ exprt termination_ctat::rank_trace(
 
   debug("Synthesising a ranking function for this trace:");
   ranksynth_calls++;
-  fine_timet before_ranking=current_time();
+  absolute_timet before_ranking=current_time();
   exprt new_relation=ranking(ranking_mode, path_body,
                              symbol_table, shadow_symbol_table,
                              get_message_handler(),
@@ -924,11 +924,10 @@ termination_resultt termination_ctat::operator()()
       {
         i++;
         
-        fine_timet time=current_time();
+        absolute_timet time=current_time();
         termination_resultt res=terminates(main, goto_functions, assertion);
-        time=current_time()-time;
 
-        status() << "Check Time: " << time << " s" << eom;
+        status() << "Check Time: " << current_time()-time << " s" << eom;
 
         if(res!=T_TERMINATING)
         {

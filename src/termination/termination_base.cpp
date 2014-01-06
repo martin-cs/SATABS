@@ -790,9 +790,9 @@ void termination_baset::show_stats()
 
 bool termination_baset::bmc(
   const goto_functionst &goto_functions,
-  fine_timet &modelchecker_time,
-  fine_timet &unsafe_time,
-  fine_timet &safe_time)
+  time_periodt &modelchecker_time,
+  time_periodt &unsafe_time,
+  time_periodt &safe_time)
 {
   bool res=false;
 
@@ -802,7 +802,7 @@ bool termination_baset::bmc(
   out.close();
   #endif
 
-  fine_timet before=current_time();
+  absolute_timet before=current_time();
 
   symex_target_equationt equation(ns);
   custom_symext symex(ns, shadow_symbol_table, equation);
@@ -881,9 +881,9 @@ bool termination_baset::bmc(
 bool termination_baset::cegar(
   const goto_functionst &goto_functions,
   goto_tracet &goto_trace,
-  fine_timet &modelchecker_time,
-  fine_timet &unsafe_time,
-  fine_timet &safe_time)
+  time_periodt &modelchecker_time,
+  time_periodt &unsafe_time,
+  time_periodt &safe_time)
 {
   goto_trace.clear();
   
@@ -904,9 +904,9 @@ bool termination_baset::cegar(
     safety_checker.set_message_handler(mh);
     safety_checker.set_verbosity(this_verb);
     
-    fine_timet before=current_time();
+    absolute_timet before=current_time();
     safety_checkert::resultt result=safety_checker(goto_functions);
-    fine_timet diff=current_time()-before;
+    time_periodt diff=current_time()-before;
     modelchecker_time+=diff;
 
     switch(result)
@@ -974,9 +974,9 @@ bool termination_baset::cegar(
 
 bool termination_baset::cegar(
   const goto_functionst &goto_functions,
-  fine_timet &modelchecker_time,
-  fine_timet &unsafe_time,
-  fine_timet &safe_time)
+  time_periodt &modelchecker_time,
+  time_periodt &unsafe_time,
+  time_periodt &safe_time)
 {
   goto_tracet goto_trace;
   return cegar(goto_functions, goto_trace,

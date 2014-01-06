@@ -35,7 +35,7 @@ termination_resultt termination_directt::terminates(
 {    
   goto_programt::targett sliced_assertion;
   
-  fine_timet before=current_time();
+  absolute_timet before=current_time();
    
   goto_functionst dest_func;
   int mres=sliced_abstraction(symbol_table,
@@ -63,7 +63,7 @@ termination_resultt termination_directt::terminates(
   else
   {
     status("Pointer analysis...");  
-    fine_timet before=current_time();
+    absolute_timet before=current_time();
     model.value_set_analysis(model.goto_functions);  
     pointer_analysis_time=current_time()-before;
   }
@@ -97,9 +97,9 @@ termination_resultt termination_directt::terminates(
     out.close();
     #endif
       
-    fine_timet before=current_time();
+    absolute_timet before=current_time();
     safety_checkert::resultt result=safety_checker(model.goto_functions);
-    fine_timet time_diff=current_time()-before;
+    time_periodt time_diff=current_time()-before;
     modelchecker_time+=time_diff;
           
     switch(result)
@@ -159,7 +159,7 @@ termination_resultt termination_directt::terminates(
   else
   {
     status("Pointer analysis...");  
-    fine_timet before=current_time();
+    absolute_timet before=current_time();
     model.value_set_analysis(model.goto_functions);  
     pointer_analysis_time=current_time()-before;
   }
@@ -281,11 +281,10 @@ termination_resultt termination_directt::operator()()
         
         if(!assertion->guard.is_true())
         {
-          fine_timet time=current_time();
+          absolute_timet time=current_time();
           termination_resultt res=terminates(main, goto_functions, assertion);
-          time=current_time()-time;
           
-          status() << "Check Time: " << time << " s" << eom;
+          status() << "Check Time: " << current_time()-time << " s" << eom;
           
           if(res!=T_TERMINATING)
           {

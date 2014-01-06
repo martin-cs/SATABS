@@ -42,8 +42,8 @@ protected:
   unsigned largest_constant_width;
   boolbv_widtht bv_width;
 
-  fine_timet conversion_time;
-  fine_timet solver_time;
+  time_periodt conversion_time;
+  time_periodt solver_time;
   unsigned solver_calls;
 
 public:

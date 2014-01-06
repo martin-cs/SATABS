@@ -374,8 +374,8 @@ Function: ranking_synthesis_satt::check_for_counterexample
 satcheckt::resultt ranking_synthesis_satt::check_for_counterexample(
    const exprt &templ,
    c_valuest &c_values,
-   fine_timet &conversion_time,
-   fine_timet &solver_time)
+   time_periodt &conversion_time,
+   time_periodt &solver_time)
 {
   satcheckt::resultt result;
 
@@ -389,7 +389,7 @@ satcheckt::resultt ranking_synthesis_satt::check_for_counterexample(
 
   show_coefficients(c_values);
 
-  fine_timet before = current_time();
+  absolute_timet before = current_time();
   converter.set_to_true(templ);
 
   for(c_valuest::const_iterator it=c_values.begin();

@@ -242,23 +242,23 @@ void satabs_safety_checker_baset::csv_stats(
   }
 
   {
-    static fine_timet prev_tot_time=total_start_time;
+    static absolute_timet prev_tot_time=total_start_time;
     of << (current_time()-prev_tot_time);
     prev_tot_time=current_time();
     of << ",";
-    static fine_timet prev_abs_time;
+    static time_periodt prev_abs_time;
     of << (abstractor_time-prev_abs_time);
     prev_abs_time=abstractor_time;
     of << ",";
-    static fine_timet prev_mc_time;
+    static time_periodt prev_mc_time;
     of << (modelchecker_time-prev_mc_time);
     prev_mc_time=modelchecker_time;
     of << ",";
-    static fine_timet prev_sim_time;
+    static time_periodt prev_sim_time;
     of << (simulator_time-prev_sim_time);
     prev_sim_time=simulator_time;
     of << ",";
-    static fine_timet prev_ref_time;
+    static time_periodt prev_ref_time;
     of << (refiner_time-prev_ref_time);
     prev_ref_time=refiner_time;
     of << ",";
@@ -290,7 +290,7 @@ Purpose:
 
 void satabs_safety_checker_baset::do_abstraction()
 {
-  fine_timet start_time=current_time();
+  absolute_timet start_time=current_time();
 
   abstractor.build_abstraction(predicates);
 
@@ -325,7 +325,7 @@ bool satabs_safety_checker_baset::do_modelchecking(
         iteration);
   }
 
-  fine_timet start_time=current_time();
+  absolute_timet start_time=current_time();
 
   bool pass=
     modelchecker.check(abstractor.abstract_model,
@@ -353,7 +353,7 @@ bool satabs_safety_checker_baset::do_simulation(
     concrete_counterexamplet &concrete_counterexample,
     fail_infot &fail_info)
 {
-  fine_timet start_time=current_time();
+  absolute_timet start_time=current_time();
 
   // Check the counterexample
   bool is_spurious=simulator.is_spurious(
@@ -384,7 +384,7 @@ void satabs_safety_checker_baset::do_refinement(
     const abstract_counterexamplet &abstract_counterexample,
     fail_infot &fail_info)
 {
-  fine_timet start_time=current_time();
+  absolute_timet start_time=current_time();
 
   refiner.refine(
       predicates,

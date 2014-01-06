@@ -34,7 +34,7 @@ public:
 
   virtual termination_resultt operator()();
 
-  fine_timet ranking_generalization_time;
+  time_periodt ranking_generalization_time;
 
   virtual void show_stats(void);
 

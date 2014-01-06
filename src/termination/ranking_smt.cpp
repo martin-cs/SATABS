@@ -333,7 +333,7 @@ bool ranking_synthesis_smtt::generate_functions(void)
   smt1_conv.set_message_handler(get_message_handler());
 
   status("Converting template...");
-  fine_timet before = current_time();
+  absolute_timet before = current_time();
   smt1_conv.set_to_true(t);
   smt1_conv.dec_solve(); // this just finalizes
   conversion_time += current_time()-before;

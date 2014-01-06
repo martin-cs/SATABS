@@ -431,7 +431,7 @@ bool ranking_synthesis_qbft::generate_functions(void)
   std::cout << std::endl << from_expr(ns, "", t) << std::endl;
 
   status("Converting template...");
-  fine_timet before = current_time();
+  absolute_timet before = current_time();
   converter.set_to_true(t);
   conversion_time += current_time()-before;
 

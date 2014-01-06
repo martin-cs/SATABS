@@ -81,12 +81,12 @@ protected:
   simulatort &simulator;
 
   // collecting statistics
-  fine_timet total_time;
-  fine_timet total_start_time;
-  fine_timet abstractor_time;
-  fine_timet modelchecker_time;
-  fine_timet simulator_time;
-  fine_timet refiner_time;
+  time_periodt total_time;
+  absolute_timet total_start_time;
+  time_periodt abstractor_time;
+  time_periodt modelchecker_time;
+  time_periodt simulator_time;
+  time_periodt refiner_time;
 
   void show_statistics(const namespacet &ns);
 

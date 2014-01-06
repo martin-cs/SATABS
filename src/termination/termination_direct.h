@@ -29,8 +29,8 @@ public:
   
   virtual termination_resultt operator()();
   
-  fine_timet pointer_analysis_time;
-  fine_timet slicing_time;
+  time_periodt pointer_analysis_time;
+  time_periodt slicing_time;
   
   virtual void show_stats(void);
   

@@ -355,9 +355,9 @@ bool ranking_synthesis_qbf_bitwiset::generate_functions(void)
     std::cout << std::endl << from_expr(ns, "", templ) << std::endl;
 
     status() << "Converting template..." << eom;
-    fine_timet before = current_time();
+    absolute_timet before = current_time();
     converter.set_to_true(templ);
-    fine_timet ctime = current_time()-before;
+    time_periodt ctime = current_time()-before;
 
     if(get_verbosity()>5)
         show_varmap(converter, std::cout);

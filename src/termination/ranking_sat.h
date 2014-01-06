@@ -38,8 +38,8 @@ protected:
 
   satcheckt::resultt
       check_for_counterexample(const exprt &templ, c_valuest &c_values,
-                               fine_timet &conversion_time,
-                               fine_timet &solver_time);
+                               time_periodt &conversion_time,
+                               time_periodt &solver_time);
 
   void show_counterexample(boolbvt &converter);
 

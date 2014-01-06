@@ -106,7 +106,7 @@ Function: simulatort::run
 
 void simulatort::run(queuet &queue)
 {
-  fine_timet start_time=current_time();
+  absolute_timet start_time=current_time();
 
   error_state_found=false;
 

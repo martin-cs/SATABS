@@ -54,12 +54,12 @@ public:
   
   std::string ranking_mode;
   
-  fine_timet pointer_analysis_time;
-  fine_timet wp_ce_extraction_time;
-  fine_timet wp_unreachability_time;
-  fine_timet path_feasibility_time;
-  fine_timet ranking_cache_time;
-  fine_timet loop_reachability_time;
+  time_periodt pointer_analysis_time;
+  time_periodt wp_ce_extraction_time;
+  time_periodt wp_unreachability_time;
+  time_periodt path_feasibility_time;
+  time_periodt ranking_cache_time;
+  time_periodt loop_reachability_time;
   
   unsigned paths_analyzed;
   unsigned paths_infeasible;

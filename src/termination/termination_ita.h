@@ -27,7 +27,7 @@ public:
 
   virtual termination_resultt operator()();
 
-  fine_timet interpolation_time;
+  time_periodt interpolation_time;
 
   virtual void show_stats(void);
 

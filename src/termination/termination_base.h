@@ -60,11 +60,11 @@ public:
   unsigned max_iterations;
   
   // some statistics
-  fine_timet start_time;  
-  fine_timet ranking_time;
-  fine_timet modelchecker_time;
-  fine_timet counter_example_extraction_time;
-  fine_timet final_check_time;
+  absolute_timet start_time;  
+  time_periodt ranking_time;
+  time_periodt modelchecker_time;
+  time_periodt counter_example_extraction_time;
+  time_periodt final_check_time;
   
   unsigned ranksynth_calls;
   unsigned total_loops;
@@ -123,21 +123,21 @@ protected:
   bool cegar(
     const goto_functionst &goto_functions,
     goto_tracet &goto_trace,
-    fine_timet &modelchecker_time,
-    fine_timet &unsafe_time,
-    fine_timet &safe_time);
+    time_periodt &modelchecker_time,
+    time_periodt &unsafe_time,
+    time_periodt &safe_time);
   
   bool cegar(
     const goto_functionst &goto_functions,
-    fine_timet &modelchecker_time,
-    fine_timet &unsafe_time,
-    fine_timet &safe_time);
+    time_periodt &modelchecker_time,
+    time_periodt &unsafe_time,
+    time_periodt &safe_time);
   
   bool bmc(
     const goto_functionst &goto_functions,
-    fine_timet &modelchecker_time,
-    fine_timet &unsafe_time,
-    fine_timet &safe_time);
+    time_periodt &modelchecker_time,
+    time_periodt &unsafe_time,
+    time_periodt &safe_time);
 
   void set_options();
 };

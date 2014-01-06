@@ -394,7 +394,7 @@ qdimacs_coret::resultt ranking_synthesis_qbf_completet::qbf_solve_inc(
     std::cout << "Refinement: " << from_expr(ns, "", refinement) << std::endl;
 
 //    status("Converting template...");
-    fine_timet before = current_time();
+    absolute_timet before = current_time();
     converter.set_to_true(templ);
     converter.set_to_true(refinement);
     conversion_time+= current_time()-before;
@@ -487,7 +487,7 @@ bool ranking_synthesis_qbf_completet::skolem_equality(void)
     implication.rhs()=tmp;
   }
 
-  fine_timet before=current_time();
+  absolute_timet before=current_time();
   sat_converter.set_to_true(implication);
   conversion_time+=current_time()-before;
 

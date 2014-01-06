@@ -78,7 +78,7 @@ bool ranking_synthesis_seneschalt::generate_functions(void)
   system("cat seneschal.input");
 
   status("Calling seneschal...");
-  fine_timet before = current_time();
+  absolute_timet before = current_time();
   system(">seneschal.out ; >seneschal.err; "
          "seneschal seneschal.input 1> seneschal.out 2> seneschal.err");
   solver_time += current_time()-before;
