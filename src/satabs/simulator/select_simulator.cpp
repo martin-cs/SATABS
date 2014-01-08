@@ -12,7 +12,7 @@ Date: June 2003
 #include <util/options.h>
 
 #include "select_simulator.h"
-#include "simulator_symex.h"
+#include "simulator_path_symex.h"
 #include "simulator_loop_detection.h"
 
 /*******************************************************************\
@@ -38,6 +38,7 @@ simulatort *select_simulator(
     if(options.get_bool_option("loop-detection"))
       return new simulator_loop_detectiont(options, _shadow_symbol_table);
 
+    //return new simulator_path_symext(options);
     return new simulator_symext(options);
   }
   else

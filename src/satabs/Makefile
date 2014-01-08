@@ -60,7 +60,8 @@ SRC = satabs.cpp cmdline_options.cpp \
       simulator/concrete_counterexample.cpp \
       simulator/simulator_loop_detection.cpp \
       simulator/recurrence_solver.cpp \
-      simulator/path_slicer.cpp
+      simulator/path_slicer.cpp \
+      simulator/simulator_path_symex.cpp
 
 OBJ += \
       $(CBMC)/src/ansi-c/ansi-c$(LIBEXT) \
@@ -68,6 +69,7 @@ OBJ += \
       $(CBMC)/src/big-int/big-int$(LIBEXT) \
       $(CBMC)/src/goto-programs/goto-programs$(LIBEXT) \
       $(CBMC)/src/goto-symex/goto-symex$(LIBEXT) \
+      $(CBMC)/src/path-symex/path-symex$(LIBEXT) \
       $(CBMC)/src/analyses/analyses$(LIBEXT) \
       $(CBMC)/src/pointer-analysis/pointer-analysis$(LIBEXT) \
       $(CBMC)/src/langapi/langapi$(LIBEXT) \
