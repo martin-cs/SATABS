@@ -737,7 +737,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     }
     else if(it->is_dead())
     {
-      out << "dead;";
+      out << "skip; // dead";
     }
     else if(it->is_atomic_begin())
     {
