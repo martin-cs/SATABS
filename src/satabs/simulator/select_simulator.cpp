@@ -38,8 +38,8 @@ simulatort *select_simulator(
     if(options.get_bool_option("loop-detection"))
       return new simulator_loop_detectiont(options, _shadow_symbol_table);
 
-    //return new simulator_path_symext(options);
-    return new simulator_symext(options);
+    return new simulator_path_symext(options);
+    //return new simulator_symext(options);
   }
   else
     throw "unknown simulator: "+name;

@@ -87,9 +87,9 @@ bool simulator_path_symext::is_spurious(
 
   simulator_sat_dect satcheck(concrete_model->ns);
   
-  if(state.is_feasible(satcheck))
+  if(!state.check_assertion(satcheck))
   {
-    // yes, it's a feasible path, i.e., a counterexample
+    // the assertion fails, i.e., simulation succeeds
     build_goto_trace(state, satcheck, concrete_counterexample.goto_trace);
     status() << "Simulation successful" << eom;
     return false;
@@ -102,11 +102,8 @@ bool simulator_path_symext::is_spurious(
   fail_info.all_steps=abstract_counterexample.steps;
   fail_info.steps=abstract_counterexample.steps;
   
-  assert(!state.history.steps.empty());
-  loc_reft pc=state.history.steps.back().pc();
-  assert(locs[pc].target->is_assert());
-
-  fail_info.guard=locs[pc].target->guard;
+  fail_info.guard=
+    abstract_counterexample.steps.back().pc->guard;
 
   return true;
 }
@@ -140,26 +137,24 @@ void simulator_path_symext::do_path_symex(
     // get the concrete basic block
     goto_programt::const_targett c_target=it->pc->code.concrete_pc;
 
+    // order of the below matters, as the PC is per-thread
+    state.set_current_thread(it->thread_nr);
+    state.set_pc(target_to_loc_map[c_target]);
+    
     if(last_state)
     {
       if(!c_target->is_assert())
         throw "expected assertion at end of abstract trace";
+
+      // we end when we are just about to execute the assertion
+      break;
     }
 
-    // order of the below matters, as the PC is per-thread
-    state.set_current_thread(it->thread_nr);
-    state.set_pc(target_to_loc_map[c_target]);
- 
     switch(c_target->type)
     {
     case GOTO:
       if(it->relevant)
         path_symex_goto(state, it->branch_taken);
-      break;
-
-    case ASSERT:
-      if(last_state)
-        path_symex_assert_fail(state);
       break;
 
     #if 0
