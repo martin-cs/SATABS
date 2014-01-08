@@ -1,5 +1,3 @@
-#define NULL ((void *)0)
-
 int main()
 {
   int *p, *q;
@@ -11,6 +9,7 @@ int main()
   
   if(z)
     q=(int *)&ch;
-  
+
+  // this is a type violation if z is true  
   y=*q;
 }
