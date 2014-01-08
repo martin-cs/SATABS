@@ -103,7 +103,7 @@ bool simulator_path_symext::is_spurious(
   fail_info.steps=abstract_counterexample.steps;
   
   fail_info.guard=
-    abstract_counterexample.steps.back().pc->guard;
+    not_exprt(abstract_counterexample.steps.back().pc->code.concrete_pc->guard);
 
   return true;
 }
