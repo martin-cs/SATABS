@@ -1,4 +1,4 @@
-
+// there is no body for foo(), deliberately.
 int foo();
 
 bar(){
