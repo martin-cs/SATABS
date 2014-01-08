@@ -46,9 +46,9 @@ a spurious counterexample
 \*******************************************************************/
 
 bool refiner_wpt::refine_prefix(
-    predicatest &predicates, 
-    abstract_modelt &abstract_model,
-    const fail_infot &fail_info)
+  predicatest &predicates, 
+  abstract_modelt &abstract_model,
+  const fail_infot &fail_info)
 {
   status("Refining set of predicates according to counterexample (WP)");
 
@@ -108,7 +108,7 @@ bool refiner_wpt::refine_prefix(
 
 #ifdef DEBUG
     std::cout << "P start0: " 
-      << from_expr(concrete_model->ns, "", predicate) << std::endl;
+              << from_expr(concrete_model->ns, "", predicate) << std::endl;
 #endif
 
     simplify(predicate, concrete_model->ns);
@@ -124,7 +124,7 @@ bool refiner_wpt::refine_prefix(
 
 #ifdef DEBUG
       std::cout << "P start1: " 
-        << from_expr(concrete_model->ns, "", predicate) << std::endl;
+                << from_expr(concrete_model->ns, "", predicate) << std::endl;
 #endif
 
       add_predicates(
@@ -153,7 +153,7 @@ bool refiner_wpt::refine_prefix(
 
 #ifdef DEBUG
           std::cout << "INV: "
-            << from_expr(concrete_model->ns, "", invariant) << std::endl;
+                    << from_expr(concrete_model->ns, "", invariant) << std::endl;
 #endif           
 
           exprt wp(ID_and, typet(ID_bool));
@@ -320,7 +320,7 @@ bool refiner_wpt::refine_prefix(
               simplify(pred_new, concrete_model->ns);
 #ifdef DEBUG
               std::cout << "Adding new predicate as we arrived at TRUE: "
-                << from_expr(concrete_model->ns, "", pred_new) << std::endl;
+                        << from_expr(concrete_model->ns, "", pred_new) << std::endl;
 #endif
               no_tid_predicate=pred_new;
               renaming_state.get_original_name(no_tid_predicate);
