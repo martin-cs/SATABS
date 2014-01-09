@@ -172,7 +172,7 @@ bool refiner_wpt::refine_prefix(
       if(!it->is_state())
         continue;
 
-      if(predicate.is_true() && found_new)
+      if(predicate.is_false() && found_new)
       {
         // ok, refuted it, done
         break;
@@ -214,18 +214,21 @@ bool refiner_wpt::refine_prefix(
             exprt tid_guard=concrete_pc->guard;
             renaming_state.source.thread_nr=it->thread_nr;
             renaming_state.rename(tid_guard, concrete_model->ns, goto_symex_statet::L0);
-            predicate=implies_exprt(tid_guard, predicate);
+            predicate=and_exprt(tid_guard, predicate);
             simplify(predicate, concrete_model->ns);
           }
           break;
 
         case GOTO:
+#ifdef DEBUG
+          std::cout << "GOTO " << (it->branch_taken?"taken":"not taken") << "\n";
+#endif
           {
             exprt tid_guard=concrete_pc->guard;
             if(!it->branch_taken) tid_guard.make_not();
             renaming_state.source.thread_nr=it->thread_nr;
             renaming_state.rename(tid_guard, concrete_model->ns, goto_symex_statet::L0);
-            predicate=implies_exprt(tid_guard, predicate);
+            predicate=and_exprt(tid_guard, predicate);
             simplify(predicate, concrete_model->ns);
           }
           break;
@@ -339,7 +342,7 @@ bool refiner_wpt::refine_prefix(
       add_predicates(abstract_pc, predicates, no_tid_predicate, found_new, FROM);
     }
 
-    if(!predicate.is_true() &&
+    if(!predicate.is_false() &&
        fail_info.warn_on_failure)
     {
       warning("Failed to refute spurious trace with WPs (got "+
