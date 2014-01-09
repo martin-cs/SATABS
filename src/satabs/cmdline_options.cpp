@@ -347,7 +347,7 @@ void cmdline_optionst::help()
     " --signed-overflow-check      enable arithmetic over- and underflow checks\n"
     " --unsigned-overflow-check    enable arithmetic over- and underflow checks\n"
     " --nan-check                  check floating-point for NaN\n"
-    " --show-claims                only show claims\n"
+    " --show-properties            only show properties\n"
     " --show-loops                 show the loops in the program\n"
     " --no-assertions              ignore user assertions\n"
     " --no-assumptions             ignore user assumptions\n"
@@ -363,7 +363,7 @@ void cmdline_optionst::help()
     " --show-invariant-sets        just show the invariant set propagation\n"
     " --no-invariant-sets          UNDOCUMENTED\n"
 #endif
-    " --claim #                    check a specific claim only\n"
+    " --property #                 check a specific property only\n"
     " --loop-detection             use heuristic to detect loops\n"
     " --modelchecker name          set the modelchecker to be used\n"
     " --abstractor name            set the abstractor to be used\n"
