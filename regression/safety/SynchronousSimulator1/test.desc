@@ -1,4 +1,4 @@
-CORE
+KNOWNBUG
 SynchronousSimulator_satabs.c
 --iterations 30
 ^EXIT=10$
