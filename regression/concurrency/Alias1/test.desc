@@ -1,4 +1,4 @@
-CORE
+KNOWNBUG
 main.c
 --iterations 5
 ^EXIT=10$

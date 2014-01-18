@@ -1,4 +1,4 @@
-CORE
+KNOWNBUG
 main.c
 --iterations 20 --max-threads 3
 ^EXIT=10$
