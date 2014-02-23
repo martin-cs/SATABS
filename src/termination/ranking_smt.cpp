@@ -323,11 +323,12 @@ bool ranking_synthesis_smtt::generate_functions(void)
   std::ofstream file("rf.smt");
 
   smt1_convt smt1_conv(
-        ns,
-        "rf_synthesis",
-        "automatically generated",
-        "BV",
-        file);
+    ns,
+    "rf_synthesis",
+    "automatically generated",
+    "BV",
+    smt1_convt::Z3,
+    file);
 
   smt1_conv.set_verbosity(get_verbosity());
   smt1_conv.set_message_handler(get_message_handler());
