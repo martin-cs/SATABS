@@ -342,7 +342,7 @@ bool tan_parseoptionst::prepare()
   
   if(!cmdline.isset("no-invariant-propagation"))
   {
-    fine_timet before=current_time();
+    absolute_timet before=current_time();
     
     // This is done without value_set_analysis being initialized
     value_set_analysist vsa(ns);
