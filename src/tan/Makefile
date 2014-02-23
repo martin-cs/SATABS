@@ -13,6 +13,7 @@ OBJ = $(SRC:.cpp=.o) \
       $(CBMC)/src/analyses/analyses$(LIBEXT) \
       $(CBMC)/src/pointer-analysis/pointer-analysis$(LIBEXT) \
       $(CBMC)/src/solvers/solvers$(LIBEXT) \
+      $(CBMC)/src/path-symex/path-symex$(LIBEXT) \
       $(CBMC)/src/util/util$(LIBEXT) \
       ../termination/termination$(LIBEXT) \
       \
