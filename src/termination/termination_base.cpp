@@ -7,9 +7,9 @@ Author: CM Wintersteiger
 \*******************************************************************/
 
 #include <string>
-#include <cstdlib>
 #include <algorithm>
 
+#include <util/string2int.h>
 #include <util/find_symbols.h>
 #include <util/prefix.h>
 #include <util/expr_util.h>
@@ -86,7 +86,7 @@ termination_baset::termination_baset(
 {
   set_verbosity(6);
   if(cmdline.isset("v"))
-    set_verbosity(atoi(cmdline.getval("v")));    
+    set_verbosity(unsafe_string2int(cmdline.getval("v")));    
   set_options();
 }
 

@@ -6,9 +6,10 @@ Author: Daniel Kroening, kroening@kroening.com
 
 \*******************************************************************/
 
-#include <cstdlib>
 #include <cassert>
 #include <iostream>
+
+#include <util/string2int.h>
 
 #include "bp_util.h"
 
@@ -31,7 +32,7 @@ unsigned vector_width(const typet &type)
   else if(type.id()==ID_bool)
     return 1;
   else if(type.id()=="bool-vector")
-    return atoi(type.get(ID_width).c_str());
+    return unsafe_string2unsigned(type.get_string(ID_width));
   else
   {
     std::cerr << "unexpected vector type: "

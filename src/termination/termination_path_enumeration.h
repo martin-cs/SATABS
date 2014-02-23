@@ -9,6 +9,8 @@ Author: CM Wintersteiger
 #ifndef _CPROVER_TERMINATION_PATH_ENUMERATION_H_
 #define _CPROVER_TERMINATION_PATH_ENUMERATION_H_
 
+#include <util/string2int.h>
+
 #include <goto-programs/goto_functions.h>
 #include <goto-symex/symex_target_equation.h>
 
@@ -42,8 +44,9 @@ public:
       paths_infeasible(0),
       ranking_relations(ns, _mh) 
   {
-    if (_cmd.isset("verbosity")) {
-      unsigned v = atoi(_cmd.getval("verbosity"));
+    if(_cmd.isset("verbosity"))
+    {
+      unsigned v = unsafe_string2unsigned(_cmd.getval("verbosity"));
       ranking_relations.set_verbosity(v);
       verbosity = v;
     }

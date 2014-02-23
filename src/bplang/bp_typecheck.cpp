@@ -7,13 +7,13 @@ Author: Daniel Kroening, kroening@kroening.com
 \*******************************************************************/
 
 #include <cassert>
-#include <cstdlib>
 #include <set>
 
 #include <util/expr_util.h>
 #include <util/location.h>
 #include <util/arith_tools.h>
 #include <util/i2string.h>
+#include <util/string2int.h>
 
 #include "bp_typecheck.h"
 #include "expr2bp.h"
@@ -136,7 +136,7 @@ void bp_typecheckt::convert_function(exprt &declaration)
   return_type.swap(declaration.add(ID_return_type));
 
   if(return_type.id()=="bool-vector" &&
-     atoi(return_type.get(ID_width).c_str())==1)
+     unsafe_string2int(return_type.get_string(ID_width))==1)
     return_type=typet(ID_bool);
 
   symbol.base_name=declaration.get(ID_identifier);
