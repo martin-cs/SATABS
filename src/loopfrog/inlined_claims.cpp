@@ -11,6 +11,7 @@
 #include <ostream>
 #include <iostream>
 
+#include <util/string2int.h>
 #include <util/arith_tools.h>
 
 #include "inlined_claims.h"
@@ -103,7 +104,7 @@ unsigned find_marked_claim(
   size_t p=mstring.rfind("_");
   if(p!=std::string::npos)
   {
-    holdoff = atoi(mstring.substr(p+1).c_str());    
+    holdoff = unsafe_string2unsigned(mstring.substr(p+1));
   }
 
   forall_goto_functions(fit, functions)

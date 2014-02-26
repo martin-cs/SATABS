@@ -22,6 +22,7 @@
 #include <util/message.h>
 #include <util/symbol_table.h>
 #include <util/i2string.h>
+#include <util/string2int.h>
 #include <util/std_expr.h>
 #include <util/arith_tools.h>
 #include <util/prefix.h>
@@ -117,7 +118,7 @@ int loopfrog_parseoptionst::doit()
   int verbosity=6;
   if(cmdline.isset("v"))
   {
-    verbosity=atoi(cmdline.getval("v"));
+    verbosity=unsafe_string2int(cmdline.getval("v"));
     set_verbosity(verbosity);
   }
 
@@ -244,7 +245,7 @@ int loopfrog_parseoptionst::doit()
   status(std::string("#3: Partial Inlining ..."));
   unsigned limit = 10;
   if(cmdline.isset("inlining-limit"))
-    limit = atoi(cmdline.getval("inlining-limit"));
+    limit = unsafe_string2unsigned(cmdline.getval("inlining-limit"));
   before=current_time();
   goto_partial_inline(goto_functions, ns, mh, limit);
   after=current_time();
@@ -901,7 +902,7 @@ bool loopfrog_parseoptionst::check_loop_summarization(
     }
   }
   else if(cmdline.isset("claim"))
-    claim_nr=atoi(cmdline.getval("claim"));
+    claim_nr=unsafe_string2unsigned(cmdline.getval("claim"));
   
   before=current_time();
   claim_statst stats = check_claims(ns,
