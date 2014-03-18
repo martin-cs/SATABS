@@ -8,7 +8,7 @@ Date: May 2009
 
 \*******************************************************************/
 
-#ifndef CPROVER_TERMINATIIN_RANKING_QBF_BITWISE_H
+#ifndef CPROVER_TERMINATION_RANKING_QBF_BITWISE_H
 #define CPROVER_TERMINATION_RANKING_QBF_BITWISE_H
 
 #include "ranking_qbf.h"
