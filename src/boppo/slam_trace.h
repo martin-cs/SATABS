@@ -8,7 +8,7 @@ Author: Daniel Kroening, kroening@kroening.com
 \*******************************************************************/
 
 #ifndef CPROVER_BOPPO_SLAM_TRACE_H
-#define CPROVER_BOPPO_SLAM_TRACEH
+#define CPROVER_BOPPO_SLAM_TRACE_H
 
 #include <stack>
 
