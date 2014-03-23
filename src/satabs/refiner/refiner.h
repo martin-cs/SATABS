@@ -30,7 +30,7 @@ class refinert:public loop_componentt
 {
 public:
   refinert(const optionst &options):
-    max_predicates_to_add(options.get_int_option("max-new-predicates")),
+    max_predicates_to_add(options.get_unsigned_int_option("max-new-predicates")),
     prefer_non_pointer_predicates(options.get_bool_option("prefer-non-pointer-predicates")),
     remove_equivalent_predicates(options.get_bool_option("remove-equivalent-predicates")),
     no_mixed_predicates(options.get_bool_option("no-mixed-predicates"))

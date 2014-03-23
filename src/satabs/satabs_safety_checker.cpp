@@ -591,5 +591,5 @@ satabs_safety_checkert::satabs_safety_checkert(
     ns, *abstractor_ptr, *refiner_ptr, *modelchecker_ptr, *simulator_ptr),
   ns(_symbol_table, shadow_symbol_table)
 {
-  max_iterations=options.get_int_option("iterations");
+  max_iterations=options.get_unsigned_int_option("iterations");
 }

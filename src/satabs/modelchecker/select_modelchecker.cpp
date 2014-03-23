@@ -35,7 +35,7 @@ modelcheckert *select_modelchecker(const optionst &options)
   modelcheckert *m=0;
 
   const bool concurrency=options.get_bool_option("concurrency");
-  const unsigned max_threads=options.get_int_option("max-threads");
+  const unsigned max_threads=options.get_unsigned_int_option("max-threads");
   const bool build_tts=options.get_bool_option("build-tts");
 
   assert(!build_tts ||

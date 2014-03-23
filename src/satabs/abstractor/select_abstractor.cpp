@@ -52,7 +52,7 @@ abstractort *select_abstractor(const optionst &options)
   else if(name=="cartesian")
     specific_abstractor =
       new abstractor_wp_cartesiant(
-          options.get_int_option("max-cube-length"));
+          options.get_unsigned_int_option("max-cube-length"));
   else
     throw "unknown abstractor: "+name;
 
