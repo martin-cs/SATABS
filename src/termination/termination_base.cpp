@@ -832,7 +832,6 @@ bool termination_baset::bmc(
 
     switch(satres)
     {
-      case bv_pointerst::D_TAUTOLOGY:
       case bv_pointerst::D_SATISFIABLE:
         unsafe_time+=current_time()-before;
         res=false;
