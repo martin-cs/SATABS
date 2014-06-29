@@ -41,6 +41,8 @@ void get_predicates(
   // we only do C expressions right now
 
   languaget *l=new ansi_c_languaget;
+  
+  l->set_message_handler(message_handler);
 
   // use auto_ptr because of the exceptions
   std::auto_ptr<languaget> language(l);
@@ -56,7 +58,7 @@ void get_predicates(
     {
       exprt expr;
 
-      if(language->to_expr(line, "", expr, message_handler, ns))
+      if(language->to_expr(line, "", expr, ns))
         throw "failed to parse `"+line+"'";
 
       if(expr.type().id()!=ID_bool)
