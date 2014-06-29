@@ -132,7 +132,6 @@ protected:
   bool is_satisfiable(decision_proceduret &decision_procedure)
   {
     decision_procedure.set_message_handler(get_message_handler());
-    decision_procedure.set_verbosity(get_verbosity());
 
     // solve it
     switch(decision_procedure.dec_solve())

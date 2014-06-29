@@ -181,8 +181,6 @@ int cmdline_optionst::doit()
   if(cmdline.isset("v"))
     verbosity=safe_str2int(cmdline.getval("v"));
 
-  prepare.set_verbosity(verbosity);
-
   // get configuration
 
   config.set(cmdline);
@@ -211,7 +209,6 @@ int cmdline_optionst::doit()
     satabs_safety_checker.build_tts=cmdline.isset("build-tts");    
     satabs_safety_checker.concurrency_aware=cmdline.isset("concurrency");
     satabs_safety_checker.write_csv_stats=cmdline.isset("csv-stats");
-    satabs_safety_checker.set_verbosity(verbosity);
 
     switch(satabs_safety_checker(prepare.goto_functions))
     {

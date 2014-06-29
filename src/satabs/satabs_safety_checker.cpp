@@ -430,17 +430,11 @@ safety_checkert::resultt satabs_safety_checker_baset::operator()(
   modelchecker.set_message_handler(get_message_handler());
   simulator.set_message_handler(get_message_handler());
 
-  refiner.set_verbosity(get_verbosity());
-  abstractor.set_verbosity(get_verbosity());
-  modelchecker.set_verbosity(get_verbosity());
-  simulator.set_verbosity(get_verbosity());    
-
   {
     // Create initial abstraction
 
     initial_abstractiont initial_abstraction(get_message_handler(),
         refiner.get_no_mixed_predicates());
-    initial_abstraction.set_verbosity(get_verbosity());
 
     initial_abstraction.build(concrete_model, abstractor.abstract_model, concurrency_aware);
 

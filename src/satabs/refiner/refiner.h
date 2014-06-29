@@ -61,7 +61,6 @@ protected:
   bool is_satisfiable(decision_proceduret &decision_procedure)
   {
     decision_procedure.set_message_handler(get_message_handler());
-    decision_procedure.set_verbosity(get_verbosity());
 
     // solve it
     switch(decision_procedure.dec_solve())
@@ -80,7 +79,6 @@ protected:
   bool is_satisfiable(propt &prop)
   {
     prop.set_message_handler(get_message_handler());
-    prop.set_verbosity(get_verbosity());
 
     // solve it
     switch(prop.prop_solve())
