@@ -29,8 +29,7 @@ Function: bp_languaget::final
 \*******************************************************************/
 
 bool bp_languaget::final(
-  symbol_tablet &symbol_table,
-  message_handlert &message_handler)
+  symbol_tablet &symbol_table)
 {
   // do main symbol
   
@@ -62,9 +61,7 @@ bool bp_languaget::final(
   
   if(symbol_table.move(new_symbol))
   {
-    messaget message;
-    message.set_message_handler(message_handler);
-    message.error("main already defined by another language module");
+    error("main already defined by another language module");
     return true;
   }
   
@@ -85,14 +82,13 @@ Function: bp_languaget::parse
 
 bool bp_languaget::parse(
   std::istream &instream,
-  const std::string &path,
-  message_handlert &message_handler)
+  const std::string &path)
 {
   bp_parser.clear();
 
   bp_parser.set_file(path);
   bp_parser.in=&instream;
-  bp_parser.set_message_handler(message_handler);
+  bp_parser.set_message_handler(get_message_handler());
 
   bool result=bp_parser.parse();
 
@@ -134,11 +130,10 @@ Function: bp_languaget::typecheck
 
 bool bp_languaget::typecheck(
   symbol_tablet &symbol_table,
-  const std::string &module,
-  message_handlert &message_handler)
+  const std::string &module)
 {
   return bp_typecheck(
-    bp_parse_tree, symbol_table, module, message_handler);
+    bp_parse_tree, symbol_table, module, get_message_handler());
 }
 
 /*******************************************************************\
@@ -228,11 +223,9 @@ bool bp_languaget::to_expr(
   const std::string &code,
   const std::string &module,
   exprt &expr,
-  message_handlert &message_handler,
   const namespacet &ns)
 {
-  messaget message(message_handler);
-  message.error("not yet implemented");
+  error("not yet implemented");
   return true;
 }
 
