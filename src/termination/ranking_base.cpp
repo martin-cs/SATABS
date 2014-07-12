@@ -64,9 +64,8 @@ Function: ranking_synthesis_baset::show_variables
 
 \********************************************************************/
 
-void ranking_synthesis_baset::show_variables(void)
+void ranking_synthesis_baset::show_variables()
 {
-  if(verbosity<9) return;
   std::string output;
       
   output = "IN: ";

@@ -31,8 +31,12 @@ Date: May 2009
 
 \********************************************************************/
 
-bool parse_rank_function(const std::string &code, symbol_tablet &symbol_table,
-                         const namespacet &ext_ns, message_handlert &mh, exprt &rf)
+bool parse_rank_function(
+  const std::string &code,
+  symbol_tablet &symbol_table,
+  const namespacet &ext_ns,
+  message_handlert &mh,
+  exprt &rf)
 {
   std::stringstream str(code);
   ansi_c_parser.clear();
@@ -51,38 +55,33 @@ bool parse_rank_function(const std::string &code, symbol_tablet &symbol_table,
   {
     rf.swap(ansi_c_parser.parse_tree.items.front());
 
-    result=ansi_c_convert(rf, "", mh);
-
     // typecheck it
-    if(!result)
+    ansi_c_parse_treet ansi_c_parse_tree;
+    rankfunction_typecheckt typecheck(
+      ansi_c_parse_tree, symbol_table, ext_ns, mh);
+
+    try
     {
-      ansi_c_parse_treet ansi_c_parse_tree;
-      rankfunction_typecheckt typecheck(ansi_c_parse_tree, symbol_table, ext_ns, mh);
-
-      try
-      {
-        typecheck.typecheck_expr(rf);
-      }
-
-      catch(int e)
-      {
-        typecheck.error();
-      }
-
-      catch(const char *e)
-      {
-        typecheck.error(e);
-      }
-
-      catch(const std::string &e)
-      {
-        typecheck.error(e);
-      }
-
-      result=typecheck.get_error_found();
+      typecheck.typecheck_expr(rf);
     }
-  }
 
+    catch(int e)
+    {
+      typecheck.error();
+    }
+
+    catch(const char *e)
+    {
+      typecheck.error(e);
+    }
+
+    catch(const std::string &e)
+    {
+      typecheck.error(e);
+    }
+
+    result=typecheck.get_error_found();
+  }
 
   // save some memory
   ansi_c_parser.clear();

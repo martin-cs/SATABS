@@ -92,11 +92,8 @@ termination_resultt termination_bret::terminates(
 termination_resultt termination_bret::bre_loop(
   const goto_functionst &goto_functions)
 {
-  null_message_handlert nmh;
-  message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
+  message_handlert & mh = get_message_handler();
 
-  unsigned this_verb=get_verbosity()-2;
-  
   #if 0
   static unsigned call_counter=0;
   std::string fname("model_"); 
@@ -108,7 +105,6 @@ termination_resultt termination_bret::bre_loop(
     
   satabs_safety_checkert safety_checker(symbol_table, options);
   safety_checker.set_message_handler(mh);
-  safety_checker.set_verbosity(this_verb);
                  
   status() << "Running CEGAR/BRE..." << eom;
   
@@ -216,11 +212,8 @@ termination_resultt termination_bret::terminates(
   }
   */
   
-  null_message_handlert nmh;
-  message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
+  message_handlert & mh = get_message_handler();
 
-  unsigned this_verb=2;
-  
   #if 0
   std::ofstream out("model");
   model.goto_functions.output(ns, out);
@@ -228,7 +221,6 @@ termination_resultt termination_bret::terminates(
   #endif
   
   satabs_safety_checkert safety_checker(symbol_table, options);
-  safety_checker.set_verbosity(this_verb);
   safety_checker.set_message_handler(mh);
   
   status() << "Running CEGAR/BRE..." << eom;
@@ -502,7 +494,7 @@ bool termination_bret::process_counterexample(goto_tracet &trace)
     exprt rank_function=ranking(mode, body, symbol_table, 
                                 shadow_symbol_table, 
                                 *message_handler, 
-                                (verbosity>6)?verbosity:2);
+                                2);
     ranking_time+=current_time()-before;
 
     if(rank_function.id()=="nil")

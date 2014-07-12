@@ -75,8 +75,6 @@ bool ranking_relation_cachet::is_ranked(const exprt &body)
     
     solver.set_message_handler(get_message_handler());
     converter.set_message_handler(get_message_handler());
-    solver.set_verbosity(2);
-    converter.set_verbosity(2);
   
     and_exprt formula(body, not_exprt(it->relation));
     converter.set_to_true(formula);

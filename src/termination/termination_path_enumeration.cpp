@@ -81,7 +81,6 @@ termination_resultt termination_path_enumerationt::terminates(
   // all those functions from other loops are not likely to work
   ranking_relations.clear();  
   
-  if(verbosity>6)
   {
     std::stringstream ss;
     
@@ -172,7 +171,7 @@ bool termination_path_enumerationt::get_model(
   f.close();
   #endif
 
-	if (verbosity > 10)
+  #if 0
 	{
 		std::cout << "Unsliced Program:" << std::endl;
 		goto_functions.output(ns, std::cout);
@@ -180,6 +179,7 @@ bool termination_path_enumerationt::get_model(
 		std::cout << "Sliced Program:" << std::endl;
 		sliced_goto_functions.output(ns, std::cout);
 	}
+  #endif
   
   assert(sliced_assertion->type==ASSERT);
   
@@ -312,7 +312,7 @@ termination_resultt termination_path_enumerationt::rank(
     exprt new_relation=ranking(ranking_mode, path_body, 
                                symbol_table, shadow_symbol_table, 
                                get_message_handler(),
-                               (verbosity>6)?verbosity:2);
+                               2);
     ranking_time+=current_time()-before_ranking;
     
     
@@ -513,8 +513,6 @@ bool termination_path_enumerationt::is_feasible(bodyt &body)
   
   solver.set_message_handler(get_message_handler());
   converter.set_message_handler(get_message_handler());
-  solver.set_verbosity(2);
-  converter.set_verbosity(2);
   
   converter.set_to_true(body.body_relation);
   

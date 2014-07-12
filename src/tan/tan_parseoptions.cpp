@@ -157,7 +157,7 @@ void tan_parseoptionst::help()
 
 bool tan_parseoptionst::check_and_set_options()
 {
-  if (config.set(cmdline))
+  if(config.set(cmdline))
   {
     usage_error();
     return true;
@@ -173,7 +173,7 @@ bool tan_parseoptionst::check_and_set_options()
     int verbosity=6;
     if(cmdline.isset("verbosity"))
       verbosity=unsafe_string2int(cmdline.getval("verbosity"));
-    set_verbosity(verbosity);
+    ui_message_handler.set_verbosity(verbosity);
   }
   
   if(cmdline.args.size()==0)
@@ -324,7 +324,6 @@ bool tan_parseoptionst::prepare()
   }
 
   termination_instrumentert termination(goto_functions, symbol_table, mh, instrumenter_mode);
-  termination.set_verbosity(verbosity);
   unsigned loopcount=termination.instrument();
 
   goto_functions.update();

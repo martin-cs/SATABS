@@ -70,10 +70,8 @@ termination_resultt termination_directt::terminates(
   */
   
   null_message_handlert nmh;
-  message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
+  message_handlert & mh = get_message_handler();
 
-  unsigned this_verb=verbosity-2;
-  
   #if 0
   std::string fname("model_"); 
   fname += i2string(call_counter);
@@ -84,7 +82,6 @@ termination_resultt termination_directt::terminates(
       
   satabs_safety_checkert safety_checker(symbol_table, options);
   safety_checker.set_message_handler(mh);
-  safety_checker.set_verbosity(this_verb);
                  
   status("Running CEGAR...");
   
@@ -165,11 +162,8 @@ termination_resultt termination_directt::terminates(
   }
   */
     
-  null_message_handlert nmh;
-  message_handlert & mh = (verbosity >= 8) ? get_message_handler() : nmh;
+  message_handlert & mh = get_message_handler();
 
-  unsigned this_verb=verbosity-2;
-  
   #if 0
   std::ofstream out("model");
   model.goto_functions.output(ns, out);
@@ -178,7 +172,6 @@ termination_resultt termination_directt::terminates(
   
   satabs_safety_checkert safety_checker(symbol_table, options);
   safety_checker.set_message_handler(mh);
-  safety_checker.set_verbosity(this_verb);
                
   status("Running CEGAR...");
   

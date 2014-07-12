@@ -294,8 +294,6 @@ Function: ranking_synthesis_satt::show_coefficients
 
 void ranking_synthesis_satt::show_coefficients(c_valuest &c_values)
 {
-  if(verbosity<9) return;
-  
   std::string t("Coefficients: ");
   for(c_valuest::const_iterator it=c_values.begin();
       it!=c_values.end();
@@ -323,7 +321,6 @@ Function: ranking_synthesis_satt::show_counterexample
 
 void ranking_synthesis_satt::show_counterexample(boolbvt &converter)
 {  
-  if(verbosity<9) return;
   std::string output=" ... NO: ";
   
   for(bodyt::variable_mapt::const_iterator it=body.variable_map.begin();
@@ -383,9 +380,7 @@ satcheckt::resultt ranking_synthesis_satt::check_for_counterexample(
   bv_pointerst converter(ns, solver);   
 
   solver.set_message_handler(get_message_handler());
-  solver.set_verbosity(verbosity);
   converter.set_message_handler(get_message_handler());
-  converter.set_verbosity(verbosity);
 
   show_coefficients(c_values);
 

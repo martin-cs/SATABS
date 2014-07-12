@@ -330,7 +330,6 @@ bool ranking_synthesis_smtt::generate_functions(void)
     smt1_convt::Z3,
     file);
 
-  smt1_conv.set_verbosity(get_verbosity());
   smt1_conv.set_message_handler(get_message_handler());
 
   status("Converting template...");

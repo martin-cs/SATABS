@@ -82,7 +82,6 @@ termination_resultt termination_ctat::terminates(
   // all those functions from other loops are not likely to work
   ranking_relations.clear();
 
-  if(verbosity>6)
   {
     std::stringstream ss;
 
@@ -177,7 +176,6 @@ termination_resultt termination_ctat::rank(
     status() << "Generating ranking functions for " << n 
              << " loop iteration" << ((n==1)?"":"s") << "." << eom;
     
-    if(verbosity>8)
     {
       debug() << "Unwinding: " << endl;
       goto_functionst::function_mapt::const_iterator f_it = 
@@ -683,7 +681,7 @@ exprt termination_ctat::rank_trace(
   exprt new_relation=ranking(ranking_mode, path_body,
                              symbol_table, shadow_symbol_table,
                              get_message_handler(),
-                             (verbosity>6)?verbosity:2);
+                             2);
   ranking_time+=current_time()-before_ranking;
 
   // replace any #0-identifiers in the rankfunction

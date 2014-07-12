@@ -418,9 +418,7 @@ bool ranking_synthesis_qbft::generate_functions(void)
   std::auto_ptr<qdimacs_coret> solver(choose_qbf_core_extractor());
   bv_pointerst converter(ns, *solver);
 
-  solver->set_verbosity(get_verbosity());
   solver->set_message_handler(get_message_handler());
-  converter.set_verbosity(get_verbosity());
   converter.set_message_handler(get_message_handler());
 
   exprt t=instantiate();
@@ -434,9 +432,6 @@ bool ranking_synthesis_qbft::generate_functions(void)
   absolute_timet before = current_time();
   converter.set_to_true(t);
   conversion_time += current_time()-before;
-
-  if(get_verbosity()>5)
-      show_varmap(converter, std::cout);
 
   status("Solving...");
   before = current_time();

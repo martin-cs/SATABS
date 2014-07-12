@@ -84,9 +84,6 @@ termination_baset::termination_baset(
     nonterminating_loops(0),
     nondet_counter(0)
 {
-  set_verbosity(6);
-  if(cmdline.isset("v"))
-    set_verbosity(unsafe_string2int(cmdline.getval("v")));    
   set_options();
 }
 
@@ -158,7 +155,6 @@ void termination_baset::show_loop_trace(
   const goto_tracet &goto_trace,
   goto_tracet::stepst::const_iterator &loop_begin)
 {
-  if(verbosity<9) return;
   std::string output;
 
   output = "--- LOOP TRACE START\n";
@@ -810,10 +806,7 @@ bool termination_baset::bmc(
   bv_pointerst bv_pointers(ns, satcheck);
 
   symex.options.set_option("assertions", true);
-  satcheck.set_verbosity(2);
   satcheck.set_message_handler(get_message_handler());
-  bv_pointers.set_verbosity(2);
-  bv_pointers.set_message_handler(get_message_handler());
 
   try
   {
@@ -892,16 +885,12 @@ bool termination_baset::cegar(
   out.close();
   #endif
 
-  null_message_handlert nmh;
-  message_handlert &mh = (verbosity >= 8) ? get_message_handler() : nmh;
+  message_handlert &mh = get_message_handler();
   
-  unsigned this_verb=get_verbosity()-2;
-
   try
   {
     satabs_safety_checkert safety_checker(symbol_table, options);
     safety_checker.set_message_handler(mh);
-    safety_checker.set_verbosity(this_verb);
     
     absolute_timet before=current_time();
     safety_checkert::resultt result=safety_checker(goto_functions);
