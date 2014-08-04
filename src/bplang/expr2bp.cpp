@@ -46,7 +46,7 @@ public:
 
   std::string convert_constant(const exprt &src, unsigned &precedence);
 
-  std::string convert_sideeffect(const exprt &src, unsigned &precedence);
+  std::string convert_side_effect(const exprt &src, unsigned &precedence);
 
   std::string convert_code(const codet &src);
 
@@ -317,7 +317,7 @@ std::string expr2bpt::convert_bool_vector(
 
 /*******************************************************************\
 
-Function: expr2bpt::convert_sideeffect
+Function: expr2bpt::convert_side_effect
 
   Inputs:
 
@@ -327,7 +327,7 @@ Function: expr2bpt::convert_sideeffect
 
 \*******************************************************************/
 
-std::string expr2bpt::convert_sideeffect(
+std::string expr2bpt::convert_side_effect(
   const exprt &src,
   unsigned &precedence)
 {
@@ -703,8 +703,8 @@ std::string expr2bpt::convert(const exprt &src, unsigned &precedence)
   else if(src.id()==ID_next_symbol)
     return convert_next_symbol(src, precedence);
 
-  else if(src.id()==ID_sideeffect)
-    return convert_sideeffect(src, precedence);
+  else if(src.id()==ID_side_effect)
+    return convert_side_effect(src, precedence);
 
   else if(src.id()==ID_constant)
     return convert_constant(src, precedence);

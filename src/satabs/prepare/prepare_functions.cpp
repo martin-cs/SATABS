@@ -31,8 +31,8 @@ protected:
 
   symbol_tablet &symbol_table;
 
-  void adjust_function_arguments(
-      const code_typet::argumentst &arguments);
+  void adjust_function_parameters(
+      const code_typet::parameterst &parameters);
 
   void do_return_value(
       goto_functionst::function_mapt::iterator f_it);
@@ -41,7 +41,7 @@ protected:
       goto_functionst &goto_functions,
       goto_programt &goto_program);
 
-  void do_function_arguments(
+  void do_function_parameters(
       goto_functionst::function_mapt::iterator f_it);
 
   std::set<irep_idt> no_body_set;
@@ -49,22 +49,22 @@ protected:
 
 /*******************************************************************\
 
-Function: prepare_functionst::adjust_function_arguments
+Function: prepare_functionst::adjust_function_parameters
 
 Inputs:
 
 Outputs:
 
-Purpose: turns function arguments into thread-local variables
+Purpose: turns function parameters into thread-local variables
 
 \*******************************************************************/
 
-void prepare_functionst::adjust_function_arguments(
-    const code_typet::argumentst &arguments)
+void prepare_functionst::adjust_function_parameters(
+    const code_typet::parameterst &parameters)
 {
-  for(code_typet::argumentst::const_iterator
-      a_it=arguments.begin();
-      a_it!=arguments.end();
+  for(code_typet::parameterst::const_iterator
+      a_it=parameters.begin();
+      a_it!=parameters.end();
       a_it++)
   {
     const irep_idt &identifier=a_it->get_identifier();
@@ -274,18 +274,18 @@ void prepare_functionst::do_function_calls(
 
 /*******************************************************************\
 
-Function: prepare_functionst::do_function_arguments
+Function: prepare_functionst::do_function_parameters
 
 Inputs:
 
 Outputs:
 
-Purpose: replace function arguments by assignments to
+Purpose: replace function parameters by assignments to
 thread-local variables
 
 \*******************************************************************/
 
-void prepare_functionst::do_function_arguments(
+void prepare_functionst::do_function_parameters(
     goto_functionst::function_mapt::iterator f_it)
 {
   {
@@ -299,7 +299,7 @@ void prepare_functionst::do_function_arguments(
     symbolt &function_symbol=s_it->second;
 
     // adjust type of function
-    f_it->second.type.arguments().clear();
+    f_it->second.type.parameters().clear();
     function_symbol.type=f_it->second.type;
   }  
 
@@ -321,20 +321,20 @@ void prepare_functionst::do_function_arguments(
     // first clean up and adjust type
     code_function_callt &function_call=to_code_function_call(i_it->code);
     function_call.arguments().resize(0);
-    to_code_type(function_call.function().type()).arguments().clear();    
+    to_code_type(function_call.function().type()).parameters().clear();    
 
     for(unsigned i=0; i<old_function_call.arguments().size(); i++)
     {
-      if(i>=old_type.arguments().size()) break;
-      const code_typet::argumentt &a=old_type.arguments()[i];
+      if(i>=old_type.parameters().size()) break;
+      const code_typet::parametert &a=old_type.parameters()[i];
       exprt value=old_function_call.arguments()[i];
-      const irep_idt &argument_identifier=a.get_identifier();
+      const irep_idt &parameter_identifier=a.get_identifier();
 
-      if(argument_identifier!="")
+      if(parameter_identifier!="")
       {
         symbol_exprt lhs;
         lhs.type()=a.type();
-        lhs.set_identifier(argument_identifier);
+        lhs.set_identifier(parameter_identifier);
 
         if(lhs.type()!=value.type())
           value.make_typecast(lhs.type());
@@ -377,10 +377,10 @@ void prepare_functionst::operator()(goto_functionst &goto_functions)
   Forall_goto_functions(it, goto_functions)
   {
     if(it->second.body_available)
-      adjust_function_arguments(original_types[it->first].arguments());
+      adjust_function_parameters(original_types[it->first].parameters());
     do_return_value(it);
     do_function_calls(goto_functions, it->second.body);
-    do_function_arguments(it);
+    do_function_parameters(it);
   }
 }
 

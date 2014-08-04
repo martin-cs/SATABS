@@ -241,12 +241,12 @@ void bp_typecheckt::typecheck_expr(exprt &expr)
       throw 0;
     }
   }
-  else if(expr.id()==ID_sideeffect)
+  else if(expr.id()==ID_side_effect)
   {
     //const irep_idt &statement=expr.get("statement");
 
     err_location(expr);
-    str << "No type checking for sideeffect " << expr;
+    str << "No type checking for side effect " << expr;
     throw 0;
   }
   else

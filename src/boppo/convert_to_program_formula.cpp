@@ -268,7 +268,7 @@ formulat convert_to_program_formulat::convert_expr(const exprt &expr)
   {
     result=formula_container.gen_nondet();
   }
-  else if(expr.id()==ID_sideeffect)
+  else if(expr.id()==ID_side_effect)
   {
     const irep_idt &statement=expr.get(ID_statement);
     
@@ -278,7 +278,7 @@ formulat convert_to_program_formulat::convert_expr(const exprt &expr)
     }
     else
     {
-      std::cerr << "unexpected sideeffect: "
+      std::cerr << "unexpected side effect: "
                 << expr.pretty() << std::endl;
       assert(false);
     }
@@ -399,13 +399,13 @@ void convert_to_program_formulat::convert_main_code(bool inlining)
       program_formulat::functiont &f=program_formula.function_map[f_it->first];
       
       // args
-      const code_typet::argumentst &arguments=
-        f_it->second.type.arguments();
+      const code_typet::parameterst &parameters=
+        f_it->second.type.parameters();
       
-      f.args.resize(arguments.size());
+      f.args.resize(parameters.size());
 
       for(unsigned i=0; i<f.args.size(); i++)
-        f.args[i]=convert_variable(arguments[i].get_identifier());
+        f.args[i]=convert_variable(parameters[i].get_identifier());
       
       // return value
       const typet &return_type=f_it->second.type.return_type();

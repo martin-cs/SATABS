@@ -78,9 +78,9 @@ bool replace_idt::replace(typet &type) const
   else if(type.id()==ID_code)
   {
     code_typet &code_type=to_code_type(type);
-    code_typet::argumentst &arguments=code_type.arguments();
-    for (code_typet::argumentst::iterator it = arguments.begin();
-         it!=arguments.end();
+    code_typet::parameterst &parameters=code_type.parameters();
+    for (code_typet::parameterst::iterator it = parameters.begin();
+         it!=parameters.end();
          it++)
       replace(*it);
   }

@@ -619,7 +619,7 @@ bool termination_ctat::exclude_precondition(
     {
       const code_assignt &code=to_code_assign(precon_marker->code);
 
-      if(code.rhs().id()!=ID_sideeffect)
+      if(code.rhs().id()!=ID_side_effect)
         break;
 
       const side_effect_exprt &se=to_side_effect_expr(code.rhs());

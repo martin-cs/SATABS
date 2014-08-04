@@ -48,13 +48,13 @@ void satabs_inlinet::parameter_assignments(
   // iterates over the operands
   exprt::operandst::const_iterator it1=arguments.begin();
 
-  const code_typet::argumentst &argument_types=
-    code_type.arguments();
+  const code_typet::parameterst &parameter_types=
+    code_type.parameters();
 
-  // iterates over the types of the arguments
-  for(code_typet::argumentst::const_iterator
-      it2=argument_types.begin();
-      it2!=argument_types.end();
+  // iterates over the types of the parameters
+  for(code_typet::parameterst::const_iterator
+      it2=parameter_types.begin();
+      it2!=parameter_types.end();
       it2++)
   {
     // if you run out of actual arguments there was a mismatch
@@ -64,17 +64,17 @@ void satabs_inlinet::parameter_assignments(
       throw "function call: not enough arguments";
     }
 
-    const code_typet::argumentt &argument=*it2;
+    const code_typet::parametert &parameter=*it2;
 
     // this is the type the n-th argument should be
-    const typet &arg_type=ns.follow(argument.type());
+    const typet &arg_type=ns.follow(parameter.type());
 
-    const irep_idt &identifier=argument.get_identifier();
+    const irep_idt &identifier=parameter.get_identifier();
 
     if(identifier==irep_idt())
     {
       err_location(location);
-      throw "no identifier for function argument";
+      throw "no identifier for function parameter";
     }
 
     {
@@ -128,7 +128,7 @@ void satabs_inlinet::parameter_assignments(
         {
           err_location(*it1);
 
-          str << "function call: argument `" << identifier
+          str << "function call: parameter `" << identifier
             << "' type mismatch: got `"
             << from_type(ns, identifier, it1->type())
             << "', expected `"

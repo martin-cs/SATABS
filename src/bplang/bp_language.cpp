@@ -51,11 +51,11 @@ bool bp_languaget::final(
   code_function_callt call;
   call.function()=symbol_expr(symbol);
 
-  const code_typet::argumentst &arguments=
-    to_code_type(symbol.type).arguments();
+  const code_typet::parameterst &parameters=
+    to_code_type(symbol.type).parameters();
 
   call.arguments().resize(
-    arguments.size(), static_cast<const exprt &>(get_nil_irep()));
+    parameters.size(), static_cast<const exprt &>(get_nil_irep()));
 
   new_symbol.value=call;
   
