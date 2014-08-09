@@ -72,7 +72,7 @@ protected:
   void typecheck_code_decl(codet &code);
   void convert_declaration(exprt &declaration);
   void convert_function(exprt &declaration);
-  void convert_function_arguments(symbolt &symbol);
+  void convert_function_parameters(symbolt &symbol);
   void convert_variable(exprt &declaration);
   void typecheck_boolean_operands(exprt &exprt);
   

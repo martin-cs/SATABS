@@ -147,7 +147,7 @@ void bp_typecheckt::convert_function(exprt &declaration)
 
   symbol.value.swap(declaration.add(ID_body));
   
-  convert_function_arguments(symbol);
+  convert_function_parameters(symbol);
   function_identifiers.push_back(symbol.name);  
 
   symbol_table.move(symbol);
@@ -155,7 +155,7 @@ void bp_typecheckt::convert_function(exprt &declaration)
 
 /*******************************************************************\
 
-Function: bp_typecheckt::convert_function_arguments
+Function: bp_typecheckt::convert_function_parameters
 
   Inputs:
 
@@ -165,38 +165,38 @@ Function: bp_typecheckt::convert_function_arguments
 
 \*******************************************************************/
 
-void bp_typecheckt::convert_function_arguments(symbolt &fkt_symbol)
+void bp_typecheckt::convert_function_parameters(symbolt &fkt_symbol)
 {
-  irept &arguments=fkt_symbol.type.add(ID_arguments);
+  irept &parameters=fkt_symbol.type.add(ID_parameters);
 
-  symbolt arg_symbol;
+  symbolt param_symbol;
 
-  arg_symbol.mode=mode;
-  arg_symbol.value.make_nil();
-  arg_symbol.is_state_var=true;
-  arg_symbol.is_static_lifetime=false;
-  arg_symbol.is_lvalue=true;
-  arg_symbol.type=typet(ID_bool);
+  param_symbol.mode=mode;
+  param_symbol.value.make_nil();
+  param_symbol.is_state_var=true;
+  param_symbol.is_static_lifetime=false;
+  param_symbol.is_lvalue=true;
+  param_symbol.type=typet(ID_bool);
 
-  Forall_irep(it, arguments.get_sub())
+  Forall_irep(it, parameters.get_sub())
   {
-    arg_symbol.base_name=it->get(ID_identifier);
-    arg_symbol.name=
-      id2string(arg_symbol.mode)+"::argument::"+
+    param_symbol.base_name=it->get(ID_identifier);
+    param_symbol.name=
+      id2string(param_symbol.mode)+"::parameter::"+
       id2string(fkt_symbol.base_name)+"::"+
-      id2string(arg_symbol.base_name);
+      id2string(param_symbol.base_name);
     
-    arg_symbol.location=((const exprt &)*it).location();
+    param_symbol.location=((const exprt &)*it).location();
 
-    exprt argument(ID_argument, arg_symbol.type);
+    exprt parameter(ID_parameter, param_symbol.type);
     
-    argument.set(ID_C_identifier, arg_symbol.name);
-    argument.set(ID_C_base_name, arg_symbol.base_name);
-    argument.location()=((const exprt &)*it).location();
+    parameter.set(ID_C_identifier, param_symbol.name);
+    parameter.set(ID_C_base_name, param_symbol.base_name);
+    parameter.location()=((const exprt &)*it).location();
    
-    it->swap(argument);
+    it->swap(parameter);
 
-    symbol_table.add(arg_symbol);
+    symbol_table.add(param_symbol);
   }
 }
 
