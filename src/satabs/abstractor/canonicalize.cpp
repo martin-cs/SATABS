@@ -99,7 +99,7 @@ Purpose:
 void clean_annotations_and_type_rec(exprt &expr, const namespacet &ns)
 {
   expr.remove(ID_C_cformat);
-  expr.remove(ID_C_location);
+  expr.remove(ID_C_source_location);
 
   if(expr.type().id()==ID_symbol)
   {

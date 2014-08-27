@@ -270,7 +270,7 @@ Purpose:
 
 \*******************************************************************/
 
-void satabs_replace_location(locationt &dest, const locationt &new_location)
+void satabs_replace_location(source_locationt &dest, const source_locationt &new_location)
 {
   // can't just copy, e.g., due to comments field
   dest.id(irep_idt()); // not NIL
@@ -292,13 +292,13 @@ Purpose:
 
 \*******************************************************************/
 
-void satabs_replace_location(exprt &dest, const locationt &new_location)
+void satabs_replace_location(exprt &dest, const source_locationt &new_location)
 {
   Forall_operands(it, dest)
     satabs_replace_location(*it, new_location);
 
-  if(dest.find(ID_C_location).is_not_nil())
-    satabs_replace_location(dest.location(), new_location);
+  if(dest.find(ID_C_source_location).is_not_nil())
+    satabs_replace_location(dest.add_source_location(), new_location);
 }
 
 
