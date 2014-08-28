@@ -38,7 +38,7 @@ Purpose:
 \*******************************************************************/
 
 void satabs_inlinet::parameter_assignments(
-    const locationt &location,
+    const source_locationt &source_location,
     const irep_idt &function_name,
     const code_typet &code_type,
     const exprt::operandst &arguments,
@@ -60,7 +60,7 @@ void satabs_inlinet::parameter_assignments(
     // if you run out of actual arguments there was a mismatch
     if(it1==arguments.end())
     {
-      err_location(location);
+      err_location(source_location);
       throw "function call: not enough arguments";
     }
 
@@ -73,7 +73,7 @@ void satabs_inlinet::parameter_assignments(
 
     if(identifier==irep_idt())
     {
-      err_location(location);
+      err_location(source_location);
       throw "no identifier for function parameter";
     }
 
@@ -83,8 +83,8 @@ void satabs_inlinet::parameter_assignments(
       goto_programt::targett decl=dest.add_instruction();
       decl->make_decl();
       decl->code=code_declt(symbol_expr(symbol));
-      decl->code.location()=location;
-      decl->location=location;
+      decl->code.add_source_location()=source_location;
+      decl->location=source_location;
       decl->function=function_name;
     }
 
@@ -140,10 +140,10 @@ void satabs_inlinet::parameter_assignments(
 
       // adds an assignment of the actual parameter to the formal parameter
       code_assignt assignment(symbol_exprt(identifier, arg_type), actual);
-      assignment.location()=location;
+      assignment.add_source_location()=source_location;
 
       dest.add_instruction(ASSIGN);
-      dest.instructions.back().location=location;
+      dest.instructions.back().location=source_location;
       dest.instructions.back().code.swap(assignment);
       dest.instructions.back().function=function_name;
 
@@ -151,8 +151,8 @@ void satabs_inlinet::parameter_assignments(
       {
         goto_programt::targett t = dest.add_instruction(OTHER);
         t->guard = equal_exprt(symbol_exprt(identifier, arg_type), actual);
-        t->location = location;
-        t->function=location.get_function();
+        t->location = source_location;
+        t->function=source_location.get_function();
         t->location.set("user-provided", true);
         t->code=codet(ID_user_specified_predicate);
       }
@@ -525,10 +525,10 @@ void satabs_inlinet::expand_function_call(
     if(lhs.is_not_nil())
     {
       exprt rhs=side_effect_expr_nondett(lhs.type());
-      rhs.location()=target->location;
+      rhs.add_source_location()=target->location;
 
       code_assignt code(lhs, rhs);
-      code.location()=target->location;
+      code.add_source_location()=target->location;
 
       goto_programt::targett t=tmp.add_instruction(ASSIGN);
       t->location=target->location;
