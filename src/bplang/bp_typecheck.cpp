@@ -106,7 +106,7 @@ void bp_typecheckt::convert_variable(exprt &declaration)
       id2string(symbol.mode)+"::var::"+id2string(symbol.base_name);
 
     symbol.pretty_name=symbol.base_name;
-    symbol.location=it->location();
+    symbol.location=it->source_location();
 
     symbol_table.add(symbol);
   }
@@ -186,13 +186,13 @@ void bp_typecheckt::convert_function_parameters(symbolt &fkt_symbol)
       id2string(fkt_symbol.base_name)+"::"+
       id2string(param_symbol.base_name);
     
-    param_symbol.location=((const exprt &)*it).location();
+    param_symbol.location=((const exprt &)*it).source_location();
 
     exprt parameter(ID_parameter, param_symbol.type);
     
     parameter.set(ID_C_identifier, param_symbol.name);
     parameter.set(ID_C_base_name, param_symbol.base_name);
-    parameter.location()=((const exprt &)*it).location();
+    parameter.add_source_location()=((const exprt &)*it).source_location();
    
     it->swap(parameter);
 
