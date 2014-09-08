@@ -1275,7 +1275,7 @@ termination_resultt termination_path_enumerationt::operator()()
     {
       total_loops++;
       
-      const locationt &loc=assertion->location;
+      const locationt &loc=assertion->source_location;
       status("==================================================");
       status("Loop Termination Check #" + i2string(total_loops));
       status(std::string("at: ") + ((loc.is_nil()) ? "?" : loc.as_string()));

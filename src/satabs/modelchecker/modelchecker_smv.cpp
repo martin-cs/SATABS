@@ -989,8 +989,8 @@ void modelchecker_smvt::build_smv_file_guards(
     if(instruction.is_goto() || instruction.is_assume() ||
         instruction.is_assert())
     {
-      if(!instruction.location.is_nil())
-        out << "-- " << instruction.location << std::endl;
+      if(!instruction.source_location.is_nil())
+        out << "-- " << instruction.source_location << std::endl;
 
       out << "DEFINE guard" << PC << ":=";
 
@@ -1138,8 +1138,8 @@ void modelchecker_smvt::build_smv_file_control(
     const abstract_programt::instructiont &instruction=
       *inlined.PC_map[PC].original;
 
-    if(!instruction.location.is_nil())
-      out << "    -- " << instruction.location << std::endl;
+    if(!instruction.source_location.is_nil())
+      out << "    -- " << instruction.source_location << std::endl;
 
     out << "    PC=" << PC << ": ";
 
@@ -1268,8 +1268,8 @@ void modelchecker_smvt::build_smv_file_model(
     const abstract_programt::instructiont &instruction=
       *inlined.PC_map[PC].original;
 
-    if(!instruction.location.is_nil())
-      out << "-- " << instruction.location << std::endl;
+    if(!instruction.source_location.is_nil())
+      out << "-- " << instruction.source_location << std::endl;
 
     out << "    -- FROM Predicates:";
     for(std::set<unsigned>::const_iterator
@@ -1444,8 +1444,8 @@ void modelchecker_smvt::build_smv_file_spec(
 
     if(instruction.is_assert())
     {
-      if(!instruction.location.is_nil())
-        out << "-- " << instruction.location << std::endl;
+      if(!instruction.source_location.is_nil())
+        out << "-- " << instruction.source_location << std::endl;
 
       out << "SPEC AG ((PC=" << PC
         << " & runs) -> guard" << PC << ")" << std::endl;

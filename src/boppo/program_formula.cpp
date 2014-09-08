@@ -197,7 +197,7 @@ std::ostream& program_formulat::formula_goto_programt::output_instruction(
     {
       out << from_expr(ns, identifier, instruction.code.guard_expr);
     
-      const irep_idt &comment=instruction.location.get("comment");
+      const irep_idt &comment=instruction.source_location.get_comment();
       if(comment!="") out << " // " << comment;
     }
       
@@ -285,7 +285,7 @@ void program_formulat::show_alive(std::ostream &out) const
         i_it!=program.instructions.end();
         i_it++)
     {
-      out << i_it->location << std::endl;
+      out << i_it->source_location << std::endl;
       for(std::set<unsigned>::const_iterator
           v_it=i_it->code.alive.begin();
           v_it!=i_it->code.alive.end();

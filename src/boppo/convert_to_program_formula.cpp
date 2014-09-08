@@ -462,8 +462,8 @@ void convert_to_program_formulat::convert_goto_program(
 
     targets_mapping[it]=new_formula_instruction;
 
-    // copy location
-    new_formula_instruction->location=it->location;
+    // copy source code location
+    new_formula_instruction->source_location=it->source_location;
 
     // copy type
     new_formula_instruction->type=it->type;

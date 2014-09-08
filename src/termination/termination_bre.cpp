@@ -347,7 +347,7 @@ termination_resultt termination_bret::operator()()
       if(seen_loops.find(assertion)==seen_loops.end())
       {
         total_loops++;        
-        const locationt &loc=assertion->location;
+        const locationt &loc=assertion->source_location;
         
         status() << "==================================================" << endl
                  << "Loop Termination Check #" << total_loops << endl

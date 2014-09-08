@@ -238,14 +238,14 @@ std::set<symbol_exprt> concurrency_aware_abstractort::targets_of_lvalue(
       if(object_descriptor.offset() != from_integer(0, index_type()))
       {
         std::cout << "Pointer " << from_expr(lvalue.op0()) << " can point to " << from_expr(*it) << " at line " <<
-          program_location->location.get_line() << ", we cannot handle this" << std::endl;
+          program_location->source_location.get_line() << ", we cannot handle this" << std::endl;
         exit(1);
       }
 
       if(object_descriptor.object().id() != ID_symbol)
       {
         std::cout << "Pointer " << from_expr(lvalue.op0()) << " can point to " << from_expr(*it) << " at line " <<
-          program_location->location.get_line() << ", we cannot handle this" << std::endl;
+          program_location->source_location.get_line() << ", we cannot handle this" << std::endl;
         exit(1);
       }
 

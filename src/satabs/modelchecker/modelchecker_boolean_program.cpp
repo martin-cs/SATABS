@@ -630,11 +630,11 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     unsigned PC=PC_map.size();
     PC_map.push_back(it);
 
-    if(!it->location.is_nil() &&
-        it->location!=previous_location)
+    if(!it->source_location.is_nil() &&
+        it->source_location!=previous_location)
     {
-      out << "    // " << it->location << std::endl;
-      previous_location=it->location;
+      out << "    // " << it->source_location << std::endl;
+      previous_location=it->source_location;
     }
 
     if(!it->code.get_transition_relation().from_predicates.empty())

@@ -242,7 +242,7 @@ void initial_abstractiont::build_control_flow(
     targets_mapping[it]=new_abstract_instruction;
 
     // copy location
-    new_abstract_instruction->location=it->location;
+    new_abstract_instruction->source_location=it->source_location;
 
     // copy type
     new_abstract_instruction->type=it->type;

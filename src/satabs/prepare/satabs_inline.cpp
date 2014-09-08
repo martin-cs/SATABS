@@ -84,7 +84,7 @@ void satabs_inlinet::parameter_assignments(
       decl->make_decl();
       decl->code=code_declt(symbol_expr(symbol));
       decl->code.add_source_location()=source_location;
-      decl->location=source_location;
+      decl->source_location=source_location;
       decl->function=function_name;
     }
 
@@ -143,7 +143,7 @@ void satabs_inlinet::parameter_assignments(
       assignment.add_source_location()=source_location;
 
       dest.add_instruction(ASSIGN);
-      dest.instructions.back().location=source_location;
+      dest.instructions.back().source_location=source_location;
       dest.instructions.back().code.swap(assignment);
       dest.instructions.back().function=function_name;
 
@@ -151,9 +151,9 @@ void satabs_inlinet::parameter_assignments(
       {
         goto_programt::targett t = dest.add_instruction(OTHER);
         t->guard = equal_exprt(symbol_exprt(identifier, arg_type), actual);
-        t->location = source_location;
+        t->source_location = source_location;
         t->function=source_location.get_function();
-        t->location.set("user-provided", true);
+        t->source_location.set("user-provided", true);
         t->code=codet(ID_user_specified_predicate);
       }
 
@@ -218,14 +218,14 @@ void satabs_inlinet::satabs_replace_return(
         {
           goto_programt::targett t = dest.add_instruction(OTHER);
           t->guard = equal_exprt(code_assign.lhs(), code_assign.rhs());
-          t->location = it->location;
-          t->function = it->location.get_function();
-          t->location.set("user-provided", true);
+          t->source_location = it->source_location;
+          t->function = it->source_location.get_function();
+          t->source_location.set("user-provided", true);
           t->code=codet(ID_user_specified_predicate);
         }
 
         assignment->code=code_assign;
-        assignment->location=it->location;
+        assignment->source_location=it->source_location;
         assignment->function=it->function;
 
         if(constrain.is_not_nil() && !constrain.is_true())
@@ -246,7 +246,7 @@ void satabs_inlinet::satabs_replace_return(
 
         expression->code=codet(ID_expression);
         expression->code.move_to_operands(it->code.op0());
-        expression->location=it->location;
+        expression->source_location=it->source_location;
         expression->function=it->function;
 
         dest.insert_before_swap(it, *expression);
@@ -460,7 +460,10 @@ void satabs_inlinet::expand_function_call(
 
     bool add_parameter_predicates = contains_parameter_predicates_hint(f.body);
 
-    parameter_assignments(tmp2.instructions.front().location, identifier, f.type, arguments, tmp, add_parameter_predicates);
+    parameter_assignments(
+      tmp2.instructions.front().source_location, identifier, f.type,
+      arguments, tmp, add_parameter_predicates);
+      
     tmp.destructive_append(tmp2);
 
     remove_parameter_predicates_hints(tmp);
@@ -476,7 +479,7 @@ void satabs_inlinet::expand_function_call(
         {
           if(it->function==identifier)
           {
-            satabs_replace_location(it->location, new_location);
+            satabs_replace_location(it->source_location, new_location);
             satabs_replace_location(it->guard, new_location);
             satabs_replace_location(it->code, new_location);
             it->function=target->function;
@@ -515,7 +518,7 @@ void satabs_inlinet::expand_function_call(
     {
       goto_programt::targett t=tmp.add_instruction();
       t->make_other();
-      t->location=target->location;
+      t->source_location=target->source_location;
       t->function=target->function;
       t->code=codet(ID_expression);
       t->code.copy_to_operands(*it);
@@ -525,13 +528,13 @@ void satabs_inlinet::expand_function_call(
     if(lhs.is_not_nil())
     {
       exprt rhs=side_effect_expr_nondett(lhs.type());
-      rhs.add_source_location()=target->location;
+      rhs.add_source_location()=target->source_location;
 
       code_assignt code(lhs, rhs);
-      code.add_source_location()=target->location;
+      code.add_source_location()=target->source_location;
 
       goto_programt::targett t=tmp.add_instruction(ASSIGN);
-      t->location=target->location;
+      t->source_location=target->source_location;
       t->function=target->function;
       t->code.swap(code);
     }

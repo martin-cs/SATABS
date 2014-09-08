@@ -632,7 +632,7 @@ bool termination_ctat::exclude_precondition(
 
     goto_programt::targett new_assume=main.insert_before(precon_marker);
     new_assume->make_assumption(not_exprt(wp));
-    new_assume->location=precon_marker->location;
+    new_assume->source_location=precon_marker->source_location;
     new_assume->function=precon_marker->function;
     main.compute_location_numbers();
 
@@ -912,7 +912,7 @@ termination_resultt termination_ctat::operator()()
     {
       total_loops++;
 
-      const locationt &loc=assertion->location;
+      const locationt &loc=assertion->source_location;
       status("==================================================");
       status("Loop Termination Check #" + i2string(total_loops));
       status(std::string("at: ") + ((loc.is_nil()) ? "?" : loc.as_string()));

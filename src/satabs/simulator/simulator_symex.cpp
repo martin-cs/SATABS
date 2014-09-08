@@ -343,7 +343,7 @@ bool simulator_symext::check_prefix_equation(
 
   // report the location
   status() << "Simulation failed at "
-           << fail_info.last_step().pc->location << eom;
+           << fail_info.last_step().pc->source_location << eom;
 
   return true;
 }

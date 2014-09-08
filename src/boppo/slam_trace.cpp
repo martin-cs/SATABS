@@ -431,7 +431,7 @@ void slam_dumpt::dump_trace_slam()
 	      slam_path_file << get_block_index ('b', id2string(*l_it)) << std::endl;
 	  
 	      slam_path_file 
-		<< "// " << trace_step.previous_PC->location.get ("function") << std::endl;
+		<< "// " << trace_step.previous_PC->source_location.get_function() << std::endl;
 	    }
 	}
     }
@@ -449,7 +449,7 @@ void slam_dumpt::dump_trace_slam()
       
       /* SLAM is not interested in paths through malloc */
       const std::string &fname =
-        trace_step.previous_PC->location.get_string("function");
+        id2string(trace_step.previous_PC->source_location.get_function());
         
       if (fname.find ("malloc_") != std::string::npos)
 	continue;
@@ -586,7 +586,7 @@ const std::string
     {
       bool is_local = 
 	(id2string(program_formula.variables[v+no_globals].identifier).find
-	 (trace_step.previous_PC->location.get_string("function")) 
+	 (id2string(trace_step.previous_PC->source_location.get_function()) )
 	 != std::string::npos);
 
       if (is_local)
@@ -747,7 +747,7 @@ void slam_dumpt::process_labels(const std::list<irep_idt> &labels,
 
       /* check if we are in malloc - Newton doesn't like malloc ;-)                   */
       const std::string &fname=
-        trace_step.previous_PC->location.get_string("function");
+        id2string(trace_step.previous_PC->source_location.get_function());
         
       if (fname.find ("malloc_") != std::string::npos)
 	continue;
@@ -800,7 +800,7 @@ slam_dumpt::process_instr_label (const std::string &label,
   const std::string &pre_locals = get_local_state (previous/*_of_thread*/, slam_predicates, current_thread);
 
   const std::string fname=
-    previous_of_thread.previous_PC->location.get_string("function");
+    id2string(previous_of_thread.previous_PC->source_location.get_function());
 
   splitted_trace[current_thread].push_back
     (trace_infot (current_thread,

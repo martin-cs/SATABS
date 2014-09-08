@@ -30,8 +30,8 @@ std::ostream& abstract_programt::output_instruction(
     std::ostream &out,
     const_targett it) const
 {
-  if(!it->location.is_nil())
-    out << "        // " << it->location.as_string() << "\n";
+  if(!it->source_location.is_nil())
+    out << "        // " << it->source_location.as_string() << "\n";
   else
     out << "        // no location\n";
 
@@ -158,7 +158,7 @@ std::ostream& abstract_programt::output_instruction(
       {
         out << from_expr(ns, identifier, it->guard);
 
-        const irep_idt &comment=it->location.get("comment");
+        const irep_idt &comment=it->source_location.get_comment();
         if(comment!="") out << " // " << comment;
       }
 

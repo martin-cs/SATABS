@@ -265,7 +265,7 @@ termination_resultt termination_directt::operator()()
       if(seen_loops.find(assertion)==seen_loops.end())
       {
         total_loops++;        
-        const locationt &loc=assertion->location;
+        const locationt &loc=assertion->source_location;
         
         status("==================================================");
         status("Loop Termination Check #" + i2string(total_loops));

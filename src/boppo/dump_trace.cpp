@@ -71,7 +71,7 @@ void simulator_baset::dump_full_trace(tracet &trace)
     {
       std::cout << "Executing Thread " << trace_step.previous_thread
                 << ", "
-                << trace_step.previous_PC->location
+                << trace_step.previous_PC->source_location
                 << std::endl;
                 
       symbol_tablet symbol_table;

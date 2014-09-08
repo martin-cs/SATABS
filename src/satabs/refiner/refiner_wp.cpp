@@ -30,7 +30,7 @@ Date: June 2003
 
 #include "refiner_wp.h"
 
-//#define DEBUG
+#define DEBUG
 
 /*******************************************************************\
 
@@ -93,7 +93,7 @@ bool refiner_wpt::refine_prefix(
       str << concrete_pc->type;
     }
 
-    str << "  // " << (concrete_pc->location);
+    str << "  // " << (concrete_pc->source_location);
 
     str << std::endl << "**********";
 

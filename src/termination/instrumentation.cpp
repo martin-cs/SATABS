@@ -314,9 +314,9 @@ void termination_instrumentert::instrument_loop(
     // just insert a dummy assertion
     goto_programt::instructiont assertion;    
     assertion.make_assertion(true_exprt());
-    assertion.location=loop.begin->location;
-    assertion.location.set("comment", "loop termination");
-    assertion.location.set("property", "termination");
+    assertion.source_location=loop.begin->source_location;
+    assertion.source_location.set_comment("loop termination");
+    assertion.source_location.set_property_class("termination");
     
     program.insert_before_swap(loop.begin, assertion);
   }
@@ -328,9 +328,9 @@ void termination_instrumentert::instrument_loop(
       goto_programt::targett a=program.insert_before(loop.begin);
       a->type=ASSERT;
       a->guard=false_exprt(); // give up on loops over pointers
-      a->location=loop.begin->location;
-      a->location.set("comment", "loop termination");
-      a->location.set("property", "termination");
+      a->source_location=loop.begin->source_location;
+      a->source_location.set_comment("loop termination");
+      a->source_location.set_property_class("termination");
     }
     else
     {
@@ -341,7 +341,7 @@ void termination_instrumentert::instrument_loop(
       goto_programt::targett set_flag=program.insert_before(loop.begin);
       set_flag->type=ASSIGN;
       set_flag->code=code_assignt(cflag, false_exprt());
-      set_flag->location=loop.begin->location;
+      set_flag->source_location=loop.begin->source_location;
   
       // add termination assertion
       insert_assertion(loop, cflag, var_map, program);
@@ -540,13 +540,13 @@ void termination_instrumentert::insert_assertion(
   // set locations
   Forall_goto_program_instructions(it, dest)
   {
-    it->location=loop.begin->location;
+    it->source_location=loop.begin->source_location;
     it->function=loop.begin->function;
   }
 
   // set comments for assertion
-  a->location.set("comment", "loop termination");
-  a->location.set("property", "termination");
+  a->source_location.set_comment("loop termination");
+  a->source_location.set_property_class("termination");
 
   program.insert_before_swap(loop.begin, dest);
 }

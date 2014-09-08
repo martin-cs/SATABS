@@ -414,8 +414,8 @@ void modelchecker_spint::build_promela_file_control(
   {
     const inlinedt::instructiont &instruction=inlined.PC_map[PC];
 
-    if(!instruction.original->location.is_nil())
-      out << "    // " << instruction.original->location << std::endl;
+    if(!instruction.original->source_location.is_nil())
+      out << "    // " << instruction.original->source_location << std::endl;
 
     std::string guard_string;
 

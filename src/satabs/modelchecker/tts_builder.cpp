@@ -302,7 +302,7 @@ void tts_buildert::build_instruction(
 
 #ifdef COMMENTS
   out_tts << "# BP-PC" << BP_PC << ": "
-    << it->type << " at " << it->location << std::endl;
+    << it->type << " at " << it->source_location << std::endl;
 #endif
 
   const unsigned PC=PC_map_entry->second;

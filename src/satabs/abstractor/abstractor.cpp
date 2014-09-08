@@ -212,7 +212,7 @@ void abstractort::build_abstraction(
 
     a_it->code.re_abstract=false;
 
-    print(9, "Abstracting "+c_it->location.as_string());
+    print(9, "Abstracting "+c_it->source_location.as_string());
 
     switch(c_it->type)
     {

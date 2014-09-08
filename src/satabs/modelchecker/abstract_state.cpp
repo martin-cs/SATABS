@@ -31,7 +31,7 @@ void abstract_stept::output(std::ostream &out) const
     case STATE:
       if(has_pc)
       {
-        out << "// " << pc->location << std::endl;
+        out << "// " << pc->source_location << std::endl;
         out << pc->type;
 
         if(pc->is_goto())

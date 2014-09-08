@@ -89,14 +89,14 @@ std::set<symbol_exprt> locations_of_expression_rec(const predicatet& phi, const 
       if(object_descriptor.offset() != from_integer(0, index_type()))
       {
         std::cout << "(*) Warning: pointer " << from_expr(ns, "", phi.op0()) << " can point to " << from_expr(ns, "", *it) << " at " <<
-          program_location->location << ", this needs further investigation" << std::endl;
+          program_location->source_location << ", this needs further investigation" << std::endl;
         continue;
       }
 
       if(object_descriptor.object().id() != ID_symbol)
       {
         std::cout << "(**) Warning: pointer " << from_expr(ns, "", phi.op0()) << " can point to " << from_expr(ns, "", *it) << " at " <<
-          program_location->location << ", this needs further investigation" << std::endl;
+          program_location->source_location << ", this needs further investigation" << std::endl;
         continue;
       }
 

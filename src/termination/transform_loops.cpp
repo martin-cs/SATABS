@@ -188,7 +188,7 @@ void loop_transformt::transform_do_while(
     newguard.make_goto(next);
     newguard.guard = end->guard;
     newguard.guard.make_not();
-    newguard.location = end->location;
+    newguard.source_location = end->source_location;
     end->guard=true_exprt();
 
     unsigned ln = end->location_number; // doesn't get swapped
@@ -309,7 +309,7 @@ void loop_transformt::split_multi_head(
     newskip->make_skip();
     newskip->location_number = begin->location_number;
     newskip->function = begin->function;
-    newskip->location = begin->location;
+    newskip->source_location = begin->source_location;
 
     // redirect gotos
     forall_incoming_edges(it, begin)    
@@ -387,8 +387,8 @@ bool loop_transformt::check_loop_interleaved(
       {
         std::stringstream str;
         str << "Error: Interleaved loop: " <<
-          it->location.get_file() << " " <<
-          it->location.get_line();
+          it->source_location.get_file() << " " <<
+          it->source_location.get_line();
 
         output_loop(std::cout, program, begin, end);
         throw str.str();
@@ -433,8 +433,8 @@ bool loop_transformt::check_loop_exits(
          target!=exit)
       {
         str << "Warning: Far loop exit: " <<
-          it->location.get_file() << " " <<
-          it->location.get_line();
+          it->source_location.get_file() << " " <<
+          it->source_location.get_line();
 
 //        std::cout << begin->function << " " << begin->location_number << " to " <<
 //          end->location_number << std::endl;
@@ -446,8 +446,8 @@ bool loop_transformt::check_loop_exits(
       {
         std::stringstream str;
         str << "Error: Backwards loop exit: " <<
-          it->location.get_file() << " " <<
-          it->location.get_line();
+          it->source_location.get_file() << " " <<
+          it->source_location.get_line();
         throw str.str();
       }
     }
@@ -1038,7 +1038,7 @@ void loop_transformt::transform_exits(
       equal_exprt guard(loop_symbol, from_integer(it->second, unsigned_int_type()));
       newt->guard=guard;
       newt->location_number=next->location_number;
-      newt->location=end->location;
+      newt->source_location=end->source_location;
       newt->targets.push_back(it->first);
     }
   }
@@ -1138,8 +1138,8 @@ bool loop_transformt::check_loop_entries(
       if(!(from>=to))
       {
         str << "Warning: Multiple loop entries: " <<
-          begin->location.get_file() << " " <<
-          end->location.get_line();
+          begin->source_location.get_file() << " " <<
+          end->source_location.get_line();
         warning();
         return true;
       }
