@@ -331,13 +331,13 @@ void modelchecker_smvt::read_counterexample(
       std::string variable=original_variable;
 
       unsigned thread_nr=0;
-      bool thread_local=false;
+      bool thread_local_var=false;
 
       if(variable.empty())
         throw "failed to get variable name";
       else if(variable[0]=='t') // checked for emptyness above
       {
-        thread_local=true;
+        thread_local_var=true;
         thread_nr=safe_str2unsigned(variable.c_str()+1);
 
         std::string::size_type q=original_variable.find('.');
@@ -370,7 +370,7 @@ void modelchecker_smvt::read_counterexample(
 
         for(unsigned tc=0; tc < threads.size(); ++tc)
         {
-          if(thread_local &&
+          if(thread_local_var &&
               !abstract_model.variables[nr].is_shared_global() &&
               tc!=thread_nr)
             continue;
@@ -511,13 +511,13 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
           variable.erase(0, 1);
 
         unsigned thread_nr=0;
-        bool thread_local=false;
+        bool thread_local_var=false;
 
         if(variable.empty())
           throw "failed to get variable name";
         else if(variable[0]=='t') // checked for emptyness above
         {
-          thread_local=true;
+          thread_local_var=true;
           thread_nr=safe_str2unsigned(variable.c_str()+1);
 
           std::string::size_type q=original_variable.find('.');
@@ -547,7 +547,7 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
 
           for(unsigned tc=0; tc < threads.size(); ++tc)
           {
-            if(thread_local &&
+            if(thread_local_var &&
                 !abstract_model.variables[nr].is_shared_global() &&
                 tc!=thread_nr)
               continue;
