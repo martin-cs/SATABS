@@ -62,10 +62,10 @@ void cmdline_optionst::get_command_line_options(optionst &options)
   options.set_option("nan-check", cmdline.isset("nan-check"));
 
   if(cmdline.isset("error-label"))
-    options.set_option("error-label", cmdline.getval("error-label"));
+    options.set_option("error-label", cmdline.get_value("error-label"));
 
   if(cmdline.isset("iterations"))
-    options.set_option("iterations", cmdline.getval("iterations"));
+    options.set_option("iterations", cmdline.get_value("iterations"));
   else
     options.set_option("iterations", 100);
 
@@ -75,13 +75,13 @@ void cmdline_optionst::get_command_line_options(optionst &options)
 
   // refiner
   if(cmdline.isset("refiner"))
-    options.set_option("refiner", cmdline.getval("refiner"));
+    options.set_option("refiner", cmdline.get_value("refiner"));
   else
     options.set_option("refiner", "wp");
 
   if(cmdline.isset("max-new-predicates"))
     options.set_option("max-new-predicates",
-        cmdline.getval("max-new-predicates"));
+        cmdline.get_value("max-new-predicates"));
   else
     options.set_option("max-new-predicates", -1);
 
@@ -105,30 +105,30 @@ void cmdline_optionst::get_command_line_options(optionst &options)
   // -1 means use unsplit prover
   if(cmdline.isset("ipplimit"))
     options.set_option("ipplimit",
-        cmdline.getval("ipplimit"));
+        cmdline.get_value("ipplimit"));
   else
     options.set_option("ipplimit", -1);
 
   // abstractor
   if(cmdline.isset("abstractor"))
-    options.set_option("abstractor", cmdline.getval("abstractor"));
+    options.set_option("abstractor", cmdline.get_value("abstractor"));
   else
     options.set_option("abstractor", "wp");
 
   if(cmdline.isset("max-cube-length"))
-    options.set_option("max-cube-length", cmdline.getval("max-cube-length"));
+    options.set_option("max-cube-length", cmdline.get_value("max-cube-length"));
   else
     options.set_option("max-cube-length", 3);
 
   // model checker
   if(cmdline.isset("modelchecker"))
-    options.set_option("modelchecker", cmdline.getval("modelchecker"));
+    options.set_option("modelchecker", cmdline.get_value("modelchecker"));
   else
     options.set_option("modelchecker", "boom");
 
   // boom's default thread bound of 2 is too small
   if(cmdline.isset("max-threads"))
-    options.set_option("max-threads", cmdline.getval("max-threads"));
+    options.set_option("max-threads", cmdline.get_value("max-threads"));
   else
     options.set_option("max-threads", 5);
 
@@ -140,7 +140,7 @@ void cmdline_optionst::get_command_line_options(optionst &options)
 
   // simulator
   if(cmdline.isset("simulator"))
-    options.set_option("simulator", cmdline.getval("simulator"));
+    options.set_option("simulator", cmdline.get_value("simulator"));
   else
     options.set_option("simulator", "sat");
 
@@ -179,7 +179,7 @@ int cmdline_optionst::doit()
   // set the same verbosity for all
   int verbosity=6;
   if(cmdline.isset("v"))
-    verbosity=safe_str2int(cmdline.getval("v"));
+    verbosity=safe_string2int(cmdline.get_value("v"));
 
   // get configuration
 

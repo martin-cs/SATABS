@@ -161,7 +161,7 @@ int preparet::doit()
     {
       namespacet ns(symbol_table);
       get_predicates(
-          cmdline.getval("predicates"),
+          cmdline.get_value("predicates"),
           get_message_handler(),
           ns,
           user_provided_predicates);
@@ -258,7 +258,7 @@ int preparet::get_async_modules()
   // Boom requies full inlining.
   bool boom=
     !cmdline.isset("modelchecker") ||
-    std::string(cmdline.getval("modelchecker"))=="boom";
+    cmdline.get_value("modelchecker")=="boom";
 
   if(cmdline.isset("full-inlining") || boom)
   {
