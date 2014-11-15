@@ -228,7 +228,7 @@ void prepare_functionst::do_function_calls(
       else // no body available
       {
         if(no_body_set.insert(f_it->first).second)
-          warning("no body for function `"+id2string(f_it->first)+"'");
+          warning() << "no body for function `" << f_it->first << "'" << eom;
 
         goto_programt tmp;
 

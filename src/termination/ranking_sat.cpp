@@ -95,8 +95,8 @@ exprt ranking_synthesis_satt::instantiate(void)
   
   if(first) // none of the interesting variables was used - bail out!
   {
-    debug("Completely non-deterministic template; "
-           "this loop does not terminate.");
+    debug() << "Completely non-deterministic template; "
+               "this loop does not terminate." << eom;
     return false_exprt();
   }
 
@@ -174,7 +174,7 @@ bool ranking_synthesis_satt::generate_functions(void)
   // some coefficient values
   c_valuest c_values;
 
-  debug("Template:" + from_expr(ns, "", templ));
+  debug() << "Template:" << from_expr(ns, "", templ) << eom;
 
   satcheckt::resultt result=satcheckt::P_SATISFIABLE;
 
@@ -193,10 +193,10 @@ bool ranking_synthesis_satt::generate_functions(void)
   }
 
   if(result==satcheckt::P_ERROR)
-    throw ("Solver error.");
+    throw "Solver error.";
   else if(result==satcheckt::P_UNSATISFIABLE) // no counter-example
   {
-    debug("Found ranking functions");
+    debug() << "Found ranking functions" << eom; 
 
     // put the coefficient values in the rank relation
     replace_mapt replace_map;

@@ -213,7 +213,7 @@ int cmdline_optionst::doit()
     switch(satabs_safety_checker(prepare.goto_functions))
     {
       case safety_checkert::SAFE:
-        message.result("VERIFICATION SUCCESSFUL");
+        message.result() << "VERIFICATION SUCCESSFUL" << messaget::eom;
 
         if(prepare.get_ui()==ui_message_handlert::XML_UI)
         {
@@ -237,10 +237,10 @@ int cmdline_optionst::doit()
         }
         else
         {
-          message.result("Counterexample:");
+          message.result() << "Counterexample:" << messaget::eom;
           show_goto_trace(std::cout, satabs_safety_checker.ns,
               satabs_safety_checker.error_trace);
-          message.result("VERIFICATION FAILED");
+          message.result() << "VERIFICATION FAILED" << messaget::eom;
         }
 
         return 10;
@@ -253,13 +253,13 @@ int cmdline_optionst::doit()
 
   catch(const char *e)
   {
-    prepare.error(e);
+    prepare.error() << e << messaget::eom;
     return 1;
   }
 
   catch(const std::string e)
   {
-    prepare.error(e);
+    prepare.error() << e << messaget::eom;
     return 1;
   }
 

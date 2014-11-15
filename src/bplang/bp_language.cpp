@@ -61,7 +61,7 @@ bool bp_languaget::final(
   
   if(symbol_table.move(new_symbol))
   {
-    error("main already defined by another language module");
+    error() << "main already defined by another language module" << eom;
     return true;
   }
   

@@ -50,7 +50,7 @@ bool refiner_wpt::refine_prefix(
   abstract_modelt &abstract_model,
   const fail_infot &fail_info)
 {
-  status("Refining set of predicates according to counterexample (WP)");
+  status() << "Refining set of predicates according to counterexample (WP)" << eom;
 
   reset_num_predicates_added();
 
@@ -60,45 +60,41 @@ bool refiner_wpt::refine_prefix(
   std::list<fail_infot::induction_infot> loops;
   exprt invariant;
   if(fail_info.use_invariants)
-    status("Using recurrence predicates detected by loop detection.");
+    status() << "Using recurrence predicates detected by loop detection." << eom;
 
-  print(10, "refiner_wpt::refine_prefix_async 1");
-
-  print(10, "Inconsistent prefix:");
+  debug() << "Inconsistent prefix:\n";
 
   for(abstract_counterexamplet::stepst::const_reverse_iterator 
       r_it=fail_info.steps.rbegin();
       r_it!=fail_info.steps.rend();
       r_it++)
   {
-    std::stringstream str;
-
     abstract_programt::targett abstract_pc=r_it->pc;
 
     goto_programt::const_targett concrete_pc=
       abstract_pc->code.concrete_pc;
 
     if(concrete_pc->is_goto())
-      str << "GUARD: " << (r_it->branch_taken?"(":"!(")
-        << from_expr(concrete_model->ns, "", concrete_pc->guard) << ")";
+      debug() << "GUARD: " << (r_it->branch_taken?"(":"!(")
+              << from_expr(concrete_model->ns, "", concrete_pc->guard) << ")";
     else if(concrete_pc->is_assert())
-      str << "ASSERT: "
-        << from_expr(concrete_model->ns, "", concrete_pc->guard);
+      debug() << "ASSERT: "
+              << from_expr(concrete_model->ns, "", concrete_pc->guard);
     else if(concrete_pc->is_location())
-      str << "LOC" << std::endl;
+      debug() << "LOC" << "\n";
     else if(concrete_pc->is_other() || concrete_pc->is_assign() || concrete_pc->is_decl())
-      str << from_expr(concrete_model->ns, "", concrete_pc->code);
+      debug() << from_expr(concrete_model->ns, "", concrete_pc->code);
     else
     {
-      str << concrete_pc->type;
+      debug() << concrete_pc->type;
     }
 
-    str << "  // " << (concrete_pc->source_location);
+    debug() << "  // " << (concrete_pc->source_location);
 
-    str << std::endl << "**********";
-
-    print(10, str.str());
+    debug() << "\n" << "**********\n";
   }
+  
+  debug() << eom;
 
 
   {
@@ -345,8 +341,8 @@ bool refiner_wpt::refine_prefix(
     if(!predicate.is_false() &&
        fail_info.warn_on_failure)
     {
-      warning("Failed to refute spurious trace with WPs (got "+
-        from_expr(concrete_model->ns, "", predicate)+")");
+      warning() << "Failed to refute spurious trace with WPs (got " <<
+        from_expr(concrete_model->ns, "", predicate) << ")" << eom;
     }
   }
 

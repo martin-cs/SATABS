@@ -77,7 +77,7 @@ bool modelchecker_smvt::read_result(
     {
       std::string line;
       if(!std::getline(out2, line)) break;
-      warning("SMV error output: "+line);
+      warning() << "SMV error output: " << line << eom;
       file.push_back(line);
     }
 
@@ -106,7 +106,7 @@ bool modelchecker_smvt::read_result(
 
     if(file.empty())
     {
-      error("No output from SMV");
+      error() << "No output from SMV" << eom;
       throw "SMV error - SMV produced no output";
     }
 

@@ -77,7 +77,7 @@ bool ranking_synthesis_seneschalt::generate_functions(void)
   std::cout << "INPUT IS: " << std::endl;
   system("cat seneschal.input");
 
-  status("Calling seneschal...");
+  status() << "Calling seneschal..." << eom;
   absolute_timet before = current_time();
   system(">seneschal.out ; >seneschal.err; "
          "seneschal seneschal.input 1> seneschal.out 2> seneschal.err");
@@ -85,15 +85,15 @@ bool ranking_synthesis_seneschalt::generate_functions(void)
   solver_calls++;
 
 
-	{
-		std::cout << "STDOUT WAS: " << std::endl;
-		system("cat seneschal.out");
-		std::cout << "STDERR WAS: " << std::endl;
-		system("cat seneschal.err");
-	}
+  {
+    std::cout << "STDOUT WAS: " << std::endl;
+    system("cat seneschal.out");
+    std::cout << "STDERR WAS: " << std::endl;
+    system("cat seneschal.err");
+  }
 
-	exprt rf("nil");
-	if(!read_output(rf)) throw ("SENESCHAL ERROR");
+  exprt rf("nil");
+  if(!read_output(rf)) throw ("SENESCHAL ERROR");
 
 //  remove("seneschal.input");
 //  remove("seneschal.err");

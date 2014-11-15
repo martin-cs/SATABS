@@ -332,13 +332,13 @@ bool ranking_synthesis_smtt::generate_functions(void)
 
   smt1_conv.set_message_handler(get_message_handler());
 
-  status("Converting template...");
+  status() << "Converting template..." << eom;
   absolute_timet before = current_time();
   smt1_conv.set_to_true(t);
   smt1_conv.dec_solve(); // this just finalizes
   conversion_time += current_time()-before;
 
-  status("Solving...");
+  status() << "Solving..." << eom;
   before = current_time();
   // we don't have a solver yet...
   qdimacs_coret::resultt res = qdimacs_coret::P_ERROR;
@@ -347,7 +347,7 @@ bool ranking_synthesis_smtt::generate_functions(void)
 
   if(res==qdimacs_coret::P_SATISFIABLE)
   {
-    status("Found ranking functions");
+    status() << "Found ranking functions" << eom;
 
     //if(extract_ranking_relation(converter))
     //  return false;
@@ -359,7 +359,7 @@ bool ranking_synthesis_smtt::generate_functions(void)
     return false;
   }
   else
-    throw ("SMT SOLVER ERROR");
+    throw "SMT SOLVER ERROR";
 }
 
 /*******************************************************************\

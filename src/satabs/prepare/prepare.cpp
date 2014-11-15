@@ -170,13 +170,13 @@ int preparet::doit()
 
   catch(const char *e)
   {
-    error(e);
+    error() << e << eom;
     return 1;
   }
 
   catch(const std::string e)
   {
-    error(e);
+    error() << e << eom;
     return 1;
   }
 

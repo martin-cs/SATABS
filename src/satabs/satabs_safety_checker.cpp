@@ -76,7 +76,7 @@ void satabs_safety_checker_baset::show_loop_component_statistics(
   if(!str.str().empty())
   {
     status() << "Statistics of " << name << ":" << eom;
-    status(str.str());
+    status() << str.str() << eom;
   }
 }
 

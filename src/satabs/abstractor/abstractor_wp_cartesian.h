@@ -80,9 +80,9 @@ protected:
     concrete_model=&_concrete_model;
     delete pointer_info;
     pointer_info=new value_set_analysist(concrete_model->ns);
-    status("Performing pointer analysis for Cartesian abstraction");
+    status() << "Performing pointer analysis for Cartesian abstraction" << eom;
     (*pointer_info)(concrete_model->goto_functions);
-    status("Pointer analysis complete");
+    status() << "Pointer analysis complete" << eom;
   }
 
 };

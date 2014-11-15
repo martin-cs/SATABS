@@ -241,7 +241,7 @@ void modelchecker_boolean_programt::read_counterexample_boppo_boom(
             // we don't want the simulator to see this, it would pop an
             // essential frame off the call stack
             abstract_state.relevant=false;
-            debug("END_FUNCTION hidden");
+            debug() << "END_FUNCTION hidden" << eom;
           }
         }
       }
@@ -1119,7 +1119,7 @@ bool modelchecker_boolean_programt::check(
     command+=" "+temp_boolean_program_bn+".bp >"+temp_boolean_program_out1+
       " 2>"+temp_boolean_program_out2;
 
-    status(command);
+    status() << command << eom;
 
     system(command.c_str());
   }
