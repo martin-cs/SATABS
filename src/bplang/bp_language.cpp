@@ -225,7 +225,7 @@ bool bp_languaget::to_expr(
   exprt &expr,
   const namespacet &ns)
 {
-  error("not yet implemented");
+  error() << "not yet implemented" << eom;
   return true;
 }
 
