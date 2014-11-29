@@ -53,7 +53,7 @@ termination_resultt termination(
   switch(mode)
   {
   case TP_BINARY_REACHABILITY: 
-    message.status("Using binary reachability");
+    message.status() << "Using binary reachability" << messaget::eom;
     tt=std::auto_ptr<termination_baset>(
           new termination_bret(cmdline, goto_functions, 
                                symbol_table, shadow_symbol_table, 
@@ -62,7 +62,7 @@ termination_resultt termination(
     break;
 
   case TP_DIRECT:
-    message.status("Using direct method");
+    message.status() << "Using direct method" << messaget::eom;
     tt=std::auto_ptr<termination_baset>(
           new termination_directt(cmdline, goto_functions, 
                                   symbol_table, shadow_symbol_table, 
@@ -71,7 +71,7 @@ termination_resultt termination(
     break;
 
   case TP_COMPOSITIONAL:
-    message.status("Using compositional method");
+    message.status() << "Using compositional method" << messaget::eom;
     tt=std::auto_ptr<termination_baset>(
           new termination_ctat(cmdline, goto_functions, 
                                symbol_table, shadow_symbol_table, 
@@ -80,7 +80,7 @@ termination_resultt termination(
     break;
 
   case TP_PATH_ENUMERATION:
-    message.status("Using path enumeration");
+    message.status() << "Using path enumeration" << messaget::eom;
     tt=std::auto_ptr<termination_baset>(
           new termination_path_enumerationt(cmdline, goto_functions, 
                                             symbol_table, shadow_symbol_table, 
@@ -91,7 +91,7 @@ termination_resultt termination(
 
 #ifdef HAVE_INTERPOLATION
   case TP_INTERPOLATING:
-    message.status("Using interpolating method");
+    message.status() << "Using interpolating method" << messaget::eom;
     tt=std::auto_ptr<termination_baset>(
           new termination_itat(cmdline, goto_functions, 
                                symbol_table, shadow_symbol_table, 

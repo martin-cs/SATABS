@@ -205,7 +205,7 @@ termination_resultt termination_bret::terminates(
     model.value_set_analysis.initialize(model.goto_functions);
   else
   {
-    status("Pointer analysis...");
+    status() << "Pointer analysis..." << eom;
     absolute_timet before=current_time();
     model.value_set_analysis(model.goto_functions);  
     pointer_analysis_time=current_time()-before;
@@ -304,7 +304,7 @@ termination_resultt termination_bret::operator()()
 {
   // Precondition: program must be termination-instrumented
   
-  irep_idt main=(cmdline.isset("function"))? cmdline.getval("function") : 
+  irep_idt main=(cmdline.isset("function"))? cmdline.get_value("function") : 
                                              "main";
   goto_functionst::function_mapt::const_iterator mit=
       goto_functions.function_map.find(main);
@@ -312,7 +312,7 @@ termination_resultt termination_bret::operator()()
   if(mit==goto_functions.function_map.end() ||
      !mit->second.body_available)
   {
-    error("Entry point not found.");
+    error() << "Entry point not found." << eom;
     return T_ERROR;
   }
   
@@ -446,7 +446,7 @@ bodyt termination_bret::get_body(goto_tracet &trace)
     
   bodyt result_body=termination_baset::get_body(loop_begin, trace);
   
-  debug("BODY: " + from_expr(ns, "", result_body.body_relation));  
+  debug() << "BODY: " << from_expr(ns, "", result_body.body_relation) << eom;  
   
   return result_body;
 }
@@ -481,7 +481,7 @@ bool termination_bret::process_counterexample(goto_tracet &trace)
   std::string mode;
 
   if(cmdline.isset("ranksynthesis"))
-    mode=cmdline.getval("ranksynthesis");
+    mode=cmdline.get_value("ranksynthesis");
 
   if(cmdline.isset("direct"))      
     return true;

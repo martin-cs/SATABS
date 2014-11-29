@@ -95,12 +95,12 @@ termination_resultt termination_ctat::terminates(
         it++)
       prog.output_instruction(ns, "", ss, it);
     prog.output_instruction(ns, "", ss, loop_end);
-    debug(ss.str());
+    debug() << ss.str() << eom;
   }
 
   std::string u_mode="none";
   if(cmdline.isset("unranked-method"))
-    u_mode=cmdline.getval("unranked-method");
+    u_mode=cmdline.get_value("unranked-method");
 
   termination_resultt res=rank(loop_begin, sliced_backjump, copy_goto, 
                                premap, ranking_relations);
@@ -538,9 +538,8 @@ bool termination_ctat::rank_block(
 
       assertion->guard.op1()=ranking_relations.disjunctive_relation();
 
-      std::stringstream msg;      
-      msg << "New ranking relation: " << from_expr(new_relation) << std::endl;
-      debug(msg.str());
+      debug() << "New ranking relation: " << from_expr(new_relation)
+              << eom;
     }
   }
 
@@ -572,7 +571,7 @@ bool termination_ctat::exclude_precondition(
   if(!cmdline.isset("unranked-method"))
     return false;
 
-  std::string u_method=cmdline.getval("unranked-method");
+  std::string u_method=cmdline.get_value("unranked-method");
   if(u_method!="precondition" && u_method!="bmc-precondition")
     return false;
 
@@ -610,7 +609,7 @@ bool termination_ctat::exclude_precondition(
     return false;
   else
   {
-    debug("Precondition is unreachable.");
+    debug() << "Precondition is unreachable." << eom;
 
     // where can we insert unreachable preconditions?
     goto_programt &main=temp_goto_functions.function_map[ID_main].body;
@@ -658,7 +657,7 @@ exprt termination_ctat::rank_trace(
 {
   if(goto_trace.steps.empty())
   {
-    error("Missing counterexample.");
+    error() << "Missing counterexample." << eom;
     return false_exprt();
   }
 
@@ -666,7 +665,7 @@ exprt termination_ctat::rank_trace(
   // skip through the nondet assignments
   while(begin->type==goto_trace_stept::ASSIGNMENT) begin++;
 
-  debug("Found counterexample:");
+  debug() << "Found counterexample:" << eom;
   show_loop_trace(goto_trace, begin);
 
   bodyt path_body=termination_baset::get_body(begin, goto_trace);
@@ -675,7 +674,7 @@ exprt termination_ctat::rank_trace(
   if(path_body.body_relation.is_false())
     return false_exprt();
 
-  debug("Synthesising a ranking function for this trace:");
+  debug() << "Synthesising a ranking function for this trace:" << eom;
   ranksynth_calls++;
   absolute_timet before_ranking=current_time();
   exprt new_relation=ranking(ranking_mode, path_body,
@@ -727,12 +726,12 @@ bool termination_ctat::all_paths_are_ranked(
   switch(bv_pointers.dec_solve())
   {
     case decision_proceduret::D_UNSATISFIABLE:
-      debug("UNSATISFIABLE, i.e., ranking function ranks all paths.");
+      debug() << "UNSATISFIABLE, i.e., ranking function ranks all paths." << eom;
       return true;
 
     case decision_proceduret::D_SATISFIABLE:
     {
-      debug("SATISFIABLE, i.e., ranking function does not rank all paths.");
+      debug() << "SATISFIABLE, i.e., ranking function does not rank all paths." << eom;
       build_goto_trace(equation, bv_pointers, goto_trace);
       show_goto_trace(std::cout, ns, goto_trace);
 
@@ -880,7 +879,7 @@ termination_resultt termination_ctat::operator()()
 {
   // Precondition: program must be termination-instrumented
 
-  irep_idt main=(cmdline.isset("function"))? cmdline.getval("function") :
+  irep_idt main=(cmdline.isset("function"))? cmdline.get_value("function") :
                                              "main";
   goto_functionst::function_mapt::const_iterator mit=
       goto_functions.function_map.find(main);
@@ -888,12 +887,12 @@ termination_resultt termination_ctat::operator()()
   if(mit==goto_functions.function_map.end() ||
      !mit->second.body_available)
   {
-    error("Entry point not found.");
+    error() << "Entry point not found." << eom;
     return T_ERROR;
   }
 
   if(cmdline.isset("ranksynthesis"))
-    ranking_mode=cmdline.getval("ranksynthesis");
+    ranking_mode=cmdline.get_value("ranksynthesis");
 
   const goto_programt &prog=mit->second.body;
   goto_programt::const_targett entry=prog.instructions.begin();
@@ -913,10 +912,10 @@ termination_resultt termination_ctat::operator()()
       total_loops++;
 
       const locationt &loc=assertion->source_location;
-      status("==================================================");
-      status("Loop Termination Check #" + i2string(total_loops));
-      status(std::string("at: ") + ((loc.is_nil()) ? "?" : loc.as_string()));
-      status("--------------------------------------------------");
+      status() << "==================================================" << eom;
+      status() << "Loop Termination Check #" << total_loops << eom;
+      status() << "at: " << ((loc.is_nil()) ? "?" : loc.as_string()) << eom;
+      status() << "--------------------------------------------------" << eom;
 
       if(!assertion->guard.is_true())
       {
@@ -978,7 +977,7 @@ termination_resultt termination_ctat::operator()()
 
 exprt termination_ctat::weakest_precondition(goto_tracet &goto_trace)
 {
-  debug("Calculating weakest precondition...");
+  debug() << "Calculating weakest precondition..." << eom;
 
   assert(goto_trace.steps.back().pc->type==ASSERT);
 
@@ -990,7 +989,7 @@ exprt termination_ctat::weakest_precondition(goto_tracet &goto_trace)
   {
     const code_assignt &code=to_code_assign(end->pc->code);
 
-    if(code.rhs().id()!="sideeffect")
+    if(code.rhs().id()!=ID_side_effect)
       break;
 
     const side_effect_exprt &se=to_side_effect_expr(code.rhs());

@@ -206,9 +206,8 @@ bool ranking_relation_cachet::is_compositional(void)
   if (!constraint.is_true())
     disjunction = and_exprt(disjunction, constraint);
   
-  std::stringstream msg;
-  msg << "Checking compositionality of: " << from_expr(ns, "", disjunction);
-  debug(msg.str());  
+  debug() << "Checking compositionality of: "
+          << from_expr(ns, "", disjunction) << eom;
     
   std::set<exprt> symbols;  
   find_symbols(disjunction, symbols);

@@ -380,8 +380,8 @@ bool ranking_synthesis_seneschalt::write_constraints(
       }
       catch (const expr2seneschalt::UnhandledException &ex)
       {
-        status("Seneschal unsuitable: " + ex.reason.id_string());
-        status("In: " + from_expr(ns, "", t));
+        status() << "Seneschal unsuitable: " << ex.reason << eom;
+        status() << "In: " <<  from_expr(ns, "", t) << eom;
         return false;
       }
 

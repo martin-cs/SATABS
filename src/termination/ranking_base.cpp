@@ -66,31 +66,27 @@ Function: ranking_synthesis_baset::show_variables
 
 void ranking_synthesis_baset::show_variables()
 {
-  std::string output;
-      
-  output = "IN: ";
+  debug() << "IN: ";
   for(bodyt::variable_mapt::const_iterator it=body.variable_map.begin();
       it!=body.variable_map.end();
       it++)
-    output += id2string(it->second) + ", ";
-  debug(output);
+    debug() << it->second << ", ";
+  debug() << eom;
 
-  output = "INTERMEDIATE: ";
+  debug() << "INTERMEDIATE: ";
   for(intermediate_statet::const_iterator it=intermediate_state.begin();
       it!=intermediate_state.end();
       it++)
-    output += id2string(*it) + ", ";
-  debug(output);
+    debug() << *it << ", ";
+  debug() << eom;
 
-  output = "OUTPUT MAP:\n";
+  debug() << "OUTPUT MAP:\n";
   for(bodyt::variable_mapt::const_iterator it=body.variable_map.begin();
       it!=body.variable_map.end();
       it++)
-  {
-    output +="  " + id2string(it->first) + " -> " + id2string(it->second) + "\n";
-  }
+    debug() << "  " << it->first << " -> " << it->second << "\n";
   
-  debug(output);
+  debug() << eom;
 }
 
 /*******************************************************************\
