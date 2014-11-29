@@ -423,17 +423,17 @@ bool ranking_synthesis_qbft::generate_functions(void)
 
   exprt t=instantiate();
 
-  status("Template:");
+  status() << "Template:" << eom;
   quantify_variables(converter, *solver);
 
   std::cout << std::endl << from_expr(ns, "", t) << std::endl;
 
-  status("Converting template...");
+  status() << "Converting template..." << eom;
   absolute_timet before = current_time();
   converter.set_to_true(t);
   conversion_time += current_time()-before;
 
-  status("Solving...");
+  status() << "Solving..." << eom;
   before = current_time();
   qdimacs_coret::resultt res = solver->prop_solve();
   solver_time += current_time()-before;
@@ -441,7 +441,7 @@ bool ranking_synthesis_qbft::generate_functions(void)
 
   if(res==qdimacs_coret::P_SATISFIABLE)
   {
-    status("Found ranking functions");
+    status() << "Found ranking functions" << eom;
 
     if(extract_ranking_relation(converter))
       return false;

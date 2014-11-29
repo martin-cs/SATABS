@@ -103,7 +103,7 @@ void termination_baset::adjust_assertion(
   const exprt &expr,
   goto_tracet &trace)
 {
-  status("Adjusting termination assertion.");
+  status() << "Adjusting termination assertion." << eom;
 
   if(trace.steps.empty())
     throw "counterexample is too short";
@@ -136,7 +136,7 @@ void termination_baset::adjust_assertion(
     guard.op1()=new_rel;
   }
 
-  debug("NEW ASSERTION: " + from_expr(ns, "", guard));
+  debug() << "NEW ASSERTION: " << from_expr(ns, "", guard) << eom;
 }
 
 /********************************************************************\
@@ -179,7 +179,7 @@ void termination_baset::show_loop_trace(
   }
   output+="--- LOOP TRACE END\n";
 
-  debug(output);
+  debug() << output << eom;
 }
 
 /********************************************************************\
@@ -349,8 +349,8 @@ bodyt termination_baset::get_body(
     // throw "BUG: No variables found; path missing.";
     // Though: No variable is ever saved, i.e., this loop
     // must be completely nondeterministic.
-    warning("No pre-variables found; this "
-            "loop is completely non-deterministic.");
+    warning() << "No pre-variables found; this "
+                 "loop is completely non-deterministic." << eom;
     body_expr=false_exprt();
   }
 
@@ -838,21 +838,21 @@ bool termination_baset::bmc(
         break;
     }
   }
-  catch (const std::bad_alloc &s)
+  catch(const std::bad_alloc &s)
   {
-    status(std::string("BMC Exception: Memory exhausted"));
+    status() << "BMC Exception: Memory exhausted" << eom;
   }
-  catch (const std::string &s)
+  catch(const std::string &s)
   {
-    status(std::string("BMC Exception: ") + s);
+    status() << "BMC Exception: " << s << eom;
   }
-  catch (const char *s)
+  catch(const char *s)
   {
-    status(std::string("BMC Exception: ") + s);
+    status() << "BMC Exception: " << s << eom;
   }
-  catch (unsigned u)
+  catch(unsigned u)
   {
-    status(std::string("BMC Exception: ") + i2string(u));
+    status() << "BMC Exception: " << u << eom;
   }
 
   return res;
@@ -921,28 +921,28 @@ bool termination_baset::cegar(
   }
   catch(const std::bad_alloc &s)
   {
-    status(std::string("CEGAR Loop Exception: Memory exhausted"));
+    status() << "CEGAR Loop Exception: Memory exhausted" << eom;
   }
   catch(const std::string &s)
   {
-    status(std::string("CEGAR Loop Exception: ") + s);
+    status() << "CEGAR Loop Exception: " << s << eom;
   }
   catch(const char *s)
   {
-    status(std::string("CEGAR Loop Exception: ") + s);
+    status() << "CEGAR Loop Exception: " << s << eom;
     if(std::string(s)=="refinement failure")
     {
-      status("Dumping failure.o");
+      status() << "Dumping failure.o" << eom;
       write_goto_binary("failure.o", symbol_table, goto_functions, mh);
     }
   }
   catch(unsigned u)
   {
-    status(std::string("CEGAR Loop Exception: ") + i2string(u));
+    status() << "CEGAR Loop Exception: " << u << eom;
   }
   catch(...)
   {
-    status("UNKNOWN EXCEPTION CAUGHT");
+    status() << "UNKNOWN EXCEPTION CAUGHT" << eom;
   }
 
   return false;
@@ -986,22 +986,22 @@ bool termination_baset::cegar(
 void termination_baset::set_options()
 {
   if(cmdline.isset("refiner"))
-    options.set_option("refiner", cmdline.getval("refiner"));
+    options.set_option("refiner", cmdline.get_value("refiner"));
   else
     options.set_option("refiner", "wp");
 
   if(cmdline.isset("abstractor"))
-    options.set_option("abstractor", cmdline.getval("abstractor"));
+    options.set_option("abstractor", cmdline.get_value("abstractor"));
   else
     options.set_option("abstractor", "wp");
 
   if(cmdline.isset("modelchecker"))
-    options.set_option("modelchecker", cmdline.getval("modelchecker"));
+    options.set_option("modelchecker", cmdline.get_value("modelchecker"));
   else
     options.set_option("modelchecker", "boom");
 
   if(cmdline.isset("simulator"))
-    options.set_option("simulator", cmdline.getval("simulator"));
+    options.set_option("simulator", cmdline.get_value("simulator"));
   else
     options.set_option("simulator", "sat");
 

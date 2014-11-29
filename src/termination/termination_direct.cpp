@@ -53,7 +53,7 @@ termination_resultt termination_directt::terminates(
     
   if(!mres)
   {
-    status("Slicer has shown unreachability of the assertion.");      
+    status() << "Slicer has shown unreachability of the assertion." << eom;
     return T_TERMINATING;
   }
     
@@ -62,7 +62,7 @@ termination_resultt termination_directt::terminates(
     model.value_set_analysis.initialize(model.goto_functions);
   else
   {
-    status("Pointer analysis...");  
+    status() << "Pointer analysis..." << eom;
     absolute_timet before=current_time();
     model.value_set_analysis(model.goto_functions);  
     pointer_analysis_time=current_time()-before;
@@ -83,7 +83,7 @@ termination_resultt termination_directt::terminates(
   satabs_safety_checkert safety_checker(symbol_table, options);
   safety_checker.set_message_handler(mh);
                  
-  status("Running CEGAR...");
+  status() << "Running CEGAR..." << eom;
   
   try
   {
@@ -119,15 +119,15 @@ termination_resultt termination_directt::terminates(
   }
   catch(const std::string &s)
   {
-    status(std::string("CEGAR Loop Exception: ") + s);
+    status() << "CEGAR Loop Exception: " << s << eom;
   }
   catch(const char *s)
   {
-    status(std::string("CEGAR Loop Exception: ") + s);
+    status() << "CEGAR Loop Exception: " << s << eom;
   }
   catch(unsigned u)
   {
-    status(std::string("CEGAR Loop Exception: ") + i2string(u));
+    status() << "CEGAR Loop Exception: " << u << eom;
   }
   
   return T_NONTERMINATING;
@@ -155,7 +155,7 @@ termination_resultt termination_directt::terminates(
     model.value_set_analysis.initialize(model.goto_functions);
   else
   {
-    status("Pointer analysis...");  
+    status() << "Pointer analysis..." << eom;
     absolute_timet before=current_time();
     model.value_set_analysis(model.goto_functions);  
     pointer_analysis_time=current_time()-before;
@@ -173,7 +173,7 @@ termination_resultt termination_directt::terminates(
   satabs_safety_checkert safety_checker(symbol_table, options);
   safety_checker.set_message_handler(mh);
                
-  status("Running CEGAR...");
+  status() << "Running CEGAR..." << eom;
   
   try
   {
@@ -189,20 +189,20 @@ termination_resultt termination_directt::terminates(
       return T_TERMINATING;
 
     default:
-      throw std::string("CEGAR Result: ") + i2string(result);
+      throw std::string("CEGAR Result: ")+i2string(result);
     } 
   }
   catch (const std::string &s)
   {
-    status(std::string("CEGAR Loop Exception: ") + s);
+    status() << "CEGAR Loop Exception: " << s << eom;
   }
   catch (const char *s)
   {
-    status(std::string("CEGAR Loop Exception: ") + s);
+    status() << "CEGAR Loop Exception: " << s << eom;
   }
   catch (unsigned u)
   {
-    status(std::string("CEGAR Loop Exception: ") + i2string(u));
+    status() << "CEGAR Loop Exception: " << u << eom;
   }
 
   return T_NONTERMINATING;
@@ -224,7 +224,7 @@ termination_resultt termination_directt::operator()()
 {
   // Precondition: program must be termination-instrumented
   
-  irep_idt main=(cmdline.isset("function"))? cmdline.getval("function") : 
+  irep_idt main=(cmdline.isset("function"))? cmdline.get_value("function") : 
                                              "main";
   goto_functionst::function_mapt::const_iterator mit=
       goto_functions.function_map.find(main);
@@ -232,11 +232,10 @@ termination_resultt termination_directt::operator()()
   if(mit==goto_functions.function_map.end() ||
      !mit->second.body_available)
   {
-    error("Entry point not found.");
+    error() << "Entry point not found." << eom;
     return T_ERROR;
   }
   
-
   if(cmdline.isset("no-loop-slicing"))
   {
     forall_goto_functions(it, goto_functions)
@@ -267,10 +266,10 @@ termination_resultt termination_directt::operator()()
         total_loops++;        
         const locationt &loc=assertion->source_location;
         
-        status("==================================================");
-        status("Loop Termination Check #" + i2string(total_loops));
-        status(std::string("at: ") + ((loc.is_nil()) ? "?" : loc.as_string()));
-        status("--------------------------------------------------");
+        status() << "==================================================" << eom;
+        status() << "Loop Termination Check #" << total_loops << eom;
+        status() << "at: " << ((loc.is_nil()) ? "?" : loc.as_string()) << eom;
+        status() << "--------------------------------------------------" << eom;
         
         if(!assertion->guard.is_true())
         {
@@ -288,7 +287,7 @@ termination_resultt termination_directt::operator()()
             status() << "LOOP TERMINATES" << eom;
         }
                 
-        status("==================================================");
+        status() << "==================================================" << eom;
         
         seen_loops.insert(assertion);
       }
@@ -301,12 +300,12 @@ termination_resultt termination_directt::operator()()
     
   if(nonterminating_loops>0)
   {
-    status("Program is (possibly) NON-TERMINATING.");
+    status() << "Program is (possibly) NON-TERMINATING." << eom;
     return T_NONTERMINATING;
   }
   else
   {
-    status("Program TERMINATES.");
+    status() << "Program TERMINATES." << eom;
     return T_TERMINATING;
   }
 }

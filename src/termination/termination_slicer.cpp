@@ -275,10 +275,10 @@ bool termination_slicert::slice()
   dependency_sett::magic_limit = dependency_limit;
   cfg(dest_functions);
 
-  status("Path Dependency Analysis...");
+  status() << "Path Dependency Analysis..." << eom;
   fixedpoint_path_dependencies();
 
-  status("Data Dependency Analysis...");
+  status() << "Data Dependency Analysis..." << eom;
   fixedpoint_data_dependencies();
 
 #if 0
@@ -287,7 +287,7 @@ bool termination_slicert::slice()
   out.close();
 #endif
 
-  status("Slicing...");
+  status() << "Slicing..." << eom;
   return reduce();
 }
 
@@ -1130,7 +1130,7 @@ void termination_slicert::kill_loop(
 
 void termination_slicert::kill_loops()
 {
-  status("Abstracting loops...");
+  status() << "Abstracting loops..." << eom;
 
   goto_functionst::function_mapt::iterator eit=
       dest_functions.function_map.find(entry);
@@ -1262,7 +1262,7 @@ void termination_slicert::operator()()
     remove_unused_functions(dest_functions, get_message_handler());
   }
   else
-    warning("Entry point not found");
+    warning() << "Entry point not found" << eom;
 }
 
 /********************************************************************\
