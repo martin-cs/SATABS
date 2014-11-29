@@ -338,7 +338,7 @@ void modelchecker_smvt::read_counterexample(
       else if(variable[0]=='t') // checked for emptyness above
       {
         thread_local_var=true;
-        thread_nr=safe_str2unsigned(variable.c_str()+1);
+        thread_nr=safe_c_str2unsigned(variable.c_str()+1);
 
         std::string::size_type q=original_variable.find('.');
 
@@ -353,7 +353,7 @@ void modelchecker_smvt::read_counterexample(
 
       if(variable=="PC")
       {
-        thread_infos[thread_nr].PC=safe_str2unsigned(value.c_str());
+        thread_infos[thread_nr].PC=safe_string2unsigned(value);
         data_set=true;
       }
       else if(variable=="runs")
@@ -363,7 +363,7 @@ void modelchecker_smvt::read_counterexample(
       }
       else if(has_prefix(variable, "b"))
       {
-        unsigned nr=safe_str2unsigned(variable.c_str()+1);
+        unsigned nr=safe_c_str2unsigned(variable.c_str()+1);
         if(nr>=abstract_model.variables.size())
           throw "invalid variable in abstract counterexample: "+
             variable;
@@ -385,7 +385,7 @@ void modelchecker_smvt::read_counterexample(
       }
       else if(has_prefix(variable, "guard"))
       {
-        unsigned nr=safe_str2unsigned(variable.c_str()+5);
+        unsigned nr=safe_c_str2unsigned(variable.c_str()+5);
         if(nr>=thread_infos[thread_nr].guards.size())
           throw "invalid variable in abstract counterexample: "+
             variable;
@@ -518,7 +518,7 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
         else if(variable[0]=='t') // checked for emptyness above
         {
           thread_local_var=true;
-          thread_nr=safe_str2unsigned(variable.c_str()+1);
+          thread_nr=safe_c_str2unsigned(variable.c_str()+1);
 
           std::string::size_type q=original_variable.find('.');
 
@@ -535,12 +535,12 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
         }
 
         if(variable=="PC")
-          thread_infos[thread_nr].PC=safe_str2unsigned(value.c_str());
+          thread_infos[thread_nr].PC=safe_string2unsigned(value);
         else if(variable=="runs")
           thread_infos[thread_nr].runs=ce_boolean(value);
         else if(has_prefix(variable, "b"))
         {
-          unsigned nr=safe_str2unsigned(variable.c_str()+1);
+          unsigned nr=safe_c_str2unsigned(variable.c_str()+1);
           if(nr>=abstract_model.variables.size())
             throw "invalid variable in abstract counterexample: "+
               variable;
@@ -561,7 +561,7 @@ void modelchecker_smvt::read_counterexample_cadence_smv(
         }
         else if(has_prefix(variable, "guard"))
         {
-          unsigned nr=safe_str2unsigned(variable.c_str()+5);
+          unsigned nr=safe_c_str2unsigned(variable.c_str()+5);
           if(nr>=thread_infos[thread_nr].guards.size())
             throw "invalid variable in abstract counterexample: "+
               variable;
@@ -1537,12 +1537,12 @@ std::string modelchecker_smvt::expr_string(const exprt &expr)
 {
   if(expr.id()==ID_predicate_symbol)
   {
-    unsigned p=safe_str2unsigned(expr.get(ID_identifier).c_str());
+    unsigned p=safe_string2unsigned(id2string(expr.get(ID_identifier)));
     return variable_names[p];
   }
   else if(expr.id()==ID_predicate_next_symbol)
   {
-    unsigned p=safe_str2unsigned(expr.get(ID_identifier).c_str());
+    unsigned p=safe_string2unsigned(id2string(expr.get(ID_identifier)));
     return "next("+variable_names[p]+")";
   }
   else if(expr.id()==ID_nondet_symbol)

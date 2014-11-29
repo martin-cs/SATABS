@@ -679,7 +679,7 @@ void modelchecker_spint::instantiate_expression(exprt &expr)
 
   if(expr.id()==ID_predicate_symbol)
   {
-    unsigned p=safe_str2unsigned(expr.get(ID_identifier).c_str());
+    unsigned p=safe_string2unsigned(id2string(expr.get(ID_identifier)));
     expr.id(ID_symbol);
     expr.set(ID_identifier, variable_names[p]);
   }

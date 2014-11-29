@@ -1035,8 +1035,8 @@ void tts_buildert::to_cnf(
       (guard.id()==ID_next_symbol &&
        guard.op0().id()==ID_predicate_passive_symbol))
   {
-    unsigned p=safe_str2unsigned((guard.id()==ID_next_symbol?
-          guard.op0():guard).get(ID_identifier).c_str());
+    unsigned p=safe_string2unsigned(id2string((guard.id()==ID_next_symbol?
+          guard.op0():guard).get(ID_identifier)));
     const bool is_post=guard.id()==ID_predicate_next_symbol ||
       guard.id()==ID_next_symbol;
     const bool sym_passive=

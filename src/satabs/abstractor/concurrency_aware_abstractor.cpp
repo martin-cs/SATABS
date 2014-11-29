@@ -30,7 +30,7 @@ static void adjust_pred_index(exprt& expr,
 
   if(expr.id()==ID_predicate_symbol)
   {
-    unsigned p=safe_str2unsigned(expr.get(ID_identifier).c_str());
+    unsigned p=safe_string2unsigned(id2string(expr.get(ID_identifier)));
     if(p >= passive_preds.size())
     {
       bool found=passive_preds.find(all_preds[p], p);
