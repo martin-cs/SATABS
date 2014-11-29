@@ -58,16 +58,16 @@ termination_resultt termination_path_enumerationt::terminates(
 {  
   if(!get_model(main, goto_functions, assertion))
   {
-    status("Slicer has shown unreachability of the assertion.");
+    status() << "Slicer has shown unreachability of the assertion." << eom;
     return T_TERMINATING;
   }
     
   goto_programt::const_targett loop_end, loop_begin, copy_goto;    
   if (!get_loop_extent(sliced_assertion, loop_begin, loop_end, copy_goto))
-	{
-		status("Copy-goto was sliced away; this loop must be terminating.");
-		return T_TERMINATING;
-	}
+  {
+    status() << "Copy-goto was sliced away; this loop must be terminating." << eom;
+    return T_TERMINATING;
+  }
 
   // We don't care if the loop is reachable right now.
   
@@ -91,7 +91,7 @@ termination_resultt termination_path_enumerationt::terminates(
         it++)
       prog.output_instruction(ns, "", ss, it);
     prog.output_instruction(ns, "", ss, loop_end);
-    debug(ss.str());
+    debug() << ss.str() << eom;
   }
 
   std::string u_mode="none";
@@ -115,7 +115,7 @@ termination_resultt termination_path_enumerationt::terminates(
         return T_NONTERMINATING;
       else
       {
-        status("Loop is potentially non-terminating, but unreachable.");
+        status() << "Loop is potentially non-terminating, but unreachable." << eom;
         return T_TERMINATING;
       }
     }
@@ -197,8 +197,8 @@ bool termination_path_enumerationt::get_model(
   
   if(!is_local(sliced_assertion, bj))
   {
-    status("Inlining loop because termination may be "
-           "influenced by global variables...");
+    status() << "Inlining loop because termination may be "
+                "influenced by global variables..." << eom;
 
     goto_inlinet gi(sliced_goto_functions, ns, get_message_handler());    
     
@@ -217,7 +217,7 @@ bool termination_path_enumerationt::get_model(
     sliced_model.value_set_analysis.initialize(sliced_model.goto_functions);
   else
   {
-    status("Pointer analysis...");  
+    status() << "Pointer analysis..." << eom; 
     absolute_timet before=current_time();
     sliced_model.value_set_analysis(sliced_model.goto_functions);  
     pointer_analysis_time=current_time()-before;
@@ -251,7 +251,7 @@ termination_resultt termination_path_enumerationt::rank(
   replace_idt &premap,
   ranking_relation_cachet &ranking_relations)
 {
-  status("Generating ranking functions...");
+  status() << "Generating ranking functions..." << eom;
   
   bodyt path_body;
   path_mapt path_map;
@@ -303,7 +303,7 @@ termination_resultt termination_path_enumerationt::rank(
         
     if(is_ranked)
     {
-      debug("Ranking relation cache hit.");
+      debug() << "Ranking relation cache hit." << eom;
       continue; // we already have a ranking function for this path
     }
     
@@ -327,7 +327,7 @@ termination_resultt termination_path_enumerationt::rank(
         return T_NONTERMINATING;
       else
       {
-        debug("Precondition is unreachable.");
+        debug() << "Precondition is unreachable." << eom;
         // No fixing needed, path will not be enumerated again
         // unreachable_preconditions.insert(wp);
       }        
@@ -380,7 +380,7 @@ bool termination_path_enumerationt::precondition_is_reachable(
   
   exprt old_guard=sliced_assertion->guard; // safe this
   
-  debug("Precondition: " + from_expr(ns, "", precondition));
+  debug() << "Precondition: " << from_expr(ns, "", precondition) << eom;
   sliced_assertion->guard=not_exprt(precondition);
   
   #if 0
@@ -393,13 +393,13 @@ bool termination_path_enumerationt::precondition_is_reachable(
   
   if(u_method=="bmc-precondition")
   {
-    status("Running BMC precondition check...");
+    status() << "Running BMC precondition check..." << eom;
     res=!bmc(sliced_goto_functions, modelchecker_time,
              wp_ce_extraction_time, wp_unreachability_time);
   }
   else
   {
-    status("Running CEGAR precondition check...");
+    status() << "Running CEGAR precondition check..." << eom;
     res=!cegar(sliced_goto_functions, modelchecker_time, 
                wp_ce_extraction_time, wp_unreachability_time);
   }
@@ -427,13 +427,13 @@ termination_resultt termination_path_enumerationt::check_rank_relations(
 {
   if(ranking_relations.size()==0)
   {
-    debug("Suspicious: All paths are infeasible.");
+    debug() << "Suspicious: All paths are infeasible." << eom;
     return T_TERMINATING;
   }
   
   // Are those ranking functions enough to prove termination?
-  status("Synthesized " + i2string(ranking_relations.size()) + 
-         " ranking functions.");
+  status() << "Synthesized " << ranking_relations.size() <<
+              " ranking functions." << eom;
   
   switch(ranking_relations.size())
   {
@@ -556,7 +556,7 @@ bool termination_path_enumerationt::is_reachable(
   it->targets.clear();
   it->type=SKIP;
   
-  status("Checking loop reachability...");
+  status() << "Checking loop reachability..." << eom;
     
   #if 0 
 //  it->labels.push_back("KILLED_GOTO");
@@ -569,7 +569,7 @@ bool termination_path_enumerationt::is_reachable(
     forall_goto_program_instructions(iit, fit->second.body)
       if(iit->is_backwards_goto())
       {
-        debug("Unexpected backjump in program.");        
+        debug() << "Unexpected backjump in program." << eom;
         it->type=GOTO;
         it->targets.clear();
         it->targets.push_back(tgt);
@@ -622,7 +622,7 @@ exprt termination_path_enumerationt::weakest_precondition(
   const path_mapt &path_map,
   value_setst &va)
 {
-//  debug("Calculating weakest precondition...");
+//  debug() << "Calculating weakest precondition..." << eom;
   assert(loop_end->is_backwards_goto());
   
   // first get a `trace'
@@ -1251,7 +1251,7 @@ termination_resultt termination_path_enumerationt::operator()()
   if(mit==goto_functions.function_map.end() ||
      !mit->second.body_available)
   {
-    error("Entry point not found.");
+    error() << "Entry point not found." << eom;
     return T_ERROR;
   }
   
@@ -1276,10 +1276,10 @@ termination_resultt termination_path_enumerationt::operator()()
       total_loops++;
       
       const locationt &loc=assertion->source_location;
-      status("==================================================");
-      status("Loop Termination Check #" + i2string(total_loops));
-      status(std::string("at: ") + ((loc.is_nil()) ? "?" : loc.as_string()));
-      status("--------------------------------------------------");
+      status() << "==================================================" << eom;
+      status() << "Loop Termination Check #" << total_loops << eom;
+      status() << "at: " << ((loc.is_nil()) ? "?" : loc.as_string())) << eom;
+      status() << "--------------------------------------------------" << eom;
       
       if(!assertion->guard.is_true())
       {      
@@ -1301,20 +1301,20 @@ termination_resultt termination_path_enumerationt::operator()()
         
         if(res!=T_TERMINATING)
         {
-          status("LOOP DOES NOT TERMINATE");
+          status() << "LOOP DOES NOT TERMINATE" << eom;
           nonterminating_loops++;
         }
         else
-          status("LOOP TERMINATES");
+          status() << "LOOP TERMINATES" << eom;
       }
       else
       {
-        debug("Loop guard simplified by invariant propagation; "
-              "loop terminates trivially.");
-        status("LOOP TERMINATES");
+        debug() << "Loop guard simplified by invariant propagation; "
+                   "loop terminates trivially." << eom;
+        status() << "LOOP TERMINATES" << eom;
       }
       
-      status("==================================================");
+      status() << "==================================================" << eom;
       
       seen_loops.insert(assertion);
     }
@@ -1326,12 +1326,12 @@ termination_resultt termination_path_enumerationt::operator()()
     
   if(nonterminating_loops>0)
   {
-    status("Program is (possibly) NON-TERMINATING.");
+    status() << "Program is (possibly) NON-TERMINATING." << eom;
     return T_NONTERMINATING;
   }
   else
   {
-    status("Program TERMINATES.");
+    status() << "Program TERMINATES." << eom;
     return T_TERMINATING;
   }
 }

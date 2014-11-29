@@ -102,7 +102,7 @@ bool ranking_synthesis_rankfindert::generate_functions(void)
   if(instantiate()==nil_exprt())
     return false;
 
-  status("Calling rankfinder...");
+  status() << "Calling rankfinder..." << eom;
   absolute_timet before = current_time();
   system("rankfinder rankfinder.input 1> rankfinder.out 2> rankfinder.err");
   solver_time += current_time()-before;
@@ -630,8 +630,8 @@ bool ranking_synthesis_rankfindert::write_constraints(
       }
       catch (const expr2rankfindert::UnhandledException &ex)
       {
-        status("Rankfinder unsuitable: " + ex.reason.id_string());
-        status("In: " + from_expr(ns, "", *it));
+        status() << "Rankfinder unsuitable: " << ex.reason << eom;
+        status() << "In: " << from_expr(ns, "", *it) << eom;
         return false;
         first = true;
       }

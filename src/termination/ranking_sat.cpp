@@ -304,7 +304,7 @@ void ranking_synthesis_satt::show_coefficients(c_valuest &c_values)
       from_expr(ns, "", from_integer(it->second, it->first.type()));
   }
   
-  debug(t);
+  debug() << t << eom;
 }
 
 /*******************************************************************\
@@ -353,7 +353,7 @@ void ranking_synthesis_satt::show_counterexample(boolbvt &converter)
     output += ")";
   }
 
-  debug(output);
+  debug() << output << eom;
 }
 
 /*******************************************************************\
@@ -426,7 +426,7 @@ satcheckt::resultt ranking_synthesis_satt::check_for_counterexample(
   else
     output += "ERROR\n";
   
-  debug(output);
+  debug() << output << eom;
 
   return result;
 }

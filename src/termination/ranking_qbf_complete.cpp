@@ -287,7 +287,7 @@ bool ranking_synthesis_qbf_completet::generate_functions(void)
 
   if(res==qdimacs_coret::P_SATISFIABLE)
   {
-    status("Found ranking functions");
+    status() << "Found ranking functions" << eom;
 
     rank_relation=extract_ranking_relation();
 
@@ -377,7 +377,7 @@ qdimacs_coret::resultt ranking_synthesis_qbf_completet::qbf_solve_inc(
 
   while(keep_going && res==qdimacs_coret::P_SATISFIABLE)
   {
-    status("Refining Skolem Functions");
+    status() << "Refining Skolem Functions" << eom;
 
     qdimacs_coret &solver=*choose_qbf_core_extractor();
     boolbvt converter(ns, solver);
@@ -387,7 +387,7 @@ qdimacs_coret::resultt ranking_synthesis_qbf_completet::qbf_solve_inc(
 //    converter.set_verbosity(get_verbosity());
 //    converter.set_message_handler(get_message_handler());
 
-    status("Template:");
+    status() << "Template:" << eom;
     quantify_variables(converter, solver);
 
     std::cout << std::endl << from_expr(ns, "", templ) << std::endl;
@@ -441,7 +441,7 @@ qdimacs_coret::resultt ranking_synthesis_qbf_completet::qbf_solve_inc(
 
 bool ranking_synthesis_qbf_completet::skolem_equality(void)
 {
-  status("Checking equality");
+  status() << "Checking equality" << eom;
 
   satcheckt sat_solver;
   boolbvt sat_converter(ns, sat_solver);
