@@ -96,7 +96,7 @@ termination_resultt termination_path_enumerationt::terminates(
 
   std::string u_mode="none";
   if(cmdline.isset("unranked-method"))
-    u_mode=cmdline.getval("unranked-method");
+    u_mode=cmdline.get_value("unranked-method");
   
   if(rank(loop_begin, loop_end, copy_goto, premap, 
           ranking_relations)==T_NONTERMINATING)
@@ -371,7 +371,7 @@ bool termination_path_enumerationt::precondition_is_reachable(
   if(!cmdline.isset("unranked-method"))
     return true;
   
-  std::string u_method=cmdline.getval("unranked-method");
+  std::string u_method=cmdline.get_value("unranked-method");
   if(u_method!="precondition" && u_method!="bmc-precondition")
     return true;
   
@@ -1243,7 +1243,7 @@ termination_resultt termination_path_enumerationt::operator()()
   value_set_analysis.clear();
   invariant_propagation.clear();  
   
-  irep_idt main=(cmdline.isset("function"))? cmdline.getval("function") : 
+  irep_idt main=(cmdline.isset("function"))? cmdline.get_value("function") : 
                                              "main";
   goto_functionst::function_mapt::const_iterator mit=
       goto_functions.function_map.find(main);
@@ -1256,7 +1256,7 @@ termination_resultt termination_path_enumerationt::operator()()
   }
   
   if(cmdline.isset("ranksynthesis"))
-    ranking_mode=cmdline.getval("ranksynthesis");
+    ranking_mode=cmdline.get_value("ranksynthesis");
   
   const goto_programt &prog=mit->second.body;
   goto_programt::const_targett entry=prog.instructions.begin();
@@ -1278,7 +1278,7 @@ termination_resultt termination_path_enumerationt::operator()()
       const locationt &loc=assertion->source_location;
       status() << "==================================================" << eom;
       status() << "Loop Termination Check #" << total_loops << eom;
-      status() << "at: " << ((loc.is_nil()) ? "?" : loc.as_string())) << eom;
+      status() << "at: " << ((loc.is_nil()) ? "?" : loc.as_string()) << eom;
       status() << "--------------------------------------------------" << eom;
       
       if(!assertion->guard.is_true())
