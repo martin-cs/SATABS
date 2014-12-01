@@ -1,4 +1,4 @@
-all: satabs tan boppo
+all: satabs boppo
 
 .PHONY: satabs
 .PHONY: tan
