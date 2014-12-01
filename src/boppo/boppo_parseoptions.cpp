@@ -138,7 +138,7 @@ int boppo_parseoptionst::doit()
     std::string error_label;
 
     if(cmdline.isset('l'))
-      error_label=cmdline.getval('l');
+      error_label=cmdline.get_value('l');
 
     // do actual job
     if(cmdline.isset("promela"))
