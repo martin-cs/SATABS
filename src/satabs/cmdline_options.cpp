@@ -177,9 +177,12 @@ int cmdline_optionst::doit()
   message_handlert &message_handler=prepare.ui_message_handler;
 
   // set the same verbosity for all
-  int verbosity=6;
-  if(cmdline.isset("v"))
-    verbosity=safe_string2int(cmdline.get_value("v"));
+  {
+    int verbosity=6;
+    if(cmdline.isset("v"))
+      verbosity=safe_string2int(cmdline.get_value("v"));
+    message_handler.set_verbosity(verbosity);
+  }
 
   // get configuration
 
