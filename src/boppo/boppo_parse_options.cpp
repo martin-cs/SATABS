@@ -20,7 +20,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <fstream>
 
 #include <util/i2string.h>
-#include <util/parseoptions.h>
+#include <util/parse_options.h>
 #include <util/cout_message.h>
 #include <util/ui_message.h>
 #include <util/namespace.h>
@@ -39,14 +39,14 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include "convert_to_promela.h"
 #include "convert_to_program_formula.h"
-#include "boppo_parseoptions.h"
+#include "boppo_parse_options.h"
 #include "simulator.h"
 #include "simulator_ct.h"
 #include "version.h"
 
 /*******************************************************************\
 
-Function: boppo_parseoptionst::doit
+Function: boppo_parse_optionst::doit
 
   Inputs:
 
@@ -56,8 +56,8 @@ Function: boppo_parseoptionst::doit
 
 \*******************************************************************/
 
-boppo_parseoptionst::boppo_parseoptionst(int argc, const char **argv):
-  parseoptions_baset(
+boppo_parse_optionst::boppo_parse_optionst(int argc, const char **argv):
+  parse_options_baset(
     "(promela)(smv)(show-boolean-program)(gui)"
     "(show-parse)(show-goto-program)(version)"
     "(show-program-formula)l:(por)(ct)"
@@ -73,7 +73,7 @@ boppo_parseoptionst::boppo_parseoptionst(int argc, const char **argv):
 
 /*******************************************************************\
 
-Function: boppo_parseoptionst::doit
+Function: boppo_parse_optionst::doit
 
   Inputs:
 
@@ -83,7 +83,7 @@ Function: boppo_parseoptionst::doit
 
 \*******************************************************************/
 
-int boppo_parseoptionst::doit()
+int boppo_parse_optionst::doit()
 {
   if(cmdline.isset("version"))
   {
@@ -325,7 +325,7 @@ int boppo_parseoptionst::doit()
 
 /*******************************************************************\
 
-Function: boppo_parseoptionst::help
+Function: boppo_parse_optionst::help
 
   Inputs:
 
@@ -335,7 +335,7 @@ Function: boppo_parseoptionst::help
 
 \*******************************************************************/
 
-void boppo_parseoptionst::help()
+void boppo_parse_optionst::help()
 {
   std::cout <<
     "\n"

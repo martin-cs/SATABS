@@ -14,7 +14,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 */
 
-#include "boppo_parseoptions.h"
+#include "boppo_parse_options.h"
 
 /*******************************************************************\
 
@@ -30,6 +30,6 @@ Function: main
 
 int main(int argc, const char **argv)
 {
-  boppo_parseoptionst boppo_parseoptions(argc, argv);
-  return boppo_parseoptions.main();
+  boppo_parse_optionst boppo_parse_options(argc, argv);
+  return boppo_parse_options.main();
 }

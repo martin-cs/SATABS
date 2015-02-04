@@ -1,7 +1,7 @@
 include ../config.inc
 include ../common
 
-SRC = main.cpp boppo_parseoptions.cpp convert_to_promela.cpp \
+SRC = main.cpp boppo_parse_options.cpp convert_to_promela.cpp \
       formula.cpp program_formula.cpp convert_to_program_formula.cpp \
       simulator.cpp partial_order_reduction.cpp simulator_base.cpp \
       execute_thread.cpp history.cpp dump_trace.cpp solver.cpp \

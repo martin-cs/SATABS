@@ -9,17 +9,17 @@ Author: Daniel Kroening, daniel.kroening@inf.ethz.ch
 #ifndef CPROVER_BOPPO_PARSEOPTIONS_H
 #define CPROVER_BOPPO_PARSEOPTIONS_H
 
-#include <util/parseoptions.h>
+#include <util/parse_options.h>
 #include <langapi/language_ui.h>
 
-class boppo_parseoptionst:public parseoptions_baset,
-                                 language_uit
+class boppo_parse_optionst:public parse_options_baset,
+                                  language_uit
 {
  public:
   virtual int doit();
   virtual void help();
 
-  boppo_parseoptionst(int argc, const char **argv);
+  boppo_parse_optionst(int argc, const char **argv);
 };
 
 #endif
