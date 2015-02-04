@@ -12,12 +12,12 @@ Date: June 2003
 #ifndef CPROVER_CEGAR_CMDLINE_OPTIONS_H
 #define CPROVER_CEGAR_CMDLINE_OPTIONS_H
 
-#include <util/parseoptions.h>
+#include <util/parse_options.h>
 
 #include <cbmc/xml_interface.h>
 
 class cmdline_optionst:
-  public parseoptions_baset,
+  public parse_options_baset,
   public xml_interfacet
 {
   public:
@@ -25,7 +25,7 @@ class cmdline_optionst:
     virtual void help();
 
     cmdline_optionst(int argc, const char **argv):
-      parseoptions_baset("(v):(gui)(show-loops)"
+      parse_options_baset("(v):(gui)(show-loops)"
           "(floatbv)(fixedbv)"
           "(16)(32)(64)(LP64)(ILP64)(LLP64)(ILP32)(LP32)"
           "(i386-linux)(i386-macos)(i386-win32)(win32)(winx64)"
