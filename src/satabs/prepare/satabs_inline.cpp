@@ -82,7 +82,7 @@ void satabs_inlinet::parameter_assignments(
 
       goto_programt::targett decl=dest.add_instruction();
       decl->make_decl();
-      decl->code=code_declt(symbol_expr(symbol));
+      decl->code=code_declt(symbol.symbol_expr());
       decl->code.add_source_location()=source_location;
       decl->source_location=source_location;
       decl->function=function_name;

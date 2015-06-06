@@ -49,7 +49,7 @@ bool bp_languaget::final(
   const symbolt &symbol=s_it->second;
 
   code_function_callt call;
-  call.function()=symbol_expr(symbol);
+  call.function()=symbol.symbol_expr();
 
   const code_typet::parameterst &parameters=
     to_code_type(symbol.type).parameters();
