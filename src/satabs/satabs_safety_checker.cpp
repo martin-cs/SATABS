@@ -445,7 +445,7 @@ safety_checkert::resultt satabs_safety_checker_baset::operator()(
           ns, predicates, initial_predicates, abstractor.abstract_model);
   }
 
-  std::auto_ptr<std::ofstream> csv(write_csv_stats?
+  std::unique_ptr<std::ofstream> csv(write_csv_stats?
       new std::ofstream("cegar.csv"):0);
 
   while(true) 

@@ -339,7 +339,7 @@ bool ranking_synthesis_qbf_bitwiset::generate_functions(void)
   while (res==qdimacs_coret::P_UNSATISFIABLE && 
          bitwise_width <= state_size)
   {
-    std::auto_ptr<qdimacs_coret> solver(choose_qbf_core_extractor());
+    std::unique_ptr<qdimacs_coret> solver(choose_qbf_core_extractor());
     bv_pointerst converter(ns, *solver);
 
     solver->set_message_handler(get_message_handler());

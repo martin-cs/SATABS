@@ -749,8 +749,8 @@ void summarizationt::get_user_invariants_fromfile(std::set<exprt> &user_invarian
       l=new ansi_c_languaget;
   }
 
-  // use auto_ptr because of the exceptions
-  std::auto_ptr<languaget> language(l);
+  // use unique_ptr because of the exceptions
+  std::unique_ptr<languaget> language(l);
 
   std::string line;
 

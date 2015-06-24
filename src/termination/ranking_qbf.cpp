@@ -415,7 +415,7 @@ bool ranking_synthesis_qbft::generate_functions(void)
   std::cout << "GENERATE: " << templ << std::endl;
   #endif
 
-  std::auto_ptr<qdimacs_coret> solver(choose_qbf_core_extractor());
+  std::unique_ptr<qdimacs_coret> solver(choose_qbf_core_extractor());
   bv_pointerst converter(ns, *solver);
 
   solver->set_message_handler(get_message_handler());
