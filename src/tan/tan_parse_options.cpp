@@ -172,7 +172,7 @@ bool tan_parse_optionst::check_and_set_options()
   {
     int verbosity=6;
     if(cmdline.isset("verbosity"))
-      verbosity=unsafe_string2int(cmdline.getval("verbosity"));
+      verbosity=unsafe_string2int(cmdline.get_value("verbosity"));
     ui_message_handler.set_verbosity(verbosity);
   }
   
@@ -189,19 +189,19 @@ bool tan_parse_optionst::check_and_set_options()
   
   std::string engine="cta";
   if(cmdline.isset("engine"))
-    engine=cmdline.getval("engine");
+    engine=cmdline.get_value("engine");
   
   if(cmdline.isset("no-loop-slicing") &&
      engine!="direct" && engine!="bre")
-    warning("Warning: --no-loop-slicing is only available "
-            "with the following engines: bre, direct.");
+    warning() << "Warning: --no-loop-slicing is only available "
+                 "with the following engines: bre, direct." << eom;
   
   if(cmdline.isset("unranked-method"))
   {
-    std::string u_mode=cmdline.getval("unranked-method");
+    std::string u_mode=cmdline.get_value("unranked-method");
     if(u_mode!="none" && u_mode!="precondition" && u_mode!="bmc-precondition" &&
         u_mode!="cegar" && u_mode!="bmc")
-      warning("Warning: unknown unranked-method.");    
+      warning() << "Warning: unknown unranked-method." << eom;
   }  
   
   return false;
@@ -315,10 +315,10 @@ bool tan_parse_optionst::prepare()
     termination_instrumentert::T_RANKSYNTH;
     
   if(cmdline.isset("engine") &&
-     cmdline.getval("engine")==std::string("direct"))
+     cmdline.get_value("engine")=="direct")
   {
     if(cmdline.isset("ranksynthesis"))
-        warning("Warning: --ranksynthesis does not make sense with --direct.");
+        warning() << "Warning: --ranksynthesis does not make sense with --direct." << eom;
 
     instrumenter_mode = termination_instrumentert::T_DIRECT;
   }
@@ -367,8 +367,8 @@ bool tan_parse_optionst::prepare()
     {
       ip.clear();
       
-      warning("Warning: Invariant propagation canceled because it "
-              "exceeded the memory limit");
+      warning() << "Warning: Invariant propagation canceled because it "
+                   "exceeded the memory limit" << eom;
     }
     
     status() << "Invariant Propagation: "
@@ -413,7 +413,7 @@ tan_resultt tan_parse_optionst::analyze()
   
   if(cmdline.isset("engine"))
   {
-    std::string estr=cmdline.getval("engine");
+    std::string estr=cmdline.get_value("engine");
     
     if(estr=="bre") engine=TP_BINARY_REACHABILITY;
     else if(estr=="direct") engine=TP_DIRECT;
