@@ -11,7 +11,7 @@ Author: CM Wintersteiger
 #include <iostream>
 #include <cstdlib>
 
-#include "tan_parseoptions.h"
+#include "tan_parse_options.h"
 
 void xcpu_termination_handler(int signum)
 {
@@ -39,8 +39,8 @@ int main(int argc, const char **argv)
 
   try
   {
-    tan_parseoptionst parseoptions(argc, argv);
-    return parseoptions.main();
+    tan_parse_optionst parse_options(argc, argv);
+    return parse_options.main();
   }
 
   catch (const char* e)

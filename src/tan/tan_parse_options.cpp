@@ -31,13 +31,13 @@
 #include <termination/termination_slicer.h>
 #include <termination/transform_loops.h>
 
-#include "tan_parseoptions.h"
+#include "tan_parse_options.h"
 #include "version.h"
 #include "languages.h"
 
 /*******************************************************************
 
- Function: tan_parseoptionst::tant
+ Function: tan_parse_optionst::tant
 
  Inputs:
 
@@ -47,15 +47,15 @@
 
  \*******************************************************************/
 
-tan_parseoptionst::tan_parseoptionst(int argc, const char **argv):
-  parseoptions_baset(TAN_OPTIONS, argc, argv),
+tan_parse_optionst::tan_parse_optionst(int argc, const char **argv):
+  parse_options_baset(TAN_OPTIONS, argc, argv),
   language_uit("TAN" TAN_VERSION, cmdline)
 {
 }
 
 /*******************************************************************
 
- Function: tan_parseoptionst::doit
+ Function: tan_parse_optionst::doit
 
  Inputs:
 
@@ -65,7 +65,7 @@ tan_parseoptionst::tan_parseoptionst(int argc, const char **argv):
 
  \*******************************************************************/
 
-int tan_parseoptionst::doit()
+int tan_parse_optionst::doit()
 {
   register_languages();
 
@@ -78,7 +78,7 @@ int tan_parseoptionst::doit()
 
 /*******************************************************************\
   
- Function: tan_parseoptionst::help
+ Function: tan_parse_optionst::help
 
  Inputs:
 
@@ -88,7 +88,7 @@ int tan_parseoptionst::doit()
 
  \*******************************************************************/
 
-void tan_parseoptionst::help()
+void tan_parse_optionst::help()
 {    
   std::cout <<"\n"
     "* * *                 TAN " TAN_VERSION
@@ -145,7 +145,7 @@ void tan_parseoptionst::help()
 
 /*******************************************************************\
   
- Function: tan_parseoptionst::check_and_set_options
+ Function: tan_parse_optionst::check_and_set_options
 
  Inputs:
 
@@ -155,7 +155,7 @@ void tan_parseoptionst::help()
 
  \*******************************************************************/
 
-bool tan_parseoptionst::check_and_set_options()
+bool tan_parse_optionst::check_and_set_options()
 {
   if(config.set(cmdline))
   {
@@ -209,7 +209,7 @@ bool tan_parseoptionst::check_and_set_options()
 
 /*******************************************************************\
   
- Function: tan_parseoptionst::from_file
+ Function: tan_parse_optionst::from_file
 
  Inputs:
 
@@ -219,7 +219,7 @@ bool tan_parseoptionst::check_and_set_options()
 
  \*******************************************************************/
 
-bool tan_parseoptionst::from_file(const std::string &filename)
+bool tan_parse_optionst::from_file(const std::string &filename)
 {  
   std::ifstream infile(filename.c_str());
 
@@ -248,7 +248,7 @@ bool tan_parseoptionst::from_file(const std::string &filename)
 
 /*******************************************************************\
   
- Function: tan_parseoptionst::prepare
+ Function: tan_parse_optionst::prepare
 
  Inputs:
 
@@ -258,7 +258,7 @@ bool tan_parseoptionst::from_file(const std::string &filename)
 
  \*******************************************************************/
 
-bool tan_parseoptionst::prepare()
+bool tan_parse_optionst::prepare()
 {
   message_handlert &mh=get_message_handler();
   
@@ -390,7 +390,7 @@ bool tan_parseoptionst::prepare()
 
 /*******************************************************************\
   
- Function: tan_parseoptionst::analyze
+ Function: tan_parse_optionst::analyze
 
  Inputs:
 
@@ -400,7 +400,7 @@ bool tan_parseoptionst::prepare()
 
  \*******************************************************************/
 
-tan_resultt tan_parseoptionst::analyze()
+tan_resultt tan_parse_optionst::analyze()
 {  
   const namespacet ns(symbol_table);
   value_set_analysist value_set_analysis(ns);

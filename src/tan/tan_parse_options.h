@@ -12,7 +12,7 @@ Author: CM Wintersteiger
 #include <fstream>
 
 #include <util/ui_message.h>
-#include <util/parseoptions.h>
+#include <util/parse_options.h>
 #include <util/symbol_table.h>
 
 #include <langapi/language_ui.h>
@@ -35,15 +35,15 @@ typedef enum { TAN_UNKNOWN=0,
                TAN_NONTERMINATING=20, 
                TAN_ERROR=30 } tan_resultt;
 
-class tan_parseoptionst:
-  public parseoptions_baset,
+class tan_parse_optionst:
+  public parse_options_baset,
   public language_uit
 {
 public:
   virtual int doit();
   virtual void help();
 
-  tan_parseoptionst(int argc, const char **argv);
+  tan_parse_optionst(int argc, const char **argv);
   
 private:
   symbol_tablet symbol_table;
