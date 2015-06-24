@@ -223,20 +223,20 @@ bool symex_assertiont::assertion_holds(
 
   bool sat=false;
 
-  std::auto_ptr<satcheckt> sat_solver;
-  std::auto_ptr<prop_convt> deciderp;
+  std::unique_ptr<satcheckt> sat_solver;
+  std::unique_ptr<prop_convt> deciderp;
       
   if (use_smt)
   {
-    deciderp = std::auto_ptr<prop_convt>(
+    deciderp = std::unique_ptr<prop_convt>(
         new smt1_dect(ns, "loop.smt", "", "QF_AUFBV", smt1_dect::BOOLECTOR)); 
   }
   else
   {
-    sat_solver = std::auto_ptr<satcheckt>(new satcheckt());
+    sat_solver = std::unique_ptr<satcheckt>(new satcheckt());
     bv_pointerst *p= new bv_pointerst(ns, *sat_solver);
     p->unbounded_array = bv_pointerst::U_AUTO;
-    deciderp=std::auto_ptr<prop_convt>(p);
+    deciderp=std::unique_ptr<prop_convt>(p);
   }
   
   prop_convt &decider=*deciderp;
