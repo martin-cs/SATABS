@@ -199,7 +199,7 @@ void satabs_inlinet::satabs_replace_return(
         {
           err_location(it->code);
           str << "return expects one operand!" << std::endl;
-          warning();
+          warning_msg();
           continue;
         }
 
@@ -401,7 +401,7 @@ void satabs_inlinet::expand_function_call(
     // it's really recursive, and we need full inlining.
     // Uh. Buh. Give up.
     err_location(function);
-    warning("recursion is ignored");
+    warning_msg("recursion is ignored");
     target->make_skip();
 
     target++;
@@ -506,8 +506,8 @@ void satabs_inlinet::expand_function_call(
     {
       err_location(function);
       str << "no body for function `" << identifier
-        << "'";
-      warning();
+          << "'";
+      warning_msg();
     }
 
     goto_programt tmp;
@@ -702,9 +702,9 @@ Purpose:
 \*******************************************************************/
 
 void satabs_inline(
-    goto_functionst &goto_functions,
-    const namespacet &ns,
-    message_handlert &message_handler)
+  goto_functionst &goto_functions,
+  const namespacet &ns,
+  message_handlert &message_handler)
 {
   satabs_inlinet satabs_inline(goto_functions, ns, message_handler);
 
@@ -722,17 +722,17 @@ void satabs_inline(
 
   catch(int)
   {
-    satabs_inline.error();
+    satabs_inline.error_msg();
   }
 
   catch(const char *e)
   {
-    satabs_inline.error(e);
+    satabs_inline.error_msg(e);
   }
 
   catch(const std::string &e)
   {
-    satabs_inline.error(e);
+    satabs_inline.error_msg(e);
   }
 
   if(satabs_inline.get_error_found())
@@ -787,17 +787,17 @@ void satabs_partial_inline(
 
   catch(int)
   {
-    satabs_inline.error();
+    satabs_inline.error_msg();
   }
 
   catch(const char *e)
   {
-    satabs_inline.error(e);
+    satabs_inline.error_msg(e);
   }
 
   catch(const std::string &e)
   {
-    satabs_inline.error(e);
+    satabs_inline.error_msg(e);
   }
 
   if(satabs_inline.get_error_found())

@@ -44,8 +44,8 @@ void get_predicates(
   
   l->set_message_handler(message_handler);
 
-  // use auto_ptr because of the exceptions
-  std::auto_ptr<languaget> language(l);
+  // use unique_ptr because of the exceptions
+  std::unique_ptr<languaget> language(l);
 
   std::string line;
 
