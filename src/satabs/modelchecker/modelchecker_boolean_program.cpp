@@ -620,7 +620,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
 
   // control flow
 
-  locationt previous_location;
+  source_locationt previous_location;
 
   for(abstract_programt::instructionst::iterator
       it=abstract_program.instructions.begin();

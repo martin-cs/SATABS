@@ -69,13 +69,12 @@ protected:
       bool add_return_predicates);
 
   void parameter_assignments(
-      const locationt &location,
+      const source_locationt &location,
       const irep_idt &function_name,
       const code_typet &code_type,
       const exprt::operandst &arguments,
       goto_programt &dest,
-      bool add_parameter_predicates
-      );
+      bool add_parameter_predicates);
 
   typedef hash_set_cont<irep_idt, irep_id_hash> recursion_sett;
   recursion_sett recursion_set;

@@ -471,7 +471,7 @@ void satabs_inlinet::expand_function_call(
 
     if(f.type.get_bool("#hide"))
     {
-      const locationt &new_location=function.find_location();
+      const source_locationt &new_location=function.find_source_location();
 
       if(new_location.is_not_nil())
       {
