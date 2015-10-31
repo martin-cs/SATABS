@@ -3,7 +3,7 @@
 Module: Prepare a C program for use by CEGAR
 
 Author: Daniel Kroening
-Karen Yorav
+        Karen Yorav
 
 Date: June 2003
 
@@ -89,53 +89,6 @@ int preparet::doit()
 
   try
   {
-    // do we have a goto binary?
-    if(cmdline.args.size()==1 &&
-       is_goto_binary(cmdline.args[0]))
-    {
-      status() << "Reading GOTO program from file" << eom;
-
-      if(read_goto_binary(cmdline.args[0],
-            symbol_table, goto_functions,
-            get_message_handler()))
-        return 1;
-
-      config.ansi_c.set_from_symbol_table(symbol_table);
-    }
-    else
-    {
-      // from source
-      
-      // parsing
-      if(parse()) return 1;
-
-      // type checking
-      if(typecheck()) return 1;
-
-      // final adjustments
-      if(final()) return 1;
-
-      // see if we have a "main"
-      
-      irep_idt entry_point=goto_functions.entry_point();
-
-      if(symbol_table.symbols.find(entry_point)==symbol_table.symbols.end())
-      {
-        error() << "failed to find entry point -- please provide a model" << eom;
-        return 1;
-      }
-
-      status() << "Generating GOTO Program" << eom;
-
-      goto_convert(
-          symbol_table,
-          goto_functions,
-          get_message_handler());
-
-      // we no longer need any parse trees or language files
-      clear_parse();
-    }
-
     {
       int return_value_get_goto_program=get_goto_program();
       if(return_value_get_goto_program>=0)
@@ -196,6 +149,53 @@ Purpose:
 
 int preparet::get_goto_program()
 {
+  // do we have a goto binary?
+  if(cmdline.args.size()==1 &&
+     is_goto_binary(cmdline.args[0]))
+  {
+    status() << "Reading GOTO program from file" << eom;
+
+    if(read_goto_binary(cmdline.args[0],
+          symbol_table, goto_functions,
+          get_message_handler()))
+      return 1;
+
+    config.ansi_c.set_from_symbol_table(symbol_table);
+  }
+  else
+  {
+    // from source
+    
+    // parsing
+    if(parse()) return 1;
+
+    // type checking
+    if(typecheck()) return 1;
+
+    // final adjustments
+    if(final()) return 1;
+
+    // see if we have a "main"
+    
+    irep_idt entry_point=goto_functions.entry_point();
+
+    if(symbol_table.symbols.find(entry_point)==symbol_table.symbols.end())
+    {
+      error() << "failed to find entry point -- please provide a model" << eom;
+      return 1;
+    }
+
+    status() << "Generating GOTO Program" << eom;
+
+    goto_convert(
+      symbol_table,
+      goto_functions,
+      get_message_handler());
+
+    // we no longer need any parse trees or language files
+    clear_parse();
+  }
+
   namespacet ns(symbol_table);
 
   // finally add the library
@@ -210,13 +210,15 @@ int preparet::get_goto_program()
     return 0;
   }
 
-  unsigned functions=goto_functions.function_map.size();
-  unsigned instructions=0;
-  forall_goto_functions(it, goto_functions)
-    instructions+=it->second.body.instructions.size();
+  {
+    unsigned functions=goto_functions.function_map.size();
+    unsigned instructions=0;
+    forall_goto_functions(it, goto_functions)
+      instructions+=it->second.body.instructions.size();
 
-  statistics() << functions << " functions, "
-               << instructions << " instructions" << eom;
+    statistics() << functions << " functions, "
+                 << instructions << " instructions" << eom;
+  }
 
   if(cmdline.isset("string-abstraction"))
     string_instrumentation(
@@ -252,19 +254,20 @@ int preparet::get_goto_program()
     status() << "Partial inlining" << eom;
 
     satabs_partial_inline(
-        goto_functions,
-        ns,
-        get_message_handler());
+      goto_functions,
+      ns,
+      get_message_handler());
 
     // we do this again, to remove all the functions that are inlined now
     remove_unused_functions(
-        goto_functions, get_message_handler());
+      goto_functions, get_message_handler());
 
     status() << "Adjusting functions" << eom;
+
     prepare_functions(
-        symbol_table,
-        goto_functions,
-        get_message_handler());
+      symbol_table,
+      goto_functions,
+      get_message_handler());
 
     // show it?
     if(cmdline.isset("show-adjusted-functions"))
@@ -286,9 +289,9 @@ int preparet::get_goto_program()
   {
     status() << "String Abstraction" << eom;
     string_abstraction(
-        symbol_table,
-        get_message_handler(),
-        goto_functions);
+      symbol_table,
+      get_message_handler(),
+      goto_functions);
   }  
 
   goto_functions.compute_location_numbers();
@@ -299,8 +302,8 @@ int preparet::get_goto_program()
   // set property
   if(cmdline.isset("property"))
     set_properties(
-        goto_functions,
-        cmdline.get_values("property"));
+      goto_functions,
+      cmdline.get_values("property"));
 
   // reachability slice?
   if(!cmdline.isset("no-slicing"))
