@@ -10,7 +10,6 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <set>
 
 #include <util/expr_util.h>
-#include <util/location.h>
 #include <util/arith_tools.h>
 #include <util/i2string.h>
 #include <util/string2int.h>

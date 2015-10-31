@@ -9,7 +9,6 @@
 #define CPROVER_SATABS_CONCURRENCY_AWARE_ABSTRACTOR_H
 
 #include <util/std_expr.h>
-#include <util/location.h>
 
 #include <pointer-analysis/value_set_analysis.h>
 
