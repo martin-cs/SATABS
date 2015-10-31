@@ -104,10 +104,8 @@ void simulator_symext::build_equation_prefix(
       case ATOMIC_END:
         break;
 
-      case RETURN:
-        // the usual RETURN branches to the END_FUNCTION
-        if(it->relevant)
-          symex_simulator.symex_step_return(state);
+      case RETURN: // should have been removed
+        assert(false);
         break;
 
       case ASSIGN:

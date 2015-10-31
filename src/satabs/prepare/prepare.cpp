@@ -29,6 +29,8 @@ Date: June 2003
 #include <goto-programs/string_abstraction.h>
 #include <goto-programs/remove_unused_functions.h>
 #include <goto-programs/link_to_library.h>
+#include <goto-programs/remove_returns.h>
+#include <goto-programs/parameter_assignments.h>
 
 #include <analyses/goto_check.h>
 
@@ -43,7 +45,6 @@ Date: June 2003
 
 #include "../version.h"
 #include "prepare.h"
-#include "prepare_functions.h"
 #include "get_predicates.h"
 
 #include "satabs_inline.h"
@@ -263,11 +264,9 @@ int preparet::get_goto_program()
       goto_functions, get_message_handler());
 
     status() << "Adjusting functions" << eom;
-
-    prepare_functions(
-      symbol_table,
-      goto_functions,
-      get_message_handler());
+    
+    remove_returns(symbol_table, goto_functions);
+    parameter_assignments(symbol_table, goto_functions);
 
     // show it?
     if(cmdline.isset("show-adjusted-functions"))
