@@ -3,17 +3,17 @@
 Module: "Preprocess" C program for CEGAR
 
 Author: Daniel Kroening
-Karen Yorav 
+        Karen Yorav 
 
 Date: June 2003
 
 Purpose: Preprocess the C program and convert it into a GOTO
-program.
+         program.
 
 \*******************************************************************/
 
-#ifndef CPROVER_CEGAR_PREPARE_H
-#define CPROVER_CEGAR_PREPARE_H
+#ifndef CPROVER_SATABS_PREPARE_H
+#define CPROVER_SATABS_PREPARE_H
 
 #include <langapi/language_ui.h>
 
