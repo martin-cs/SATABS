@@ -1,3 +1,5 @@
+#include <assert.h>
+
 main() {
   int i, j, n;
   int x[n];
