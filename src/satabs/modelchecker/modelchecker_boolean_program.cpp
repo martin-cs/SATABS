@@ -390,13 +390,11 @@ void modelchecker_boolean_programt::build_boolean_program_file_local_variables(
         it!=events_waited_for.end();
         it++)
     {
-      out << "VAR " << "sticky_" << *it
-        << ": boolean;" << std::endl;
-      out << "ASSIGN init(sticky_" << *it << "):=0;"
-        << std::endl;
+      out << "VAR " << "sticky_" << *it << ": boolean;\n";
+      out << "ASSIGN init(sticky_" << *it << "):=0;\n";
     }
 
-    out << std::endl;
+    out << '\n';
   }
 #endif
 }
@@ -454,10 +452,10 @@ void modelchecker_boolean_programt::build_boolean_program_file_global_variables(
         out << "// " << abstract_model.variables[i].description;
       }
 
-      out << std::endl;
+      out << '\n';
     }
 
-  out << std::endl;
+  out << '\n';
 
   //
   // Events
@@ -472,10 +470,9 @@ void modelchecker_boolean_programt::build_boolean_program_file_global_variables(
     for(eventst::const_iterator it=events.begin();
         it!=events.end();
         it++)
-      out << "VAR " << "event_" << *it
-        << ": boolean;" << std::endl;
+      out << "VAR " << "event_" << *it << ": boolean;\n";
 
-    out << std::endl;
+    out << '\n';
   }
 #endif
 }
@@ -525,10 +522,9 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     tts_buildert &tts_builder)
 {
   // header
-  out << "// " << f_it->first << std::endl;
+  out << "// " << f_it->first << '\n';
   out << "void " << convert_function_name(f_it->first)
-    << "() begin\n"
-    "\n";
+      << "() begin\n\n";
 
   const bool tts_do=build_tts && f_it->first=="main";
 
@@ -585,10 +581,10 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
             out << abstract_model.variables[i].description;
           }
 
-          out << std::endl;
+          out << '\n';
         }
 
-      out << std::endl;
+      out << '\n';
     }
   }
 
@@ -599,7 +595,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
   if(f_it->first=="main")
   {
     out << "      // initialization of the shared-global and thread-local variables\n"
-      "\n";
+           "\n";
 
     for(unsigned i=0;
         i<abstract_model.variables.size();
@@ -607,11 +603,11 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
       if(abstract_model.variables[i].is_shared_global() ||
           abstract_model.variables[i].is_thread_local())
       {
-        out << "      " << variable_names[i] << ":=*; ";
-        out << std::endl;
+        out << "      " << variable_names[i] << ":=*;";
+        out << '\n';
       }
 
-    out << std::endl;
+    out << '\n';
   }
 
   abstract_programt &abstract_program=f_it->second.body;
@@ -633,7 +629,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     if(!it->source_location.is_nil() &&
         it->source_location!=previous_location)
     {
-      out << "    // " << it->source_location << std::endl;
+      out << "    // " << it->source_location << '\n';
       previous_location=it->source_location;
     }
 
@@ -646,13 +642,13 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
           p_it++)
         out << " " << variable_names[*p_it];
 
-      out << std::endl;
+      out << '\n';
     }
 
     if(it->is_target())
     {
       std::string label="l"+i2string(it->target_number);
-      out << std::setw(4) << label << ":" << std::endl;
+      out << std::setw(4) << label << ":\n";
     }
 
     {
@@ -848,8 +844,8 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
               it++)
           {
             if(it!=constraints.begin()) out << " &";
-            out << std::endl << "    "
-              << '(' << expr_string(*it) << ')';
+            out << '\n' << "    "
+                << '(' << expr_string(*it) << ')';
           }
         }
 
@@ -893,7 +889,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     else
       throw "unknown statement";
 
-    out << std::endl;
+    out << '\n';
 
     if(!it->code.get_transition_relation().to_predicates.empty())
     {
@@ -904,10 +900,10 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
           p_it++)
         out << " " << variable_names[*p_it];
 
-      out << std::endl;
+      out << '\n';
     }
 
-    out << std::endl;
+    out << '\n';
 
     if(tts_do) tts_builder.build_instruction(it, PC);
   }
