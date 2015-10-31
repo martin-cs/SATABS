@@ -31,13 +31,11 @@ public:
     bool is_max;
     float val;
 
-    statt() :
-      is_max(false), val(0)
+    statt():is_max(false), val(0)
     {
     }
 
-    statt(bool _is_max,
-        float _val) :
+    statt(bool _is_max, float _val):
       is_max(_is_max), val(_val)
     {
     }
@@ -51,7 +49,7 @@ public:
     for(statst::const_iterator it=stats.begin();
         it!=stats.end();
         ++it)
-      os << it->first << ": " << it->second.val << std::endl;
+      os << it->first << ": " << it->second.val << '\n';
 
     return os;
   }
