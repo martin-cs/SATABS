@@ -137,15 +137,9 @@ int preparet::doit()
     }
 
     {
-      int return_value_get_sync_modules=get_sync_modules();
-      if(return_value_get_sync_modules>=0)
-        return return_value_get_sync_modules;
-    }
-
-    {
-      int return_value_get_async_modules=get_async_modules();
-      if(return_value_get_async_modules>=0)
-        return return_value_get_async_modules;
+      int return_value_get_goto_program=get_goto_program();
+      if(return_value_get_goto_program>=0)
+        return return_value_get_goto_program;
     }
 
     if(cmdline.isset("show-properties"))
@@ -190,7 +184,7 @@ int preparet::doit()
 
 /*******************************************************************\
 
-Function: preparet::get_sync_modules
+Function: preparet::get_goto_program
 
 Inputs:
 
@@ -200,24 +194,7 @@ Purpose:
 
 \*******************************************************************/
 
-int preparet::get_sync_modules()
-{
-  return -1; // proceed!
-}
-
-/*******************************************************************\
-
-Function: preparet::get_async_modules
-
-Inputs:
-
-Outputs:
-
-Purpose:
-
-\*******************************************************************/
-
-int preparet::get_async_modules()
+int preparet::get_goto_program()
 {
   namespacet ns(symbol_table);
 

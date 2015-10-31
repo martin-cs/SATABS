@@ -39,8 +39,7 @@ private:
   const optionst &options;
 
   void get_initial_state();
-  int get_sync_modules();
-  int get_async_modules();
+  int get_goto_program();
 
   void replace_dynamic_allocation(goto_programt &goto_program);
   void replace_dynamic_allocation(goto_functionst &goto_functions);
