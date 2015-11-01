@@ -376,27 +376,6 @@ void modelchecker_boolean_programt::build_boolean_program_file_local_variables(
     const abstract_modelt &abstract_model,
     std::ostream &out)
 {
-#if 0
-  //
-  // Events
-  //
-
-  if(!events.empty())
-  {
-    out << "-- events\n"
-      "\n";
-
-    for(eventst::const_iterator it=events_waited_for.begin();
-        it!=events_waited_for.end();
-        it++)
-    {
-      out << "VAR " << "sticky_" << *it << ": boolean;\n";
-      out << "ASSIGN init(sticky_" << *it << "):=0;\n";
-    }
-
-    out << '\n';
-  }
-#endif
 }
 
 /*******************************************************************\
@@ -456,25 +435,6 @@ void modelchecker_boolean_programt::build_boolean_program_file_global_variables(
     }
 
   out << '\n';
-
-  //
-  // Events
-  //
-
-#if 0
-  if(!events.empty())
-  {
-    out << "-- events\n"
-      "\n";
-
-    for(eventst::const_iterator it=events.begin();
-        it!=events.end();
-        it++)
-      out << "VAR " << "event_" << *it << ": boolean;\n";
-
-    out << '\n';
-  }
-#endif
 }
 
 /*******************************************************************\
@@ -526,7 +486,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
   out << "void " << convert_function_name(f_it->first)
       << "() begin\n\n";
 
-  const bool tts_do=build_tts && f_it->first=="main";
+  const bool tts_do=build_tts && f_it->first==ID__start;
 
   // local variables
 
@@ -592,7 +552,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
   // just to make sure that there is no misunderstanding
   // about the initial value of any global variable
 
-  if(f_it->first=="main")
+  if(f_it->first==ID__start)
   {
     out << "      // initialization of the shared-global and thread-local variables\n"
            "\n";
@@ -1155,6 +1115,12 @@ Purpose:
 std::string modelchecker_boolean_programt::convert_function_name(
     const irep_idt &name)
 {
+  if(name==ID__start)
+    return "main";
+  
+  if(name==ID_main)
+    return "$main";
+
   std::string result=id2string(name);
 
   for(unsigned i=0; i<result.size(); i++)
@@ -1190,7 +1156,6 @@ void modelchecker_boolean_programt::build(
 {
   get_variable_names(abstract_model);
   //get_nondet_symbols(abstract_model);
-  //get_events(abstract_model);
 
   std::string out_file_name=out_file_base_name+".bp";
   std::ofstream out(out_file_name.c_str());
@@ -1217,45 +1182,4 @@ void modelchecker_boolean_programt::save(
 {
   build(abstract_model, "satabs."+i2string(sequence));
 }
-
-/*******************************************************************\
-
-Function: modelchecker_boolean_programt::get_variable_names
-
-Inputs:
-
-Outputs:
-
-Purpose:
-
-\*******************************************************************/
-
-/*
-   void modelchecker_boolean_programt::get_variable_names(
-   const abstract_modelt &abstract_model)
-   {
-   modelcheckert::get_variable_names(abstract_model);
-
-   if(concurrency_aware)
-   {
-   passive_variable_names.clear();
-
-   for(unsigned i=0;
-   i<abstract_model.variables.size();
-   i++)
-   {
-   assert(!abstract_model.variables[i].is_thread_local());
-   if(abstract_model.variables[i].is_procedure_local() || abstract_model.variables[i].is_mixed())
-   {
-   passive_variable_names.push_back(variable_names[i] + "$");
-   }
-   }
-
-   }
-
-
-
-   }
-   */
-
 
