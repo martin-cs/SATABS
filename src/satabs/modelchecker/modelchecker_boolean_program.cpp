@@ -358,12 +358,6 @@ void modelchecker_boolean_programt::build_boolean_program_file(
 
   build_boolean_program_file_global_variables(abstract_model, out);
   build_boolean_program_file_functions(abstract_model, out, tts_builder);
-  
-  // this is the entry point
-  out << "// entry point\n\n";
-  out << "void main() begin\n"
-         "  _start();\n"
-         "end\n";
 }
 
 /*******************************************************************\
@@ -1123,6 +1117,9 @@ std::string modelchecker_boolean_programt::convert_function_name(
 {
   if(name==ID_main)
     return "$main";
+
+  if(name==ID__start)
+    return "main";
 
   std::string result=id2string(name);
 
