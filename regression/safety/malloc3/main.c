@@ -1,4 +1,4 @@
-void *malloc(unsigned s);
+#include <stdlib.h>
 
 int main()
 {
