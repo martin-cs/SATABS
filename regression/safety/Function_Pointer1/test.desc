@@ -1,4 +1,4 @@
-KNOWNBUG
+CORE
 main.c
 --iterations 15 --pointer-check
 ^EXIT=0$
