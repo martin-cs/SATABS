@@ -11,7 +11,6 @@ SRC = satabs.cpp cmdline_options.cpp \
       prepare/map_vars.cpp \
       prepare/concrete_model.cpp \
       prepare/languages.cpp \
-      prepare/satabs_inline.cpp \
       \
       refiner/add_invariants.cpp \
       refiner/substitute_invariants.cpp \

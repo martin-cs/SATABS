@@ -23,6 +23,7 @@ Date: June 2003
 #include <goto-programs/show_properties.h>
 #include <goto-programs/set_properties.h>
 #include <goto-programs/goto_convert_functions.h>
+#include <goto-programs/goto_inline.h>
 #include <goto-programs/remove_function_pointers.h>
 #include <goto-programs/read_goto_binary.h>
 #include <goto-programs/string_instrumentation.h>
@@ -46,8 +47,6 @@ Date: June 2003
 #include "../version.h"
 #include "prepare.h"
 #include "get_predicates.h"
-
-#include "satabs_inline.h"
 
 #define MAX_BLOCK_SIZE 1
 
@@ -244,7 +243,7 @@ int preparet::get_goto_program()
   {
     status() << "Full inlining" << eom;
 
-    satabs_inline(
+    goto_inline(
       goto_functions,
       ns,
       get_message_handler());
@@ -254,7 +253,7 @@ int preparet::get_goto_program()
     // partially inline functions
     status() << "Partial inlining" << eom;
 
-    satabs_partial_inline(
+    goto_partial_inline(
       goto_functions,
       ns,
       get_message_handler());
