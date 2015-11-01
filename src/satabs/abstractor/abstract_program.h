@@ -76,10 +76,10 @@ class abstract_programt:public goto_program_templatet<abstract_codet, exprt>
 {
 public:
   virtual std::ostream& output_instruction(
-      const namespacet &ns,
-      const irep_idt &identifier,
-      std::ostream &out,
-      const_targett it) const;
+    const namespacet &ns,
+    const irep_idt &identifier,
+    std::ostream &out,
+    const_targett it) const;
 };
 
 bool operator<(
