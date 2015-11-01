@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include "driver.h"
 
 extern int dummy_major;

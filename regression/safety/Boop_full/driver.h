@@ -9,7 +9,7 @@
 
 #define BUF_SIZE 255
 
-extern void assert (_Bool);
+//extern void assert (_Bool);
 extern int init_module (void);
 extern void cleanup_module (void);
 extern int dummy_open (struct inode*, struct file*);
