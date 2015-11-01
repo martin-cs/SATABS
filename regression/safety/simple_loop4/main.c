@@ -1,5 +1,6 @@
-void foo(int i) {
-  
+int main()
+{
+  int i;
   int j, k;
 
   __CPROVER_assume(i>=0 && i < 10);
