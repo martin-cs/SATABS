@@ -16,15 +16,6 @@ Date: June 2003
 class modelchecker_spint:public modelcheckert
 {
 public:
-  explicit modelchecker_spint(const bool concurrency_aware):
-    modelcheckert(concurrency_aware)
-  {
-    if(concurrency_aware)
-    {
-      throw "CAV'11 concurrency not yet supported for SPIN";
-    }
-  }
-
   // A return value of TRUE means the program is correct,
   // if FALSE is returned, abstract_counterexample will
   // contain the counterexample

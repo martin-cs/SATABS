@@ -42,7 +42,7 @@ static void adjust_pred_index(exprt& expr,
 }
 
 concurrency_aware_abstractort::concurrency_aware_abstractort(
-    std::auto_ptr<abstractort> _specific_abstractor,
+    std::unique_ptr<abstractort> _specific_abstractor,
     const bool _passive_nondet) :
   specific_abstractor(_specific_abstractor),
   passive_nondet(_passive_nondet),

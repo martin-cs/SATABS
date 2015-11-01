@@ -15,7 +15,6 @@ Date: September 2005
 #include "abstractor_satqe.h"
 #include "abstractor_prover.h"
 #include "abstractor_wp_cartesian.h"
-#include "concurrency_aware_abstractor.h"
 
 /*******************************************************************\
 
@@ -56,12 +55,5 @@ abstractort *select_abstractor(const optionst &options)
   else
     throw "unknown abstractor: "+name;
 
-  if(options.get_bool_option("concurrency"))
-  {
-    return new concurrency_aware_abstractort(
-        std::auto_ptr<abstractort>(specific_abstractor),
-        options.get_bool_option("passive-nondet"));
-  }
-  else
-    return specific_abstractor;
+  return specific_abstractor;
 }

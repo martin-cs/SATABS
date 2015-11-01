@@ -14,7 +14,6 @@ Date: June 2003
 #include "initial_abstraction.h"
 #include "discover_predicates.h"
 #include "canonicalize.h"
-#include "concurrency_aware_abstract_transition_relation.h"
 #include "check_redundancy.h"
 #include "../prepare/concrete_model.h"
 
@@ -32,13 +31,11 @@ Purpose:
 
 void initial_abstractiont::build(
     const concrete_modelt &concrete_model,
-    abstract_modelt &abstract_model,
-    bool concurrency_aware)
+    abstract_modelt &abstract_model)
 {
   build_control_flow(
       concrete_model.goto_functions,
-      abstract_model.goto_functions,
-      concurrency_aware);
+      abstract_model.goto_functions);
 }
 
 /*******************************************************************\
@@ -221,8 +218,7 @@ Purpose: compute abstraction according to set of predicates
 
 void initial_abstractiont::build_control_flow(
     const goto_programt &concrete_program,
-    abstract_programt &abstract_program,
-    bool concurrency_aware)
+    abstract_programt &abstract_program)
 {
   abstract_program.clear();
 
@@ -297,8 +293,7 @@ Purpose: compute abstraction according to set of predicates
 
 void initial_abstractiont::build_control_flow(
     const goto_functionst &concrete_functions,
-    abstract_functionst &abstract_functions,
-    bool concurrency_aware)
+    abstract_functionst &abstract_functions)
 {
   forall_goto_functions(it, concrete_functions)
   {
@@ -312,7 +307,7 @@ void initial_abstractiont::build_control_flow(
     a.type=f.type;
 
     if(f.body_available)
-      build_control_flow(f.body, a.body, concurrency_aware);
+      build_control_flow(f.body, a.body);
   }
 }
 

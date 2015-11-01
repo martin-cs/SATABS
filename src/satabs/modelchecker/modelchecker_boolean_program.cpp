@@ -22,12 +22,10 @@ Date: October 2004
 #include <util/string2int.h>
 #include <util/tempdir.h>
 
-#include "../abstractor/concurrency_aware_abstract_transition_relation.h"
 #include "../abstractor/abstract_model.h"
 #include "abstract_counterexample.h"
 
 #include "modelchecker_boolean_program.h"
-#include "tts_builder.h"
 
 /*******************************************************************\
 
@@ -347,9 +345,8 @@ Purpose:
 \*******************************************************************/
 
 void modelchecker_boolean_programt::build_boolean_program_file(
-    abstract_modelt &abstract_model,
-    std::ostream &out,
-    tts_buildert &tts_builder)
+  abstract_modelt &abstract_model,
+  std::ostream &out)
 {
   // start printing Boolean program
 
@@ -357,7 +354,7 @@ void modelchecker_boolean_programt::build_boolean_program_file(
          "\n";
 
   build_boolean_program_file_global_variables(abstract_model, out);
-  build_boolean_program_file_functions(abstract_model, out, tts_builder);
+  build_boolean_program_file_functions(abstract_model, out);
 }
 
 /*******************************************************************\
@@ -373,8 +370,8 @@ Purpose:
 \*******************************************************************/
 
 void modelchecker_boolean_programt::build_boolean_program_file_local_variables(
-    const abstract_modelt &abstract_model,
-    std::ostream &out)
+  const abstract_modelt &abstract_model,
+  std::ostream &out)
 {
 }
 
@@ -451,8 +448,7 @@ Purpose:
 
 void modelchecker_boolean_programt::build_boolean_program_file_functions(
     abstract_modelt &abstract_model,
-    std::ostream &out,
-    tts_buildert &tts_builder)
+    std::ostream &out)
 {
   PC_map.clear();
 
@@ -460,7 +456,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_functions(
       f_it=abstract_model.goto_functions.function_map.begin();
       f_it!=abstract_model.goto_functions.function_map.end();
       f_it++)
-    build_boolean_program_file_function(abstract_model, f_it, out, tts_builder);
+    build_boolean_program_file_function(abstract_model, f_it, out);
 }
 
 /*******************************************************************\
@@ -478,15 +474,12 @@ Purpose:
 void modelchecker_boolean_programt::build_boolean_program_file_function(
     abstract_modelt &abstract_model,
     abstract_functionst::function_mapt::iterator f_it,
-    std::ostream &out,
-    tts_buildert &tts_builder)
+    std::ostream &out)
 {
   // header
   out << "// " << f_it->first << '\n';
   out << "void " << convert_function_name(f_it->first)
       << "() begin\n\n";
-
-  const bool tts_do=build_tts && f_it->first==ID__start;
 
   // local variables
 
@@ -501,10 +494,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
       {
         max_len=std::max(max_len, variable_names[i].size());
         has_procedure_local_variables=true;
-        if(tts_do) tts_builder.add_local_var(i);
       }
-      else
-        if(tts_do) tts_builder.add_shared_var(i);
     }
 
     if(has_procedure_local_variables)
@@ -525,19 +515,6 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
               out << " ";
 
             out << "// ";
-
-            if(concurrency_aware)
-            {
-              if(abstract_model.variables[i].is_procedure_local())
-              {
-                out << "LOCAL --";
-              } else {
-                assert(abstract_model.variables[i].is_mixed());
-                out << "MIXED --";
-              }
-              out << " ";
-            }
-
             out << abstract_model.variables[i].description;
           }
 
@@ -571,8 +548,6 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
   }
 
   abstract_programt &abstract_program=f_it->second.body;
-
-  if(tts_do) tts_builder.build_prologue(abstract_program);
 
   // control flow
 
@@ -716,26 +691,6 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
           out << variable_names[i];
         }
 
-      if(concurrency_aware)
-      {
-        for(unsigned i=0; i<abstract_model.variables.size(); i++)
-        {
-          concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.transition_relation));
-          assert(trans_rel);
-          if(trans_rel->passive_values.count(i)!=0)
-          {
-            assert(!abstract_model.variables[i].is_thread_local());
-            assert(abstract_model.variables[i].is_procedure_local() || abstract_model.variables[i].is_mixed());
-
-            assert(!first);
-            out << ",";
-            exprt tmp=exprt(ID_predicate_passive_symbol, bool_typet());
-            tmp.set(ID_identifier, i);
-            out << expr_string(tmp);
-          }
-        }
-      }
-
       if(first) // none changed?
       {
         out << "skip; // no predicates changed";
@@ -761,31 +716,6 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
               out << "*";
             else
               out << expr_string(value);
-          }
-        }
-
-        if(concurrency_aware)
-        {
-          concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.transition_relation));
-          assert(trans_rel);
-
-          for(unsigned i=0; i<abstract_model.variables.size(); i++)
-          {
-            abstract_transition_relationt::valuest::const_iterator
-              v_it=trans_rel->passive_values.find(i);
-
-            if(v_it!=trans_rel->passive_values.end())
-            {
-              const exprt &value=v_it->second;
-
-              assert(!first);
-              out << ",";
-
-              if(value.is_nil())
-                out << "*";
-              else
-                out << expr_string(value);
-            }
           }
         }
 
@@ -864,13 +794,9 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
     }
 
     out << '\n';
-
-    if(tts_do) tts_builder.build_instruction(it, PC);
   }
 
   out << "end\n\n";
-
-  if(tts_do) tts_builder.finalize();
 }
 
 /*******************************************************************\
@@ -1162,9 +1088,8 @@ void modelchecker_boolean_programt::build(
 
   std::string out_file_name=out_file_base_name+".bp";
   std::ofstream out(out_file_name.c_str());
-  tts_buildert tts_builder(build_tts, out_file_base_name+".tts");
 
-  build_boolean_program_file(abstract_model, out, tts_builder);
+  build_boolean_program_file(abstract_model, out);
 }
 
 /*******************************************************************\

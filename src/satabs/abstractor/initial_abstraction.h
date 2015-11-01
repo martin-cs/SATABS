@@ -53,8 +53,7 @@ class initial_abstractiont:public messaget
 
     void build(
         const concrete_modelt &concrete_model,
-        abstract_modelt &abstract_model,
-        bool concurrency_aware);
+        abstract_modelt &abstract_model);
 
   protected:
     const bool no_mixed_predicates;
@@ -73,13 +72,11 @@ class initial_abstractiont:public messaget
     // build control flow of abstract program
     void build_control_flow(
         const goto_functionst &concrete_functions,
-        abstract_functionst &abstract_functions,
-        bool concurrency_aware);
+        abstract_functionst &abstract_functions);
 
     void build_control_flow(
         const goto_programt &concrete_program,
-        abstract_programt &abstract_program,
-        bool concurrency_aware);
+        abstract_programt &abstract_program);
 };
 
 #endif

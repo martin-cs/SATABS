@@ -41,8 +41,6 @@ SRC = satabs.cpp cmdline_options.cpp \
       abstractor/abstract_dynamic_objects.cpp \
       abstractor/abstract_model.cpp \
       abstractor/select_abstractor.cpp \
-      abstractor/concurrency_aware_abstract_transition_relation.cpp \
-      abstractor/concurrency_aware_abstractor.cpp \
       abstractor/locations_of_expressions.cpp \
       \
       modelchecker/abstract_counterexample.cpp \

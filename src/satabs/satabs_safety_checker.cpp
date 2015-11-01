@@ -46,7 +46,6 @@ satabs_safety_checker_baset::satabs_safety_checker_baset(
   max_iterations(0),
   save_bps(false),
   build_tts(false),
-  concurrency_aware(false),
   write_csv_stats(false),
   abstractor(_abstractor),
   refiner(_refiner),
@@ -113,37 +112,6 @@ void satabs_safety_checker_baset::show_statistics(const namespacet &ns)
             << eom;
   }
 
-  if(concurrency_aware)
-  {
-    unsigned int local_count = 0;
-    unsigned int shared_count = 0;
-    unsigned int mixed_count = 0;
-
-    for(unsigned int i = 0; i < predicates.size(); i++)
-    {
-      switch(abstractort::get_var_class(predicates[i], ns))
-      {
-        case abstract_modelt::variablet::THREAD_LOCAL:
-        case abstract_modelt::variablet::PROCEDURE_LOCAL:
-          local_count++;
-          break;
-        case abstract_modelt::variablet::SHARED_GLOBAL:
-          shared_count++;
-          break;
-        case abstract_modelt::variablet::MIXED:
-          mixed_count++;
-          break;
-        case abstract_modelt::variablet::NONE:
-          assert(false);
-      }
-    }
-
-    status() << "Breakdown of predicate types:" << endl
-             << "   shared: " << shared_count << endl
-             << "   local: " << local_count << endl
-             << "   mixed: " << mixed_count << eom;
-  }
-
   show_loop_component_statistics(abstractor, "abstractor");
   show_loop_component_statistics(modelchecker, "model checker");
   show_loop_component_statistics(simulator, "simulator");
@@ -179,8 +147,6 @@ void satabs_safety_checker_baset::csv_stats(
   if(iteration==1)
   {
     of << "iteration,\"nr predicates\",";
-    if(concurrency_aware)
-      of << "shared,mixed,local,";
     of << "\"total time\",";
     of << "\"abstractor time\",";
     of << "\"model checker time\",";
@@ -210,36 +176,6 @@ void satabs_safety_checker_baset::csv_stats(
 
   of << iteration << "," <<
     predicates.size() << ",";
-
-  if(concurrency_aware)
-  {
-    unsigned int local_count = 0;
-    unsigned int shared_count = 0;
-    unsigned int mixed_count = 0;
-
-    for(unsigned int i = 0; i < predicates.size(); i++)
-    {
-      switch(abstractort::get_var_class(predicates[i], ns))
-      {
-        case abstract_modelt::variablet::THREAD_LOCAL:
-        case abstract_modelt::variablet::PROCEDURE_LOCAL:
-          local_count++;
-          break;
-        case abstract_modelt::variablet::SHARED_GLOBAL:
-          shared_count++;
-          break;
-        case abstract_modelt::variablet::MIXED:
-          mixed_count++;
-          break;
-        case abstract_modelt::variablet::NONE:
-          assert(false);
-      }
-    }
-
-    of << shared_count << ","
-       << mixed_count << ","
-       << local_count << ",";
-  }
 
   {
     static absolute_timet prev_tot_time=total_start_time;
@@ -317,12 +253,11 @@ bool satabs_safety_checker_baset::do_modelchecking(
   if(save_bps)
   {
     modelchecker_boolean_programt model_checker_boolean_program(
-        modelchecker_boolean_programt::BOPPO, 0, concurrency_aware,
-        build_tts);
+      modelchecker_boolean_programt::BOPPO, 0);
     model_checker_boolean_program.set_message_handler(get_message_handler());
     model_checker_boolean_program.save(
-        abstractor.abstract_model,
-        iteration);
+      abstractor.abstract_model,
+      iteration);
   }
 
   absolute_timet start_time=current_time();
@@ -436,7 +371,7 @@ safety_checkert::resultt satabs_safety_checker_baset::operator()(
     initial_abstractiont initial_abstraction(get_message_handler(),
         refiner.get_no_mixed_predicates());
 
-    initial_abstraction.build(concrete_model, abstractor.abstract_model, concurrency_aware);
+    initial_abstraction.build(concrete_model, abstractor.abstract_model);
 
     if(initial_predicates.empty())
       initial_abstraction.init_preds(ns, predicates, concrete_model);

@@ -20,14 +20,9 @@ class modelchecker_smvt:public modelcheckert
 public:
   typedef enum { CMU_SMV, NUSMV, SATMC, CADENCE_SMV } enginet;
 
-  modelchecker_smvt(enginet _engine, const bool concurrency_aware):
-    modelcheckert(concurrency_aware),
+  explicit modelchecker_smvt(enginet _engine):
     engine(_engine)
   {
-    if(concurrency_aware)
-    {
-      throw "CAV'11 concurrency not yet supported for SMV";
-    }
   }
 
   // A return value of TRUE means the program is correct,

@@ -24,8 +24,7 @@ class abstract_modelt;
 class modelcheckert:public loop_componentt
 {
 public:
-  explicit modelcheckert(const bool _concurrency_aware):
-    concurrency_aware(_concurrency_aware)
+  modelcheckert()
   {
   }
   
@@ -55,8 +54,6 @@ protected:
 
   typedef std::map<exprt, std::string> nondet_symbolst;
   nondet_symbolst nondet_symbols;
-
-  const bool concurrency_aware; // Is concurrency enabled?
 
   void get_nondet_symbols(const abstract_modelt &abstract_model);
   void get_nondet_symbols(const exprt &expr);

@@ -19,7 +19,7 @@ class concurrency_aware_abstractort : public abstractort
 {
 public:
   concurrency_aware_abstractort(
-      std::auto_ptr<abstractort> specific_abstractor,
+      std::unique_ptr<abstractort> specific_abstractor,
       const bool _passive_nondet);
 
   virtual ~concurrency_aware_abstractort()
@@ -65,7 +65,7 @@ protected:
   }
 
 private:
-  std::auto_ptr<abstractort> specific_abstractor;
+  std::unique_ptr<abstractort> specific_abstractor;
   const bool passive_nondet;
   value_set_analysist *pointer_info;
 };

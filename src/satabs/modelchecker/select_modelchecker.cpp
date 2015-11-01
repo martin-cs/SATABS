@@ -34,32 +34,24 @@ modelcheckert *select_modelchecker(const optionst &options)
 
   modelcheckert *m=0;
 
-  const bool concurrency=options.get_bool_option("concurrency");
   const unsigned max_threads=options.get_unsigned_int_option("max-threads");
-  const bool build_tts=options.get_bool_option("build-tts");
-
-  assert(!build_tts ||
-      (name=="boppo" && options.get_bool_option("full-inlining"))
-      || name=="boom");
 
   if(name=="boom")
     m=new modelchecker_boolean_programt(
-        modelchecker_boolean_programt::BOOM, max_threads,
-        concurrency, build_tts);
+        modelchecker_boolean_programt::BOOM, max_threads);
   else if(name=="boppo")
     m=new modelchecker_boolean_programt(
-        modelchecker_boolean_programt::BOPPO, max_threads,
-        concurrency, build_tts);
+        modelchecker_boolean_programt::BOPPO, max_threads);
   else if(name=="cmu-smv")
-    m=new modelchecker_smvt(modelchecker_smvt::CMU_SMV, concurrency);
+    m=new modelchecker_smvt(modelchecker_smvt::CMU_SMV);
   else if(name=="cadence-smv")
-    m=new modelchecker_smvt(modelchecker_smvt::CADENCE_SMV, concurrency);
+    m=new modelchecker_smvt(modelchecker_smvt::CADENCE_SMV);
   else if(name=="nusmv")
-    m=new modelchecker_smvt(modelchecker_smvt::NUSMV, concurrency);
+    m=new modelchecker_smvt(modelchecker_smvt::NUSMV);
   else if(name=="satmc")
-    m=new modelchecker_smvt(modelchecker_smvt::SATMC, concurrency);
+    m=new modelchecker_smvt(modelchecker_smvt::SATMC);
   else if(name=="spin")
-    m=new modelchecker_spint(concurrency);
+    m=new modelchecker_spint();
   else
     throw "unknown modelchecker: "+name;
 
