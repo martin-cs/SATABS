@@ -306,7 +306,10 @@ int preparet::get_goto_program()
 
   // reachability slice?
   if(!cmdline.isset("no-slicing"))
+  {
+    status() << "Slicing" << eom;
     reachability_slicer(goto_functions);
+  }
 
   // show it?
 
