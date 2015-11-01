@@ -126,10 +126,10 @@ public:
     const optionst &options,
     symbol_tablet &shadow_symbol_table);
 
-  std::auto_ptr<abstractort> abstractor_ptr;
-  std::auto_ptr<refinert> refiner_ptr;
-  std::auto_ptr<modelcheckert> modelchecker_ptr;
-  std::auto_ptr<simulatort> simulator_ptr;
+  std::unique_ptr<abstractort> abstractor_ptr;
+  std::unique_ptr<refinert> refiner_ptr;
+  std::unique_ptr<modelcheckert> modelchecker_ptr;
+  std::unique_ptr<simulatort> simulator_ptr;
 };
 
 class satabs_safety_checkert:
