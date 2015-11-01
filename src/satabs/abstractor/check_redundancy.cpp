@@ -15,7 +15,7 @@
 
 #include "check_redundancy.h"
 
-static std::auto_ptr<std::map<exprt, bool> > is_unsatisfiable_cache;
+static std::unique_ptr<std::map<exprt, bool> > is_unsatisfiable_cache;
 
 /*******************************************************************\
 
@@ -83,7 +83,7 @@ bool is_unsatisfiable(const exprt& e, const namespacet& ns)
   if(!is_unsatisfiable_cache.get())
   {
     is_unsatisfiable_cache =
-      std::auto_ptr<std::map<exprt, bool> >(new std::map<exprt, bool>);
+      std::unique_ptr<std::map<exprt, bool> >(new std::map<exprt, bool>);
   }
 
   std::map<exprt, bool>::const_iterator it = is_unsatisfiable_cache->find(e);
@@ -134,8 +134,5 @@ bool is_redundant(const exprt& predicate, const namespacet& ns)
 void delete_unsatisfiable_cache()
 {
   if(is_unsatisfiable_cache.get())
-  {
-    is_unsatisfiable_cache=
-      std::auto_ptr<std::map<exprt, bool> >(0);
-  }
+    is_unsatisfiable_cache.reset();
 }
