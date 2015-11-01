@@ -1,4 +1,4 @@
-CORE
+KNOWNBUG
 rotating.c
 --iterations 20 --function foo
 ^EXIT=0$
