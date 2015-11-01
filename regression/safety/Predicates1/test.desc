@@ -1,4 +1,4 @@
-CORE
+KNOWNBUG
 main.c
 --iterations 10 --predicates main.predicates
 ^EXIT=0$
