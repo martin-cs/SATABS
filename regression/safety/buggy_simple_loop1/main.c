@@ -1,3 +1,5 @@
+#include <assert.h>
+
 void foo(unsigned int x, unsigned int y, unsigned int z) {
   int i, j, k;
   for(i=0; i<x; i++) {
