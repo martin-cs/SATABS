@@ -1,7 +1,8 @@
+#include <assert.h>
+
 int nondet();
 
-
-int foo() {
+int main() {
   int a, b, c, d, e, i, temp, res;
   
   a = 1;

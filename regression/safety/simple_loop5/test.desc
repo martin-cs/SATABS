@@ -1,6 +1,6 @@
-KNOWNBUG
+CORE
 main.c
---iterations 100 --function foo
+--iterations 100
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$
