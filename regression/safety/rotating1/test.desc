@@ -1,6 +1,6 @@
-KNOWNBUG
+CORE
 rotating.c
---iterations 130 --function foo
+--iterations 20 --function foo
 ^EXIT=0$
 ^SIGNAL=0$
 ^VERIFICATION SUCCESSFUL$
