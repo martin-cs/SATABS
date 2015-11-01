@@ -86,11 +86,11 @@ bool is_unsatisfiable(const exprt& e, const namespacet& ns)
       std::unique_ptr<std::map<exprt, bool> >(new std::map<exprt, bool>);
   }
 
-  std::map<exprt, bool>::const_iterator it = is_unsatisfiable_cache->find(e);
+  std::map<exprt, bool>::const_iterator it=
+    is_unsatisfiable_cache->find(e);
+
   if(is_unsatisfiable_cache->end() != it)
-  {
     return it->second;
-  }
 
   satcheckt satcheck;
   bv_pointerst solver(ns, satcheck);
