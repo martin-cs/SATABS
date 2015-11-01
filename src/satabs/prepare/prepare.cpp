@@ -293,7 +293,7 @@ int preparet::get_goto_program()
       goto_functions);
   }  
 
-  goto_functions.compute_location_numbers();
+  goto_functions.update();
 
   // label properties
   label_properties(goto_functions);
@@ -310,7 +310,7 @@ int preparet::get_goto_program()
     status() << "Slicing" << eom;
     reachability_slicer(goto_functions);
   }
-
+  
   // show it?
 
   if(cmdline.isset("show-final-program"))
