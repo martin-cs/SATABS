@@ -185,7 +185,7 @@ void modelcheckert::inlinedt::build(
 
   // start with "main"
   std::set<irep_idt> recursion_stack;
-  build(abstract_model, "main", recursion_stack, message_handler);
+  build(abstract_model, ID__start, recursion_stack, message_handler);
 }
 
 /*******************************************************************\
