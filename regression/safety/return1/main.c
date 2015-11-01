@@ -1,13 +1,16 @@
+#include <assert.h>
+
 // there is no body for foo(), deliberately.
 int foo();
 
-bar(){
+int bar()
+{
   int a;
   a = 0 + foo();
   return a;
 }
 
-main(){
+int main(){
   int x,y;
   x = bar();
   y = bar();
