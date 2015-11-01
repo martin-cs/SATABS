@@ -296,16 +296,17 @@ void modelchecker_smvt::read_counterexample(
 
   for(; it!=file.end(); it++)
   {
-    //std::cout << "Xx " << *it << "\n";
+    //status() << "Xx " << *it << eom;
 
     if(std::string(*it, 0, 3)=="-- ")
       break;
     else if(*it=="resources used:")
       break;
     else if(std::string(*it, 0, 6)=="state " ||
-        std::string(*it, 0, 10)=="-> State: " ||
-        std::string(*it, 0, 10)=="-> Input: " ||
-        *it=="")
+            std::string(*it, 0, 10)=="-> State: " ||
+            std::string(*it, 0, 12)=="  -> State: " ||
+            std::string(*it, 0, 10)=="-> Input: " ||
+            *it=="")
     {
       if(!data_set) continue;
 
