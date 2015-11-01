@@ -9,6 +9,8 @@ Author: Daniel Kroening, kroening@kroening.com
 #ifndef CPROVER_SATABS_SAFETY_CHECKER_H
 #define CPROVER_SATABS_SAFETY_CHECKER_H
 
+#include <memory>
+
 #include <util/time_stopping.h>
 #include <util/options.h>
 
