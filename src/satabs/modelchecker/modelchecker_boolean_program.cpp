@@ -1121,6 +1121,9 @@ std::string modelchecker_boolean_programt::convert_function_name(
   if(name==ID__start)
     return "main";
 
+  if(name=="assert")
+    return "$assert";
+
   std::string result=id2string(name);
 
   for(unsigned i=0; i<result.size(); i++)
