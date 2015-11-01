@@ -11,6 +11,7 @@ Date: June 2003
 
 #include <iostream>
 #include <memory>
+#include <limits>
 
 #include <util/message.h>
 #include <util/string2int.h>
@@ -83,7 +84,8 @@ void cmdline_optionst::get_command_line_options(optionst &options)
     options.set_option("max-new-predicates",
         cmdline.get_value("max-new-predicates"));
   else
-    options.set_option("max-new-predicates", -1);
+    options.set_option("max-new-predicates",
+      std::numeric_limits<unsigned>::max());
 
   options.set_option("prefer-non-pointer-predicates",
       cmdline.isset("prefer-non-pointer-predicates"));
