@@ -506,7 +506,7 @@ void modelchecker_spint::build_promela_file_control(
     {
       build_promela_file_trans(
           abstract_model,
-          instruction.original->code.get_transition_relation(),
+          instruction.original->code.transition_relation,
           out);
     }
     else
@@ -540,12 +540,12 @@ Purpose:
       i<abstract_model.variables.size();
       i++)
   {
-    if(get_transition_relation().input_predicates.find(i)!=
-        get_transition_relation().input_predicates.end())
+    if(transition_relation.input_predicates.find(i)!=
+        transition_relation.input_predicates.end())
       input.push_back(i);
 
-    if(get_transition_relation().output_predicates.find(i)!=
-        get_transition_relation().output_predicates.end())
+    if(transition_relation.output_predicates.find(i)!=
+        transition_relation.output_predicates.end())
       output.push_back(i);
   }
 
@@ -559,8 +559,8 @@ Purpose:
 
   {
     for(cubest::star_mapt::const_iterator
-        s_it=get_transition_relation().cubes.star_map.begin();
-        s_it!=get_transition_relation().cubes.star_map.end();
+        s_it=transition_relation.cubes.star_map.begin();
+        s_it!=transition_relation.cubes.star_map.end();
         s_it++)
       for(cubest::bitssett::const_iterator
           b_it=s_it->second.begin();
@@ -575,8 +575,8 @@ Purpose:
     out << "if // " << number_of_cubes << " cubes" << std::endl;
 
   for(cubest::star_mapt::const_iterator
-      s_it=get_transition_relation().cubes.star_map.begin();
-      s_it!=get_transition_relation().cubes.star_map.end();
+      s_it=transition_relation.cubes.star_map.begin();
+      s_it!=transition_relation.cubes.star_map.end();
       s_it++)
   {
     const cubest::bitvt &stars=s_it->first;

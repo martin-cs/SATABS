@@ -993,14 +993,14 @@ void modelchecker_smvt::build_smv_file_guards(
 
       out << "DEFINE guard" << PC << ":=";
 
-      if(instruction.code.get_transition_relation().constraints.empty())
+      if(instruction.code.transition_relation.constraints.empty())
         out << expr_string(instruction.guard) << ";\n";
       else
       {
         if(instruction.is_goto())
         {
           const exprt &schoose=
-            instruction.code.get_transition_relation().constraints.front();
+            instruction.code.transition_relation.constraints.front();
           exprt target=
             convert_schoose_expression(schoose, instruction.guard);
           out << expr_string(target) << ";\n";
@@ -1012,8 +1012,8 @@ void modelchecker_smvt::build_smv_file_guards(
           out << "(" << expr_string(instruction.guard) << ")";
 
           for(abstract_transition_relationt::constraintst::const_iterator
-              e_it=instruction.code.get_transition_relation().constraints.begin();
-              e_it!=instruction.code.get_transition_relation().constraints.end();
+              e_it=instruction.code.transition_relation.constraints.begin();
+              e_it!=instruction.code.transition_relation.constraints.end();
               e_it++)
           {
             out << " & (" << expr_string(*e_it) << ')';
@@ -1270,8 +1270,8 @@ void modelchecker_smvt::build_smv_file_model(
 
     out << "    -- FROM Predicates:";
     for(std::set<unsigned>::const_iterator
-        p_it=instruction.code.get_transition_relation().from_predicates.begin();
-        p_it!=instruction.code.get_transition_relation().from_predicates.end();
+        p_it=instruction.code.transition_relation.from_predicates.begin();
+        p_it!=instruction.code.transition_relation.from_predicates.end();
         p_it++)
       out << " " << variable_names[*p_it];
 
@@ -1325,10 +1325,10 @@ void modelchecker_smvt::build_smv_file_model(
           for(unsigned i=0; i<abstract_model.variables.size(); i++)
           {
             abstract_transition_relationt::valuest::const_iterator
-              v_it=instruction.code.get_transition_relation().values.find(i);
+              v_it=instruction.code.transition_relation.values.find(i);
 
             const exprt &value=
-              v_it==instruction.code.get_transition_relation().values.end()?
+              v_it==instruction.code.transition_relation.values.end()?
               exprt("unchanged"):v_it->second;
 
             if(value.is_not_nil())
@@ -1353,16 +1353,16 @@ void modelchecker_smvt::build_smv_file_model(
           out << std::endl;
         }
 
-        if(!instruction.code.get_transition_relation().constraints.empty())
+        if(!instruction.code.transition_relation.constraints.empty())
         {
           out << "TRANS (PC=" << PC << " & runs) -> ";
 
           for(abstract_transition_relationt::constraintst::const_iterator
-              e_it=instruction.code.get_transition_relation().constraints.begin();
-              e_it!=instruction.code.get_transition_relation().constraints.end();
+              e_it=instruction.code.transition_relation.constraints.begin();
+              e_it!=instruction.code.transition_relation.constraints.end();
               e_it++)
           {
-            if(e_it!=instruction.code.get_transition_relation().constraints.begin())
+            if(e_it!=instruction.code.transition_relation.constraints.begin())
               out << "              & ";
 
             out << '(' << expr_string(*e_it) << ')' << '\n';
@@ -1377,8 +1377,8 @@ void modelchecker_smvt::build_smv_file_model(
 
     out << "    -- TO Predicates:";
     for(std::set<unsigned>::const_iterator
-        p_it=instruction.code.get_transition_relation().to_predicates.begin();
-        p_it!=instruction.code.get_transition_relation().to_predicates.end();
+        p_it=instruction.code.transition_relation.to_predicates.begin();
+        p_it!=instruction.code.transition_relation.to_predicates.end();
         p_it++)
       out << " " << variable_names[*p_it];
 

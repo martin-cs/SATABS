@@ -133,9 +133,9 @@ void modelcheckert::get_nondet_symbols(const abstract_modelt &abstract_model)
       get_nondet_symbols(i_it->guard);
       // add nondets for refined gotos and assumes
       if ((i_it->is_goto()||i_it->is_assume())&&
-          i_it->code.get_transition_relation().constraints.size())
+          i_it->code.transition_relation.constraints.size())
         get_nondet_symbols
-          (i_it->code.get_transition_relation().constraints.front());
+          (i_it->code.transition_relation.constraints.front());
     }
 }
 

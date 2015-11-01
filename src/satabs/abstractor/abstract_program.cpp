@@ -37,8 +37,8 @@ std::ostream& abstract_programt::output_instruction(
 
   out << "From predicates:";
   for(std::set<unsigned>::const_iterator
-      p_it=it->code.get_transition_relation().from_predicates.begin();
-      p_it!=it->code.get_transition_relation().from_predicates.end();
+      p_it=it->code.transition_relation.from_predicates.begin();
+      p_it!=it->code.transition_relation.from_predicates.end();
       p_it++)
     out << " " << *p_it;
 
@@ -47,8 +47,8 @@ std::ostream& abstract_programt::output_instruction(
   out << "        ";
   out << "To predicates:";
   for(std::set<unsigned>::const_iterator
-      p_it=it->code.get_transition_relation().to_predicates.begin();
-      p_it!=it->code.get_transition_relation().to_predicates.end();
+      p_it=it->code.transition_relation.to_predicates.begin();
+      p_it!=it->code.transition_relation.to_predicates.end();
       p_it++)
     out << " " << *p_it;
 
@@ -119,8 +119,8 @@ std::ostream& abstract_programt::output_instruction(
         out << "Changed predicates:";
 
         for(abstract_transition_relationt::valuest::const_iterator
-            p_it=it->code.get_transition_relation().values.begin();
-            p_it!=it->code.get_transition_relation().values.end();
+            p_it=it->code.transition_relation.values.begin();
+            p_it!=it->code.transition_relation.values.end();
             p_it++)
           out << " " << p_it->first;
 
@@ -130,13 +130,13 @@ std::ostream& abstract_programt::output_instruction(
         out << "Constraints: ";         
 
         for(abstract_transition_relationt::constraintst::const_iterator
-            e_it=it->code.get_transition_relation().constraints.begin();
-            e_it!=it->code.get_transition_relation().constraints.end();
+            e_it=it->code.transition_relation.constraints.begin();
+            e_it!=it->code.transition_relation.constraints.end();
             e_it++)
         {
           const exprt &constraint=*e_it;
 
-          if(e_it!=it->code.get_transition_relation().constraints.begin())
+          if(e_it!=it->code.transition_relation.constraints.begin())
             out << "             ";
 
           out << expr2c(constraint, ns) << std::endl;

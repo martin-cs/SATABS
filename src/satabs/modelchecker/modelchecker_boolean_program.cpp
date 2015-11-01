@@ -593,12 +593,12 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
       previous_location=it->source_location;
     }
 
-    if(!it->code.get_transition_relation().from_predicates.empty())
+    if(!it->code.transition_relation.from_predicates.empty())
     {
       out << "    // FROM Predicates:";
       for(std::set<unsigned>::const_iterator
-          p_it=it->code.get_transition_relation().from_predicates.begin();
-          p_it!=it->code.get_transition_relation().from_predicates.end();
+          p_it=it->code.transition_relation.from_predicates.begin();
+          p_it!=it->code.transition_relation.from_predicates.end();
           p_it++)
         out << " " << variable_names[*p_it];
 
@@ -622,12 +622,12 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
       {
         out << "if ";
 
-        if(!it->code.get_transition_relation().constraints.size())
+        if(!it->code.transition_relation.constraints.size())
           out << expr_string(it->guard);
         else
         {
           exprt &choose=
-            it->code.get_transition_relation().constraints.front();
+            it->code.transition_relation.constraints.front();
 
           out << "(schoose[" << expr_string(choose.op0());
           // << " & " << expr_string(it->guard);
@@ -676,7 +676,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
       out << "assume(" << expr_string(it->guard);
 
       const std::list<exprt> &constraints=
-        it->code.get_transition_relation().constraints;
+        it->code.transition_relation.constraints;
       if(!constraints.empty())
       {
         for(std::list<exprt>::const_iterator
@@ -710,7 +710,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
       bool first=true;
 
       for(unsigned i=0; i<abstract_model.variables.size(); i++)
-        if(it->code.get_transition_relation().values.count(i)!=0)
+        if(it->code.transition_relation.values.count(i)!=0)
         {
           if(first) first=false; else out << ",";
           out << variable_names[i];
@@ -720,7 +720,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
       {
         for(unsigned i=0; i<abstract_model.variables.size(); i++)
         {
-          concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
+          concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.transition_relation));
           assert(trans_rel);
           if(trans_rel->passive_values.count(i)!=0)
           {
@@ -749,9 +749,9 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
         for(unsigned i=0; i<abstract_model.variables.size(); i++)
         {
           abstract_transition_relationt::valuest::const_iterator
-            v_it=it->code.get_transition_relation().values.find(i);
+            v_it=it->code.transition_relation.values.find(i);
 
-          if(v_it!=it->code.get_transition_relation().values.end())
+          if(v_it!=it->code.transition_relation.values.end())
           {
             const exprt &value=v_it->second;
 
@@ -766,7 +766,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
 
         if(concurrency_aware)
         {
-          concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.get_transition_relation()));
+          concurrency_aware_abstract_transition_relationt* trans_rel = dynamic_cast<concurrency_aware_abstract_transition_relationt*>(&(it->code.transition_relation));
           assert(trans_rel);
 
           for(unsigned i=0; i<abstract_model.variables.size(); i++)
@@ -792,7 +792,7 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
         // constraints
 
         const std::list<exprt> &constraints=
-          it->code.get_transition_relation().constraints;
+          it->code.transition_relation.constraints;
 
         if(!constraints.empty())
         {
@@ -851,12 +851,12 @@ void modelchecker_boolean_programt::build_boolean_program_file_function(
 
     out << '\n';
 
-    if(!it->code.get_transition_relation().to_predicates.empty())
+    if(!it->code.transition_relation.to_predicates.empty())
     {
       out << "    // TO Predicates:";
       for(std::set<unsigned>::const_iterator
-          p_it=it->code.get_transition_relation().to_predicates.begin();
-          p_it!=it->code.get_transition_relation().to_predicates.end();
+          p_it=it->code.transition_relation.to_predicates.begin();
+          p_it!=it->code.transition_relation.to_predicates.end();
           p_it++)
         out << " " << variable_names[*p_it];
 

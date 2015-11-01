@@ -200,8 +200,8 @@ void initial_abstractiont::init_preds(
     {
       for(unsigned p=0; p<predicates.size(); p++)
       {
-        i_it->code.get_transition_relation().from_predicates.insert(p);
-        i_it->code.get_transition_relation().to_predicates.insert(p);
+        i_it->code.transition_relation.from_predicates.insert(p);
+        i_it->code.transition_relation.to_predicates.insert(p);
       }
     }
   }
@@ -252,15 +252,6 @@ void initial_abstractiont::build_control_flow(
 
     // this will need to be abstracted
     new_abstract_instruction->code.re_abstract=true;
-
-    // decide which sort of transition relation to choose
-    if(concurrency_aware)
-    {
-      new_abstract_instruction->code.set_transition_relation(std::auto_ptr<abstract_transition_relationt>(new concurrency_aware_abstract_transition_relationt()));
-    } else {
-      new_abstract_instruction->code.set_transition_relation(std::auto_ptr<abstract_transition_relationt>(new abstract_transition_relationt()));
-    }
-
   }
 
   // Loop over program - 2nd time updates goto targets

@@ -130,15 +130,17 @@ void tts_buildert::build_prologue(
       case DECL:
       case OTHER:
         {
+          #if 0
           concurrency_aware_abstract_transition_relationt* ct=
             dynamic_cast<concurrency_aware_abstract_transition_relationt*>(
-                &(it->code.get_transition_relation()));
-          if(!it->code.get_transition_relation().values.empty() ||
+                &(it->code.transition_relation));
+          if(!it->code.transition_relation.values.empty() ||
               (ct && !ct->passive_values.empty()) ||
               it->is_target())
             PC_map.insert(std::make_pair(it, PC_map.size()+offset));
 
           if(ct && !ct->passive_values.empty()) ++num_passive;
+          #endif
         }
         break;
       case SKIP:
@@ -307,7 +309,7 @@ void tts_buildert::build_instruction(
 
   const unsigned PC=PC_map_entry->second;
   std::list<exprt> constraints=
-    it->code.get_transition_relation().constraints;
+    it->code.transition_relation.constraints;
 
   switch(it->type)
   {
@@ -346,11 +348,12 @@ void tts_buildert::build_instruction(
     case DECL:
     case OTHER:
       {
+        #if 0
         concurrency_aware_abstract_transition_relationt* ct=
           dynamic_cast<concurrency_aware_abstract_transition_relationt*>(
-              &(it->code.get_transition_relation()));
+              &(it->code.transition_relation));
 
-        if(it->code.get_transition_relation().values.empty() &&
+        if(it->code.transition_relation.values.empty() &&
             (!ct || ct->passive_values.empty()))
           make_skip(PC);
         else
@@ -358,8 +361,8 @@ void tts_buildert::build_instruction(
           std::vector<bool> assigned(state_offset.size(), false);
 
           for(abstract_transition_relationt::valuest::const_iterator
-              v_it=it->code.get_transition_relation().values.begin();
-              v_it!=it->code.get_transition_relation().values.end();
+              v_it=it->code.transition_relation.values.begin();
+              v_it!=it->code.transition_relation.values.end();
               ++v_it)
           {
             assigned[v_it->first]=true;
@@ -401,11 +404,11 @@ void tts_buildert::build_instruction(
           }
           else
           {
-            assert(!it->code.get_transition_relation().values.empty());
+            assert(!it->code.transition_relation.values.empty());
 
             std::vector<bool> assigned_passive(state_offset.size(), false);
             std::list<exprt> constraints_passive=
-              it->code.get_transition_relation().constraints;
+              it->code.transition_relation.constraints;
 
             for(abstract_transition_relationt::valuest::const_iterator
                 v_it=ct->passive_values.begin();
@@ -453,6 +456,7 @@ void tts_buildert::build_instruction(
                 true, assigned_passive, constraints_passive);
           }
         }
+        #endif
       }
       break;
     case SKIP:

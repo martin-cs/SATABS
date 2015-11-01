@@ -207,8 +207,8 @@ void refinert::add_predicates(
 
   std::set<unsigned> &trans_predicates=
     where==FROM?
-    pc->code.get_transition_relation().from_predicates:
-    pc->code.get_transition_relation().to_predicates;
+    pc->code.transition_relation.from_predicates:
+    pc->code.transition_relation.to_predicates;
 
   unsigned old=trans_predicates.size();
 

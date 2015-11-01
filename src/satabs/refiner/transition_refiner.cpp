@@ -237,7 +237,7 @@ bool transition_refinert::check_transition(
   // unless where we come from an inconsistent state.
   // thus, check the first time
   abstract_transition_relationt &abstract_transition_relation=
-    abstract_state_from.pc->code.get_transition_relation();
+    abstract_state_from.pc->code.transition_relation;
 
   if(!c_instruction.is_goto() &&
      !c_instruction.is_assume() &&
@@ -425,7 +425,7 @@ bool transition_refinert::check_assignment_transition(
   }
 
   abstract_transition_relationt &abstract_transition_relation=
-    abstract_state_from.pc->code.get_transition_relation();
+    abstract_state_from.pc->code.transition_relation;
 
   std::vector<std::vector<literalt> >
     predicate_variables_from(num_threads, std::vector<literalt>(predicates.size(), literalt())),
@@ -837,7 +837,7 @@ bool transition_refinert::check_guarded_transition(
     guard.make_not();
 
   abstract_transition_relationt &abstract_transition_relation=
-    abstract_state_from.pc->code.get_transition_relation();
+    abstract_state_from.pc->code.transition_relation;
 
 #ifdef SATCHECK_MINISAT2
   satcheck_minisat_no_simplifiert satcheck;

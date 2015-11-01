@@ -233,19 +233,19 @@ void abstractort::build_abstraction(
         pred_abstract_block(
             c_it,
             predicates,
-            a_it->code.get_transition_relation());
+            a_it->code.transition_relation);
         break;
 
       case OTHER:
       case DECL:
         if(c_it->code.is_nil() || c_it->code.get_statement()==ID_user_specified_predicate || c_it->code.get_statement()==ID_user_specified_parameter_predicates || c_it->code.get_statement()==ID_user_specified_return_predicates)
-          a_it->code.get_transition_relation().clear();
+          a_it->code.transition_relation.clear();
         else
         {
           pred_abstract_block(
               c_it,
               predicates,
-              a_it->code.get_transition_relation());
+              a_it->code.transition_relation);
         }
         break;
 
