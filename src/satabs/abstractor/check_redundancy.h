@@ -14,13 +14,13 @@
 class exprt;
 class namespacet;
 
-bool is_equivalent(const exprt& e1, const exprt& e2, const namespacet& ns);
+bool is_equivalent(const exprt& e1, const exprt& e2, const namespacet &);
 
-bool is_valid(const exprt& e, const namespacet& ns);
+bool is_valid(const exprt& e, const namespacet &);
 
-bool is_unsatisfiable(const exprt& e, const namespacet& ns);
+bool is_unsatisfiable(const exprt& e, const namespacet &);
 
-bool is_redundant(const exprt& predicate, const namespacet& ns);
+bool is_redundant(const exprt& predicate, const namespacet &);
 
 void delete_unsatisfiable_cache();
 
