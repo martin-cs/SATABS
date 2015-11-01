@@ -1,4 +1,7 @@
-void foo(int x) {
+#include <assert.h>
+
+int main()
+{
   int i, j, k;
   for(i=0; i<20; i++) {
     for(j=i+1; j<1000; j++) {
