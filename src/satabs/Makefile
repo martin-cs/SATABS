@@ -71,7 +71,7 @@ OBJ += \
       $(CBMC)/src/xmllang/xmllang$(LIBEXT) \
       $(CBMC)/src/assembler/assembler$(LIBEXT) \
       $(CBMC)/src/solvers/solvers$(LIBEXT) \
-			$(CBMC)/src/goto-instrument/reachability_slicer$(OBJEXT) \
+      $(CBMC)/src/goto-instrument/reachability_slicer$(OBJEXT) \
       $(CBMC)/src/util/util$(LIBEXT)
 
 
