@@ -111,7 +111,7 @@ bool compare_states(
   literalt conjunction=solver.land(eq_bv);
 
   bvt clause;
-  clause.push_back(solver.lnot(state_guard_literal));
+  clause.push_back(!state_guard_literal);
   clause.push_back(conjunction);
   solver.lcnf(clause);
 

@@ -263,7 +263,7 @@ literalt formulat::convert(propt &prop) const
     break;
 
   case formula_nodet::NOT:
-    node->l=prop.lnot(a().convert(prop));
+    node->l=!a().convert(prop);
     break;
 
   case formula_nodet::AND:

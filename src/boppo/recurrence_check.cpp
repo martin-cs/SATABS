@@ -246,7 +246,7 @@ bool simulator_ctt::has_recurrence_qbf(locationst &locations)
   // do the conversion for y
   bvt clause;
 
-  clause.push_back(solver.lnot(x_guard_literal));
+  clause.push_back(!x_guard_literal);
 
   for(unsigned i=0; i<locations.size()-1; i++)
   {
