@@ -1,0 +1,12 @@
+KNOWNBUG
+main.c
+
+^EXIT=0$
+^SIGNAL=0$
+^VERIFICATION SUCCESSFUL$
+--
+^warning: ignoring
+--
+https://bugs.cs.ox.ac.uk/cprover/show_bug.cgi?id=86
+-DFIX makes verification work, as does using local variables for initialization
+instead of an undefined function. Needs proper weakest precondition.

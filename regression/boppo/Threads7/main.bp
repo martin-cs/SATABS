@@ -1,0 +1,40 @@
+decl g_lock;
+
+void main() begin
+
+  start_thread foo();
+  start_thread foo();
+  start_thread foo();
+  start_thread foo();
+  start_thread foo();
+  start_thread foo();
+  start_thread foo();
+  start_thread foo();
+  start_thread foo();
+
+end
+
+void foo() begin
+
+  decl l;
+
+  l:=*;
+  l:=*;
+  l:=*;
+  l:=*;
+  l:=*;
+  l:=*;
+  l:=*;
+  l:=*;
+  l:=*;
+  l:=*;
+  l:=*;
+  l:=*;
+  l:=*;
+  l:=*;
+
+  l:=T;
+
+  assert(T);
+
+end

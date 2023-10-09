@@ -1,0 +1,8 @@
+THOROUGH
+main.c
+-DSATABS --full-inlining --concurrency
+^EXIT=0$
+^SIGNAL=0$
+^VERIFICATION SUCCESSFUL$
+--
+^warning: ignoring

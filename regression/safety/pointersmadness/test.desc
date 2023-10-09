@@ -1,0 +1,8 @@
+FUTURE
+main.c
+--iterations 25
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring

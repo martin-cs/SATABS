@@ -1,0 +1,21 @@
+decl g0;
+
+void main() begin
+  g0:=F;
+
+  start_thread rd_1();
+  start_thread wr_1();
+end
+
+void rd_1() begin
+
+  atomic_begin;
+  assume(g0);
+  atomic_end;
+  assert(F);
+
+end
+
+void wr_1() begin
+  g0 := T;
+end

@@ -1,0 +1,10 @@
+CORE
+main.c
+--full-inlining --concurrency --modelchecker boom -DNTHREADS=2 -DBUG
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring
+--
+https://bugs.cs.ox.ac.uk/cprover/show_bug.cgi?id=26

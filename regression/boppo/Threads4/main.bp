@@ -1,0 +1,26 @@
+decl g0;
+
+void t1() begin
+  decl local;
+
+  local,g0:=g0,F;
+
+  // am I the first one?
+  if local then
+    skip;  // first one
+  else
+    //assert(F);
+    skip;
+  fi;
+
+end
+
+void main() begin
+  g0:=T;
+
+  loop:
+  ASYNC_1: t1();
+  goto loop;
+
+end
+

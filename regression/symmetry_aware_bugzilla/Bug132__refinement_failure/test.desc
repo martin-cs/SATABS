@@ -1,0 +1,13 @@
+KNOWNBUG
+main.c
+--full-inlining --concurrency --abstractor cartesian -DSATABS --max-threads 2 -DUSE_BRANCHING_ASSUMES -DHPRED -DBUG
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring
+--
+https://bugs.cs.ox.ac.uk/cprover/show_bug.cgi?id=132
+
+Whereas without -DBUG, which replaces "e = storage[i];" by "e = rand();", we
+get the correct counterexample.

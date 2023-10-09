@@ -1,0 +1,10 @@
+KNOWNBUG
+main.c
+--full-inlining --concurrency --modelchecker boom
+^EXIT=XX$
+^SIGNAL=0$
+^VERIFICATION XXX$
+--
+^warning: ignoring
+--
+https://bugs.cs.ox.ac.uk/cprover/show_bug.cgi?id=137

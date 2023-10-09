@@ -1,0 +1,17 @@
+decl a, b;
+
+void f() begin
+
+  enforce a & !b;
+
+  assert(a&!b);
+
+  a, b:=*,*;
+
+  assert(a&!b);
+end
+
+void main() begin
+  a,b:=*,*;
+  f();
+end

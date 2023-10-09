@@ -1,0 +1,8 @@
+KNOWNBUG
+main.c
+--iterations 3 --max-threads 3 --data-race-check
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring

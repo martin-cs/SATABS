@@ -1,0 +1,16 @@
+CORE
+main.c
+--error-label ERROR
+^EXIT=0$
+^SIGNAL=0$
+^VERIFICATION SUCCESSFUL$
+--
+^warning: ignoring
+--
+https://bugs.cs.ox.ac.uk/cprover/show_bug.cgi?id=140
+*** Starting CEGAR Loop ***
+Calculating initial set of predicates
+satabs: abstractor/discover_predicates.cpp:163: void
+discover_predicates_rec(const exprt&, std::set<exprt, std::less<exprt>,
+std::allocator<exprt> >&, bool, const namespacet&): Assertion
+`expr.type().id()==dstring(4, 0)' failed.

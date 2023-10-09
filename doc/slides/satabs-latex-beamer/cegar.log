@@ -1,0 +1,25 @@
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=mptopdf 2013.6.22)  10 FEB 2014 17:55
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**\relax cegar.5
+ (./cegar.5{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map})
+[1] 
+Here is how much of TeX's memory you used:
+ 90 strings out of 496721
+ 678 string characters out of 3201338
+ 4021661 words of memory out of 7006868
+ 1735 multiletter control sequences out of 15000+200000
+ 2125 words of font info for 4 fonts, out of 3000000 for 9000
+ 0 hyphenation exceptions out of 8191
+ 10i,3n,7p,116b,289s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/urw/helvetic/uhvr8a.pfb>
+Output written on cegar.pdf (1 page, 35511 bytes).
+PDF statistics:
+ 25 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 7 words of extra memory for PDF output out of 10000 (max. 10000000)
+

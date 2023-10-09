@@ -1,0 +1,13 @@
+CORE
+main.c
+--concurrency --full-inlining --abstractor cartesian --max-threads 2 --max-cube-length 2
+^EXIT=0$
+^SIGNAL=0$
+^VERIFICATION SUCCESSFUL$
+--
+^warning: ignoring
+--
+https://bugs.cs.ox.ac.uk/cprover/show_bug.cgi?id=131
+Solution: Introduce "__CPROVER_parameter_predicates();" in function
+calculateNext, and "__CPROVER_predicate(n==10);" in function
+PseudoRandomUsingAtomic_nextInt (none is sufficient by itself).

@@ -1,0 +1,20 @@
+decl g_lock;
+
+void main() begin
+
+  g_lock := F;
+
+  start_thread foo();
+  start_thread foo();
+
+end
+
+void foo() begin
+
+  atomic_begin;
+  g_lock := T constrain !g_lock;
+  atomic_end;
+
+  SLIC_ERROR:
+  g_lock := F;
+end

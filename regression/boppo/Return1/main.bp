@@ -1,0 +1,18 @@
+decl g;
+
+bool<2> f() begin
+  return g, !g;
+end
+
+void main() begin
+  decl l1, l2;
+
+  g:=*;
+
+  l1,l2:=f();
+
+  assert(l1=g);
+  assert(l2=!g);
+
+end
+

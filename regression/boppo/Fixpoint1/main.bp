@@ -1,0 +1,12 @@
+decl g0;
+
+void main() begin
+
+  g0:=F;
+
+  x:
+  g0:=schoose[F,F];
+  goto x;
+
+end
+

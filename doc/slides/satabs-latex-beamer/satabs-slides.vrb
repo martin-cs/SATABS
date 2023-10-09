@@ -1,0 +1,33 @@
+\frametitle {Split Provers}
+
+Idea:
+
+\begin{center}
+\begin{tikzpicture}
+\fill[taskyblue!100!tascarletred!70] (0.3,0) rectangle (1.7,1);
+\fill[taskyblue!075!tascarletred!70] (2.3,0) rectangle (3.7,1);
+\fill[taskyblue!050!tascarletred!70] (4.3,0) rectangle (5.7,1);
+\fill[taskyblue!025!tascarletred!70] (6.3,0) rectangle (7.7,1);
+\fill[taskyblue!000!tascarletred!70] (8.3,0) rectangle (9.7,1);
+\draw (1,.5) node { $\mathcal P_1$ };
+\draw (3,.5) node { $\mathcal P_2$ };
+\draw (5,.5) node { $\mathcal P_3$ };
+\draw (7,.5) node { $\ldots$ };
+\draw (9,.5) node { $\mathcal P_n$ };
+\draw [->] (1.7,.7) -- (2.3,.7);
+\draw [->] (3.7,.7) -- (4.3,.7);
+\draw [->] (5.7,.7) -- (6.3,.7);
+\draw [->] (7.7,.7) -- (8.3,.7);
+\draw [<-] (1.7,.3) -- (2.3,.3);
+\draw [<-] (3.7,.3) -- (4.3,.3);
+\draw [<-] (5.7,.3) -- (6.3,.3);
+\draw [<-] (7.7,.3) -- (8.3,.3);
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+\item Each prover $\mathcal P_i$ only knows $A_i$, but they exchange facts
+\item We require that each prover only exchanges facts with common symbols
+\item Plus, we restrict the facts exchanged to some language $\mathcal L$
+\end{itemize}
+

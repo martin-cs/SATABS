@@ -1,0 +1,8 @@
+KNOWNBUG
+main.c
+-DSATABS --full-inlining --concurrency --max-threads 4 --abstractor cartesian --iterations 10
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring

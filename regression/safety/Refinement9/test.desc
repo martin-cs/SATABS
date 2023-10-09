@@ -1,0 +1,8 @@
+KNOWNBUG
+floppy.c
+
+^EXIT=XX$
+^SIGNAL=0$
+^VERIFICATION XX$
+--
+^warning: ignoring

@@ -1,0 +1,8 @@
+KNOWNBUG
+main.c
+--iterations 30 --claim my_sprintf.10 --bounds-check --pointer-check
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring

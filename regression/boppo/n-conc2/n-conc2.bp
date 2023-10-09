@@ -1,0 +1,76 @@
+decl g0;
+bool unk() begin if (*) then return T; else return F; fi end
+void main() begin
+enforce T;
+goto L10;
+L1:
+c2bp_b_1: c2bp_i_1_1: return ;
+L3:
+c2bp_b_3: ASYNC_2: c2bp_i_3_1: c2bp_stmt_3_1: c2bpcall_3_1: C_26_3_1: S_26_3_1_0:  bar_1();
+c2bpreturnpt_3_2: goto L1;
+L5:
+c2bp_b_5: ASYNC_1: c2bp_i_5_1: c2bp_stmt_5_1: c2bpcall_5_1: C_24_5_1: S_24_5_1_0:  foo_1();
+c2bpreturnpt_5_2: goto L3;
+L6:
+c2bp_b_6: MYLABEL: c2bp_i_6_1: c2bp_stmt_6_1: C_22_6_1: S_22_6_1_0: c2bp_i_6_2: goto L5;
+L7:
+c2bp_b_7: c2bp_i_7_1: goto L6;
+L8:
+c2bp_b_8: c2bp_i_8_1: goto L7;
+L10:
+c2bp_b_10: c2bp_i_10_1: c2bp_stmt_10_1: c2bpcall_10_1:  __init1_1();
+c2bpreturnpt_10_2: goto L8;
+end
+
+void bar_1() begin
+enforce T;
+goto L10;
+L1:
+c2bp_b_1: c2bp_i_1_1: return ;
+L4:
+assume(T);
+c2bp_b_4: c2bp_i_4_1: c2bp_stmt_4_1: C_13_4_1: S_13_4_1_0: g0 := schoose[F,T] ;
+c2bp_i_4_2: goto L1;
+L7:
+assume(T);
+c2bp_b_7: c2bp_i_7_1: c2bp_stmt_7_1: C_16_7_1: S_16_7_1_0: g0 := schoose[T,F] ;
+c2bp_i_7_2: goto L1;
+L9:
+c2bp_b_9: c2bp_i_9_1: C_12_9_1: S_12_9_1_0: goto L7, L4;
+L10:
+c2bp_b_10: c2bp_i_10_1: goto L9;
+end
+
+void __init1_1() begin
+enforce T;
+goto L3;
+L1:
+c2bp_b_1: c2bp_i_1_1: return ;
+L2:
+c2bp_b_2: c2bp_i_2_1: goto L1;
+L3:
+c2bp_b_3: c2bp_i_3_1: goto L2;
+end
+
+void foo_1() begin
+enforce T;
+goto L8;
+L1:
+c2bp_b_1: c2bp_i_1_1: return ;
+L2:
+c2bp_b_2: c2bp_i_2_1: goto L1;
+L3:
+c2bp_b_3: c2bp_i_3_1: goto L2;
+L4:
+assume(!(g0));
+c2bp_b_4: SLIC_ERROR: c2bp_i_4_1: goto L3;
+L7:
+c2bp_b_7: c2bp_i_7_1: c2bp_stmt_7_1: C_5_7_1: S_5_7_1_0: g0 := schoose[T,F] ;
+c2bp_i_7_2: C_6_7_2: S_6_7_2_0: goto L10, L4;
+L8:
+c2bp_b_8: c2bp_i_8_1: goto L7;
+L10:
+assume(g0);
+c2bp_b_10: c2bp_i_10_1: goto L1;
+end
+

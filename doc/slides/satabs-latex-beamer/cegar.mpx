@@ -1,0 +1,126 @@
+% Written by metapost version 1.504
+begingroup save _p,_r,_s,_n; picture _p; _p=nullpicture;
+string _n[];
+vardef _s(expr _t,_f,_m,_x,_y)(text _c)=
+  addto _p also _t infont _f scaled _m shifted (_x,_y) _c; enddef;
+_n0="cmss10";
+_s("1",_n0,1.00000,1.6604,5.9776,);
+_n1="cmmi10";
+_s(":",_n1,1.00000,6.6417,5.9776,);
+_n2="cmr10";
+_s(")",_n2,1.00000,9.4091,5.9776,);
+_s("Compute",_n0,1.00000,16.0508,5.9776,);
+_s("Abstraction",_n0,1.00000,3.6806,-5.9776,);
+setbounds _p to (0,-8.4682)--(55.2926,-8.4682)--
+ (55.2926,13.4496)--(0,13.4496)--cycle;
+_p endgroup
+mpxbreak
+begingroup save _p,_r,_s,_n; picture _p; _p=nullpicture;
+string _n[];
+vardef _s(expr _t,_f,_m,_x,_y)(text _c)=
+  addto _p also _t infont _f scaled _m shifted (_x,_y) _c; enddef;
+_n0="cmss10";
+_s("2",_n0,1.00000,5.8115,5.9776,);
+_n1="cmmi10";
+_s(":",_n1,1.00000,10.7929,5.9776,);
+_n2="cmr10";
+_s(")",_n2,1.00000,13.5603,5.9776,);
+_s("Check",_n0,1.00000,20.2020,5.9776,);
+_s("Abstraction",_n0,1.00000,1.6604,-5.9776,);
+setbounds _p to (0,-8.4682)--(51.2522,-8.4682)--
+ (51.2522,13.4496)--(0,13.4496)--cycle;
+_p endgroup
+mpxbreak
+begingroup save _p,_r,_s,_n; picture _p; _p=nullpicture;
+string _n[];
+vardef _s(expr _t,_f,_m,_x,_y)(text _c)=
+  addto _p also _t infont _f scaled _m shifted (_x,_y) _c; enddef;
+_n0="cmss10";
+_s("3",_n0,1.00000,2.4214,5.9776,);
+_n1="cmmi10";
+_s(":",_n1,1.00000,7.4028,5.9776,);
+_n2="cmr10";
+_s(")",_n2,1.00000,10.1702,5.9776,);
+_s("Check",_n0,1.00000,16.8119,5.9776,);
+_s("F",_n0,1.00000,1.6604,-5.9776,);
+_s("easibilit",_n0,1.00000,7.0568,-5.9776,);
+_s("y",_n0,1.00000,38.0794,-5.9776,);
+setbounds _p to (0,-8.4682)--(44.4721,-8.4682)--
+ (44.4721,13.4496)--(0,13.4496)--cycle;
+_p endgroup
+mpxbreak
+begingroup save _p,_r,_s,_n; picture _p; _p=nullpicture;
+string _n[];
+vardef _s(expr _t,_f,_m,_x,_y)(text _c)=
+  addto _p also _t infont _f scaled _m shifted (_x,_y) _c; enddef;
+_n0="cmss10";
+_s("4",_n0,1.00000,2.9680,5.9776,);
+_n1="cmmi10";
+_s(":",_n1,1.00000,7.9494,5.9776,);
+_n2="cmr10";
+_s(")",_n2,1.00000,10.7168,5.9776,);
+_s("Re"&char12&"ne",_n0,1.00000,17.3585,5.9776,);
+_s("Predicates",_n0,1.00000,1.6604,-5.9776,);
+setbounds _p to (0,-8.4682)--(46.1048,-8.4682)--
+ (46.1048,13.4496)--(0,13.4496)--cycle;
+_p endgroup
+mpxbreak
+begingroup save _p,_r,_s,_n; picture _p; _p=nullpicture;
+string _n[];
+vardef _s(expr _t,_f,_m,_x,_y)(text _c)=
+  addto _p also _t infont _f scaled _m shifted (_x,_y) _c; enddef;
+_n4="phvr8r";
+_s("[no",_n4,1.00000,0.0000,0.0000,);
+_s("error]",_n4,1.00000,16.6173,0.0000,);
+setbounds _p to (0,-1.9725)--(40.4177,-1.9725)--
+ (40.4177,7.1979)--(0,7.1979)--cycle;
+_p endgroup
+mpxbreak
+begingroup save _p,_r,_s,_n; picture _p; _p=nullpicture;
+string _n[];
+vardef _s(expr _t,_f,_m,_x,_y)(text _c)=
+  addto _p also _t infont _f scaled _m shifted (_x,_y) _c; enddef;
+_n4="phvr8r";
+_s("OK",_n4,1.00000,0.0000,0.0000,);
+setbounds _p to (0,-0.1643)--(14.3958,-0.1643)--
+ (14.3958,7.3425)--(0,7.3425)--cycle;
+_p endgroup
+mpxbreak
+begingroup save _p,_r,_s,_n; picture _p; _p=nullpicture;
+string _n[];
+vardef _s(expr _t,_f,_m,_x,_y)(text _c)=
+  addto _p also _t infont _f scaled _m shifted (_x,_y) _c; enddef;
+_n4="phvr8r";
+_s("[f",_n4,1.00000,0.0000,0.0000,);
+_s("easib",_n4,1.00000,5.2402,0.0000,);
+_s("le]",_n4,1.00000,28.8515,0.0000,);
+setbounds _p to (0,-1.9725)--(39.3718,-1.9725)--
+ (39.3718,7.2776)--(0,7.2776)--cycle;
+_p endgroup
+mpxbreak
+begingroup save _p,_r,_s,_n; picture _p; _p=nullpicture;
+string _n[];
+vardef _s(expr _t,_f,_m,_x,_y)(text _c)=
+  addto _p also _t infont _f scaled _m shifted (_x,_y) _c; enddef;
+_n4="phvr8r";
+_s("repor",_n4,1.00000,0.0000,0.0000,);
+_s("t",_n4,1.00000,23.6509,0.0000,);
+_s("countere",_n4,1.00000,29.1899,0.0000,);
+_s("xample",_n4,1.00000,67.6553,0.0000,);
+setbounds _p to (0,-2.0772)--(99.7646,-2.0772)--
+ (99.7646,7.1979)--(0,7.1979)--cycle;
+_p endgroup
+mpxbreak
+begingroup save _p,_r,_s,_n; picture _p; _p=nullpicture;
+string _n[];
+vardef _s(expr _t,_f,_m,_x,_y)(text _c)=
+  addto _p also _t infont _f scaled _m shifted (_x,_y) _c; enddef;
+_n4="phvr8r";
+_s("C",_n4,1.00000,0.0000,0.0000,);
+_s("prog",_n4,1.00000,9.9625,0.0000,);
+_s("r",_n4,1.00000,29.7979,0.0000,);
+_s("am",_n4,1.00000,33.0158,0.0000,);
+setbounds _p to (0,-2.2167)--(46.8538,-2.2167)--
+ (46.8538,7.3425)--(0,7.3425)--cycle;
+_p endgroup
+mpxbreak

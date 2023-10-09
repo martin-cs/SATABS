@@ -1,0 +1,17 @@
+decl g1, g2;
+
+void main() begin
+
+L0:  g1:=*;
+
+L1:  if !g1 then goto L4; fi;
+
+L2:  goto L3;
+
+     g2:=1;
+
+L3:  assert(0);
+
+L4:  skip;
+
+end

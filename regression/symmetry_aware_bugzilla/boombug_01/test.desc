@@ -1,0 +1,8 @@
+KNOWNBUG
+main.c
+--full-inlining --concurrency --abstractor cartesian --iterations 10 --max-cube-length 3 --max-threads 1
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring

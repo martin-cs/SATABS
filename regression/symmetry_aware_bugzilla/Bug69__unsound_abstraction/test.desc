@@ -1,0 +1,10 @@
+CORE
+main.c
+--full-inlining --concurrency --max-threads 1 --abstractor cartesian --iterations 10 --max-cube-length 2
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring
+--
+https://bugs.comlab.ox.ac.uk/cprover/show_bug.cgi?id=69

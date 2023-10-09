@@ -1,0 +1,8 @@
+KNOWNBUG
+main.c
+--termination
+^EXIT=20$
+^SIGNAL=0$
+TERMINATES.$
+--
+^warning: ignoring

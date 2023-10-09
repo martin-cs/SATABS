@@ -1,0 +1,134 @@
+decl g5, g4, g3, g2, g1, g0;
+bool unk() begin if (*) then return T; else return F; fi end
+void main() begin
+enforce T;
+goto L9;
+L1:
+c2bp_b_1: c2bp_i_1_1: return ;
+L3:
+c2bp_b_3: ASYNC_2: c2bp_i_3_1: c2bp_stmt_3_1: c2bpcall_3_1: C_53_3_1: S_53_3_1_0:  p2_1();
+c2bpreturnpt_3_2: goto L1;
+L5:
+c2bp_b_5: ASYNC_1: c2bp_i_5_1: c2bp_stmt_5_1: c2bpcall_5_1: C_52_5_1: S_52_5_1_0:  p1_1();
+c2bpreturnpt_5_2: goto L3;
+L6:
+c2bp_b_6: c2bp_i_6_1: c2bp_stmt_6_1: C_48_6_1: S_48_6_1_0: g2 := schoose[F,T] ;
+c2bp_i_6_2: c2bp_stmt_6_2: C_49_6_2: S_49_6_2_0: g4 := schoose[F,T] ;
+c2bp_i_6_3: c2bp_stmt_6_3: C_50_6_3: S_50_6_3_0: g1 := schoose[T,F] ;
+c2bp_i_6_4: c2bp_stmt_6_4: C_51_6_4: S_51_6_4_0: g0 := schoose[T,F] ;
+c2bp_i_6_5: goto L5;
+L7:
+c2bp_b_7: c2bp_i_7_1: goto L6;
+L9:
+c2bp_b_9: c2bp_i_9_1: c2bp_stmt_9_1: c2bpcall_9_1:  __init1_1();
+c2bpreturnpt_9_2: goto L7;
+end
+
+void assert_1(l1_0) begin
+enforce T;
+goto L8;
+L1:
+c2bp_b_1: c2bp_i_1_1: return ;
+L2:
+c2bp_b_2: c2bp_i_2_1: goto L1;
+L3:
+c2bp_b_3: c2bp_i_3_1: goto L2;
+L4:
+assume(((((((T)&(!(l1_0)))&(!(l1_0)))&(!(l1_0)))&(!(l1_0)))&(!(l1_0)))&(!(l1_0)));
+c2bp_b_4: SLIC_ERROR: c2bp_i_4_1: goto L3;
+L7:
+c2bp_b_7: c2bp_i_7_1: C_6_7_1: S_6_7_1_0: goto L4, L10;
+L8:
+c2bp_b_8: c2bp_i_8_1: zS_6_7_1_0: zS_6_7_1_0: zS_6_7_1_0: zS_6_7_1_0: zS_6_7_1_0: zS_6_7_1_0: zS_6_7_1_0: zS_6_7_1_0: zS_6_7_1_0: goto L7;
+L10:
+assume(T);
+c2bp_b_10: c2bp_i_10_1: goto L1;
+end
+
+void __init1_1() begin
+enforce T;
+goto L3;
+L1:
+c2bp_b_1: c2bp_i_1_1: return ;
+L2:
+c2bp_b_2: c2bp_i_2_1: goto L1;
+L3:
+c2bp_b_3: c2bp_i_3_1: goto L2;
+end
+
+void p1_1() begin
+decl t_l3_0;
+enforce T;
+goto L9;
+L1:
+c2bp_b_1: c2bp_i_1_1: return ;
+L2:
+c2bp_b_2: c2bp_i_2_1: c2bp_stmt_2_1: C_28_2_1: S_28_2_1_0: g1 := schoose[T,F] ;
+c2bp_i_2_2: c2bp_stmt_2_2: C_29_2_2: S_29_2_2_0: g2 := schoose[F,T] ;
+c2bp_i_2_3: goto L1;
+L3:
+c2bp_b_3: c2bp_i_3_1: c2bp_stmt_3_1: C_23_3_1: S_23_3_1_0: g1 := schoose[F,T] ;
+c2bp_i_3_2: c2bp_stmt_3_2: t_l3_0 := schoose[g0,F] ;
+c2bpcall_3_2: C_24_3_2: S_24_3_2_0:  assert_1(t_l3_0);
+c2bpreturnpt_3_3: dead t_l3_0;
+goto L2;
+L6:
+assume(T);
+c2bp_b_6: c2bp_i_6_1: C_20_6_1: S_20_6_1_0: goto L12, L13;
+L7:
+c2bp_b_7: c2bp_i_7_1: C_20_7_1: S_20_7_1_0: goto L11, L6;
+L8:
+c2bp_b_8: c2bp_i_8_1: c2bp_stmt_8_1: C_18_8_1: S_18_8_1_0: g2 := schoose[T,F] ;
+c2bp_i_8_2: c2bp_stmt_8_2: C_19_8_2: S_19_8_2_0: g3, g5 := schoose[F,T], schoose[T,F] ;
+c2bp_i_8_3: goto L7;
+L9:
+c2bp_b_9: c2bp_i_9_1: goto L8;
+L11:
+assume(!((g4)|(g4)));
+c2bp_b_11: c2bp_i_11_1: goto L3;
+L12:
+assume(!(g5));
+c2bp_b_12: c2bp_i_12_1: goto L3;
+L13:
+assume(g5);
+c2bp_b_13: c2bp_i_13_1: goto L7;
+end
+
+void p2_1() begin
+decl t_l4_0;
+enforce T;
+goto L9;
+L1:
+c2bp_b_1: c2bp_i_1_1: return ;
+L2:
+c2bp_b_2: c2bp_i_2_1: c2bp_stmt_2_1: C_41_2_1: S_41_2_1_0: g0 := schoose[T,F] ;
+c2bp_i_2_2: c2bp_stmt_2_2: C_44_2_2: S_44_2_2_0: g4 := schoose[F,T] ;
+c2bp_i_2_3: goto L1;
+L3:
+c2bp_b_3: c2bp_i_3_1: c2bp_stmt_3_1: C_39_3_1: S_39_3_1_0: g0 := schoose[F,T] ;
+c2bp_i_3_2: c2bp_stmt_3_2: t_l4_0 := schoose[g1,F]  constrain (!((g1)&(!('t_l4_0))));
+c2bpcall_3_2: C_40_3_2: S_40_3_2_0:  assert_1(t_l4_0);
+c2bpreturnpt_3_3: dead t_l4_0;
+goto L2;
+L6:
+assume(T);
+c2bp_b_6: c2bp_i_6_1: C_36_6_1: S_36_6_1_0: goto L12, L13;
+L7:
+c2bp_b_7: c2bp_i_7_1: C_36_7_1: S_36_7_1_0: goto L11, L6;
+L8:
+c2bp_b_8: c2bp_i_8_1: c2bp_stmt_8_1: C_34_8_1: S_34_8_1_0: g4 := schoose[T,F] ;
+c2bp_i_8_2: c2bp_stmt_8_2: C_35_8_2: S_35_8_2_0: g3, g5 := schoose[T,F], schoose[F,T] ;
+c2bp_i_8_3: goto L7;
+L9:
+c2bp_b_9: c2bp_i_9_1: goto L8;
+L11:
+assume(!((g2)|(g2)));
+c2bp_b_11: c2bp_i_11_1: goto L3;
+L12:
+assume(!(g3));
+c2bp_b_12: c2bp_i_12_1: goto L3;
+L13:
+assume(g3);
+c2bp_b_13: c2bp_i_13_1: goto L7;
+end
+

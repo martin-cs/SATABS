@@ -1,0 +1,10 @@
+THOROUGH
+PseudoRandomUsingAtomic.c
+basics.c --full-inlining --concurrency --abstractor cartesian  --max-cube-length 2 -DHPRED --max-threads 1 -I . -DSATABS --iterations 10
+^EXIT=0$
+^SIGNAL=0$
+^VERIFICATION SUCCESSFUL$
+--
+^warning: ignoring
+--
+https://bugs.comlab.ox.ac.uk/cprover/show_bug.cgi?id=65

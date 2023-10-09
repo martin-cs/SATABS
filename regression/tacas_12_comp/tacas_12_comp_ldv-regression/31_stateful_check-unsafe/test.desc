@@ -1,0 +1,13 @@
+CORE
+main.c
+--full-inlining --32 --error-label ERROR
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring
+--
+https://bugs.cs.ox.ac.uk/cprover/show_bug.cgi?id=139
+
+Most likely caused by local variables bug: removing definition on
+VERIFIER_nondet_int we find the correct result

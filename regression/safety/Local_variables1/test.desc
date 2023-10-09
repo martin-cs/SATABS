@@ -1,0 +1,11 @@
+CORE
+main.c
+--iterations 3
+^EXIT=10$
+^SIGNAL=0$
+^VERIFICATION FAILED$
+--
+^warning: ignoring
+--
+https://bugs.cs.ox.ac.uk/cprover/show_bug.cgi?id=116
+Use -DFIX to get the correct result.
