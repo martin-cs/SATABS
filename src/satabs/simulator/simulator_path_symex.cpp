@@ -72,7 +72,8 @@ bool simulator_path_symext::is_spurious(
   path_symex_historyt path_symex_history;  
   
   path_symex_statet state=
-    initial_state(var_map, locs, path_symex_history);
+    initial_state(var_map, locs);
+  //    initial_state(var_map, locs, path_symex_history);
     
   target_to_loc_mapt target_to_loc_map(locs);
 
