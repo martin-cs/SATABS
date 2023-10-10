@@ -136,7 +136,8 @@ void bp_typecheckt::convert_function(exprt &declaration)
   return_type.swap(declaration.add(ID_return_type));
 
   if(return_type.id()=="bool-vector" &&
-     unsafe_string2int(return_type.get_string(ID_width))==1)
+     safe_string2int(return_type.get_string(ID_width))==1)
+     //unsafe_string2int(return_type.get_string(ID_width))==1)
     return_type=typet(ID_bool);
 
   symbol.base_name=declaration.get(ID_identifier);

@@ -172,7 +172,8 @@ bool tan_parseoptionst::check_and_set_options()
   {
     int verbosity=6;
     if(cmdline.isset("verbosity"))
-      verbosity=unsafe_string2int(cmdline.getval("verbosity"));
+      verbosity=safe_string2int(cmdline.getval("verbosity"));
+      //verbosity=unsafe_string2int(cmdline.getval("verbosity"));
     set_verbosity(verbosity);
   }
   

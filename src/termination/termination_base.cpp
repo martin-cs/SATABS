@@ -86,7 +86,8 @@ termination_baset::termination_baset(
 {
   set_verbosity(6);
   if(cmdline.isset("v"))
-    set_verbosity(unsafe_string2int(cmdline.getval("v")));    
+    set_verbosity(safe_string2int(cmdline.getval("v")));
+    //set_verbosity(unsafe_string2int(cmdline.getval("v")));
   set_options();
 }
 

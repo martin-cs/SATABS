@@ -32,7 +32,8 @@ unsigned vector_width(const typet &type)
   else if(type.id()==ID_bool)
     return 1;
   else if(type.id()=="bool-vector")
-    return unsafe_string2unsigned(type.get_string(ID_width));
+    return safe_string2unsigned(type.get_string(ID_width));
+    //return unsafe_string2unsigned(type.get_string(ID_width));
   else
   {
     std::cerr << "unexpected vector type: "

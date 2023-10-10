@@ -294,7 +294,8 @@ static unsigned get_block_index (const char type, const std::string &label)
 
   end = label.find ('_', start);
   const std::string &index = label.substr (start, end-1);
-  result = unsafe_string2unsigned(index);
+  result = safe_string2unsigned(index);
+  //result = unsafe_string2unsigned(index);
   assert (result);
   return result;
 }
@@ -321,7 +322,8 @@ static unsigned get_instruction_index (const std::string &label)
   start = label.find_last_of ('_');
   const std::string &index = label.substr (start+1);
   
-  result = unsafe_string2unsigned(index);
+  result = safe_string2unsigned(index);
+  //result = unsafe_string2unsigned(index);
   assert (result);
   return result;
 }

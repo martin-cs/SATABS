@@ -46,7 +46,8 @@ public:
   {
     if(_cmd.isset("verbosity"))
     {
-      unsigned v = unsafe_string2unsigned(_cmd.getval("verbosity"));
+      unsigned v = safe_string2unsigned(_cmd.getval("verbosity"));
+      //unsigned v = unsafe_string2unsigned(_cmd.getval("verbosity"));
       ranking_relations.set_verbosity(v);
       verbosity = v;
     }
