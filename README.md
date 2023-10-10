@@ -35,3 +35,8 @@ This is not going to be my work.  The repository is hosted for
 archival and archaeological purposes only.  I'm not going to update it
 to the latest CBMC.  I'm not going to fix bugs.  If you want to, feel
 free!  If it breaks, you get to keep both halves!
+
+I have added a submodule for CBMC version 4.7 (with some fixes so it
+builds) as is described in the documentation.  There is some evidence
+(see commit history) that actually this version should be built with
+4.8 or later but YMMV.
