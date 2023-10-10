@@ -22,11 +22,11 @@ bplang$(LIBEXT): $(OBJ)
 	$(LINKLIB)
 
 y.tab.cpp: parser.y
-	$(YACC) $(YFLAGS) $$flags -pyybp -d parser.y -o y.tab.cpp
+	$(YACC) $(YFLAGS) $$flags -pyybp -d parser.y --defines=y.tab.h -o y.tab.cpp
 
 y.tab.h: y.tab.cpp
-	if [ -e y.tab.hpp ] ; then mv y.tab.hpp y.tab.h ; else \
-        mv y.tab.cpp.h y.tab.h ; fi
+	if [ -e y.tab.hpp ] ; then mv y.tab.hpp y.tab.h ; \
+	elif [ -e y.tab.cpp.h ] ; then mv y.tab.cpp.h y.tab.h ; fi
 
 lex.yy.cpp: scanner.l
 	$(LEX) -Pyybp -olex.yy.cpp scanner.l
