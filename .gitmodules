@@ -1,3 +1,4 @@
 [submodule "cbmc"]
 	path = cbmc
-	url = https://github.com/diffblue/cbmc/
+	url = https://github.com/martin-cs/cbmc/
+	branch = historic-SATABS-branch-2
